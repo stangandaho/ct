@@ -1,4 +1,4 @@
-url: https://stangandaho.github.io/maimer/
+url: https://stangandaho.github.io/ct/
 template:
   bootstrap: 5
   light-switch: yes
@@ -47,7 +47,7 @@ navbar:
       icon: fa-face-smile
       href: news/index.html
     github:
-      href: https://github.com/stangandaho/maimer
+      href: https://github.com/stangandaho/ct
       aria-label: GitHub
       icon: fa-github
     linkedin:
@@ -61,55 +61,61 @@ reference:
   desc: |
     Set up field survey design for camera trap deployement
   contents:
-  - mm_survey_design
+  - ct_survey_design
   - pendjari
+  - ctdp
 - title: Process media (images) file
   desc: |
     Functions reading and writing metadata
   contents:
-  - mm_app
-  - mm_get_metadata
-  - mm_get_hs
-  - mm_create_hs
-  - mm_remove_hs
+  - ct_app
+  - ct_get_metadata
+  - ct_get_hs
+  - ct_create_hs
+  - ct_remove_hs
 - title: Data processing
   desc: |
     Functions for preparing and tansforming camera trap data
   contents:
-  - mm_read
-  - mm_stack_df
-  - mm_check_location
-  - mm_independence
-  - mm_to_radian
-  - mm_solartime
-  - mm_to_time
-  - mm_to_community
-  - mm_standardize
-  - mm_check_name
-  - mm_to_occupancy
-  - mm_find_break
-  - mm_correct_datetime
+  - ct_read
+  - ct_stack_df
+  - ct_check_location
+  - ct_independence
+  - ct_to_radian
+  - ct_solartime
+  - ct_to_time
+  - ct_to_community
+  - ct_standardize
+  - ct_check_name
+  - ct_to_occupancy
+  - ct_find_break
+  - ct_correct_datetime
+  - ct_get_effort
+  - ct_traprate_data
 - title: Data analysis
   desc: |
     Functions to run common camera trap data analysis
   contents:
-  - mm_describe_df
-  - mm_plot_density
-  - mm_plot_overlap
-  - mm_plot_overlap_coef
-  - mm_plot_rose_diagram
-  - mm_plot_camtrap_activity
-  - mm_overlap_estimates
-  - mm_bootstrap
-  - mm_resample
-  - mm_boot_estimates
-  - mm_boot_ci
-  - mm_ci
-  - mm_lognorm_ci
-  - mm_overlap_matrix
-  - mm_temporal_shift
-  - mm_alpha_diversity
-  - mm_dissimilarity
-  - mm_spatial_coverage
-  - mm_summarise_camtrap_activity
-
+  - ct_describe_df
+  - ct_plot_density
+  - ct_plot_overlap
+  - ct_plot_overlap_coef
+  - ct_plot_rose_diagram
+  - ct_plot_camtrap_activity
+  - ct_overlap_estimates
+  - ct_bootstrap
+  - ct_resample
+  - ct_boot_estimates
+  - ct_boot_ci
+  - ct_ci
+  - ct_overlap_matrix
+  - ct_temporal_shift
+  - ct_alpha_diversity
+  - ct_dissimilarity
+  - ct_spatial_coverage
+  - ct_summarise_camtrap_activity
+  - ct_traprate_estimate
+  - ct_fit_activity
+  - ct_fit_speedmodel
+  - ct_fit_detmodel
+  - ct_fit_rem

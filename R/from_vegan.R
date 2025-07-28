@@ -1,5 +1,4 @@
 # From vegan package
-
 .calc_alr <- function (x, reference = 1, pseudocount = 0, na.rm = TRUE)
 {
   x <- x + pseudocount

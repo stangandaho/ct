@@ -1,50 +1,56 @@
 #exportPattern("^[[:alpha:]]+")
 
 ## Before field
-export(mm_survey_design)
+export(ct_survey_design)
 ## Prepare media file
-export(mm_app)
-export(mm_get_metadata) #ok
-export(mm_get_hs) #ok
-export(mm_create_hs)#ok
-export(mm_remove_hs) #ok
+export(ct_app)
+export(ct_get_metadata) #ok
+export(ct_get_hs) #ok
+export(ct_create_hs)#ok
+export(ct_remove_hs) #ok
 
 ## Prepare table
-export(mm_read) #ok
-export(mm_stack_df) #ok
-export(mm_check_location)#ok
-export(mm_independence) #ok
-export(mm_to_radian)
-export(mm_solartime)
-export(mm_to_time)
-export(mm_to_community) #ok
-export(mm_standardize)
-export(mm_check_name)
-export(mm_to_occupancy)
-export(mm_find_break)
-export(mm_correct_datetime)
+export(ct_read) #ok
+export(ct_stack_df) #ok
+export(ct_check_location)#ok
+export(ct_independence) #ok
+export(ct_to_radian)
+export(ct_solartime)
+export(ct_to_time)
+export(ct_to_community) #ok
+export(ct_standardize)
+export(ct_check_name)
+export(ct_to_occupancy)
+export(ct_find_break)
+export(ct_correct_datetime)
+export(ct_get_effort) #no
+export(ct_traprate_data) # no
 
 ## Analysis
-export(mm_describe_df)
-export(mm_plot_density)
-export(mm_plot_overlap)#ok
-export(mm_plot_overlap_coef)
-export(mm_plot_rose_diagram)
-export(mm_plot_camtrap_activity)
-export(mm_overlap_estimates)
-export(mm_bootstrap)
-export(mm_resample)
-export(mm_boot_estimates)
-export(mm_boot_ci)
-export(mm_ci)
-export(mm_lognorm_ci)
-export(mm_overlap_matrix)
-export(mm_temporal_shift)
-export(mm_alpha_diversity)
-export(mm_summarise_camtrap_activity)
-#export(mm_beta_diversity)
-export(mm_dissimilarity)
-export(mm_spatial_coverage)
+export(ct_describe_df)
+export(ct_plot_density)
+export(ct_plot_overlap)#ok
+export(ct_plot_overlap_coef)
+export(ct_plot_rose_diagram)
+export(ct_plot_camtrap_activity)
+export(ct_overlap_estimates)
+export(ct_bootstrap)
+export(ct_resample)
+export(ct_boot_estimates)
+export(ct_boot_ci)
+export(ct_ci)
+export(ct_overlap_matrix)
+export(ct_temporal_shift)
+export(ct_alpha_diversity)
+export(ct_dissimilarity)
+export(ct_spatial_coverage)
+export(ct_summarise_camtrap_activity)
+export(ct_traprate_estimate) ## no
+export(ct_fit_activity) #no
+export(ct_fit_speedmodel) #no
+export(ct_fit_detmodel) #no
+export(ct_fit_rem) # no
+
 
 ## General
 export(`%>%`)
@@ -59,13 +65,12 @@ importFrom(exifr, read_exif)
 
 
 # base
-importFrom("stats", "setNames")
-importFrom("utils", "write.csv")
 importFrom("methods", "hasArg")
-importFrom("stats", "cov")
-importFrom("utils", "read.table")
-importFrom("stats", "aggregate", "as.formula", "qt", "sd", "window")
-importFrom("utils", "install.packages", "installed.packages")
+importFrom("stats", "aggregate", "as.formula", "qt", "sd", "window",
+           "end", "predict", "quantile", "start", "setNames",
+           "cov")
+importFrom("utils", "install.packages", "installed.packages", "read.table",
+           "write.csv", "head")
 
 # dplyr
 importFrom(dplyr, as_tibble)
@@ -222,3 +227,11 @@ importFrom(cli, cli_alert_success)
 importFrom(cli, cli_alert_warning)
 importFrom(cli, cli_format)
 importFrom(cli, cli_text)
+
+# Distance
+importFrom(Distance, ds)
+
+# sbd
+importFrom(sbd, sbm)
+
+# Vegan

@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(maimer)
+library(ct)
 
-test_check("maimer")
+test_check("ct")
