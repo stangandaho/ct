@@ -1,4 +1,6 @@
 #exportPattern("^[[:alpha:]]+")
+useDynLib(ct)
+importFrom(Rcpp, sourceCpp)
 
 ## Before field
 export(ct_survey_design)

@@ -97,7 +97,7 @@ ct_plot_rose_diagram <- function(data = NULL,
 
   aday <- data.frame(day_time = paste0(sprintf("%02d", seq(0, 23, by = time_range)), ":00:00")) %>%
     dplyr::left_join(y = ddtf, by = "day_time") %>%
-    dplyr::mutate(ori_freq = if_else(is.na(ori_freq), 0, ori_freq),
+    dplyr::mutate(ori_freq = dplyr::if_else(is.na(ori_freq), 0, ori_freq),
                   radian = round(ct_to_radian(times = day_time), 3),
                   day_time = substr(day_time, 1, 5))
 
@@ -170,7 +170,7 @@ ct_plot_rose_diagram <- function(data = NULL,
       }
     }
     # Convert to polar coordinates
-    p <- p + ggplot2::coord_polar(start = start) + ylim(rg1, rg2)
+    p <- p + ggplot2::coord_polar(start = start) + ggplot2::ylim(rg1, rg2)
   }else{
     p <- p + ggplot2::coord_polar(start = start)
   }

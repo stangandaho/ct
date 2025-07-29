@@ -59,8 +59,8 @@ the fitted distribution can sometimes provide more sensible confidence intervals
 the number of observations is very small.
 }
 \examples{
-data("camtrapdp")
-observations <- camtrapdp$data$observations \%>\%
+data("ctdp")
+observations <- ctdp$data$observations \%>\%
   dplyr::filter(scientificName == "Vulpes vulpes") \%>\%
   # Add time of day
   ct_to_radian(times = timestamp)

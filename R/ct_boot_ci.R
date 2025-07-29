@@ -13,9 +13,7 @@ ct_boot_ci <- function(t0,
                        conf = 0.95
                        ) {
 
-  out <- overlap::bootCI(t0 = t0,
-                         bt = bt,
-                         conf = conf)
+  out <- overlap::bootCI(t0 = t0, bt = bt,  conf = conf)
 
   return(out)
 

@@ -59,7 +59,6 @@
 #'                crs = "EPSG:32631", time_zone = 1)
 #'
 #' @export
-
 ct_solartime <- function (data = NULL,
                           date,
                           longitude,
@@ -116,7 +115,7 @@ ct_solartime <- function (data = NULL,
       date <- as.POSIXlt(date, tryFormats = try_formats, ...)
       posdat <- list(latitude, longitude, time_zone[loc])
 
-      suntimes <- ct_wrap(mm_get_suntimes(date, latitude, longitude, time_zone[loc])[, -3] * pi/12)
+      suntimes <- ct_wrap(ct_get_suntimes(date, latitude, longitude, time_zone[loc])[, -3] * pi/12)
       tm <- ct_get_time(date)
       list(input = date, clock = tm, solar = ct_transtime(tm, suntimes))
       completed <- dplyr::bind_rows(completed, tibble(!!dplyr::sym(lon_str) := longitude,
@@ -133,8 +132,8 @@ ct_solartime <- function (data = NULL,
   posdat <- list(latitude, longitude, time_zone)
   if (!all(unlist(lapply(posdat, inherits, "numeric"))) |
       any(unlist(lapply(posdat, length)) != length(date) & unlist(lapply(posdat, length)) != 1)){
-    rlang::abort("latitude, longitude and time_zone must all be numeric scalars, or vectors the same length as date")}
-  suntimes <- ct_wrap(mm_get_suntimes(date, latitude, longitude, time_zone)[, -3] * pi/12)
+    cli::cli_abort("latitude, longitude and time_zone must all be numeric scalars, or vectors the same length as date")}
+  suntimes <- ct_wrap(ct_get_suntimes(date, latitude, longitude, time_zone)[, -3] * pi/12)
   tm <- ct_get_time(date)
 
   return(tibble(input = date, clock = tm, solar = ct_transtime(tm, suntimes)))
@@ -154,7 +153,7 @@ ct_get_suntimes <- function(date,
     nlon <- length(longitude)
     ndat <- length(date)
     if ((nlat > 1 & nlat != ndat) | (nlon > 1 & nlon != ndat))
-      stop("latitude and longitude must have length 1 or the same length as date")
+      cli::cli_abort("latitude and longitude must have length 1 or the same length as date")
     d <- as.POSIXlt(date, tryFormats = tryFormats, ...)$yday + 1
     R <- 6378
     epsilon <- 23.45 * pi/180
@@ -238,9 +237,9 @@ ct_transtime <- function (date, anchor,
     flip <- difs[, 1] > difs[, 2]
     a1 <- ifelse(flip, anchor[, 2], anchor[, 1])
     a2 <- ifelse(flip, anchor[, 1], anchor[, 2])
-    relpos <- ct_wrap(date - a1)/mm_wrap(a2 - a1)
-    interval <- switch(type, equinoctial = pi, average = ifelse(flip,
-                                                                ct_wrap(mnanchor[1] - mnanchor[2]), mm_wrap(mnanchor[2] -
+    relpos <- ct_wrap(date - a1)/ct_wrap(a2 - a1)
+    interval <- switch(type, equinoctial = pi,
+                       average = ifelse(flip, ct_wrap(mnanchor[1] - mnanchor[2]), ct_wrap(mnanchor[2] -
                                                                                                         mnanchor[1])))
     baseline <- switch(type, equinoctial = ifelse(flip, pi *
                                                     3/2, pi/2), average = ifelse(flip, mnanchor[2], mnanchor[1]))

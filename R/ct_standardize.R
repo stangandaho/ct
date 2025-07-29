@@ -236,8 +236,8 @@ ct_standardize <- function (data,
 
          rrank = {
            if (missing(margin)) margin <- 1
-           data <- decostand(data, "rank", margin = margin)
-           data <- sweep(data, margin, specnumber(data, margin = margin),
+           data <- vegan::decostand(data, "rank", margin = margin)
+           data <- sweep(data, margin, vegan::specnumber(data, margin = margin),
                          "/")
            attr <- list(margin = margin)
          },
@@ -267,7 +267,7 @@ ct_standardize <- function (data,
          },
 
          hellinger = {
-           data <- sqrt(decostand(data, "total", margin = margin, na.rm = na.rm))
+           data <- sqrt(vegan::decostand(data, "total", margin = margin, na.rm = na.rm))
            attr <- attr(data, "parameters")
          },
 

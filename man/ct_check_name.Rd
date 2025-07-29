@@ -4,7 +4,11 @@
 \alias{ct_check_name}
 \title{Check species name and retrieve Taxonomic Serial Number (TSN) from ITIS}
 \usage{
-ct_check_name(species_name, search_type, ask = FALSE)
+ct_check_name(
+  species_name,
+  search_type = c("common_name", "scientific_name"),
+  ask = FALSE
+)
 }
 \arguments{
 \item{species_name}{A character string specifying the species name to search
@@ -12,7 +16,7 @@ for. Only a \strong{single name} is allowed.}
 
 \item{search_type}{A character string specifying the type of search. Options:
 \itemize{
-\item \code{"sientific_name"}: Search by scientific name.
+\item \code{"scientific_name"}: Search by scientific name.
 \item \code{"common_name"}: Search by common name.
 }}
 

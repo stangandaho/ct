@@ -8,7 +8,7 @@
 #' @param species_name A character string specifying the species name to search
 #' for. Only a **single name** is allowed.
 #' @param search_type A character string specifying the type of search. Options:
-#'   - `"sientific_name"`: Search by scientific name.
+#'   - `"scientific_name"`: Search by scientific name.
 #'   - `"common_name"`: Search by common name.
 #' @param ask A logical value (`TRUE` or `FALSE`). If `TRUE`, allows interactive selection when multiple matches are found.
 #'
@@ -41,17 +41,20 @@
 #' @export
 #'
 ct_check_name <- function(species_name,
-                          search_type,
+                          search_type = c("common_name", "scientific_name"),
                           ask = FALSE) {
   suggested_pkg <- c("httr2", "xml2")
   installed <- rownames(installed.packages())
   not_in <- !suggested_pkg %in% installed
 
   if (any(not_in)) {
-    custom_cli(sprintf("You need to install: %s \n1. Install\n2. Exit\n", suggested_pkg[not_in]))
+    action <- utils::menu(
+      title = sprintf("You need to install: %s.", suggested_pkg[not_in]),
+      choices = c("Install", "Not install")
+    )
     action <- readline(prompt = "Action: ")
 
-    if (action %in% c("1", "install", "Install", "Yes", "yes")) {
+    if (action == 1) {
       for (pkg in suggested_pkg[not_in]) {
         install.packages(pkg)
       }
@@ -61,8 +64,9 @@ ct_check_name <- function(species_name,
 
   }
   ## Start data retrieve
+  search_type <- match_arg(search_type, c("common_name", "scientific_name"))
   if (length(species_name) >= 2) {
-    rlang::abort(sprintf("No search possible for %s species", length(species_name)))
+    cli::cli_abort("No search possible for {length(species_name)} species")
   }
   base_url_sci <- "https://www.itis.gov/ITISWebService/services/ITISService/getITISTermsFromScientificName?srchKey="
   search_url_sci <- paste0(base_url_sci, gsub("\\s+", "%20",  species_name))
@@ -71,58 +75,65 @@ ct_check_name <- function(species_name,
   search_url_common <- paste0(base_url_common, gsub("\\s+", "%20",  species_name))
 
   URL <- switch (search_type,
-                 "sientific_name" = search_url_sci,
+                 "scientific_name" = search_url_sci,
                  "common_name" = search_url_common
   )
 
   # Fetch the XML response using httr2
-  response <- request(URL) %>%
-    req_perform() %>%
-    resp_body_xml()
+  response <- httr2::request(URL) %>%
+    httr2::req_perform() %>%
+    httr2::resp_body_xml()
 
-  # Extract TSN (Taxonomic Serial Number)
-  tsn <- xml_text(xml_find_all(response, ".//ax21:tsn"))
-  common <- xml_text(xml_find_all(response, ".//ax21:commonNames"))
-  usage <- xml_text(xml_find_all(response, ".//ax21:nameUsage"))
-  scientific_name <- xml_text(xml_find_all(response, ".//ax21:scientificName"))
-  author <- gsub("\\(|\\)", "", xml_text(xml_find_all(response, ".//ax21:author")))
+  nodes <- xml2::xml_find_all(response, ".//ax21:itisTerms")
+  # Build rows with lapply
+  rows <- lapply(nodes, function(n) {
+    tsn_val  <- xml2::xml_text(xml2::xml_find_first(n, ".//ax21:tsn"))
+    common   <- xml2::xml_text(xml2::xml_find_first(n, ".//ax21:commonNames"))
+    sci_name <- xml2::xml_text(xml2::xml_find_first(n, ".//ax21:scientificName"))
+    author   <- gsub("\\(|\\)", "", xml2::xml_text(xml2::xml_find_first(n, ".//ax21:author")))
+    usage    <- xml2::xml_text(xml2::xml_find_first(n, ".//ax21:nameUsage"))
 
-  out_tbl <- dplyr::tibble(
-    search = rep(species_name, length(tsn)), tsn = tsn, common_name = common, scientific_name = scientific_name, author = author,
-    itis_url = paste0("https://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value", tsn),
-    taxon_status = usage
-  )
+    dplyr::tibble(
+      search = species_name,
+      tsn = tsn_val,
+      common_name = ifelse(common == "", NA, common),
+      scientific_name = ifelse(sci_name == "", NA, sci_name),
+      author = ifelse(author == "", NA, author),
+      itis_url = paste0(
+        "https://www.itis.gov/servlet/SingleRpt/SingleRpt?search_topic=TSN&search_value=", tsn_val
+      ),
+      taxon_status = ifelse(usage == "", NA, usage)
+    )
+  })
 
-  ## Filter to choose correct observation
+  # Combine all rows
+  out_tbl <- dplyr::bind_rows(rows)
+
+  # Filter to choose correct observation
   pre_filter <- switch (search_type,
-                        "sientific_name" = out_tbl %>% dplyr::filter(scientific_name == species_name),
-                        "common_name" =  out_tbl %>% dplyr::filter(common_name == species_name)
+                        "scientific_name" = out_tbl %>% dplyr::filter(grepl(species_name, scientific_name)),
+                        "common_name" =  out_tbl %>% dplyr::filter(grepl(species_name, common_name))
   )
 
-  if (ask & nrow(out_tbl) > 1 & nrow(pre_filter) == 0) {
-    print(out_tbl %>% dplyr::select(scientific_name, common_name))
-    msg <- sprintf("\n%s TSN found for taxon %s!\nEnter the row number of taxon you want:",
+  if (ask && nrow(pre_filter) > 1) {
+    msg <- sprintf("\n%d TSNs found for '%s'!\nSelect the row number of taxon you want (0 to exit):",
                    nrow(out_tbl), species_name)
     custom_cli(msg, color = "red")
-    #action <- readline(prompt = "Select row: ")
 
-    ## Check right selection
-    right_sel <- TRUE
-    while (any(sel)) {
-      action <- readline(prompt = "Select row: ")
-      right_sel <- any(c(suppressWarnings(is.na(as.numeric(action))),
-                         as.numeric(action) > nrow(out_tbl),
-                         as.numeric(action) <= 0))
+    # Add option to cancel
+    choices <- paste0(out_tbl$scientific_name, " (", out_tbl$common_name, ")")
+    action <- utils::menu(choices = choices)
+
+    # If user cancels (action == 0)
+    if (action == 0) {
+      cli::cli_alert_warning("No selection made. Returning all rows.")
+    }else{
+      out_tbl <- out_tbl %>% dplyr::slice(action)
     }
-
-    out_tbl <- out_tbl %>% dplyr::slice(as.numeric(action))
 
   }else if(nrow(pre_filter) == 1){
     out_tbl <- pre_filter
-  }else{
-
   }
-
 
   return(out_tbl)
 

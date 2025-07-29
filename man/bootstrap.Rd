@@ -77,7 +77,7 @@ with three columns, one for each estimator of overlap, otherwise a vector of
 bootstrap estimates.
 }
 \description{
-\code{bootstrap} takes two sets of times of observations and calculates bootstrap
+The function takes two sets of times of observations and calculates bootstrap
 estimates of the chosen estimator of overlap. Alternatively, bootstrap
 estimates can be calculated in a 2-stage process: (1) create a matrix of
 bootstrap samples for each data set, using \code{\link[=ct_resample]{ct_resample()}}; (2) pass these
@@ -95,14 +95,14 @@ species_B <- runif(100, 0.23, 2 * pi)
 
 est <- ct_overlap_estimates(species_A, species_B, type="Dhat4")
 
-boots <- ct_bootstrap(species_A, species_B, 1000, type="Dhat4", cores=1)
+boots <- ct_bootstrap(species_A, species_B, 100, type="Dhat4", cores=1)
 mean(boots)
 hist(boots)
 ct_boot_ci(est, boots)
 
 # alternatively:
-species_A_gen <- ct_resample(species_A, 1000)
-species_B_gen <- ct_resample(species_B, 1000)
+species_A_gen <- ct_resample(species_A, 100)
+species_B_gen <- ct_resample(species_B, 100)
 boots <- ct_boot_estimates(species_A_gen, species_B_gen, type="Dhat4", cores=1)
 mean(boots)
 

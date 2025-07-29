@@ -19,7 +19,7 @@ test_that("returns expected summary tibble", {
   )
 
   expect_s3_class(result, "tbl_df")
-  expect_true(all(c("deployment", "n_records", "activity_rate") %in% names(result)))
+  expect_true(all(c("camera", "n_records", "activity_rate") %in% names(result)))
   expect_equal(nrow(result), 1)
 })
 

@@ -28,7 +28,7 @@
 #'
 #' @details
 #' This function calculates kernel density estimates for two sets of time-of-day data (`A` and `B`)
-#' and visualizes their overlap. The time-of-day data should be expressed in radians (0 to 2π).
+#' and visualizes their overlap. The time-of-day data should be expressed in radians (0 to \eqn{2\pi}).
 #'
 #' Key features of the plot:
 #' - The x-axis can be scaled to represent hours (default `xscale = 24`) or other units.

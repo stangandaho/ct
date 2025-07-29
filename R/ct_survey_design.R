@@ -42,7 +42,7 @@
 #' If a geographic CRS is detected, an error is raised.
 #'
 #' @examples
-#' library(ggplot2)
+#' \dontrun{library(ggplot2)
 #' # Load example dataset
 #' data("pendjari")
 #'
@@ -104,8 +104,8 @@
 #'                                       total_site = c(8, 2, 13), distance = c(7000, 6000),
 #'                                       min_distance = 2000, nest_padding = 1000, set_seed = 123)
 #'
-#' mask_regular_sdes
 #'
+#'}
 #' @export
 ct_survey_design <- function(study_area,
                              method = "random",

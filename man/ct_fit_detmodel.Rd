@@ -36,8 +36,8 @@ else \code{NULL})
 Fits a detection function (either point or line transect) to model detection radius or angle.
 }
 \examples{
-data("camtrapdp")
-observations <- camtrapdp$data$observations \%>\%
+data("ctdp")
+observations <- ctdp$data$observations \%>\%
   dplyr::filter(scientificName == "Vulpes vulpes")
 
 ct_fit_detmodel(radius ~ 1, data = observations)

@@ -52,9 +52,9 @@ Automatically estimates detection radius, detection angle, animal speed, and
 activity pattern models if not provided.
 }
 \examples{
-data("camtrapdp")
-deployments <- camtrapdp$data$deployments
-observations <- camtrapdp$data$observations \%>\%
+data("ctdp")
+deployments <- ctdp$data$deployments
+observations <- ctdp$data$observations \%>\%
   dplyr::filter(scientificName == "Vulpes vulpes") \%>\%
   # Add time of day
   dplyr::mutate(time_of_day = ct_to_radian(times = timestamp))

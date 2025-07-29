@@ -279,6 +279,17 @@ custom_cli <- function(text, color = "red") {
   cat(txt)
 }
 
+#' Match argument
+#' @noRd
+match_arg <- function(arg, choices, argname = deparse(substitute(arg))) {
+  tryCatch(
+    match.arg(arg, choices),
+    error = function(e) {
+      cli::cli_abort("{.field {argname}} must be one of {.code {choices}}", call = NULL)
+    }
+  )
+}
+
 #' CRS
 #'
 #' @description

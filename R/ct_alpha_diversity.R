@@ -164,7 +164,7 @@ ct_alpha_diversity <- function(data,
 
 
   site_name <- data %>% dplyr::pull(site_column)
-  data <- data %>% dplyr::select(-site_column)
+  data <- data %>% dplyr::select(- dplyr::all_of(site_column))
   index_list <- list()
 
   for (i in index) {

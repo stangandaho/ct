@@ -1,5 +1,9 @@
 # maimer 0.2.0
 
+## 2025-07-29
+Improved `ct_stack_df()` - C++ implementation for stacking a list of data 
+frames.
+
 ## 2025-07-10
 Added new functions to support trap rate and REM-based density estimation workflows: 
 `ct_traprate_estimate()` estimates trap rates from detection data; `ct_fit_activity()` 

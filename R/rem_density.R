@@ -23,9 +23,9 @@
 #'   - `upper_ci`: Upper bound of 95% confidence interval
 #'
 #' @examples
-#' data("camtrapdp")
-#' deployments <- camtrapdp$data$deployments
-#' observations <- camtrapdp$data$observations %>%
+#' data("ctdp")
+#' deployments <- ctdp$data$deployments
+#' observations <- ctdp$data$observations %>%
 #'   dplyr::filter(scientificName == "Vulpes vulpes") %>%
 #'   # Add time of day
 #'   dplyr::mutate(time_of_day = ct_to_radian(times = timestamp))
@@ -125,8 +125,8 @@ ct_fit_rem <- function(data,
 #' @return An object of class `sbm`, with an additional `unit` attribute indicating the speed unit.
 #'
 #' @examples
-#' data("camtrapdp")
-#' observations <- camtrapdp$data$observations %>%
+#' data("ctdp")
+#' observations <- ctdp$data$observations %>%
 #'   dplyr::filter(scientificName == "Vulpes vulpes")
 #'
 #' ct_fit_speedmodel(speed ~ 1, data = observations)
@@ -169,8 +169,8 @@ ct_fit_speedmodel <- function(formula = speed ~ 1,
 #' @inherit Distance::ds return
 #'
 #' @examples
-#' data("camtrapdp")
-#' observations <- camtrapdp$data$observations %>%
+#' data("ctdp")
+#' observations <- ctdp$data$observations %>%
 #'   dplyr::filter(scientificName == "Vulpes vulpes")
 #'
 #' ct_fit_detmodel(radius ~ 1, data = observations)

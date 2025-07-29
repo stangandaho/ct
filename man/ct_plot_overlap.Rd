@@ -75,7 +75,7 @@ It uses kernel density estimation to estimate activity densities and highlights 
 }
 \details{
 This function calculates kernel density estimates for two sets of time-of-day data (\code{A} and \code{B})
-and visualizes their overlap. The time-of-day data should be expressed in radians (0 to 2π).
+and visualizes their overlap. The time-of-day data should be expressed in radians (0 to \eqn{2\pi}).
 
 Key features of the plot:
 \itemize{

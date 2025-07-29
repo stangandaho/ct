@@ -34,8 +34,8 @@ Fits a statistical model to estimate average movement speed of animals.
 Used in the REM density estimation.
 }
 \examples{
-data("camtrapdp")
-observations <- camtrapdp$data$observations \%>\%
+data("ctdp")
+observations <- ctdp$data$observations \%>\%
   dplyr::filter(scientificName == "Vulpes vulpes")
 
 ct_fit_speedmodel(speed ~ 1, data = observations)
