@@ -106,18 +106,58 @@ else <code>NULL</code>)</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"camtrapdp"</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>data set ‘camtrapdp’ not found</span>
-<span class="r-in"><span><span class="va">observations</span> <span class="op">&lt;-</span> <span class="va">camtrapdp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">observations</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"ctdp"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">observations</span> <span class="op">&lt;-</span> <span class="va">ctdp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">observations</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">scientificName</span> <span class="op">==</span> <span class="st">"Vulpes vulpes"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'camtrapdp' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">ct_fit_detmodel</span><span class="op">(</span><span class="va">radius</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">observations</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'observations' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in -lt$value : invalid argument to unary operator</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Distance sampling analysis object</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Summary for ds object</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of observations :  5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Distance range         :  0  -  7.226863 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> AIC                    :  22.73211 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Optimisation           :  mrds (nlminb) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Detection function:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Half-normal key function </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Detection function parameters </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Scale coefficient(s): </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             estimate        se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) 1.722192 0.6432342</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      Estimate        SE        CV</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Average p           0.6783846 0.3138098 0.4625839</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> N in covered region 7.3704500 3.8882665 0.5275481</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> EDR                 5.9523416 1.3767287 0.2312920</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># For angle</span></span></span>
 <span class="r-in"><span><span class="fu">ct_fit_detmodel</span><span class="op">(</span><span class="va">angle</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">observations</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'observations' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in -lt$value : invalid argument to unary operator</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Distance sampling analysis object</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Summary for ds object</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Number of observations :  5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Distance range         :  0  -  0.5841587 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> AIC                    :  0.3802033 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Optimisation           :  mrds (nlminb) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Detection function:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Half-normal key function </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Detection function parameters </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Scale coefficient(s): </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              estimate        se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) -1.606023 0.1353736</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      Estimate          SE        CV</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Average p            0.232632  0.05906989 0.2539199</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> N in covered region 21.493176 10.03408954 0.4668500</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> EDR                  0.281751  0.03577110 0.1269600</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

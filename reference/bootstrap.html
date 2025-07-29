@@ -5,13 +5,13 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Montserrat-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Generate bootstrap estimates of overlap — ct_bootstrap"><meta name="description" content="bootstrap takes two sets of times of observations and calculates bootstrap
+</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/Montserrat-0.4.10/font.css" rel="stylesheet"><link href="../deps/JetBrains_Mono-0.4.10/font.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Generate bootstrap estimates of overlap — ct_bootstrap"><meta name="description" content="The function takes two sets of times of observations and calculates bootstrap
 estimates of the chosen estimator of overlap. Alternatively, bootstrap
 estimates can be calculated in a 2-stage process: (1) create a matrix of
 bootstrap samples for each data set, using ct_resample(); (2) pass these
 matrices to ct_boot_estimates() to obtain the bootstrap estimates.
 A vector of bootstrap estimates can then be used to produce confidence intervals
-with ct_boot_ci()."><meta property="og:description" content="bootstrap takes two sets of times of observations and calculates bootstrap
+with ct_boot_ci()."><meta property="og:description" content="The function takes two sets of times of observations and calculates bootstrap
 estimates of the chosen estimator of overlap. Alternatively, bootstrap
 estimates can be calculated in a 2-stage process: (1) create a matrix of
 bootstrap samples for each data set, using ct_resample(); (2) pass these
@@ -66,7 +66,7 @@ with ct_boot_ci()."></head><body>
     </div>
 
     <div class="ref-description section level2">
-    <p><code>bootstrap</code> takes two sets of times of observations and calculates bootstrap
+    <p>The function takes two sets of times of observations and calculates bootstrap
 estimates of the chosen estimator of overlap. Alternatively, bootstrap
 estimates can be calculated in a 2-stage process: (1) create a matrix of
 bootstrap samples for each data set, using <code>ct_resample()</code>; (2) pass these
@@ -187,25 +187,25 @@ Statistics 14:322-337</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">est</span> <span class="op">&lt;-</span> <span class="fu"><a href="ct_overlap_estimates.html">ct_overlap_estimates</a></span><span class="op">(</span><span class="va">species_A</span>, <span class="va">species_B</span>, type<span class="op">=</span><span class="st">"Dhat4"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">boots</span> <span class="op">&lt;-</span> <span class="fu">ct_bootstrap</span><span class="op">(</span><span class="va">species_A</span>, <span class="va">species_B</span>, <span class="fl">1000</span>, type<span class="op">=</span><span class="st">"Dhat4"</span>, cores<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">boots</span> <span class="op">&lt;-</span> <span class="fu">ct_bootstrap</span><span class="op">(</span><span class="va">species_A</span>, <span class="va">species_B</span>, <span class="fl">100</span>, type<span class="op">=</span><span class="st">"Dhat4"</span>, cores<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">boots</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.8304592</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.8303699</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">boots</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="bootstrap-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="ct_boot_ci.html">ct_boot_ci</a></span><span class="op">(</span><span class="va">est</span>, <span class="va">boots</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            lower     upper</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> norm   0.7975707 0.9708611</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> norm0  0.7706923 0.9439828</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> basic  0.8051838 0.9740576</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> basic0 0.7674959 0.9363697</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> perc   0.7406175 0.9094913</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> norm   0.7866298 0.9819805</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> norm0  0.7596622 0.9550129</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> basic  0.7878713 0.9800004</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> basic0 0.7616424 0.9537715</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> perc   0.7346748 0.9268038</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># alternatively:</span></span></span>
-<span class="r-in"><span><span class="va">species_A_gen</span> <span class="op">&lt;-</span> <span class="fu">ct_resample</span><span class="op">(</span><span class="va">species_A</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">species_B_gen</span> <span class="op">&lt;-</span> <span class="fu">ct_resample</span><span class="op">(</span><span class="va">species_B</span>, <span class="fl">1000</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">species_A_gen</span> <span class="op">&lt;-</span> <span class="fu">ct_resample</span><span class="op">(</span><span class="va">species_A</span>, <span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">species_B_gen</span> <span class="op">&lt;-</span> <span class="fu">ct_resample</span><span class="op">(</span><span class="va">species_B</span>, <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">boots</span> <span class="op">&lt;-</span> <span class="fu">ct_boot_estimates</span><span class="op">(</span><span class="va">species_A_gen</span>, <span class="va">species_B_gen</span>, type<span class="op">=</span><span class="st">"Dhat4"</span>, cores<span class="op">=</span><span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">boots</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.8338819</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.8314946</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
