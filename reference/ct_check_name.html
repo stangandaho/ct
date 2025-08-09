@@ -118,13 +118,43 @@ for. Only a <strong>single name</strong> is allowed.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># Search for a species by scientific name</span></span></span>
-<span class="r-in"><span><span class="fu">ct_check_name</span><span class="op">(</span><span class="st">"Panthera leo"</span>, search_type <span class="op">=</span> <span class="st">"sientific_name"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ct_check_name</span><span class="op">(</span><span class="st">"Panthera leo"</span>, search_type <span class="op">=</span> <span class="st">"scientific_name"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 13 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    search       tsn    common_name  scientific_name author itis_url taxon_status</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Panthera leo 183803 Lion         Panthera leo    Linna… https:/… valid       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Panthera leo 622026 Asiatic lion Panthera leo p… Meyer… https:/… invalid     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Panthera leo 622059 Barbary lion Panthera leo l… Linna… https:/… valid       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Panthera leo 726446 <span style="color: #BB0000;">NA</span>           Panthera leo a… J. A.… https:/… invalid     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Panthera leo 726447 <span style="color: #BB0000;">NA</span>           Panthera leo b… Lönnb… https:/… invalid     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Panthera leo 726448 <span style="color: #BB0000;">NA</span>           Panthera leo h… J. A.… https:/… invalid     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Panthera leo 726449 <span style="color: #BB0000;">NA</span>           Panthera leo k… Matsc… https:/… invalid     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Panthera leo 726450 <span style="color: #BB0000;">NA</span>           Panthera leo k… Rober… https:/… invalid     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Panthera leo 726451 <span style="color: #BB0000;">NA</span>           Panthera leo m… Neuma… https:/… invalid     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Panthera leo 726452 South Afric… Panthera leo m… C. E.… https:/… valid       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">11</span> Panthera leo 726453 <span style="color: #BB0000;">NA</span>           Panthera leo n… Helle… https:/… invalid     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">12</span> Panthera leo 726454 <span style="color: #BB0000;">NA</span>           Panthera leo s… J. N.… https:/… invalid     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">13</span> Panthera leo 933424 <span style="color: #BB0000;">NA</span>           Panthera leo n… de Bl… https:/… invalid     </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Search by common name with interactive selection</span></span></span>
-<span class="r-in"><span><span class="fu">ct_check_name</span><span class="op">(</span><span class="st">"Lion"</span>, search_type <span class="op">=</span> <span class="st">"common_name"</span>, ask <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-in"><span><span class="fu">ct_check_name</span><span class="op">(</span><span class="st">"Lion"</span>, search_type <span class="op">=</span> <span class="st">"common_name"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1,100 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    search tsn   common_name scientific_name         author itis_url taxon_status</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> Lion   5272  <span style="color: #BB0000;">NA</span>          Nitzschia tryblionella… Arn. … https:/… not accepted</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> Lion   10885 <span style="color: #BB0000;">NA</span>          Chilionema              <span style="color: #BB0000;">NA</span>     https:/… accepted    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> Lion   10886 <span style="color: #BB0000;">NA</span>          Chilionema ocellatum    Kuetz… https:/… accepted    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> Lion   10887 <span style="color: #BB0000;">NA</span>          Chilionema reptans      <span style="color: #BB0000;">NA</span>     https:/… accepted    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> Lion   11682 <span style="color: #BB0000;">NA</span>          Nemalion                Duby   https:/… accepted    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> Lion   11683 <span style="color: #BB0000;">NA</span>          Nemalion multifidum     <span style="color: #BB0000;">NA</span>     https:/… accepted    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> Lion   11684 <span style="color: #BB0000;">NA</span>          Nemalion helminthoides  Velle… https:/… accepted    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> Lion   11685 <span style="color: #BB0000;">NA</span>          Nemalion pulvinatum     <span style="color: #BB0000;">NA</span>     https:/… accepted    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> Lion   11686 <span style="color: #BB0000;">NA</span>          Nemalion virens         <span style="color: #BB0000;">NA</span>     https:/… accepted    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> Lion   11687 <span style="color: #BB0000;">NA</span>          Nemalion lubricum       Duby,… https:/… accepted    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1,090 more rows</span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

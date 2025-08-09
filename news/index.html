@@ -52,7 +52,64 @@
       <small>Source: <a href="https://github.com/stangandaho/ct/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
-  </main></div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="ct-030">ct 0.3.0<a class="anchor" aria-label="anchor" href="#ct-030"></a></h2>
+<div class="section level3">
+<h3 id="id_2025-0-3-0">2025-08-09<a class="anchor" aria-label="anchor" href="#id_2025-0-3-0"></a></h3>
+<ul><li>Added Distance Sampling functions:
+<ul><li>
+<code><a href="../reference/ct_fit_ds.html">ct_fit_ds()</a></code> for fitting detection functions and estimating density/abundance.</li>
+<li>
+<code><a href="../reference/ct_availability.html">ct_availability()</a></code> for temporal availability corrections.</li>
+<li>
+<code><a href="../reference/ct_QAIC.html">ct_QAIC()</a></code>, <code><a href="../reference/ct_chi2_select.html">ct_chi2_select()</a></code>, and <code><a href="../reference/ct_select_model.html">ct_select_model()</a></code> for automated two-stage model selection.</li>
+</ul></li>
+<li>Added Camera Trap Data Package (Camtrap DP) integration:
+<ul><li>
+<code><a href="../reference/ct_dp_read.html">ct_dp_read()</a></code> to load Camtrap DP datasets from local files or URLs.</li>
+<li>
+<code><a href="../reference/ct_dp_table.html">ct_dp_table()</a></code> to access specific tables (<code>observations</code>, <code>deployments</code>, <code>media</code>, <code>events</code>, <code>taxa</code>).</li>
+<li>
+<code><a href="../reference/ct_dp_example.html">ct_dp_example()</a></code> to load example dataset.</li>
+<li>
+<code><a href="../reference/ct_dp_version.html">ct_dp_version()</a></code> to retrieve dataset standard version.</li>
+<li>
+<code><a href="../reference/ct_dp_filter.html">ct_dp_filter()</a></code> to subset tables using <code>dplyr</code>-style filtering.</li>
+</ul></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.2.0" id="ct-020">ct 0.2.0<a class="anchor" aria-label="anchor" href="#ct-020"></a></h2>
+<div class="section level3">
+<h3 id="id_2025-0-2-0">2025-07-29<a class="anchor" aria-label="anchor" href="#id_2025-0-2-0"></a></h3>
+<p>Improved <code><a href="../reference/ct_stack_df.html">ct_stack_df()</a></code> - C++ implementation for stacking a list of data frames.</p>
+</div>
+<div class="section level3">
+<h3 id="id_2025-0-2-0-1">2025-07-10<a class="anchor" aria-label="anchor" href="#id_2025-0-2-0-1"></a></h3>
+<p>Added new functions to support trap rate and REM-based density estimation workflows: <code><a href="../reference/ct_traprate_estimate.html">ct_traprate_estimate()</a></code> estimates trap rates from detection data; <code><a href="../reference/ct_fit_activity.html">ct_fit_activity()</a></code> models diel activity patterns; <code><a href="../reference/ct_fit_speedmodel.html">ct_fit_speedmodel()</a></code> fits animal movement speed models; <code><a href="../reference/ct_fit_detmodel.html">ct_fit_detmodel()</a></code> estimates detection probability functions; <code><a href="../reference/ct_fit_rem.html">ct_fit_rem()</a></code> applies the Random Encounter Model (REM) to estimate animal density; <code><a href="../reference/ct_get_effort.html">ct_get_effort()</a></code> calculates sampling effort metrics such as camera-days; and <code><a href="../reference/ct_traprate_data.html">ct_traprate_data()</a></code> prepares detection and effort data for further analysis.</p>
+</div>
+<div class="section level3">
+<h3 id="id_2025-0-2-0-2">2025-06-26<a class="anchor" aria-label="anchor" href="#id_2025-0-2-0-2"></a></h3>
+<ul><li>
+<code><a href="../reference/ct_correct_datetime.html">ct_correct_datetime()</a></code> to correct datetime stamps in camera trap datasets using a deployment-specific correction table. Supports multiple datetime formats, offset directions.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="id_2025-0-2-0-3">2025-06-25<a class="anchor" aria-label="anchor" href="#id_2025-0-2-0-3"></a></h3>
+<ul><li>
+<code><a href="../reference/ct_plot_camtrap_activity.html">ct_plot_camtrap_activity()</a></code> function to visualize camera trap deployment activity with optional gap indicators.</li>
+<li>
+<code><a href="../reference/ct_summarise_camtrap_activity.html">ct_summarise_camtrap_activity()</a></code> function to compute summary statistics for camera trap deployment activity, including active durations, gaps, and activity rates, etc.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="id_2025-0-2-0-4">2025-06-24<a class="anchor" aria-label="anchor" href="#id_2025-0-2-0-4"></a></h3>
+<ul><li>Improved handling of non-numeric variables in <code><a href="../reference/ct_describe_df.html">ct_describe_df()</a></code>.</li>
+<li>Added support for detecting sampling breaks using <code><a href="../reference/ct_find_break.html">ct_find_break()</a></code>.</li>
+<li>Added function to compute confidence intervals (<code><a href="../reference/ct_ci.html">ct_ci()</a></code> and <code>ct_lognorm_ci()</code>)</li>
+<li>Fixed NSE-related warnings</li>
+</ul></div>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">

@@ -87,35 +87,15 @@
 <p>Processing and analyzing camera trap data in R often requires multiple steps, from cleaning raw data to statistical modeling and visualization. The <strong>ct</strong> R package addresses these challenges by providing a <strong>modern, tidyverse-friendly workflow</strong> for camera trap data analysis. Using <strong>tidy evaluation principles</strong>, it enables users to efficiently manipulate and transform datasets. Additionally, it integrates seamlessly with <strong>ggplot2</strong>, allowing users to generate highly customizable visualizations.</p>
 </div>
 <div class="section level2">
-<h2 id="key-features-of-maimer">Key Features of maimer<a class="anchor" aria-label="anchor" href="#key-features-of-maimer"></a>
+<h2 id="key-features">Key Features<a class="anchor" aria-label="anchor" href="#key-features"></a>
 </h2>
-<ul>
-<li>
-<strong>Data Management &amp; Standardization</strong>: Functions like <code><a href="reference/ct_read.html">ct_read()</a></code>, <code><a href="reference/ct_standardize.html">ct_standardize()</a></code>, and <code><a href="reference/ct_stack_df.html">ct_stack_df()</a></code> help streamline data preparation.</li>
-<li>
-<strong>Manage media files</strong>: The functions <code><a href="reference/ct_remove_hs.html">ct_remove_hs()</a></code>, <code><a href="reference/ct_get_hs.html">ct_get_hs()</a></code>, <code><a href="reference/ct_create_hs.html">ct_create_hs()</a></code>, <code><a href="reference/ct_app.html">ct_app()</a></code>, etc help to read and write image metadata.</li>
-<li>
-<strong>Data Cleaning &amp; Validation</strong>: Ensure data integrity with <code><a href="reference/ct_check_name.html">ct_check_name()</a></code>, <code><a href="reference/ct_check_location.html">ct_check_location()</a></code>.</li>
-<li>
-<strong>Flexible Data Transformation</strong>: Convert raw camera trap data into formats suited for different analyses (<code><a href="reference/ct_to_community.html">ct_to_community()</a></code>, <code><a href="reference/ct_to_occupancy.html">ct_to_occupancy()</a></code>, <code><a href="reference/ct_to_time.html">ct_to_time()</a></code>).</li>
-<li>
-<strong>Ecological Analysis</strong>:
-<ul>
-<li>
-<strong>Diversity Metrics</strong>: Calculate <strong>alpha</strong> and <strong>beta diversity</strong> with <code><a href="reference/ct_alpha_diversity.html">ct_alpha_diversity()</a></code> and <code><a href="reference/ct_dissimilarity.html">ct_dissimilarity()</a></code>, etc.</li>
-<li>
-<strong>Species Activity Overlap</strong>: Estimate and visualize species overlap using <code><a href="reference/ct_overlap_estimates.html">ct_overlap_estimates()</a></code>, <code><a href="reference/ct_overlap_matrix.html">ct_overlap_matrix()</a></code>, and <code><a href="reference/ct_plot_overlap.html">ct_plot_overlap()</a></code>.</li>
-<li>
-<strong>Temporal Analysis</strong>: Explore species activity shifts over time with <code><a href="reference/ct_temporal_shift.html">ct_temporal_shift()</a></code>.</li>
-</ul>
-</li>
-</ul>
+<p>The <code>ct</code> package provides a comprehensive suite of 55+ functions covering the complete camera trap data analysis workflow. <strong>Population density estimation</strong> is supported through <code><a href="reference/ct_fit_ds.html">ct_fit_ds()</a></code> for distance sampling with automated model selection, <code><a href="reference/ct_fit_rem.html">ct_fit_rem()</a></code> for Random Encounter Models, and <code><a href="reference/ct_traprate_estimate.html">ct_traprate_estimate()</a></code> for trap rate calculations. <strong>Data management</strong> capabilities include <code><a href="reference/ct_independence.html">ct_independence()</a></code> for filtering independent detections, <code><a href="reference/ct_correct_datetime.html">ct_correct_datetime()</a></code> for timestamp correction, and <code><a href="reference/ct_check_location.html">ct_check_location()</a></code> for interactive spatial validation. <strong>Community ecology</strong> functions enable activity pattern analysis with <code><a href="reference/ct_plot_density.html">ct_plot_density()</a></code> and <code><a href="reference/ct_overlap_estimates.html">ct_overlap_estimates()</a></code>, biodiversity assessment through <code><a href="reference/ct_alpha_diversity.html">ct_alpha_diversity()</a></code> and <code><a href="reference/ct_to_community.html">ct_to_community()</a></code>, and occupancy modeling via <code><a href="reference/ct_to_occupancy.html">ct_to_occupancy()</a></code>. <strong>Quality control</strong> tools include <code><a href="reference/ct_find_break.html">ct_find_break()</a></code> for detecting temporal gaps, <code><a href="reference/ct_plot_camtrap_activity.html">ct_plot_camtrap_activity()</a></code> for monitoring deployment status, and <code><a href="reference/ct_check_name.html">ct_check_name()</a></code> for taxonomic validation. The package also features Camera Trap Data Package integration, survey design tools with <code><a href="reference/ct_survey_design.html">ct_survey_design()</a></code>, and a user-friendly Shiny application via <code><a href="reference/ct_app.html">ct_app()</a></code> for interactive analysis workflows.</p>
 <p><strong>For a full overview of all available functions, please visit the <a href="https://stangandaho.github.io/ct/reference/index.html">ct website</a></strong></p>
 </div>
 <div class="section level2">
 <h2 id="installation">Installation:<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install ‘ct’ directly from GitHub:</p>
+<p>You can install <em>ct</em> directly from GitHub:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Install pak firstly if not installed</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"pak"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
@@ -123,7 +103,7 @@
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co"># Install maimer from GitHub</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"stangandaho/ct"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span><span class="st">"stangandaho/ct"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="code-of-conduct">Code of conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
@@ -136,15 +116,9 @@
 <p>If you encounter a clear bug, please file an <a href="https://github.com/stangandaho/ct/issues" class="external-link">issue</a> with a minimal reproducible example. For questions and other discussion, please use <a href="https://github.com/stangandaho/ct/discussions" class="external-link">relevant section</a>.</p>
 </div>
 <div class="section level2">
-<h2 id="meta">
-<strong>Meta</strong><a class="anchor" aria-label="anchor" href="#meta"></a>
+<h2 id="funding">Funding<a class="anchor" aria-label="anchor" href="#funding"></a>
 </h2>
-<ul>
-<li>I welcome <a href="#">contributions</a> including bug reports.</li>
-<li>License: MIT</li>
-<li>Get <a href="#">citation information</a> for maimer in R doing <code>citation("maimer")</code>.</li>
-<li>Please note that this project is released with a <a href="#">Contributor Code of Conduct</a>. By participating in this project you agree to abide by its terms.</li>
-</ul>
+<p>The development of the ct package is supported by the R Consortium Infrastructure Steering Committee (ISC) under grant 25-ISC-1-04. This funding enables the creation of comprehensive statistical tools for camera trap data analysis, including population density estimation methods, and standardized data integration workflows.</p>
 </div>
 </div>
 
@@ -190,7 +164,7 @@
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://github.com/stangandaho/ct/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/stangandaho/ct/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://codecov.io/gh/stangandaho/ct" class="external-link"><img src="https://codecov.io/gh/stangandaho/ct/graph/badge.svg?token=LDM57A3MWL" alt="codecov"></a></li>
+<li><a href="https://app.codecov.io/gh/stangandaho/ct" class="external-link"><img src="https://codecov.io/gh/stangandaho/ct/graph/badge.svg?token=EPD6MHT0SG" alt="codecov"></a></li>
 </ul>
 </div>
 
