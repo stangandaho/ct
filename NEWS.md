@@ -46,7 +46,7 @@ trap deployment activity, including active durations, gaps, and activity rates, 
 - Added function to compute confidence intervals (`ct_ci()` and `ct_lognorm_ci()`)
 - Fixed NSE-related warnings
 
-# First Release Highlights
+## First Release Highlights
 - Initial release of **maimer**
 - Provides **tidyverse-friendly** functions for data cleaning, transformation, and visualization.
 - Includes support for **alpha & beta diversity**, **species activity overlap**, and **temporal analysis**.
