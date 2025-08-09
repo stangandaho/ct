@@ -6,5 +6,7 @@ utils::globalVariables(c(
   "first_record", "x", "y", "yA", "yB", "value", "Var1", "Var2",
   "ori_freq", "day_time", "radian", "geometry", "Polygon", "grid_area",
   ".", "Time", "Density", "Period", "n", "site", "species",
-  "n_records", "total_duration"
+  "n_records", "total_duration",
+  "QAIC", "best", "combn", "criteria", "id", "key", "model", "nadj2",
+  "scientific_name"
 ))

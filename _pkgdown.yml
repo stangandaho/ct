@@ -57,13 +57,11 @@ navbar:
 component:
   home: ~
 reference:
-- title: Prepare field survey
-  desc: |
-    Set up field survey design for camera trap deployement
+- title: Data examples
   contents:
-  - ct_survey_design
   - pendjari
   - ctdp
+  - duikers
 - title: Process media (images) file
   desc: |
     Functions reading and writing metadata
@@ -80,6 +78,7 @@ reference:
   - ct_read
   - ct_stack_df
   - ct_check_location
+  - ct_survey_design
   - ct_independence
   - ct_to_radian
   - ct_solartime
@@ -92,6 +91,12 @@ reference:
   - ct_correct_datetime
   - ct_get_effort
   - ct_traprate_data
+  - ct_dp_read
+  - ct_dp_table
+  - ct_dp_example
+  - ct_dp_version
+  - ct_dp_filter
+
 - title: Data analysis
   desc: |
     Functions to run common camera trap data analysis
@@ -119,3 +124,8 @@ reference:
   - ct_fit_speedmodel
   - ct_fit_detmodel
   - ct_fit_rem
+  - ct_availability
+  - ct_select_model
+  - ct_QAIC
+  - ct_chi2_select
+  - ct_fit_ds

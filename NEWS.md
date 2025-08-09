@@ -1,4 +1,19 @@
-# maimer 0.2.0
+# ct 0.3.0
+
+## 2025-08-09
+- Added Distance Sampling functions:
+  - `ct_fit_ds()` for fitting detection functions and estimating density/abundance.
+  - `ct_availability()` for temporal availability corrections.
+  - `ct_QAIC()`, `ct_chi2_select()`, and `ct_select_model()` for automated two-stage model selection.
+
+- Added Camera Trap Data Package (Camtrap DP) integration:
+  - `ct_dp_read()` to load Camtrap DP datasets from local files or URLs.
+  - `ct_dp_table()` to access specific tables (`observations`, `deployments`, `media`, `events`, `taxa`).
+  - `ct_dp_example()` to load example dataset.
+  - `ct_dp_version()` to retrieve dataset standard version.
+  - `ct_dp_filter()` to subset tables using `dplyr`-style filtering.
+
+# ct 0.2.0
 
 ## 2025-07-29
 Improved `ct_stack_df()` - C++ implementation for stacking a list of data 
@@ -31,7 +46,7 @@ trap deployment activity, including active durations, gaps, and activity rates, 
 - Added function to compute confidence intervals (`ct_ci()` and `ct_lognorm_ci()`)
 - Fixed NSE-related warnings
 
-## First Release Highlights
+# First Release Highlights
 - Initial release of **maimer**
 - Provides **tidyverse-friendly** functions for data cleaning, transformation, and visualization.
 - Includes support for **alpha & beta diversity**, **species activity overlap**, and **temporal analysis**.

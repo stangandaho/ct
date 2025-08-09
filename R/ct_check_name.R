@@ -27,12 +27,12 @@
 #' - If no exact match is found, all results are displayed for manual selection.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' # Search for a species by scientific name
-#' ct_check_name("Panthera leo", search_type = "sientific_name")
+#' ct_check_name("Panthera leo", search_type = "scientific_name")
 #'
 #' # Search by common name with interactive selection
-#' ct_check_name("Lion", search_type = "common_name", ask = TRUE)
+#' ct_check_name("Lion", search_type = "common_name")
 #' }
 #'
 #'
@@ -43,26 +43,9 @@
 ct_check_name <- function(species_name,
                           search_type = c("common_name", "scientific_name"),
                           ask = FALSE) {
-  suggested_pkg <- c("httr2", "xml2")
-  installed <- rownames(installed.packages())
-  not_in <- !suggested_pkg %in% installed
+  # Check early some package needed
+  if (!checked_packages(c("httr2", "xml2"))) {return(invisible(NULL))}
 
-  if (any(not_in)) {
-    action <- utils::menu(
-      title = sprintf("You need to install: %s.", suggested_pkg[not_in]),
-      choices = c("Install", "Not install")
-    )
-    action <- readline(prompt = "Action: ")
-
-    if (action == 1) {
-      for (pkg in suggested_pkg[not_in]) {
-        install.packages(pkg)
-      }
-    }else{
-      return(invisible(NULL))
-    }
-
-  }
   ## Start data retrieve
   search_type <- match_arg(search_type, c("common_name", "scientific_name"))
   if (length(species_name) >= 2) {

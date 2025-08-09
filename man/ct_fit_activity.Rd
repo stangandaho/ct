@@ -7,7 +7,7 @@
 ct_fit_activity(
   time_of_day,
   weights = NULL,
-  n_boostrap = 1000,
+  n_bootstrap = 1000,
   bandwidth = NULL,
   adjustment = 1,
   sample = c("none", "data", "model"),
@@ -20,7 +20,7 @@ ct_fit_activity(
 
 \item{weights}{A numeric vector of weights for each dat value.}
 
-\item{n_boostrap}{Number of bootstrap iterations to perform. Ignored if sample=="none"}
+\item{n_bootstrap}{Number of bootstrap iterations to perform. Ignored if sample=="none"}
 
 \item{bandwidth}{Numeric value for kernel bandwidth. If NULL, calculated internally.}
 
@@ -67,7 +67,7 @@ observations <- ctdp$data$observations \%>\%
 
 
 fit_act <- ct_fit_activity(time_of_day = observations$time_radian,
-                           sample = "model", n_boostrap = 100)
+                           sample = "model", n_bootstrap = 100)
 
 # Access activity level estimation
 fit_act$activity

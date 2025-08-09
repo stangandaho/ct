@@ -122,7 +122,13 @@ magrittr::`%>%`
 #' @export
 magrittr::`%<>%`
 
-
+#' Pipe operator
+#' use left if not NULL, else right
+#' @name %||%
+#' @noRd
+`%||%` <- function(a, b) {
+  if (!is.null(a)) a else b
+}
 
 ################
 #' Parse datetime
@@ -280,6 +286,7 @@ custom_cli <- function(text, color = "red") {
 }
 
 #' Match argument
+#' @keywords internal
 #' @noRd
 match_arg <- function(arg, choices, argname = deparse(substitute(arg))) {
   tryCatch(
@@ -456,4 +463,27 @@ as_colname <- function(arg) {
   } else {
     cli::cli_abort("Column name must be a string or unquoted symbol.")
   }
+}
+
+#' Check package
+#' @noRd
+checked_packages <- function(packages) {
+  # Check availability
+  not_available <- !vapply(packages, requireNamespace, quietly = TRUE, FUN.VALUE = logical(1))
+
+  if (any(not_available)) {
+    to_install <- packages[not_available]
+    cli::cli_div(theme = list(span.emph = list(color = "#ef6d00")))
+    cli::cli_text("{ifelse(length(to_install) > 1, 'Packages', 'Package')} {.emph {to_install}} need to be installed.")
+    action <- utils::menu(choices = c("Install", "No"))
+    if (action == 1) {
+      for (pkg in to_install) {
+        install.packages(pkg, dependencies = TRUE)
+      }
+    }
+  }
+
+  # Check again after installation
+  still_missing <- !vapply(packages, requireNamespace, quietly = TRUE, FUN.VALUE = logical(1))
+  return(!any(still_missing))
 }

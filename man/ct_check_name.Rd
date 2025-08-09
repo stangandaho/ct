@@ -48,12 +48,12 @@ taxonomic information, including the TSN.
 }
 }
 \examples{
-\dontrun{
+\donttest{
 # Search for a species by scientific name
-ct_check_name("Panthera leo", search_type = "sientific_name")
+ct_check_name("Panthera leo", search_type = "scientific_name")
 
 # Search by common name with interactive selection
-ct_check_name("Lion", search_type = "common_name", ask = TRUE)
+ct_check_name("Lion", search_type = "common_name")
 }
 
 

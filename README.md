@@ -1,5 +1,5 @@
 [![R-CMD-check](https://github.com/stangandaho/ct/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/stangandaho/ct/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/stangandaho/ct/graph/badge.svg?token=LDM57A3MWL)](https://codecov.io/gh/stangandaho/ct)
+[![codecov](https://codecov.io/gh/stangandaho/ct/graph/badge.svg?token=EPD6MHT0SG)](https://app.codecov.io/gh/stangandaho/ct)
 
 # Simplifying Camera Trap Data Analysis in R
 
@@ -20,27 +20,28 @@ users to efficiently manipulate and transform datasets. Additionally, it integra
 seamlessly with **ggplot2**, allowing users to generate highly customizable 
 visualizations.
 
-## Key Features of maimer
-- **Data Management & Standardization**: Functions like `ct_read()`, 
-  `ct_standardize()`, and `ct_stack_df()` help streamline data preparation.
-- **Manage media files**: The functions `ct_remove_hs()`, `ct_get_hs()`, 
-  `ct_create_hs()`, `ct_app()`, etc help to read and write image metadata.
-- **Data Cleaning & Validation**: Ensure data integrity with `ct_check_name()`, 
-  `ct_check_location()`.
-- **Flexible Data Transformation**: Convert raw camera trap data into formats 
-  suited for different analyses (`ct_to_community()`, `ct_to_occupancy()`, `ct_to_time()`).
-- **Ecological Analysis**:
-  - **Diversity Metrics**: Calculate **alpha** and **beta diversity** with 
-  `ct_alpha_diversity()` and `ct_dissimilarity()`, etc.
-  - **Species Activity Overlap**: Estimate and visualize species overlap using 
-  `ct_overlap_estimates()`, `ct_overlap_matrix()`, and `ct_plot_overlap()`.
-  - **Temporal Analysis**: Explore species activity shifts over time with 
-  `ct_temporal_shift()`.
+## Key Features
+
+The `ct` package provides a comprehensive suite of 55+ functions covering the 
+complete camera trap data analysis workflow. **Population density estimation** 
+is supported through `ct_fit_ds()` for distance sampling with automated model 
+selection, `ct_fit_rem()` for Random Encounter Models, and `ct_traprate_estimate()` 
+for trap rate calculations. **Data management** capabilities include `ct_independence()` 
+for filtering independent detections, `ct_correct_datetime()` for timestamp correction, 
+and `ct_check_location()` for interactive spatial validation. **Community ecology** 
+functions enable activity pattern analysis with `ct_plot_density()` and 
+`ct_overlap_estimates()`, biodiversity assessment through `ct_alpha_diversity()` 
+and `ct_to_community()`, and occupancy modeling via `ct_to_occupancy()`. 
+**Quality control** tools include `ct_find_break()` for detecting temporal gaps, 
+`ct_plot_camtrap_activity()` for monitoring deployment status, and `ct_check_name()` 
+for taxonomic validation. The package also features Camera Trap Data Package integration, 
+survey design tools with `ct_survey_design()`, and a user-friendly Shiny application 
+via `ct_app()` for interactive analysis workflows.
 
 **For a full overview of all available functions, please visit the [ct website](https://stangandaho.github.io/ct/reference/index.html)**
 
 ## Installation:
-You can install 'ct' directly from GitHub:
+You can install *ct* directly from GitHub:
 
 ```R
 # Install pak firstly if not installed
@@ -49,7 +50,7 @@ if (!requireNamespace("pak", quietly = TRUE)) {
 }
 
 # Install maimer from GitHub
-remotes::install_github("stangandaho/ct")
+pak::pkg_install("stangandaho/ct")
 ```
 
 ## Code of conduct
@@ -60,8 +61,8 @@ By participating in this project you agree to abide by its terms.
 If you encounter a clear bug, please file an [issue](https://github.com/stangandaho/ct/issues) with a minimal reproducible 
 example. For questions and other discussion, please use [relevant section](https://github.com/stangandaho/ct/discussions).
 
-## **Meta**
-- I welcome [contributions](#) including bug reports.
-- License: MIT
-- Get [citation information](#) for maimer in R doing `citation("maimer")`.
-- Please note that this project is released with a [Contributor Code of Conduct](#). By participating in this project you agree to abide by its terms.
+## Funding
+The development of the ct package is supported by the R Consortium Infrastructure 
+Steering Committee (ISC) under grant 25-ISC-1-04. This funding enables the creation 
+of comprehensive statistical tools for camera trap data analysis, including population 
+density estimation methods, and standardized data integration workflows. 
