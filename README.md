@@ -1,10 +1,11 @@
+# ct <a href="https://stangandaho.github.io/ct/"><img src="man/figures/logo.png" align="right" height="100" alt="ct website" /></a>
+
+<!-- badges: start -->
 [![R-CMD-check](https://github.com/stangandaho/ct/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/stangandaho/ct/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/stangandaho/ct/graph/badge.svg?token=EPD6MHT0SG)](https://app.codecov.io/gh/stangandaho/ct)
+<!-- badges: end -->
 
-<a href="https://stangandaho.github.io/ct/"><img src="man/figures/logo.png" align="right" height="139" alt="ct website" /></a>
-
-# ct R package
-
+## Overview
 Camera traps are an essential tool for wildlife monitoring and ecological research. 
 They generate vast amounts of data that require careful processing, cleaning, and 
 analysis to extract meaningful insights. Researchers use camera trap data for tasks 
