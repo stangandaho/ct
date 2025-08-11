@@ -3,15 +3,15 @@
 \docType{data}
 \name{duikers}
 \alias{duikers}
-\title{Maxwell's duiker camera‑trap distance & video‑start data}
+\title{Maxwell's duiker camera-trap distance & video-start data}
 \format{
 A named list with these tibbles:
-\strong{DaytimeDistances}: A tibble of all Maxwell's‑duiker distance
-observations (including non-peak periods) recorded at camera stations
+\strong{DaytimeDistances}: A tibble of all Maxwell's duiker distance
+observations (including non peak periods) recorded at camera stations
 during daytime deployments. It has the following columns:
 \itemize{
 \item \code{distance}: the midpoint (m) of the assigned distance interval between animal and camera.
-\item \code{Sample.Label}: camera‑station identifier.
+\item \code{Sample.Label}: camera station identifier.
 \item \code{Effort}: number of active 2 second time steps the camera operated (i.e. temporal effort).
 \item \code{Region.Label}: stratum name (only a single stratum in this dataset).
 \item \code{Area}: study area size (km^2; in this dataset, 40.4).
@@ -38,8 +38,8 @@ videos by station or session.
 \item \code{ek.no}: event key number (original trigger event id).
 \item \code{easting}: UTM easting (metres) for the video event.
 \item \code{northing}: UTM northing (metres) for the video event.
-\item \code{month}: calendar month (1 to 12) of the video event.
-\item \code{day}: day of the month (1 to 31).
+\item \code{month}: calendar month (1-12) of the video event.
+\item \code{day}: day of the month (1-31).
 \item \code{hour}: hour (24h clock) when the video started.
 \item \code{minute}: minute of that hour when the video started.
 \item \code{date}: Date of the record
@@ -52,7 +52,7 @@ duikers
 }
 \description{
 The \strong{\code{duikers}} dataset is a \strong{named list} of three tibbles derived from
-Maxwell's duiker (\emph{Philantomba maxwellii}) camera‑trap and distance‑sampling
+Maxwell's duiker (\emph{Philantomba maxwellii}) camera trap and distance sampling
 data collected in Taï National Park, Côte d'Ivoire (2014), and archived as
 the Dryad dataset \emph{Distance sampling with camera traps} (Howe et al., 2018)
 }

@@ -94,40 +94,40 @@
 #' Distance sampling with camera traps. Methods in Ecology and Evolution, 8(11),
 #' 1558-1565. \doi{10.1111/2041-210X.12790}
 #'
-#' Howe, E. J., Buckland, S. T., Després‐Einspenner, M., & Kühl, H. S. (2019).
+#' Howe, E. J., Buckland, S. T., Després-Einspenner, M., & Kühl, H. S. (2019).
 #' Model selection with overdispersed distance sampling data. Methods in Ecology and Evolution,
-#' 10(1), 38–47.  \doi{10.1111/2041-210X.13082}
+#' 10(1), 38-47.  \doi{10.1111/2041-210X.13082}
 #'
 #' Rowcliffe, J. M., Kays, R., Kranstauber, B., Carbone, C., & Jansen, P. A. (2014).
 #' Quantifying levels of animal activity using camera trap data.
-#' Methods in Ecology and Evolution, 5(11), 1170–1179.  \doi{10.1111/2041-210X.12278}
+#' Methods in Ecology and Evolution, 5(11), 1170-1179.  \doi{10.1111/2041-210X.12278}
 #'
 #' @export
 ct_fit_ds <- function(data,
                       estimate = c("density", "abundance"),
                       cutpoints = NULL,
                       truncation = set_truncation(data = data, cutpoints = cutpoints),
-                   formula = ~ 1,
-                   key = c("hn", "hr", "unif"),
-                   adjustment = c("cos", "herm", "poly"),
-                   nadj = NULL,
-                   order = NULL,
-                   select_model = FALSE,
-                   model_params = list(key = list("hn", "hr", "unif"),
-                                      adjustment = list("cos", "herm", "poly"),
-                                      nadj = list(0, 1, 2),
-                                      order = NULL),
-                   field_of_view = 42,
-                   availability,
-                   n_bootstrap = 100,
-                   n_cores = 1,
-                   ...
-                   ) {
+                      formula = ~ 1,
+                      key = c("hn", "hr", "unif"),
+                      adjustment = c("cos", "herm", "poly"),
+                      nadj = NULL,
+                      order = NULL,
+                      select_model = FALSE,
+                      model_params = list(key = list("hn", "hr", "unif"),
+                                          adjustment = list("cos", "herm", "poly"),
+                                          nadj = list(0, 1, 2),
+                                          order = NULL),
+                      field_of_view = 42,
+                      availability,
+                      n_bootstrap = 100,
+                      n_cores = 1,
+                      ...
+) {
 
   # Check early some package for bootstrap
-    if (!checked_packages(c('parallel', 'foreach', 'doParallel', 'doRNG'))) {
-      return(invisible(NULL))
-    }
+  if (!checked_packages(c('parallel', 'foreach', 'doParallel', 'doRNG'))) {
+    return(invisible(NULL))
+  }
   # Set number bootstrap
   if(is.na(n_bootstrap) || is.null(n_bootstrap)){
     n_bootstrap <- 100
@@ -173,7 +173,7 @@ ct_fit_ds <- function(data,
       param_value <- lapply(param_names, function(x){
         pv <- unlist(params[[x]])
         ifelse(is.null(pv), "NULL", pv)}
-        ) %>% unlist()
+      ) %>% unlist()
 
       formula <- as.formula(unlist(params$formula))
       key <- unlist(params$key)
@@ -252,47 +252,47 @@ ct_fit_ds <- function(data,
 
   }
 
-    ## Estimate detection radius
-    p_a <- summary(ds_model)$ds$average.p
-    w <- diff(ds_model$ddf$meta.data$int.range)
-    rho <- sqrt(p_a * w^2)
+  ## Estimate detection radius
+  p_a <- summary(ds_model)$ds$average.p
+  w <- diff(ds_model$ddf$meta.data$int.range)
+  rho <- sqrt(p_a * w^2)
 
-    # Density estimate
-    samfrac <- field_of_view / 360
+  # Density estimate
+  samfrac <- field_of_view / 360
 
-    # Bootstrap for variance estimation
-    cli::cli_inform("Bootstrapping ...")
-    boot_result <- suppressMessages({
-      Distance::bootdht(model = ds_model,
-                        flatfile = data,
-                        resample_transects = TRUE,
-                        nboot = n_bootstrap,
-                        cores = n_cores,
-                        summary_fun = ifelse(estimate == "density",
-                                             Distance::bootdht_Dhat_summarize,
-                                             Distance::bootdht_Nhat_summarize),
-                        sample_fraction = samfrac,
-                        convert_units = convert_units,
-                        multipliers = availability,
-                        progress_bar = "base")
-    })
+  # Bootstrap for variance estimation
+  cli::cli_inform("Bootstrapping ...")
+  boot_result <- suppressMessages({
+    Distance::bootdht(model = ds_model,
+                      flatfile = data,
+                      resample_transects = TRUE,
+                      nboot = n_bootstrap,
+                      cores = n_cores,
+                      summary_fun = ifelse(estimate == "density",
+                                           Distance::bootdht_Dhat_summarize,
+                                           Distance::bootdht_Nhat_summarize),
+                      sample_fraction = samfrac,
+                      convert_units = convert_units,
+                      multipliers = availability,
+                      progress_bar = "base")
+  })
 
-    estimated <- summary(boot_result)
-    estimated <- dplyr::as_tibble(estimated$tab)
-    cli::cli_alert_success("Bootstrap complete!")
-    cli::cli_end()
+  estimated <- summary(boot_result)
+  estimated <- dplyr::as_tibble(estimated$tab)
+  cli::cli_alert_success("Bootstrap complete!")
+  cli::cli_end()
 
-    # Final Result
-    density_result <- list(QAIC = QAIC,
-                           Chi2 = Chi2, # detection function model object.
-                           best_model = ds_model,
-                           rho = rho,
-                           estimate = estimated)
+  # Final Result
+  density_result <- list(QAIC = QAIC,
+                         Chi2 = Chi2, # detection function model object.
+                         best_model = ds_model,
+                         rho = rho,
+                         estimate = estimated)
 
-    density_result <- Filter(Negate(is.null), density_result)
-    # Change 'estimate' to density or abundance
-    estimate_name <- as.character(quote(estimate))
-    names(density_result)[names(density_result) == estimate_name] <- estimate
+  density_result <- Filter(Negate(is.null), density_result)
+  # Change 'estimate' to density or abundance
+  estimate_name <- as.character(quote(estimate))
+  names(density_result)[names(density_result) == estimate_name] <- estimate
 
   return(density_result)
 }
@@ -324,7 +324,7 @@ set_truncation <- function(data, cutpoints = NULL) {
   # Warn only if outside recommended range
   if (any(trunc < 2 | trunc > 15)) {
     cli::cli_warn(
-      "Truncation {paste0(trunc[1], '-', trunc[2], ' m')} outside recommended 2–15 m range (Howe et al. 2017) - {possible_warn} should be reviewed."
+      "Truncation {paste0(trunc[1], '-', trunc[2], ' m')} outside recommended 2-15 m range (Howe et al. 2017) - {possible_warn} should be reviewed."
     )
   }
 
@@ -394,12 +394,12 @@ combine_formula <- function(formula) {
 #' @references
 #'
 #' Howe, E. J., Buckland, S. T., Després-Einspenner, M. L., & Kühl, H. S. (2017).
-#' Distance sampling with camera traps. Methods in Ecology and Evolution, 8(11), 1558–1565.
+#' Distance sampling with camera traps. Methods in Ecology and Evolution, 8(11), 1558-1565.
 #'  \doi{10.1111/2041-210X.12790}
 #'
 #' Rowcliffe, J. M., Kays, R., Kranstauber, B., Carbone, C., & Jansen, P. A. (2014).
 #' Quantifying levels of animal activity using camera trap data. Methods in Ecology
-#' and Evolution, 5(11), 1170–1179.  \doi{doi:10.1111/2041-210X.12278}
+#' and Evolution, 5(11), 1170-1179.  \doi{doi:10.1111/2041-210X.12278}
 #' @export
 ct_availability <- function(times, format = NULL,
                             sample = c("data", "model"),
@@ -410,7 +410,7 @@ ct_availability <- function(times, format = NULL,
   sample <- match_arg(sample, choices = c("data", "model"))
   if (!is.null(format)) { # not need to convert to radian
     radian_time <- ct_to_radian(times = times,
-                                    format = format)
+                                format = format)
   }else{
     radian_time <- times
   }
@@ -548,8 +548,8 @@ ct_chi2_select <- function(models) {
     models <- models[[1]]
     cli::cli_warn("1 {get_ddf_names(models)} model specified, no model selection can be performed!")
     chi2_table <- dplyr::tibble(key = get_ddf_names(models),
-                           model = unique(models$ddf$name.message),
-                           criteria = compute_chat(models))
+                                model = unique(models$ddf$name.message),
+                                criteria = compute_chat(models))
     return(chi2_table)
   }
 
@@ -562,7 +562,7 @@ ct_chi2_select <- function(models) {
   res <- dplyr::tibble(key = sapply(models, get_ddf_names),
                        model = unlist(lapply(models, function(x)x$ddf$name.message)),
                        criteria = unlist(lapply(models, compute_chat))
-                       )
+  )
 
   return(res)
 }
@@ -658,7 +658,7 @@ ct_chi2_select <- function(models) {
 ct_select_model <- function(models,
                             chat = NULL,
                             k = 2
-                            ) {
+) {
 
   # Create id for each model (not need when using ct_fit_ds()) for easy index
   models <- lapply(1:length(models), function(x){
@@ -707,19 +707,19 @@ ct_select_model <- function(models,
               `Final model` = final_model))
 }
 
-#' Maxwell's duiker camera‑trap distance & video‑start data
+#' Maxwell's duiker camera-trap distance & video-start data
 #'
 #' The **`duikers`** dataset is a **named list** of three tibbles derived from
-#' Maxwell's duiker (_Philantomba maxwellii_) camera‑trap and distance‑sampling
+#' Maxwell's duiker (_Philantomba maxwellii_) camera trap and distance sampling
 #' data collected in Taï National Park, Côte d'Ivoire (2014), and archived as
 #' the Dryad dataset *Distance sampling with camera traps* (Howe et al., 2018)
 #'
 #' @format A named list with these tibbles:
-#' **DaytimeDistances**: A tibble of all Maxwell's‑duiker distance
-#'  observations (including non-peak periods) recorded at camera stations
+#' **DaytimeDistances**: A tibble of all Maxwell's duiker distance
+#'  observations (including non peak periods) recorded at camera stations
 #'  during daytime deployments. It has the following columns:
 #'  - `distance`: the midpoint (m) of the assigned distance interval between animal and camera.
-#'  - `Sample.Label`: camera‑station identifier.
+#'  - `Sample.Label`: camera station identifier.
 #'  - `Effort`: number of active 2 second time steps the camera operated (i.e. temporal effort).
 #'  - `Region.Label`: stratum name (only a single stratum in this dataset).
 #'  - `Area`: study area size (km^2; in this dataset, 40.4).
@@ -745,8 +745,8 @@ ct_select_model <- function(models,
 #'  - `ek.no`: event key number (original trigger event id).
 #'  - `easting`: UTM easting (metres) for the video event.
 #'  - `northing`: UTM northing (metres) for the video event.
-#'  - `month`: calendar month (1 to 12) of the video event.
-#'  - `day`: day of the month (1 to 31).
+#'  - `month`: calendar month (1-12) of the video event.
+#'  - `day`: day of the month (1-31).
 #'  - `hour`: hour (24h clock) when the video started.
 #'  - `minute`: minute of that hour when the video started.
 #'  - `date`: Date of the record

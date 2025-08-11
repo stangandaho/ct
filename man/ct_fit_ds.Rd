@@ -290,13 +290,13 @@ Howe, E. J., Buckland, S. T., Després-Einspenner, M., & Kühl, H. S. (2017).
 Distance sampling with camera traps. Methods in Ecology and Evolution, 8(11),
 1558-1565. \doi{10.1111/2041-210X.12790}
 
-Howe, E. J., Buckland, S. T., Després‐Einspenner, M., & Kühl, H. S. (2019).
+Howe, E. J., Buckland, S. T., Després-Einspenner, M., & Kühl, H. S. (2019).
 Model selection with overdispersed distance sampling data. Methods in Ecology and Evolution,
-10(1), 38–47.  \doi{10.1111/2041-210X.13082}
+10(1), 38-47.  \doi{10.1111/2041-210X.13082}
 
 Rowcliffe, J. M., Kays, R., Kranstauber, B., Carbone, C., & Jansen, P. A. (2014).
 Quantifying levels of animal activity using camera trap data.
-Methods in Ecology and Evolution, 5(11), 1170–1179.  \doi{10.1111/2041-210X.12278}
+Methods in Ecology and Evolution, 5(11), 1170-1179.  \doi{10.1111/2041-210X.12278}
 }
 \seealso{
 \code{\link[=ct_availability]{ct_availability()}}, \code{\link[=ct_select_model]{ct_select_model()}}, \code{\link[=ct_QAIC]{ct_QAIC()}}, \code{\link[=ct_chi2_select]{ct_chi2_select()}}

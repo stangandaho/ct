@@ -1,17 +1,16 @@
 [![R-CMD-check](https://github.com/stangandaho/ct/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/stangandaho/ct/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/stangandaho/ct/graph/badge.svg?token=EPD6MHT0SG)](https://app.codecov.io/gh/stangandaho/ct)
 
-# Simplifying Camera Trap Data Analysis in R
+<a href="https://stangandaho.github.io/ct/"><img src="man/figures/logo.png" align="right" height="139" alt="ct website" /></a>
 
-## Introduction
+# ct R package
+
 Camera traps are an essential tool for wildlife monitoring and ecological research. 
 They generate vast amounts of data that require careful processing, cleaning, and 
 analysis to extract meaningful insights. Researchers use camera trap data for tasks 
 such as species identification, biodiversity assessment, activity pattern analysis, 
-and occupancy modeling. However, handling and analyzing this data can be complex 
-and time-consuming.
+and occupancy modeling.
 
-## The Need for Simplification
 Processing and analyzing camera trap data in R often requires multiple steps, 
 from cleaning raw data to statistical modeling and visualization. The **ct** 
 R package addresses these challenges by providing a **modern, tidyverse-friendly workflow** 
@@ -35,8 +34,7 @@ and `ct_to_community()`, and occupancy modeling via `ct_to_occupancy()`.
 **Quality control** tools include `ct_find_break()` for detecting temporal gaps, 
 `ct_plot_camtrap_activity()` for monitoring deployment status, and `ct_check_name()` 
 for taxonomic validation. The package also features Camera Trap Data Package integration, 
-survey design tools with `ct_survey_design()`, and a user-friendly Shiny application 
-via `ct_app()` for interactive analysis workflows.
+survey design tools with `ct_survey_design()`, and more.
 
 **For a full overview of all available functions, please visit the [ct website](https://stangandaho.github.io/ct/reference/index.html)**
 

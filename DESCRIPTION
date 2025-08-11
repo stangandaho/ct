@@ -1,7 +1,7 @@
 Package: ct
 Type: Package
-Title: Camera Trap Data Management and Analysis
-Version: 0.2.0
+Title: Camera trap data tool
+Version: 0.3.0
 Date: 2025-07-25
 Imports: 
     activity (>= 1.3.4),

@@ -67,12 +67,12 @@ ct_availability(radian_times, sample = "data", n_bootstrap = 100)
 }
 \references{
 Howe, E. J., Buckland, S. T., Després-Einspenner, M. L., & Kühl, H. S. (2017).
-Distance sampling with camera traps. Methods in Ecology and Evolution, 8(11), 1558–1565.
+Distance sampling with camera traps. Methods in Ecology and Evolution, 8(11), 1558-1565.
 \doi{10.1111/2041-210X.12790}
 
 Rowcliffe, J. M., Kays, R., Kranstauber, B., Carbone, C., & Jansen, P. A. (2014).
 Quantifying levels of animal activity using camera trap data. Methods in Ecology
-and Evolution, 5(11), 1170–1179.  \doi{doi:10.1111/2041-210X.12278}
+and Evolution, 5(11), 1170-1179.  \doi{doi:10.1111/2041-210X.12278}
 }
 \seealso{
 \code{\link[=ct_fit_activity]{ct_fit_activity()}}
