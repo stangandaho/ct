@@ -140,7 +140,7 @@ ct_fit_ds <- function(data,
   convert_units <- Distance::convert_units("meter", NULL, "square kilometer")
 
   if (select_model) {
-    at_least <- !c("key", "adjustment", "nadj", "order") %in% names(model_params)
+    at_least <- all(!c("key", "adjustment", "nadj", "order") %in% names(model_params))
     if (any(at_least)) {
       cli::cli_abort("model_params must be named list with `key`, `adjustment`, `nadj`, and/or `order`")
     }
@@ -206,7 +206,9 @@ ct_fit_ds <- function(data,
       cli::cli_status_update(id = sb, msg = msg)
 
     }
-    models <- Filter(Negate(is.character), models) # Filter failure models
+    right_mdl <- !lapply(models, function(x){ is.character(x[[1]]) }) %>% unlist()
+
+    models <- models[right_mdl] # Filter failure models
 
     # End message
     cli::cli_status_clear(id = sb)
@@ -261,6 +263,7 @@ ct_fit_ds <- function(data,
   samfrac <- field_of_view / 360
 
   # Bootstrap for variance estimation
+  MDL <<- ds_model
   cli::cli_inform("Bootstrapping ...")
   boot_result <- suppressMessages({
     Distance::bootdht(model = ds_model,
@@ -436,7 +439,9 @@ ct_availability <- function(times, format = NULL,
 get_ddf_names <- function(model){
   key <- model$ddf$name.message
   key_name <- c("hazard-rate", "half-normal", "uniform")
-  checker <- c(grepl("hazard-rate", key), grepl("half-normal", key), grepl("uniform", key))
+  checker <- c(grepl("hazard-rate", key),
+               grepl("half-normal", key),
+               grepl("uniform", key))
   return(key_name[checker])
 }
 
@@ -667,8 +672,8 @@ ct_select_model <- function(models,
     return(mdl)
   })
   keys <- sapply(models, get_ddf_names)
+  #print(keys)
   splited_model <- split(seq_along(models), keys)
-
 
   qaic_results <- lapply(splited_model, function(idx) {
     name_of_key <- names(splited_model)[sapply(splited_model, function(el) {identical(el, idx)})]
@@ -684,6 +689,7 @@ ct_select_model <- function(models,
   ## Retrieve best model
   bm_id <- qaic_results %>%
     dplyr::filter(best == TRUE) %>%
+    dplyr::distinct(key, QAIC, .keep_all = TRUE) %>%
     dplyr::pull(id)
 
   model_ids <- unlist(lapply(models, function(x){x$id}))
