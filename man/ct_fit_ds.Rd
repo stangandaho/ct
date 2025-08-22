@@ -17,7 +17,6 @@ ct_fit_ds(
   select_model = FALSE,
   model_params = list(key = list("hn", "hr", "unif"), adjustment = list("cos", "herm",
     "poly"), nadj = list(0, 1, 2), order = NULL),
-  field_of_view = 42,
   availability,
   n_bootstrap = 100,
   n_cores = 1,
@@ -26,8 +25,19 @@ ct_fit_ds(
 }
 \arguments{
 \item{data}{A data frame containing distance sampling observations. Must include
-columns for distance measurements and can include covariates for detection function modeling.
-See \link[Distance:flatfile]{Distance::flatfile} for details.}
+following columns:
+\itemize{
+\item \code{distance}: the midpoint (m) of the assigned distance interval between animal and camera
+\item \code{object}: a unique identifier for each observation
+\item \code{Sample.Label}: identifier for the sample (transect id)
+\item \verb{Effort effort}: number of a given second (e.g 0.25, 2, or 3) time steps the camera operated (i.e. temporal effort)
+\item \code{Region.Label}: label for a given stratum
+\item \code{Area}: area of the strata⁠
+\item \code{fraction}: fraction of a full circle covered (field of view/360)
+Other columns could be used as covariate. Note that in the simplest case
+(one area surveyed only once) there is only one Region.Label and a single
+corresponding Area duplicated for each observation.
+}}
 
 \item{estimate}{Character string specifying the parameter to estimate. Either
 \code{"density"} (animals per km^2) or \code{"abundance"} (total number of animals). Default is \code{"density"}.}
@@ -98,9 +108,6 @@ defines the candidate model set.}
 \item \code{nadj} - List of adjustment term numbers
 \item \code{order} - List vector of adjustment orders (must match \code{nadj})
 }}
-
-\item{field_of_view}{Numeric. Camera field of view angle in degrees. Default is 42 deg,
-ued to calculate the sampling fraction.}
 
 \item{availability}{A list containing availability rate corrections (output from
 \code{\link[=ct_availability]{ct_availability()}}). Must include elements availability rate (0-1) and/or
@@ -261,6 +268,7 @@ avail <- ct_availability(times = trigger_events$time,
 
 # Estimate density, building multiple models
 flat_data <- duikers$DaytimeDistances \%>\%
+  dplyr::rename(fraction = multiplier) \%>\%
   dplyr::slice_sample(prop = .2) # sample 20\% of rows
 
 duiker_density <- ct_fit_ds(data = flat_data,
@@ -272,7 +280,6 @@ duiker_density <- ct_fit_ds(data = flat_data,
                                                 order = NULL),
                             availability = avail,
                             truncation = list(left = 2, right = 15),
-                            field_of_view = 42,
                             n_bootstrap = 2,
                             cutpoints = c(seq(2, 8, 1), 10, 12, 15)
 )
