@@ -77,7 +77,6 @@ single model fitting and automated model selection procedures.</p>
 <span>  select_model <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  model_params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>key <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"hn"</span>, <span class="st">"hr"</span>, <span class="st">"unif"</span><span class="op">)</span>, adjustment <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"cos"</span>, <span class="st">"herm"</span>,</span>
 <span>    <span class="st">"poly"</span><span class="op">)</span>, nadj <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, order <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span>
-<span>  field_of_view <span class="op">=</span> <span class="fl">42</span>,</span>
 <span>  <span class="va">availability</span>,</span>
 <span>  n_bootstrap <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  n_cores <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -91,8 +90,17 @@ single model fitting and automated model selection procedures.</p>
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
 <dd><p>A data frame containing distance sampling observations. Must include
-columns for distance measurements and can include covariates for detection function modeling.
-See <a href="https://rdrr.io/pkg/Distance/man/flatfile.html" class="external-link">Distance::flatfile</a> for details.</p></dd>
+following columns:</p><ul><li><p><code>distance</code>: the midpoint (m) of the assigned distance interval between animal and camera</p></li>
+<li><p><code>object</code>: a unique identifier for each observation</p></li>
+<li><p><code>Sample.Label</code>: identifier for the sample (transect id)</p></li>
+<li><p><code>Effort effort</code>: number of a given second (e.g 0.25, 2, or 3) time steps the camera operated (i.e. temporal effort)</p></li>
+<li><p><code>Region.Label</code>: label for a given stratum</p></li>
+<li><p><code>Area</code>: area of the strata⁠</p></li>
+<li><p><code>fraction</code>: fraction of a full circle covered (field of view/360)
+Other columns could be used as covariate. Note that in the simplest case
+(one area surveyed only once) there is only one Region.Label and a single
+corresponding Area duplicated for each observation.</p></li>
+</ul></dd>
 
 
 <dt id="arg-estimate">estimate<a class="anchor" aria-label="anchor" href="#arg-estimate"></a></dt>
@@ -181,11 +189,6 @@ defines the candidate model set.</p></dd>
 <li><p><code>nadj</code> - List of adjustment term numbers</p></li>
 <li><p><code>order</code> - List vector of adjustment orders (must match <code>nadj</code>)</p></li>
 </ul></dd>
-
-
-<dt id="arg-field-of-view">field_of_view<a class="anchor" aria-label="anchor" href="#arg-field-of-view"></a></dt>
-<dd><p>Numeric. Camera field of view angle in degrees. Default is 42 deg,
-ued to calculate the sampling fraction.</p></dd>
 
 
 <dt id="arg-availability">availability<a class="anchor" aria-label="anchor" href="#arg-availability"></a></dt>
@@ -384,6 +387,7 @@ Methods in Ecology and Evolution, 5(11), 1170-1179.  <a href="https://doi.org/10
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Estimate density, building multiple models</span></span></span>
 <span class="r-in"><span><span class="va">flat_data</span> <span class="op">&lt;-</span> <span class="va">duikers</span><span class="op">$</span><span class="va">DaytimeDistances</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>fraction <span class="op">=</span> <span class="va">multiplier</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_sample</a></span><span class="op">(</span>prop <span class="op">=</span> <span class="fl">.2</span><span class="op">)</span> <span class="co"># sample 20% of rows</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">duiker_density</span> <span class="op">&lt;-</span> <span class="fu">ct_fit_ds</span><span class="op">(</span>data <span class="op">=</span> <span class="va">flat_data</span>,</span></span>
@@ -395,7 +399,6 @@ Methods in Ecology and Evolution, 5(11), 1170-1179.  <a href="https://doi.org/10
 <span class="r-in"><span>                                                order <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                            availability <span class="op">=</span> <span class="va">avail</span>,</span></span>
 <span class="r-in"><span>                            truncation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>left <span class="op">=</span> <span class="fl">2</span>, right <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                            field_of_view <span class="op">=</span> <span class="fl">42</span>,</span></span>
 <span class="r-in"><span>                            n_bootstrap <span class="op">=</span> <span class="fl">2</span>,</span></span>
 <span class="r-in"><span>                            cutpoints <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">8</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">10</span>, <span class="fl">12</span>, <span class="fl">15</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
