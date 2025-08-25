@@ -11,7 +11,7 @@
 #' - `Sample.Label`: identifier for the sample (transect id)
 #' - `Effort effort`: number of a given second (e.g 0.25, 2, or 3) time steps the camera operated (i.e. temporal effort)
 #' - `Region.Label`: label for a given stratum
-#' - `Area`: area of the strata⁠
+#' - `Area`: area of the strata⁠ in km^2
 #' - `fraction`: fraction of a full circle covered (field of view/360)
 #' Other columns could be used as covariate. Note that in the simplest case
 #' (one area surveyed only once) there is only one Region.Label and a single
@@ -195,7 +195,7 @@ ct_fit_ds <- function(data,
           Distance::ds(
             data = data,
             transect = "point",
-            #er_var = "P2",
+            er_var = "P2",
             convert_units = convert_units,
             cutpoints = cutpoints,
             truncation = truncation,
@@ -236,7 +236,6 @@ ct_fit_ds <- function(data,
 
     # No model selection
   }else{
-    models <- NULL
     QAIC <- NULL
     Chi2 <- NULL
     df_sb <- cli::cli_status("Fiting detection function ...")

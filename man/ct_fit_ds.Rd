@@ -32,7 +32,7 @@ following columns:
 \item \code{Sample.Label}: identifier for the sample (transect id)
 \item \verb{Effort effort}: number of a given second (e.g 0.25, 2, or 3) time steps the camera operated (i.e. temporal effort)
 \item \code{Region.Label}: label for a given stratum
-\item \code{Area}: area of the strata⁠
+\item \code{Area}: area of the strata⁠ in km^2
 \item \code{fraction}: fraction of a full circle covered (field of view/360)
 Other columns could be used as covariate. Note that in the simplest case
 (one area surveyed only once) there is only one Region.Label and a single
