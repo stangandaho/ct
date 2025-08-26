@@ -271,6 +271,7 @@ ct_fit_ds <- function(data,
   # Bootstrap for variance estimation
   cli::cli_inform("Bootstrapping ...")
   boot_result <- suppressMessages({
+    set.seed(1235561)
     Distance::bootdht(model = ds_model,
                       flatfile = data,
                       resample_transects = TRUE,
