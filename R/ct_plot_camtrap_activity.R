@@ -284,22 +284,22 @@ ct_summarise_camtrap_activity <- function(data,
     sm_df <- plot_data %>%
       dplyr::filter(deployment == x)
 
-
       gaps <- ct_find_break(
         data = sm_df,
         datetime_column = datetime,
         threshold = threshold,
         time_unit = time_unit
       )
+
       active_periods <- calc_active_periods(sm_df, threshold, time_unit)
       total_duration <- as.numeric(
         max(sm_df$datetime, na.rm = TRUE) - min(sm_df$datetime, na.rm = TRUE),
-        units = "days"
+        units = time_unit_parser(time_unit)
       )
 
       active_duration <- sum(as.numeric(
         active_periods$period_end - active_periods$period_start,
-        units = "days"
+        units = time_unit_parser(time_unit)
       ))
 
       gap_duration <- total_duration - active_duration
@@ -313,7 +313,7 @@ ct_summarise_camtrap_activity <- function(data,
         active_duration = round(active_duration, 2),
         break_duration = round(gap_duration, 2),
         activity_rate = round(active_duration / total_duration * 100, 1),
-        n_breaks = if(!is.null(gaps))0 else nrow(gaps),
+        n_breaks = if(!is.null(gaps))nrow(gaps) else 0,
         n_active_periods = nrow(active_periods),
         avg_break_duration = if(!is.null(gaps) && nrow(gaps) > 0) {
           round(mean(as.numeric(gaps$duration)), 2)

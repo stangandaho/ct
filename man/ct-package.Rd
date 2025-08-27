@@ -4,7 +4,7 @@
 \name{ct-package}
 \alias{ct}
 \alias{ct-package}
-\title{ct: Camera trap data tool}
+\title{ct: Camera Trap Data Tool}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 

@@ -10,7 +10,7 @@ ct_convert_unit(x, from, to, show_units = FALSE)
 \item{x}{Numeric. Value(s) to convert.}
 
 \item{from}{Character. The unit to convert from. Can be any synonym
-e.g. \code{"meter"}, \code{"m"}, \code{"metre"}, \code{"feet"}, \code{"°"}.}
+e.g. \code{"meter"}, \code{"m"}, \code{"metre"}, \code{"feet"}, "\eqn{^\circ}", "um" (i.e \eqn{\mu m}), etc.}
 
 \item{to}{Character. The unit to convert to. Can also be any synonym.}
 
@@ -26,17 +26,17 @@ It supports \strong{area}, \strong{distance (length)}, and \strong{angle} units.
 }
 \examples{
 # Distance
-ct_convert_unit(1000, "m", "km")     # 1 km
-ct_convert_unit(1, "mile", "m")      # 1609.344
-ct_convert_unit(12, "inches", "ft")  # 1
+ct_convert_unit(1000, "m", "km")
+ct_convert_unit(1, "mile", "m")
+ct_convert_unit(12, "inches", "ft")
 
 # Area
-ct_convert_unit(1, "acre", "m2")     # ≈ 4046.856
-ct_convert_unit(2, "km2", "hectare") # 200
+ct_convert_unit(1, "acre", "m2")
+ct_convert_unit(2, "km2", "hectare")
 
 # Angle
-ct_convert_unit(180, "deg", "rad")   # π ≈ 3.141593
-ct_convert_unit(pi, "rad", "deg")    # 180
+ct_convert_unit(180, "deg", "rad")
+ct_convert_unit(pi, "rad", "deg")
 
 }
 \seealso{

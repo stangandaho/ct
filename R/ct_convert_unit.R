@@ -6,7 +6,7 @@
 #'
 #' @param x Numeric. Value(s) to convert.
 #' @param from Character. The unit to convert from. Can be any synonym
-#' e.g. `"meter"`, `"m"`, `"metre"`, `"feet"`, `"°"`.
+#' e.g. `"meter"`, `"m"`, `"metre"`, `"feet"`, "\eqn{^\circ}", "um" (i.e \eqn{\mu m}), etc.
 #' @param to Character. The unit to convert to. Can also be any synonym.
 #' @param show_units Logical. If `TRUE`, returns the full table of supported units
 #'   and their synonyms instead of performing a conversion.
@@ -16,17 +16,17 @@
 #'
 #' @examples
 #' # Distance
-#' ct_convert_unit(1000, "m", "km")     # 1 km
-#' ct_convert_unit(1, "mile", "m")      # 1609.344
-#' ct_convert_unit(12, "inches", "ft")  # 1
+#' ct_convert_unit(1000, "m", "km")
+#' ct_convert_unit(1, "mile", "m")
+#' ct_convert_unit(12, "inches", "ft")
 #'
 #' # Area
-#' ct_convert_unit(1, "acre", "m2")     # ≈ 4046.856
-#' ct_convert_unit(2, "km2", "hectare") # 200
+#' ct_convert_unit(1, "acre", "m2")
+#' ct_convert_unit(2, "km2", "hectare")
 #'
 #' # Angle
-#' ct_convert_unit(180, "deg", "rad")   # π ≈ 3.141593
-#' ct_convert_unit(pi, "rad", "deg")    # 180
+#' ct_convert_unit(180, "deg", "rad")
+#' ct_convert_unit(pi, "rad", "deg")
 #'
 #' @seealso [units_table()] for supported units and synonyms.
 #'
@@ -39,49 +39,49 @@ ct_convert_unit <- function(x, from, to, show_units = FALSE) {
 
   # Define conversion factors
   area_factors <- c(
-    "m2"   = 1,                     # base unit
-    "km2"  = 1e6,                   # 1 km² = 1,000,000 m²
-    "cm2"  = 1e-4,                   # 1 cm² = 0.0001 m²
-    "mm2"  = 1e-6,                   # 1 mm² = 0.000001 m²
-    "µm2"  = 1e-12,                  # 1 µm² = 1e-12 m²
-    "nm2"  = 1e-18,                  # 1 nm² = 1e-18 m²
-    "ha"   = 1e4,                    # 1 hectare = 10,000 m²
-    "are"  = 100,                    # 1 are = 100 m²
-    "daa"  = 1000,                   # 1 decare = 1000 m²
-    "ca"   = 1,                      # 1 centiare = 1 m²
-    "acre" = 4046.8564224,           # 1 acre ≈ 4046.8564224 m²
-    "mi2"  = 2.589988e6,             # 1 square mile ≈ 2,589,988 m²
-    "yd2"  = 0.83612736,             # 1 square yard ≈ 0.83612736 m²
-    "ft2"  = 0.09290304,             # 1 square foot ≈ 0.09290304 m²
-    "in2"  = 0.00064516              # 1 square inch ≈ 0.00064516 m²
+    "m2"   = 1,
+    "km2"  = 1e6,
+    "cm2"  = 1e-4,
+    "mm2"  = 1e-6,
+    "um2"  = 1e-12,
+    "nm2"  = 1e-18,
+    "ha"   = 1e4,
+    "are"  = 100,
+    "daa"  = 1000,
+    "ca"   = 1,
+    "acre" = 4046.8564224,
+    "mi2"  = 2.589988e6,
+    "yd2"  = 0.83612736,
+    "ft2"  = 0.09290304,
+    "in2"  = 0.00064516
   )
 
   distance_factors <- c(
-    "m"   = 1,                     # base unit
-    "km"  = 1e3,                   # 1 km = 1000 m
-    "cm"  = 1e-2,                   # 1 cm = 0.01 m
-    "mm"  = 1e-3,                   # 1 mm = 0.001 m
-    "µm"  = 1e-6,                   # 1 µm = 0.000001 m
-    "nm"  = 1e-9,                   # 1 nm = 0.000000001 m
+    "m"   = 1,
+    "km"  = 1e3,
+    "cm"  = 1e-2,
+    "mm"  = 1e-3,
+    "um"  = 1e-6,
+    "nm"  = 1e-9,
 
-    "mi"  = 1609.344,              # 1 mile = 1609.344 m
-    "yd"  = 0.9144,                # 1 yard = 0.9144 m
-    "ft"  = 0.3048,                # 1 foot = 0.3048 m
-    "in"  = 0.0254,                # 1 inch = 0.0254 m
+    "mi"  = 1609.344,
+    "yd"  = 0.9144,
+    "ft"  = 0.3048,
+    "in"  = 0.0254,
 
-    "nmi" = 1852,                  # 1 nautical mile = 1852 m
-    "ly"  = 9.4607e15,             # 1 light-year ≈ 9.4607 × 10^15 m
-    "au"  = 1.495978707e11,        # 1 astronomical unit ≈ 1.496 × 10^11 m
-    "pc"  = 3.085677581e16         # 1 parsec ≈ 3.086 × 10^16 m
+    "nmi" = 1852,
+    "ly"  = 9.4607e15,
+    "au"  = 1.495978707e11,
+    "pc"  = 3.085677581e16
   )
 
   angle_factors <- c(
-    "rad"   = 1,                      # base unit
-    "deg"   = pi / 180,               # 1° = π/180 rad
-    "grad"  = pi / 200,               # 1 grad = π/200 rad
-    "turn"  = 2 * pi,                 # 1 turn = 2π rad
-    "arcmin"= pi / (180 * 60),        # 1′ = π / 10800 rad
-    "arcsec"= pi / (180 * 3600)       # 1″ = π / 648000 rad
+    "rad"   = 1,
+    "deg"   = pi / 180,
+    "grad"  = pi / 200,
+    "turn"  = 2 * pi,
+    "arcmin"= pi / (180 * 60),
+    "arcsec"= pi / (180 * 3600)
   )
 
   unit_factors <- c(area_factors, distance_factors, angle_factors)
@@ -89,17 +89,17 @@ ct_convert_unit <- function(x, from, to, show_units = FALSE) {
 
   # Conversion function process
   from_unit <- tolower(units_table() %>%
-                    dplyr::filter(unit == from) %>% dplyr::pull(unit_name))
+                    dplyr::filter(.data$unit == from) %>% dplyr::pull("unit_name"))
   to_unit <- tolower(units_table() %>%
-                    dplyr::filter(unit == to) %>% dplyr::pull(unit_name))
+                    dplyr::filter(.data$unit == to) %>% dplyr::pull("unit_name"))
   # Rise error for unknown unit
   if(length(from_unit) == 0){cli::cli_abort(sprintf("Unknown 'from' unit: %s", from))}
   if(length(to_unit) == 0){cli::cli_abort(sprintf("Unknown 'to' unit: %s", to))}
 
   from_cat <- tolower(units_table() %>%
-                         dplyr::filter(unit == from) %>% dplyr::pull(category))
+                         dplyr::filter(.data$unit == from) %>% dplyr::pull("category"))
   to_cat <- tolower(units_table() %>%
-                         dplyr::filter(unit == to) %>% dplyr::pull(category))
+                         dplyr::filter(.data$unit == to) %>% dplyr::pull("category"))
   # Rise error for incompatible unit
   cli::cli_div(theme = list(span.emph = list(color = "#910800")))
   if (unique(from_cat) != unique(to_cat)) {
@@ -121,7 +121,7 @@ units_table <- function() {
     "km2"  = c("square kilometer", "square kilometre", "square kilometers", "square kilometres", "km2", "km^2"),
     "cm2"  = c("square centimeter", "square centimetre", "square centimeters", "square centimetres", "cm2", "cm^2"),
     "mm2"  = c("square millimeter", "square millimetre", "square millimeters", "square millimetres", "mm2", "mm^2"),
-    "µm2"  = c("square micrometer", "square micrometre", "square micrometers", "square micrometres", "µm2", "μm2", "um2", "µm^2", "μm^2"),
+    "um2"  = c("square micrometer", "square micrometre", "square micrometers", "square micrometres", "um2", "um^2"),
     "nm2"  = c("square nanometer", "square nanometre", "square nanometers", "square nanometres", "nm2", "nm^2"),
     "mi2"  = c("square mile", "square miles", "mi2", "mi^2", "sq mile", "sq mi"),
     "yd2"  = c("square yard", "square yards", "yd2", "yd^2", "sq yard", "sq yd"),
@@ -148,7 +148,7 @@ units_table <- function() {
     "km"  = c("kilometer", "kilometre", "kilometers", "kilometres", "km"),
     "cm"  = c("centimeter", "centimetre", "centimeters", "centimetres", "cm"),
     "mm"  = c("millimeter", "millimetre", "millimeters", "millimetres", "mm"),
-    "µm"  = c("micrometer", "micrometre", "micron", "µm", "μm", "um"),
+    "um"  = c("micrometer", "micrometre", "micron", "um"),
     "nm"  = c("nanometer", "nanometre", "nanometers", "nanometres", "nm"),
 
     "mi"  = c("mile", "miles", "mi"),
@@ -175,11 +175,11 @@ units_table <- function() {
   # Angle
   angle_units <- list(
     "rad"   = c("radian", "radians", "rad"),
-    "deg"   = c("degree", "degrees", "deg", "°"),
-    "grad"  = c("gradian", "gradians", "grad", "gon"),   # 400 grads = 360°
+    "deg"   = c("degree", "degrees", "deg"),
+    "grad"  = c("gradian", "gradians", "grad", "gon"),
     "turn"  = c("turn", "revolution", "circle", "rotation", "rev"),
-    "arcmin"= c("arcminute", "arcminutes", "minute of arc", "arcmin", "′"),
-    "arcsec"= c("arcsecond", "arcseconds", "second of arc", "arcsec", "″")
+    "arcmin"= c("arcminute", "arcminutes", "minute of arc", "arcmin", "'"),
+    "arcsec"= c("arcsecond", "arcseconds", "second of arc", "arcsec", "\"")
   )
 
   angle_unit_names <- names(angle_units)

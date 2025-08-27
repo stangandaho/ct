@@ -44,25 +44,28 @@ ct_find_break <- function(data,
   datetime_series <- sort(datetime_series)
 
   # Compute time differences between consecutive times
-  time_diffs <- base::diff(datetime_series, units = time_unit)
+  #time_diffs <- base::diff(datetime_series, units = time_unit_parser(time_unit))
+  time_diffs <- base::as.numeric(base::diff(datetime_series),
+                           units = time_unit_parser(time_unit))
 
   # Identify breaks where the difference exceeds the threshold
   breaks_idx <- which(time_diffs > threshold)
 
+
   # Create a data frame of breaks
   if (length(breaks_idx) == 0) {
-    cli::cli_warn("No deployment met this {.strong {.emph {threshold}} {time_unit}} threshold")
+    cli::cli_warn("No deployment has a gap exceeding {.strong {.emph {threshold}} {time_unit}}.")
     return(invisible())
   }
 
   break_starts <- datetime_series[breaks_idx]
   break_ends <- datetime_series[breaks_idx + 1]
-  gap_durations <- as.numeric(break_ends - break_starts, units = time_unit)
+  gap_durations <- as.numeric(break_ends - break_starts)
 
   breaks_df <- dplyr::tibble(
     start = break_starts,
     end = break_ends,
-    duration = as.difftime(gap_durations, units = time_unit)
+    duration = gap_durations
   )
 
   return(breaks_df)

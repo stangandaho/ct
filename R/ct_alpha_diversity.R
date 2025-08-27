@@ -88,13 +88,13 @@
 #' @references
 #' Pielou, E.C. (1966). The measurement of diversity in different types of
 #' biological collections. Journal of Theoretical Biology, 13, pp. 131–144.
-#' \href{https://doi.org/10.1016/0022-5193(66)90013-0}{10.1016/0022-5193(66)90013-0}.
+#' \doi{10.1016/0022-5193(66)90013-0}.
 #'
 #' Simpson, E.H. (1949). Measurement of diversity. Nature, 163, pp. 688.
-#' \href{https://doi.org/10.1038/163688a0}{10.1038/163688a0}
+#' \doi{10.1038/163688a0}
 #'
 #' Shannon, C.E. (1948). A mathematical theory of communication. The Bell System
-#' Technical Journal, 27, pp. 379-423.\href{https://doi.org/10.1002/j.1538-7305.1948.tb01338.x}{10.1002/j.1538-7305.1948.tb01338.x}
+#' Technical Journal, 27, pp. 379-423.\doi{10.1002/j.1538-7305.1948.tb01338.x}
 #'
 #' @examples
 #' cam_data <- read.csv(system.file('penessoulou_season1.csv', package = 'ct'))
