@@ -27,9 +27,8 @@ following the approach of Howe et al (2019)."><meta property="og:image" content=
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html"><span class="fa fa-code"></span> Functions</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><span class="fa fa-blog"></span> Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/camtrap_data_preparation.html">1. Data preparation</a></li>
-    <li><a class="dropdown-item" href="../articles/camtrap_data_analysis.html">2. Data analysis</a></li>
-    <li><a class="dropdown-item" href="../articles/camtrap_analysis_visualisation.html">3. Elegant visualizations</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/camtrap_data_preparation.html">Data preparation</a></li>
+    <li><a class="dropdown-item" href="../articles/rarefaction_and_extrapolation.html">Rarefaction and Extrapolation</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html"><span class="fa fa-face-smile"></span> News</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -119,6 +118,7 @@ Model selection with overdispersed distance sampling data. <strong>Methods in Ec
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"duiker"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>data set ‘duiker’ not found</span>
 <span class="r-in"><span><span class="va">duiker_data</span> <span class="op">&lt;-</span> <span class="va">duikers</span><span class="op">$</span><span class="va">DaytimeDistances</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_sample</a></span><span class="op">(</span>prop <span class="op">=</span> <span class="fl">.3</span><span class="op">)</span> <span class="co"># sample 30% of rows</span></span></span>
 <span class="r-in"><span><span class="va">truncation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>left <span class="op">=</span> <span class="fl">2</span>, right <span class="op">=</span> <span class="fl">15</span><span class="op">)</span> <span class="co"># Keep only distance between 2-15 m</span></span></span>
@@ -126,40 +126,67 @@ Model selection with overdispersed distance sampling data. <strong>Methods in Ec
 <span class="r-in"><span><span class="co"># fit hazard-rate key models</span></span></span>
 <span class="r-in"><span><span class="va">w3_hr0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Distance/man/ds.html" class="external-link">ds</a></span><span class="op">(</span><span class="va">duiker_data</span>, transect <span class="op">=</span> <span class="st">"point"</span>, key <span class="op">=</span> <span class="st">"hr"</span>, adjustment <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>             truncation <span class="op">=</span> <span class="va">truncation</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distend`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting hazard-rate key function</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 15168.943</span>
 <span class="r-in"><span><span class="va">w3_hr1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Distance/man/ds.html" class="external-link">ds</a></span><span class="op">(</span><span class="va">duiker_data</span>, transect <span class="op">=</span> <span class="st">"point"</span>, key <span class="op">=</span> <span class="st">"hr"</span>, adjustment <span class="op">=</span> <span class="st">"cos"</span>,</span></span>
 <span class="r-in"><span>             order <span class="op">=</span> <span class="fl">2</span>, truncation <span class="op">=</span> <span class="va">truncation</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distend`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting hazard-rate key function with cosine(2) adjustments</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 15170.943</span>
 <span class="r-in"><span><span class="va">w3_hr2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Distance/man/ds.html" class="external-link">ds</a></span><span class="op">(</span><span class="va">duiker_data</span>, transect <span class="op">=</span> <span class="st">"point"</span>, key <span class="op">=</span> <span class="st">"hr"</span>, adjustment <span class="op">=</span> <span class="st">"cos"</span>,</span></span>
 <span class="r-in"><span>             order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>, truncation <span class="op">=</span> <span class="va">truncation</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distend`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting hazard-rate key function with cosine(2,4) adjustments</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 15172.499</span>
 <span class="r-in"><span><span class="co"># fit half-normal key models</span></span></span>
 <span class="r-in"><span><span class="va">w3_hn0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Distance/man/ds.html" class="external-link">ds</a></span><span class="op">(</span><span class="va">duiker_data</span>, transect <span class="op">=</span> <span class="st">"point"</span>, key <span class="op">=</span> <span class="st">"hn"</span>, adjustment <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>             truncation <span class="op">=</span> <span class="va">truncation</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distend`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting half-normal key function</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 15188.691</span>
 <span class="r-in"><span><span class="va">w3_hn1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Distance/man/ds.html" class="external-link">ds</a></span><span class="op">(</span><span class="va">duiker_data</span>, transect <span class="op">=</span> <span class="st">"point"</span>, key <span class="op">=</span> <span class="st">"hn"</span>, adjustment <span class="op">=</span> <span class="st">"cos"</span>,</span></span>
 <span class="r-in"><span>             order <span class="op">=</span> <span class="fl">2</span>, truncation <span class="op">=</span> <span class="va">truncation</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distend`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting half-normal key function with cosine(2) adjustments</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 15166.434</span>
 <span class="r-in"><span><span class="va">w3_hn2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Distance/man/ds.html" class="external-link">ds</a></span><span class="op">(</span><span class="va">duiker_data</span>, transect <span class="op">=</span> <span class="st">"point"</span>, key <span class="op">=</span> <span class="st">"hn"</span>, adjustment <span class="op">=</span> <span class="st">"cos"</span>,</span></span>
 <span class="r-in"><span>             order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>, truncation <span class="op">=</span> <span class="va">truncation</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distend`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting half-normal key function with cosine(2,4) adjustments</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 15164.643</span>
 <span class="r-in"><span><span class="co"># fit uniform key models</span></span></span>
 <span class="r-in"><span><span class="va">w3_u0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Distance/man/ds.html" class="external-link">ds</a></span><span class="op">(</span><span class="va">duiker_data</span>, transect <span class="op">=</span> <span class="st">"point"</span>, key <span class="op">=</span> <span class="st">"unif"</span>, adjustment <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>            truncation <span class="op">=</span> <span class="va">truncation</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distend`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting uniform key function</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 17423.932</span>
 <span class="r-in"><span><span class="va">w3_u1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Distance/man/ds.html" class="external-link">ds</a></span><span class="op">(</span><span class="va">duiker_data</span>, transect <span class="op">=</span> <span class="st">"point"</span>, key <span class="op">=</span> <span class="st">"unif"</span>, adjustment <span class="op">=</span> <span class="st">"cos"</span>,</span></span>
 <span class="r-in"><span>            order <span class="op">=</span> <span class="fl">2</span>, truncation <span class="op">=</span> <span class="va">truncation</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distend`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting uniform key function with cosine(2) adjustments</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 17425.932</span>
 <span class="r-in"><span><span class="va">w3_u2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Distance/man/ds.html" class="external-link">ds</a></span><span class="op">(</span><span class="va">duiker_data</span>, transect <span class="op">=</span> <span class="st">"point"</span>, key <span class="op">=</span> <span class="st">"unif"</span>, adjustment <span class="op">=</span> <span class="st">"cos"</span>,</span></span>
 <span class="r-in"><span>            order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>, truncation <span class="op">=</span> <span class="va">truncation</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distend`.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting uniform key function with cosine(2,4) adjustments</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 17427.932</span>
 <span class="r-in"><span></span></span>

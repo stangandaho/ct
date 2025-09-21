@@ -5,6 +5,7 @@
 <url><loc>https://stangandaho.github.io/ct/LICENSE.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/articles/camtrap_data_preparation.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/articles/index.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/articles/rarefaction_and_extrapolation.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/authors.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/index.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/news/index.html</loc></url>
@@ -16,6 +17,7 @@
 <url><loc>https://stangandaho.github.io/ct/reference/ct_app.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_availability.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_boot_ci.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/ct_camera_day.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_check_location.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_check_name.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_chi2_select.html</loc></url>
@@ -40,10 +42,12 @@
 <url><loc>https://stangandaho.github.io/ct/reference/ct_get_hs.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_get_metadata.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_independence.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/ct_inext.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_overlap_estimates.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_overlap_matrix.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_plot_camtrap_activity.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_plot_density.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/ct_plot_inext.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_plot_overlap.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_plot_overlap_coef.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_plot_rose_diagram.html</loc></url>

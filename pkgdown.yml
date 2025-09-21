@@ -3,7 +3,8 @@ pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   camtrap_data_preparation: camtrap_data_preparation.html
-last_built: 2025-08-27T01:15Z
+  articles/rarefaction_and_extrapolation: rarefaction_and_extrapolation.html
+last_built: 2025-09-21T09:42Z
 urls:
   reference: https://stangandaho.github.io/ct/reference
   article: https://stangandaho.github.io/ct/articles
