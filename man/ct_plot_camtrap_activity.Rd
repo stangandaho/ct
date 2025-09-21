@@ -11,8 +11,8 @@ ct_plot_camtrap_activity(
   threshold = 5,
   time_unit = "days",
   format = NULL,
-  activity_style = list(width = 0.8, color = "steelblue", alpha = 0.7, linetype = 1),
-  break_style = list(width = 0.8, color = "#c90026", alpha = 0.9, linetype = 1),
+  activity_style = list(linewidth = 0.8, color = "steelblue", alpha = 0.7, linetype = 1),
+  break_style = list(linewidth = 0.8, color = "#c90026", alpha = 0.9, linetype = 1),
   show_gaps = TRUE,
   ylabel_format = "\%Y-\%m-\%d",
   ybreak = paste(1, time_unit)

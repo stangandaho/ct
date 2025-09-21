@@ -3,16 +3,16 @@
 #' This function visualizes species' activity patterns based on time-of-day data.
 #' It uses kernel density estimation to estimate activity density.
 #'
-#' @param time A numeric vector of time-of-day observations (in radians, 0 to \eqn{2\pi}).
-#' @param xscale A numeric value to scale the x-axis. Default is `24` for representing time in hours.
+#' @param time_of_day A numeric vector of time-of-day observations (in radians, 0 to \eqn{2\pi}).
+#' @param xscale A numeric value to scale the x-axis. Default is 24 for representing time in hours.
 #' @param xcenter A string indicating the center of the x-axis. Options are `"noon"` (default) or `"midnight"`.
-#' @param n_grid An integer specifying the number of grid points for density estimation. Default is `128`.
-#' @param kmax An integer indicating the maximum number of modes allowed in the activity pattern. Default is `3`.
-#' @param adjust A numeric value to adjust the bandwidth of the kernel density estimation. Default is `1`.
+#' @param n_grid An integer specifying the number of grid points for density estimation. Default is 128.
+#' @param kmax An integer indicating the maximum number of modes allowed in the activity pattern. Default is 3.
+#' @param adjust A numeric value to adjust the bandwidth of the kernel density estimation. Default is 1.
 #' @param rug A logical value indicating whether to include a rug plot of the observations. Default is `FALSE`.
-#' @param linetype A numeric specifying the line types. Default is `c(1, 2)`.
-#' @param linecol A string specifying the colors of the density lines for species A and B. Default is `c("gray10", "gray0")`.
-#' @param linewidth A numeric value specifying the line widths for species A and B density lines. Default is `c(1, 1)`.
+#' @param line_type A numeric specifying the line types. Default is 2.
+#' @param line_color A string specifying the colors of the density lines. Default is "gray10".
+#' @param line_width A numeric value specifying the line width. Default is 1.
 #' @param rug_lentgh A numeric value specifying the length of the rug ticks. Default is `0.018` (in normalized plot coordinates).
 #' @param rug_color A string specifying the color of the rug ticks. Default is `"gray30"`.
 #' @param extend A string specifying the color of the extended area beyond the activity period. Default is `"lightgrey"`.
@@ -31,7 +31,7 @@
 #'  ct_plot_density(A)
 #
 #'  # Customize plot with specific colors and line types
-#'  ct_plot_density(A, linecol = "gray10", linewidth = 0.8,
+#'  ct_plot_density(A, line_color = "gray10", line_width = 0.8,
 #'                  xcenter = "midnight", rug = TRUE,
 #'                  rug_color = 'red', extend_alpha = 0)
 #'
@@ -41,16 +41,16 @@
 #' @import overlap
 #' @export
 #'
-ct_plot_density <- function(time,
+ct_plot_density <- function(time_of_day,
                             xscale = 24,
                             xcenter = c("noon", "midnight"),
                             n_grid = 128,
                             kmax = 3,
                             adjust = 1,
                             rug = FALSE,
-                            linetype = 2,
-                            linecol = "gray10",
-                            linewidth = 1,
+                            line_type = 2,
+                            line_color = "gray10",
+                            line_width = 1,
                             rug_lentgh = 0.018,
                             rug_color = "gray30",
                             extend = "lightgrey",
@@ -61,13 +61,14 @@ ct_plot_density <- function(time,
   suppressWarnings({
 
     # Input validation
+    A <- time_of_day
     check_density_input(A)
     xcenter <- match.arg(xcenter)
     isMidnt <- xcenter == "midnight"
 
     # Bandwidth calculation
     bwA <- overlap::getBandWidth(A, kmax = kmax) / adjust
-    if (is.na(bwA)) stop("Bandwidth estimation failed.")
+    if (is.na(bwA)) cli::cli_abort("Bandwidth estimation failed.")
 
     # Create a sequence of values for density estimation
     xsc <- if (is.na(xscale)) 1 else xscale / (2 * pi)
@@ -91,14 +92,14 @@ ct_plot_density <- function(time,
     # Base ggplot object
     p <- ggplot2::ggplot()+
       ggplot2::geom_line(data = poly_df, mapping = ggplot2::aes(x = x, y = y),
-                   color = linecol, linetype = linetype, linewidth = linewidth)+
+                   color = line_color, line_type = line_type, linewidth = line_width)+
       ggplot2::labs(x = "\nTime", y = "Density\n") +
       ggplot2::theme_minimal()+
       ggplot2::theme(
         axis.line = ggplot2::element_line(linewidth = 0.5, color = "gray10"),
         axis.text = ggplot2::element_text(size = 12),
         axis.title = ggplot2::element_text(size = 14),
-        axis.ticks = ggplot2::element_line(linewidth = 0.2, color = "gray10")
+        axis.ticks = ggplot2::element_line(linewidth  = 0.2, color = "gray10")
       )
 
     # Add rug plot if requested

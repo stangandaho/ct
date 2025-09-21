@@ -437,9 +437,12 @@ lnorm_confint <- function(estimate, se, percent = 95){
 #' @keywords internal
 #' @noRd
 get_column <- function(data, ...){
-  data %>%
-    dplyr::select(...) %>%
-    colnames()
+  colname <- data %>% dplyr::select(dplyr::all_of(...)) %>% colnames()
+  if (length(colname) == 0) {
+    return(NULL)
+  }
+
+  return(colname)
 }
 
 #' Common datetime formats for parsing

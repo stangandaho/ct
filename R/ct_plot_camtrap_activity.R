@@ -54,14 +54,14 @@ ct_plot_camtrap_activity <- function(data,
                                      threshold = 5,
                                      time_unit = "days",
                                      format = NULL,
-                                     activity_style = list(width = 0.8, color = "steelblue", alpha = 0.7, linetype = 1),
-                                     break_style = list(width = 0.8, color = "#c90026", alpha = 0.9, linetype = 1),
+                                     activity_style = list(linewidth = 0.8, color = "steelblue", alpha = 0.7, linetype = 1),
+                                     break_style = list(linewidth = 0.8, color = "#c90026", alpha = 0.9, linetype = 1),
                                      show_gaps = TRUE,
                                      ylabel_format = "%Y-%m-%d",
                                      ybreak = paste(1, time_unit)
                                      ) {
 
-  # Turn of warning when no gap is found
+  # Turn off warning when no gap is found
   options(warn = -1)
 
   # Prepare data
@@ -140,7 +140,7 @@ ct_plot_camtrap_activity <- function(data,
       linewidth = ifelse(is.null(activity_style$linewidth), 0.8, activity_style$linewidth),
       alpha = ifelse(is.null(activity_style$alpha), 0.7, activity_style$alpha),
       color = ifelse(is.null(activity_style$color), "steelblue", activity_style$color),
-      linetype = ifelse(is.null(break_style$linetype), 1, break_style$linetype)
+      linetype = ifelse(is.null(activity_style$linetype), 1, activity_style$linetype)
     ) +
     ggplot2::scale_y_datetime(
       name = "Period",
@@ -167,7 +167,7 @@ ct_plot_camtrap_activity <- function(data,
 
   }
 
-  # Turn on warning when no gap is found
+  # Turn on warning
   options(warn = -1)
   return(p)
 }

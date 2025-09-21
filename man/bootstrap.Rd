@@ -31,9 +31,9 @@ ct_boot_estimates(
 )
 }
 \arguments{
-\item{A}{A numeric vector of time-of-day observations (in radians) for species A.}
+\item{A}{A numeric vector of time-of-day observations (in radians, 0 to \eqn{2\pi}) for species A.}
 
-\item{B}{A numeric vector of time-of-day observations (in radians) for species B.}
+\item{B}{A numeric vector of time-of-day observations (in radians, 0 to \eqn{2\pi}) for species B.}
 
 \item{nb}{
 the number of bootstrap samples required
@@ -43,11 +43,11 @@ the number of bootstrap samples required
 if TRUE, smoothed bootstrap samples are produced.
 }
 
-\item{kmax}{An integer indicating the maximum number of modes allowed in the activity pattern. Default is \code{3}.}
+\item{kmax}{An integer indicating the maximum number of modes allowed in the activity pattern. Default is 3.}
 
-\item{adjust}{A numeric value to adjust the bandwidth of the kernel density estimation. Default is \code{1}.}
+\item{adjust}{A numeric value to adjust the bandwidth of the kernel density estimation. Default is 1.}
 
-\item{n_grid}{An integer specifying the number of grid points for density estimation. Default is \code{128}.}
+\item{n_grid}{An integer specifying the number of grid points for density estimation. Default is 128.}
 
 \item{type}{the name of the estimator to use, or "all" to produce all three
 estimates. See \code{\link[=ct_overlap_estimates]{ct_overlap_estimates()}} for recommendations on which to use.}

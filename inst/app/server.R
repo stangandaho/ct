@@ -1,10 +1,10 @@
 
 server <- function(input, output, session) {
-  volumes <- getVolumes()()
+  volumes <- shinyFiles::getVolumes()()
   shinyDirChoose(input, "dir", roots = volumes, session = session)
 
   observeEvent(input$dir, {
-  folderPath <- parseDirPath(volumes, input$dir)
+  folderPath <- shinyFiles::parseDirPath(volumes, input$dir)
     session$sendCustomMessage(type = "dir_selected", message = folderPath)
     if (!is.null(folderPath)) {
       if (length(folderPath) == 1) {addResourcePath("images", folderPath)}
@@ -35,7 +35,7 @@ server <- function(input, output, session) {
 
   ## METADATA TABLE
   observeEvent(input$image_clicked, {
-    metadata <- maimer::mm_get_metadata(path = input$image_clicked)
+    metadata <- ct_get_metadata(path = input$image_clicked)
     output$metadata_table <- renderTable(metadata, spacing = "l")
   })
 
@@ -60,7 +60,7 @@ server <- function(input, output, session) {
 
         title = "Customize tags",
         footer = tagList(
-          shinyFilesButton("import_tag", "Import", "Choose tag file", multiple = F, icon = icon("upload")),
+          shinyFiles::shinyFilesButton("import_tag", "Import", "Choose tag file", multiple = F, icon = icon("upload")),
           modalButton("Ok")
           #actionButton("save_tag", "Save", icon = icon("save"))
         ),
@@ -109,7 +109,7 @@ server <- function(input, output, session) {
   })
 
   ## IMPORT PARENT AND VALUE
-  shinyFileChoose(input = input, id = "import_tag", session = session,
+  shinyFiles::shinyFileChoose(input = input, id = "import_tag", session = session,
                   root = volumes, filetypes = c("txt", "csv"))
   tag_file_path <- reactive(parseFilePaths(roots = volumes, selection = input$import_tag))
 

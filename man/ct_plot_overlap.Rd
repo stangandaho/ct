@@ -15,9 +15,9 @@ ct_plot_overlap(
   rug = FALSE,
   overlap_color = "gray40",
   overlap_alpha = 0.8,
-  linetype = c(1, 2),
-  linecol = c("gray10", "gray0"),
-  linewidth = c(1, 1),
+  line_type = c(1, 2),
+  line_color = c("gray10", "gray0"),
+  line_width = c(1, 1),
   overlap_only = FALSE,
   rug_lentgh = 0.018,
   rug_color = "gray30",
@@ -27,41 +27,41 @@ ct_plot_overlap(
 )
 }
 \arguments{
-\item{A}{A numeric vector of time-of-day observations (in radians) for species A.}
+\item{A}{A numeric vector of time-of-day observations (in radians, 0 to \eqn{2\pi}) for species A.}
 
-\item{B}{A numeric vector of time-of-day observations (in radians) for species B.}
+\item{B}{A numeric vector of time-of-day observations (in radians, 0 to \eqn{2\pi}) for species B.}
 
-\item{xscale}{A numeric value to scale the x-axis. Default is \code{24} for representing time in hours.}
+\item{xscale}{A numeric value to scale the x-axis. Default is 24 for representing time in hours.}
 
 \item{xcenter}{A string indicating the center of the x-axis. Options are \code{"noon"} (default) or \code{"midnight"}.}
 
-\item{n_grid}{An integer specifying the number of grid points for density estimation. Default is \code{128}.}
+\item{n_grid}{An integer specifying the number of grid points for density estimation. Default is 128.}
 
-\item{kmax}{An integer indicating the maximum number of modes allowed in the activity pattern. Default is \code{3}.}
+\item{kmax}{An integer indicating the maximum number of modes allowed in the activity pattern. Default is 3.}
 
-\item{adjust}{A numeric value to adjust the bandwidth of the kernel density estimation. Default is \code{1}.}
+\item{adjust}{A numeric value to adjust the bandwidth of the kernel density estimation. Default is 1.}
 
 \item{rug}{A logical value indicating whether to include a rug plot of the observations. Default is \code{FALSE}.}
 
 \item{overlap_color}{A string specifying the color of the overlap area. Default is \code{"gray40"}.}
 
-\item{overlap_alpha}{A numeric value (0 to 1) for the transparency of the overlap area. Default is \code{0.8}.}
+\item{overlap_alpha}{A numeric value (0 to 1) for the transparency of the overlap area. Default is 0.8.}
 
-\item{linetype}{A vector of integers specifying the line types for species A and B density lines. Default is \code{c(1, 2)}.}
+\item{line_type}{A vector of integers specifying the line types for species A and B density lines. Default is \code{c(1, 2)}.}
 
-\item{linecol}{A vector of strings specifying the colors of the density lines for species A and B. Default is \code{c("gray10", "gray0")}.}
+\item{line_color}{A vector of strings specifying the colors of the density lines for species A and B. Default is \code{c("gray10", "gray0")}.}
 
-\item{linewidth}{A vector of numeric values specifying the line widths for species A and B density lines. Default is \code{c(1, 1)}.}
+\item{line_width}{A vector of numeric values specifying the line widths for species A and B density lines. Default is \code{c(1, 1)}.}
 
 \item{overlap_only}{A logical value indicating whether to plot only the overlap region without individual density lines. Default is \code{FALSE}.}
 
-\item{rug_lentgh}{A numeric value specifying the length of the rug ticks. Default is \code{0.018} (in normalized plot coordinates).}
+\item{rug_lentgh}{A numeric value specifying the length of the rug ticks. Default is 0.018 (in normalized plot coordinates).}
 
 \item{rug_color}{A string specifying the color of the rug ticks. Default is \code{"gray30"}.}
 
 \item{extend}{A string specifying the color of the extended area beyond the activity period. Default is \code{"lightgrey"}.}
 
-\item{extend_alpha}{A numeric value (0 to 1) for the transparency of the extended area. Default is \code{0.8}.}
+\item{extend_alpha}{A numeric value (0 to 1) for the transparency of the extended area. Default is 0.8.}
 
 \item{...}{Additional arguments passed to the \code{geom_rug} function.}
 }
@@ -72,20 +72,6 @@ If \code{overlap_only = TRUE}, only the overlap region is displayed.
 \description{
 This function visualizes the temporal overlap between two species' activity patterns based on time-of-day data.
 It uses kernel density estimation to estimate activity densities and highlights areas of overlap between the two species.
-}
-\details{
-This function calculates kernel density estimates for two sets of time-of-day data (\code{A} and \code{B})
-and visualizes their overlap. The time-of-day data should be expressed in radians (0 to \eqn{2\pi}).
-
-Key features of the plot:
-\itemize{
-\item The x-axis can be scaled to represent hours (default \code{xscale = 24}) or other units.
-\item The center of the x-axis can be adjusted to \code{"noon"} or \code{"midnight"}.
-\item A shaded polygon highlights the overlap region between the two density curves.
-\item Optionally includes a rug plot to indicate raw observations.
-\item Allows customization of line types, colors, widths, and transparency.
-\item Extended regions (beyond the primary activity period) can be highlighted for clarity.
-}
 }
 \examples{
 \dontrun{
@@ -98,10 +84,12 @@ Key features of the plot:
   ct_plot_overlap(A = species_A, B = species_B)
 
   # Customize plot with specific colors and line types
-  ct_plot_overlap(A = species_A, B = species_B, overlap_color = "blue", linecol = c("red", "green"))
+  ct_plot_overlap(A = species_A, B = species_B, overlap_color = "blue",
+  line_color = c("red", "green"))
 
   # Include rug plots and change transparency
-  ct_plot_overlap(A = species_A, B = species_B, rug = TRUE, overlap_alpha = 0.5)
+  ct_plot_overlap(A = species_A, B = species_B, rug = TRUE,
+  overlap_alpha = 0.5)
 }
 
 }

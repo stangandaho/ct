@@ -31,15 +31,15 @@ ct_temporal_shift(
 
 \item{convert_time}{Logical. If \code{TRUE}, converts times to radians before analysis.}
 
-\item{xscale}{A numeric value to scale the x-axis. Default is \code{24} for representing time in hours.}
+\item{xscale}{A numeric value to scale the x-axis. Default is 24 for representing time in hours.}
 
 \item{xcenter}{A string indicating the center of the x-axis. Options are \code{"noon"} (default) or \code{"midnight"}.}
 
-\item{n_grid}{An integer specifying the number of grid points for density estimation. Default is \code{128}.}
+\item{n_grid}{An integer specifying the number of grid points for density estimation. Default is 128.}
 
-\item{kmax}{An integer indicating the maximum number of modes allowed in the activity pattern. Default is \code{3}.}
+\item{kmax}{An integer indicating the maximum number of modes allowed in the activity pattern. Default is 3.}
 
-\item{adjust}{A numeric value to adjust the bandwidth of the kernel density estimation. Default is \code{1}.}
+\item{adjust}{A numeric value to adjust the bandwidth of the kernel density estimation. Default is 1.}
 
 \item{width_at}{Numeric. The fraction of maximum density at which the activity width is measured (default is 0.5).}
 

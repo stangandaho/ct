@@ -1,6 +1,3 @@
-
-
-
 ui <- bs4Dash::dashboardPage(
   header = bs4Dash::dashboardHeader(
     sidebarIcon = icon("grip"), fixed = T, compact = T,

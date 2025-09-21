@@ -1,8 +1,8 @@
 Package: ct
 Type: Package
-Title: Camera trap data tool
+Title: Camera Trap Data Tool
 Version: 0.3.0
-Date: 2025-07-25
+Date: 2025-08-25
 Imports: 
     activity (>= 1.3.4),
     bs4Dash (>= 2.3.4),
@@ -39,6 +39,7 @@ LazyData: true
 RoxygenNote: 7.3.2
 Roxygen: list(markdown = TRUE)
 Suggests: 
+    iNEXT (>= 3.0.2),
     httr2,
     knitr (>= 1.50),
     rmarkdown,

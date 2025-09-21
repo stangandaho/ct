@@ -1,0 +1,211 @@
+---
+title: Rarefaction and Interpolation of Species Diversity Estimation with Camera Trap
+  Data using ct R package
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Species diversity estimation is a fundamental aspect of camera trap ecology, but comparing diversity across sites with different sampling efforts can be challenging. The `ct` package provides a solution by implementing interpolation and extrapolation framework specifically designed for camera trap data.
+
+## Understanding Rarefaction and Extrapolation
+
+**Rarefaction** downscales diversity estimates to a common, smaller sample size, answering the question: *"How many species would we expect if we had sampled less intensively?"* This technique helps compare diversity between well-sampled and poorly-sampled sites on equal footing.
+
+**Extrapolation** projects diversity estimates beyond the observed sample size, addressing: *"How many species would we detect with additional sampling effort?"* This is particularly valuable for estimating total community diversity and planning future sampling efforts.
+
+## Hill Numbers
+
+The function estimates diversity using Hill numbers, which provide a mathematically unified approach to measuring biodiversity:
+
+- **q = 0 (Species Richness)**: Total number of species, giving equal weight to all species regardless of abundance
+- **q = 1 (Shannon Diversity)**: Exponential of Shannon entropy, emphasizing common species
+- **q = 2 (Simpson Diversity)**: Inverse of Simpson concentration, focusing on dominant species
+
+This allows to understand how diversity patterns change when rare versus common species are emphasized.
+
+## Application with ct R package
+
+We next describe the main function `ct_inext()` with its default arguments.
+```{r eval=FALSE}
+ct_inext(data, species_column, 
+         site_column, size_column, 
+         strata_column = NULL, diversity_order = 0, 
+         sample_size = NULL, endpoint = NULL, 
+         knots = 40, n_bootstrap = 100)
+```
+
+The arguments of this function are briefly described here and can be further explored using illustrative examples. The function computes incidence-frequency diversity estimates of order *q* (diversity_order = *q*), along with sample coverage estimates and related statistics, for *K* evenly spaced knots (if `knots = K`). Each knot corresponds to a standardized number of sampling units for which diversity estimates are calculated. By default, `endpoint` is set to twice the reference sample size (i.e., twice the total number of sampling units). For example, if `endpoint = 10` and `knots = 4`, diversity estimates will be computed for a sequence of sample sizes `(1, 4, 7, 10)`. If `strata_column` is provided, the function repeats this process separately for each stratum, allowing comparisons among groups (e.g., habitats or treatments). Bootstrap resampling is performed `n_bootstrap` times to obtain standard errors and 95% confidence intervals for diversity and coverage estimates.
+
+
+## Workflow Example
+
+Let's walk through a complete analysis using camera trap data from the `ct` package:
+
+### Data Preparation
+
+```{r warning=FALSE, message=FALSE}
+library(ct)
+library(dplyr)
+
+# Import and prepare camera trap data
+camdata1 <- read.csv(ct:::table_files()[1]) %>% 
+  dplyr::mutate(site = "pene") %>% 
+  # Remove consecutive detections of the same species within 60 seconds
+  ct_independence(species_column = species, 
+                  site_column = camera,
+                  datetime = datetimes,
+                  threshold = 60, 
+                  format = "%Y-%m-%d %H:%M:%S", 
+                  only = TRUE)
+
+head(camdata1)
+```
+
+### Create Daily Sampling Units
+
+Camera trap analysis typically requires converting detection records into standardized sampling units. We use camera-days as our sampling units:
+
+```{r}
+# Aggregate data to daily detection records per camera
+camday <- ct_camera_day(
+  data = camdata1,
+  deployment_column = camera,
+  datetime_column = datetime,
+  species_column = species,
+  size_column = number
+)
+camday
+```
+
+
+This creates a dataset where each row represents one day of sampling at one camera location, with species detection counts for that day.
+
+### Diversity Analysis
+
+Now we can interpolate and extrapolate diversity trend across Hill number orders:
+
+```{r}
+# Run rarefaction and extrapolation analysis
+int_ext <- ct_inext(data = camday, 
+                    diversity_order = c(0, 1, 2),
+                    species_column = species,
+                    site_column = sampling_unit,
+                    size_column = number,
+                    knots = 40,
+                    n_bootstrap = 50)
+
+```
+
+There are several things to explain about the output of the function, which is presented as follows:
+
+```{r, echo=FALSE}
+int_ext
+```
+
+
+## Understanding the Output
+
+The `ct_inext()` function returns a iNEXT object with three main components:
+*DataInfo*, *iNextEst*, and *AsyEst*
+
+### i. DataInfo: Basic Community Information
+
+```{r include=FALSE}
+int_ext$DataInfo
+```
+
+
+This table provides essential community structure information:
+
+- **T**: Total number of sampling units (2,182 camera-days)
+- **U**: Total number of individuals detected (148 detections)
+- **S.obs**: Observed species richness (10 species)
+- **SC**: Sample coverage (97.3% - indicates sampling completeness)
+- **Q1-Q10**: First ten incidence frequency counts (e.g., detection of the species in 4 camera trap)
+
+The high sample coverage (97.3%) suggests our sampling captured most of the species present in the community.
+
+### ii. iNextEst: Diversity Curves
+
+The `$iNextEst` element of the output consists of two data frames: `$size_based` and `$coverage_based`. The `$size_based` data frame provides results for each of the 40 interpolation and extrapolation knots (sample sizes). For each knot, it reports the assemblage name, the sample size (*m*), and the method used (Rarefaction, Observed, or Extrapolation, depending on whether *m* is smaller than, equal to, or larger than the reference sample size). It also includes the diversity order (*order.q*), the estimated diversity (*qD*), its 95% confidence interval (*qD.LCL* and *qD.UCL*), and the corresponding sample coverage estimate (*SC*) along with its 95% confidence limits (*SC.LCL* and *SC.UCL*). These coverage estimates and confidence intervals are used to generate the sample completeness curve.
+
+```{r}
+int_ext$iNextEst$size_based %>% 
+  dplyr::slice_sample(prop = 0.15) # Sample 15% of rows
+
+```
+
+
+The `$coverage_based` data frame provides results standardized by sample coverage rather than sample size. For each coverage level, it reports the assemblage name, the standardized sample coverage (*SC*), and the corresponding sample size (*m*) required to achieve that coverage (based on the 40 rarefaction and extrapolation knots). It also specifies the method (Rarefaction, Observed, or Extrapolation, depending on whether *SC* is lower than, equal to, or higher than the reference sample coverage), the diversity order (*order.q*), the diversity estimate (*qD*), and its 95% confidence interval (*qD.LCL* and *qD.UCL*). These coverage-based diversity estimates and confidence intervals are used to construct the coverage-based rarefaction/extrapolation (R/E) curves.
+
+```{r}
+int_ext$iNextEst$coverage_based %>% 
+  dplyr::slice_sample(prop = 0.15) # Sample 15% of rows
+
+```
+
+Note that in this example, we do not have a specific assemblage or site. Here, "Assemblage" refers to the different strata levels (for example, habitat types such as "Savanna," "Forest," etc.) where the sampling took place. If nothing is provided (i.e., `strata_column = NULL`) in the `ct_inext()` function, the "Assemblage" column will simply contain the same value — "Assemblage1" for all coverage levels.
+
+```{r include=FALSE}
+#In the next section, we will demonstrate how to apply rarefaction and extrapolation across multiple strata using a practical example.
+```
+
+
+### iii. AsyEst: Asymptotic Estimates
+
+The $AsyEst element summarizes the asymptotic diversity estimates for each assemblage. It reports the assemblage name, the type of diversity (species richness for q = 0, Shannon diversity for q = 1, and Simpson diversity for q = 2), the observed diversity, the estimated asymptotic diversity value, its standard error, and the associated 95% confidence interval (lower and upper limits). These asymptotic estimates are calculated using appropriate functions for each diversity order, providing an estimate of the expected diversity if sampling were exhaustive.
+
+```{r include=FALSE}
+int_ext$AsyEst
+```
+
+
+## Visualization with ct_plot_inext()
+The `ct_plot_inext()` transforms rarefaction and extrapolation results into customizable visualizations, enabling intuitive interpretation. It supports three main plot types: **type = 1** (sample-size-based curves) showing how diversity accumulates with increased sampling effort, **type = 2** (sample completeness curves) illustrating the relationship between sample size and coverage to assess sampling adequacy, and **type = 3** (coverage-based curves) standardizing diversity comparisons by completeness for more ecologically meaningful contrasts. Users can customize plots with `facet_var` to split panels by assemblage, diversity order, or both, and with `color_var` to color-code curves by assemblage, diversity order, both, or not at all—offering flexible options for comparing sites, treatments, or diversity measures visually.
+
+
+### Plot with curves colored by order
+
+```{r}
+ct_plot_inext(int_ext, type = 1, color_var = "Order.q")
+```
+
+### Plot with curves faceted by order
+```{r}
+ct_plot_inext(int_ext, type = 1, facet_var = "Order.q")
+```
+
+### Customize with ggplot2
+```{r}
+library(ggplot2)
+ct_plot_inext(int_ext, type = 1, facet_var = "Order.q")+
+  # Remove assemblage legend
+  guides(color = "none", shape = "none", fill = "none")+
+  # Change axis title x
+  labs(x = "Camera-day")+
+  theme_minimal()+
+  theme(
+    # Change strip style
+    strip.background = element_rect(fill = "gray10", color = NA),
+    strip.text = element_text(colour = "white"),
+    # Move axis tile x to bottom and increase text size
+    axis.title.x = element_text(margin = margin(t = 1, unit = "lines"),
+                                size = 14),
+    # Increase axis text (both x and y) size
+    axis.text = element_text(size = 12),
+    # Move legend to top
+    legend.position = "top",
+    # Increase legend label size
+    legend.text = element_text(size = 12)
+  )
+
+```
+
+
+
+

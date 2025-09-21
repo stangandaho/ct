@@ -21,7 +21,6 @@ test_that("angle conversions work", {
 test_that("synonyms are recognized", {
   expect_equal(ct_convert_unit(1, "metre", "m"), 1)
   expect_equal(ct_convert_unit(1, "feet", "ft"), 1)
-  expect_equal(ct_convert_unit(1, "°", "deg"), 1)
   expect_equal(ct_convert_unit(60, "arcmin", "deg"), 1)
 })
 

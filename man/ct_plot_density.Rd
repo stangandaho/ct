@@ -5,16 +5,16 @@
 \title{Plot species' activity patterns}
 \usage{
 ct_plot_density(
-  time,
+  time_of_day,
   xscale = 24,
   xcenter = c("noon", "midnight"),
   n_grid = 128,
   kmax = 3,
   adjust = 1,
   rug = FALSE,
-  linetype = 2,
-  linecol = "gray10",
-  linewidth = 1,
+  line_type = 2,
+  line_color = "gray10",
+  line_width = 1,
   rug_lentgh = 0.018,
   rug_color = "gray30",
   extend = "lightgrey",
@@ -23,25 +23,25 @@ ct_plot_density(
 )
 }
 \arguments{
-\item{time}{A numeric vector of time-of-day observations (in radians, 0 to \eqn{2\pi}).}
+\item{time_of_day}{A numeric vector of time-of-day observations (in radians, 0 to \eqn{2\pi}).}
 
-\item{xscale}{A numeric value to scale the x-axis. Default is \code{24} for representing time in hours.}
+\item{xscale}{A numeric value to scale the x-axis. Default is 24 for representing time in hours.}
 
 \item{xcenter}{A string indicating the center of the x-axis. Options are \code{"noon"} (default) or \code{"midnight"}.}
 
-\item{n_grid}{An integer specifying the number of grid points for density estimation. Default is \code{128}.}
+\item{n_grid}{An integer specifying the number of grid points for density estimation. Default is 128.}
 
-\item{kmax}{An integer indicating the maximum number of modes allowed in the activity pattern. Default is \code{3}.}
+\item{kmax}{An integer indicating the maximum number of modes allowed in the activity pattern. Default is 3.}
 
-\item{adjust}{A numeric value to adjust the bandwidth of the kernel density estimation. Default is \code{1}.}
+\item{adjust}{A numeric value to adjust the bandwidth of the kernel density estimation. Default is 1.}
 
 \item{rug}{A logical value indicating whether to include a rug plot of the observations. Default is \code{FALSE}.}
 
-\item{linetype}{A numeric specifying the line types. Default is \code{c(1, 2)}.}
+\item{line_type}{A numeric specifying the line types. Default is 2.}
 
-\item{linecol}{A string specifying the colors of the density lines for species A and B. Default is \code{c("gray10", "gray0")}.}
+\item{line_color}{A string specifying the colors of the density lines. Default is "gray10".}
 
-\item{linewidth}{A numeric value specifying the line widths for species A and B density lines. Default is \code{c(1, 1)}.}
+\item{line_width}{A numeric value specifying the line width. Default is 1.}
 
 \item{rug_lentgh}{A numeric value specifying the length of the rug ticks. Default is \code{0.018} (in normalized plot coordinates).}
 
@@ -69,7 +69,7 @@ It uses kernel density estimation to estimate activity density.
  # Plot overlap with default settings
  ct_plot_density(A)
  # Customize plot with specific colors and line types
- ct_plot_density(A, linecol = "gray10", linewidth = 0.8,
+ ct_plot_density(A, line_color = "gray10", line_width = 0.8,
                  xcenter = "midnight", rug = TRUE,
                  rug_color = 'red', extend_alpha = 0)
 

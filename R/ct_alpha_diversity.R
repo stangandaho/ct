@@ -133,11 +133,9 @@ ct_alpha_diversity <- function(data,
                              size_column = NULL,
                              margin = 1) {
 
-  site_column <- as.character(rlang::ensym(site_column))
-  species_column <- rlang::enquo(species_column)
-
-
-  size_column <- tryCatch({ rlang::ensym(size_column) }, error = function(e)NULL)
+  site_column <- data %>% dplyr::select({{site_column}}) %>% colnames()
+  species_column <- data %>% dplyr::select({{species_column}}) %>% colnames()
+  size_column <- data %>% dplyr::select({{size_column}}) %>% colnames()
 
   INDEX <- c("shannon", "simpson", "invsimpson", "evenness", "pielou")
   if (!all(index %in% INDEX)) {
@@ -146,18 +144,18 @@ ct_alpha_diversity <- function(data,
   }
 
 
-  if (!is.null(size_column)) {
+  if (length(size_column) != 0) {
     data <- transform_index_data(data = data,
-                                 site_column = !!site_column,
-                                 species_column = !!species_column,
+                                 site_column = site_column,
+                                 species_column = species_column,
                                  to_community = to_community,
                                  size_column = size_column
                                  )
 
   }else{
     data <- transform_index_data(data = data,
-                                 site_column = !!site_column,
-                                 species_column = !!species_column,
+                                 site_column = site_column,
+                                 species_column = species_column,
                                  to_community = to_community
     )
   }
@@ -219,31 +217,29 @@ transform_index_data <- function(data,
                              to_community = TRUE,
                              size_column = NULL) {
 
-
-  site_column <- rlang::enquo(site_column)
-  species_column <- rlang::enquo(species_column)
-
+  site_column <- data %>% dplyr::select({{site_column}}) %>% colnames()
+  species_column <- data %>% dplyr::select({{species_column}}) %>% colnames()
 
   if (to_community) {
     if (!is.null(size_column)) {
       size_column <- dplyr::ensym(size_column)
 
       data <- data %>%
-        ct_to_community(site_column = !!site_column,
-                        species_column = !!species_column,
-                        size_column = !!size_column, values_fill = 0)
+        ct_to_community(site_column = site_column,
+                        species_column = species_column,
+                        size_column = size_column, values_fill = 0)
     }else{
 
       data <-data %>%
-        ct_to_community(site_column = !!site_column,
-                        species_column = !!species_column,
+        ct::ct_to_community(site_column = site_column,
+                        species_column = species_column,
                         values_fill = 0)
     }
 
 
   }else{
     data <- data %>%
-      dplyr::select(!!site_column, !!species_column)
+      dplyr::select(dplyr::all_of(c(site_column, species_column)))
   }
 
   return(data)

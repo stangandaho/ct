@@ -36,12 +36,10 @@ navbar:
       text: Articles
       icon: fa-blog
       menu:
-      - text: 1. Data preparation
+      - text: Data preparation
         href: articles/camtrap_data_preparation.html
-      - text: 2. Data analysis
-        href: articles/camtrap_data_analysis.html
-      - text: 3. Elegant visualizations
-        href: articles/camtrap_analysis_visualisation.html
+      - text: Rarefaction and Extrapolation
+        href: articles/rarefaction_and_extrapolation.html
     news:
       text: News
       icon: fa-face-smile
@@ -97,6 +95,7 @@ reference:
   - ct_dp_version
   - ct_dp_filter
   - ct_convert_unit
+  - ct_camera_day
 
 - title: Data analysis
   desc: |
@@ -108,6 +107,7 @@ reference:
   - ct_plot_overlap_coef
   - ct_plot_rose_diagram
   - ct_plot_camtrap_activity
+  - ct_plot_inext
   - ct_overlap_estimates
   - ct_bootstrap
   - ct_resample
@@ -130,3 +130,4 @@ reference:
   - ct_QAIC
   - ct_chi2_select
   - ct_fit_ds
+  - ct_inext

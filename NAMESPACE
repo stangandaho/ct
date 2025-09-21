@@ -33,6 +33,7 @@ export(ct_dp_example) # no 2025-08-09
 export(ct_dp_version) # no 2025-08-09
 export(ct_dp_filter) # no 2025-08-09
 export(ct_convert_unit) # no 2025-08-24
+export(ct_camera_day) # no 2025-09-21
 
 ## Analysis
 export(ct_describe_df)
@@ -41,6 +42,7 @@ export(ct_plot_overlap)#ok
 export(ct_plot_overlap_coef)
 export(ct_plot_rose_diagram)
 export(ct_plot_camtrap_activity)
+export(ct_plot_inext) # no 2025-09-21
 export(ct_overlap_estimates)
 export(ct_bootstrap)
 export(ct_resample)
@@ -63,6 +65,7 @@ export(ct_select_model) # no 2025-08-02
 export(ct_QAIC) # no 2025-08-02
 export(ct_chi2_select) # no 2025-08-02
 export(ct_fit_ds) # no 2025-08-07
+export(ct_inext) # no 2025-09-21
 
 
 

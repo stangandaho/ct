@@ -8,5 +8,5 @@ utils::globalVariables(c(
   ".", "Time", "Density", "Period", "n", "site", "species",
   "n_records", "total_duration",
   "QAIC", "best", "combn", "criteria", "id", "key", "model", "nadj2",
-  "scientific_name"
+  "scientific_name", "min_date", "max_date"
 ))

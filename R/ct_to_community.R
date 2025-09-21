@@ -40,33 +40,34 @@
 #' @export
 
 ct_to_community <- function(data,
-                         site_column,
-                         species_column,
-                         size_column,
-                         values_fill = NULL){
+                            site_column,
+                            species_column,
+                            size_column,
+                            values_fill = NULL
+                            ){
 
   if (!hasArg(site_column) | !hasArg(species_column)) {
     has_ <- c(hasArg(site_column), hasArg(species_column))
     agr_name <- c("site_column", "species_column")[!has_]
-    stop(sprintf("'%s' must be provided if make_matrix is TRUE",
+    cli::cli_abort(sprintf("'%s' must be provided if make_matrix is TRUE",
                  paste0(agr_name, collapse = " ,")))
 
   }
 
   # Convert site_column and species_column to symbols, handling both quoted and unquoted input
-  site_column <- dplyr::ensym(site_column)
-  species_column <- dplyr::ensym(species_column)
+  site_column <- data %>% dplyr::select({{site_column}}) %>% colnames()
+  species_column <- data %>% dplyr::select({{species_column}}) %>% colnames()
 
   # If size_column is provided, capture it with enquo; otherwise, leave it as NULL
   if (!hasArg(size_column)) {
     data <- data %>%
-      dplyr::count(!!site_column, !!species_column) %>%
+      dplyr::summarise(n = dplyr::n(), .by = c(site_column, species_column)) %>%
       tidyr::pivot_wider(id_cols = !!site_column,
                          names_from = !!species_column,
                          values_from = n,
                          values_fill = values_fill)
   } else {
-    size_column <- dplyr::ensym(size_column)
+    size_column <- data %>% dplyr::select({{size_column}}) %>% colnames()
 
     data <- data %>%
       tidyr::pivot_wider(id_cols = !!site_column,

@@ -3,40 +3,29 @@
 #' This function visualizes the temporal overlap between two species' activity patterns based on time-of-day data.
 #' It uses kernel density estimation to estimate activity densities and highlights areas of overlap between the two species.
 #'
-#' @param A A numeric vector of time-of-day observations (in radians) for species A.
-#' @param B A numeric vector of time-of-day observations (in radians) for species B.
-#' @param xscale A numeric value to scale the x-axis. Default is `24` for representing time in hours.
+#' @param A A numeric vector of time-of-day observations (in radians, 0 to \eqn{2\pi}) for species A.
+#' @param B A numeric vector of time-of-day observations (in radians, 0 to \eqn{2\pi}) for species B.
+#' @param xscale A numeric value to scale the x-axis. Default is 24 for representing time in hours.
 #' @param xcenter A string indicating the center of the x-axis. Options are `"noon"` (default) or `"midnight"`.
-#' @param n_grid An integer specifying the number of grid points for density estimation. Default is `128`.
-#' @param kmax An integer indicating the maximum number of modes allowed in the activity pattern. Default is `3`.
-#' @param adjust A numeric value to adjust the bandwidth of the kernel density estimation. Default is `1`.
+#' @param n_grid An integer specifying the number of grid points for density estimation. Default is 128.
+#' @param kmax An integer indicating the maximum number of modes allowed in the activity pattern. Default is 3.
+#' @param adjust A numeric value to adjust the bandwidth of the kernel density estimation. Default is 1.
 #' @param rug A logical value indicating whether to include a rug plot of the observations. Default is `FALSE`.
 #' @param overlap_color A string specifying the color of the overlap area. Default is `"gray40"`.
-#' @param overlap_alpha A numeric value (0 to 1) for the transparency of the overlap area. Default is `0.8`.
-#' @param linetype A vector of integers specifying the line types for species A and B density lines. Default is `c(1, 2)`.
-#' @param linecol A vector of strings specifying the colors of the density lines for species A and B. Default is `c("gray10", "gray0")`.
-#' @param linewidth A vector of numeric values specifying the line widths for species A and B density lines. Default is `c(1, 1)`.
+#' @param overlap_alpha A numeric value (0 to 1) for the transparency of the overlap area. Default is 0.8.
+#' @param line_type A vector of integers specifying the line types for species A and B density lines. Default is `c(1, 2)`.
+#' @param line_color A vector of strings specifying the colors of the density lines for species A and B. Default is `c("gray10", "gray0")`.
+#' @param line_width A vector of numeric values specifying the line widths for species A and B density lines. Default is `c(1, 1)`.
 #' @param overlap_only A logical value indicating whether to plot only the overlap region without individual density lines. Default is `FALSE`.
-#' @param rug_lentgh A numeric value specifying the length of the rug ticks. Default is `0.018` (in normalized plot coordinates).
+#' @param rug_lentgh A numeric value specifying the length of the rug ticks. Default is 0.018 (in normalized plot coordinates).
 #' @param rug_color A string specifying the color of the rug ticks. Default is `"gray30"`.
 #' @param extend A string specifying the color of the extended area beyond the activity period. Default is `"lightgrey"`.
-#' @param extend_alpha A numeric value (0 to 1) for the transparency of the extended area. Default is `0.8`.
+#' @param extend_alpha A numeric value (0 to 1) for the transparency of the extended area. Default is 0.8.
 #' @param ... Additional arguments passed to the `geom_rug` function.
 #'
 #' @return A ggplot object representing the activity density curves and overlap between the two species.
 #' If `overlap_only = TRUE`, only the overlap region is displayed.
 #'
-#' @details
-#' This function calculates kernel density estimates for two sets of time-of-day data (`A` and `B`)
-#' and visualizes their overlap. The time-of-day data should be expressed in radians (0 to \eqn{2\pi}).
-#'
-#' Key features of the plot:
-#' - The x-axis can be scaled to represent hours (default `xscale = 24`) or other units.
-#' - The center of the x-axis can be adjusted to `"noon"` or `"midnight"`.
-#' - A shaded polygon highlights the overlap region between the two density curves.
-#' - Optionally includes a rug plot to indicate raw observations.
-#' - Allows customization of line types, colors, widths, and transparency.
-#' - Extended regions (beyond the primary activity period) can be highlighted for clarity.
 #'
 #' @examples
 #' \dontrun{
@@ -49,10 +38,12 @@
 #'   ct_plot_overlap(A = species_A, B = species_B)
 #'
 #'   # Customize plot with specific colors and line types
-#'   ct_plot_overlap(A = species_A, B = species_B, overlap_color = "blue", linecol = c("red", "green"))
+#'   ct_plot_overlap(A = species_A, B = species_B, overlap_color = "blue",
+#'   line_color = c("red", "green"))
 #'
 #'   # Include rug plots and change transparency
-#'   ct_plot_overlap(A = species_A, B = species_B, rug = TRUE, overlap_alpha = 0.5)
+#'   ct_plot_overlap(A = species_A, B = species_B, rug = TRUE,
+#'   overlap_alpha = 0.5)
 #' }
 #'
 #' @import ggplot2
@@ -68,9 +59,9 @@ ct_plot_overlap <- function(A,
                             rug = FALSE,
                             overlap_color = "gray40",
                             overlap_alpha = 0.8,
-                            linetype = c(1, 2),
-                            linecol = c("gray10", "gray0"),
-                            linewidth = c(1, 1),
+                            line_type = c(1, 2),
+                            line_color = c("gray10", "gray0"),
+                            line_width = c(1, 1),
                             overlap_only = FALSE,
                             rug_lentgh = 0.018,
                             rug_color = "gray30",
@@ -90,7 +81,7 @@ ct_plot_overlap <- function(A,
     # Bandwidth calculation
     bwA <- overlap::getBandWidth(A, kmax = kmax) / adjust
     bwB <- overlap::getBandWidth(B, kmax = kmax) / adjust
-    if (is.na(bwA) || is.na(bwB)) stop("Bandwidth estimation failed.")
+    if (is.na(bwA) || is.na(bwB)) cli::cli_abort("Bandwidth estimation failed.")
 
     # Create a sequence of values for density estimation
     xsc <- if (is.na(xscale)) 1 else xscale / (2 * pi)
@@ -124,21 +115,21 @@ ct_plot_overlap <- function(A,
       ggplot2::labs(x = "\nTime", y = "Density\n") +
       ggplot2::theme_minimal()+
       ggplot2::theme(
-        axis.line = ggplot2::element_line(linewidth = 0.5, color = "gray10"),
+        axis.line = ggplot2::element_line(linewidth  = 0.5, color = "gray10"),
         axis.text = ggplot2::element_text(size = 12),
         axis.title = ggplot2::element_text(size = 14),
         axis.ticks = ggplot2::element_line(linewidth = 0.2, color = "gray10")
       )
 
     # Add density line
-    if (length(linewidth) == 1) {linewidth <- c(linewidth, linewidth)}
+    if (length(line_width) == 1) {line_width <- c(line_width, line_width)}
 
     if (!overlap_only) {
       p <- p +
-        ggplot2::geom_line(mapping = ggplot2::aes(y = yA), color = linecol[1],
-                  linewidth = linewidth[1], linetype = linetype[1])+
-        ggplot2::geom_line(mapping = ggplot2::aes(y = yB), color = linecol[2],
-                  linewidth = linewidth[2], linetype = linetype[2])
+        ggplot2::geom_line(mapping = ggplot2::aes(y = yA), color = line_color[1],
+                  linewidth = line_width[1], linetype = line_type[1])+
+        ggplot2::geom_line(mapping = ggplot2::aes(y = yB), color = line_color[2],
+                           linewidth = line_width[2], linetype = line_type[2])
     }
 
     # Add rug plot if requested
@@ -174,10 +165,10 @@ ct_plot_overlap <- function(A,
 
       if (!overlap_only) {
         p <- p +
-          ggplot2::geom_line(mapping = ggplot2::aes(y = yA), color = linecol[1],
-                    linewidth = linewidth[1], linetype = linetype[1])+
-          ggplot2::geom_line(mapping = ggplot2::aes(y = yB), color = linecol[2],
-                    linewidth = linewidth[2], linetype = linetype[2])
+          ggplot2::geom_line(mapping = ggplot2::aes(y = yA), color = line_color[1],
+                    line_width = line_width[1], line_type = line_type[1])+
+          ggplot2::geom_line(mapping = ggplot2::aes(y = yB), color = line_color[2],
+                    line_width = line_width[2], line_type = line_type[2])
       }
 
     }
