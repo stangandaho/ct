@@ -48,7 +48,7 @@ if (!requireNamespace("pak", quietly = TRUE)) {
   install.packages("pak", dependencies = TRUE)
 }
 
-# Install maimer from GitHub
+# Install ct from GitHub
 pak::pkg_install("stangandaho/ct")
 ```
 
