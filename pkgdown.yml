@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   camtrap_data_preparation: camtrap_data_preparation.html
   articles/rarefaction_and_extrapolation: rarefaction_and_extrapolation.html
-last_built: 2025-09-21T09:42Z
+last_built: 2025-09-29T12:33Z
 urls:
   reference: https://stangandaho.github.io/ct/reference
   article: https://stangandaho.github.io/ct/articles
