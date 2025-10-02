@@ -38,6 +38,12 @@ navbar:
       menu:
       - text: Data preparation
         href: articles/camtrap_data_preparation.html
+      - text: Distance Measurement
+        href: articles/distance_measurement.html
+      - text: Guide to Distance Sampling
+        href: articles/distance_sampling_guide.html
+      - text: Density Estimation With DS
+        href: articles/wildlife_density_estimation.html
       - text: Rarefaction and Extrapolation
         href: articles/rarefaction_and_extrapolation.html
     news:
@@ -96,6 +102,7 @@ reference:
   - ct_dp_filter
   - ct_convert_unit
   - ct_camera_day
+  - ct_camtrap_animal_distance
 
 - title: Data analysis
   desc: |

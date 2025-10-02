@@ -63,9 +63,27 @@ ct_check_name <- function(species_name,
   )
 
   # Fetch the XML response using httr2
-  response <- httr2::request(URL) %>%
-    httr2::req_perform() %>%
-    httr2::resp_body_xml()
+  # With this safer version
+  response <- tryCatch({
+    httr2::request(URL) %>%
+      httr2::req_perform() %>%
+      httr2::resp_body_xml()
+  }, error = function(e) {
+    cli::cli_alert_warning("Failed to retrieve data from ITIS: {e$message}")
+    return(NULL)
+  })
+
+  if (is.null(response)) {
+    return(dplyr::tibble(
+      search = species_name,
+      tsn = NA,
+      common_name = NA,
+      scientific_name = NA,
+      author = NA,
+      itis_url = NA,
+      taxon_status = NA
+    ))
+  }
 
   nodes <- xml2::xml_find_all(response, ".//ax21:itisTerms")
   # Build rows with lapply

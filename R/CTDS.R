@@ -9,7 +9,7 @@
 #' - `distance`: the midpoint (m) of the assigned distance interval between animal and camera
 #' - `object`: a unique identifier for each observation
 #' - `Sample.Label`: identifier for the sample (transect id)
-#' - `Effort effort`: number of a given second (e.g 0.25, 2, or 3) time steps the camera operated (i.e. temporal effort)
+#' - `Effort`: number of a given second (e.g 0.25, 2, or 3) time steps the camera operated (i.e. temporal effort)
 #' - `Region.Label`: label for a given stratum
 #' - `Area`: area of the strata⁠ in km^2
 #' - `fraction`: fraction of a full circle covered (field of view/360)
@@ -275,6 +275,7 @@ ct_fit_ds <- function(data,
     Distance::bootdht(model = ds_model,
                       flatfile = data,
                       resample_transects = TRUE,
+                      resample_strata = TRUE,
                       nboot = n_bootstrap,
                       cores = n_cores,
                       summary_fun = ifelse(estimate == "density",
@@ -287,7 +288,17 @@ ct_fit_ds <- function(data,
   })
 
   estimated <- summary(boot_result)
+  bootstrap_summary <- dplyr::tibble(n_bootstrap = estimated$nboot,
+                                     n_boot_failures = estimated$nbootfailures,
+                                     n_boot_success = estimated$nbootsuccess)
   estimated <- dplyr::as_tibble(estimated$tab)
+  if (nrow(estimated) == 0) {
+    estimated <- bootstrap_summary
+  }else{
+    estimated <- estimated %>%
+      dplyr::bind_cols(bootstrap_summary)
+  }
+
   cli::cli_alert_success("Bootstrap complete!")
   cli::cli_end()
 

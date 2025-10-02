@@ -30,7 +30,7 @@ following columns:
 \item \code{distance}: the midpoint (m) of the assigned distance interval between animal and camera
 \item \code{object}: a unique identifier for each observation
 \item \code{Sample.Label}: identifier for the sample (transect id)
-\item \verb{Effort effort}: number of a given second (e.g 0.25, 2, or 3) time steps the camera operated (i.e. temporal effort)
+\item \code{Effort}: number of a given second (e.g 0.25, 2, or 3) time steps the camera operated (i.e. temporal effort)
 \item \code{Region.Label}: label for a given stratum
 \item \code{Area}: area of the strata⁠ in km^2
 \item \code{fraction}: fraction of a full circle covered (field of view/360)

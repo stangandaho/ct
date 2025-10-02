@@ -1,5 +1,5 @@
 ---
-title: Rarefaction and Interpolation of Species Diversity Estimation with Camera Trap
+title: Rarefaction and Extrapolation of Species Diversity Estimation with Camera Trap
   Data using ct R package
 ---
 

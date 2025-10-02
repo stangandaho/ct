@@ -63,7 +63,7 @@ ct_to_radian <- function(data,
 
   if (hasArg(data)) {
     data[["time_radian"]] <- time_radian
-    tr <- data
+    tr <- data %>% dplyr::as_tibble()
   }else{
     tr <- time_radian
   }

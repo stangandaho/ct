@@ -8,7 +8,7 @@ ct_overlap_matrix(
   data,
   species_column,
   time_column,
-  convert_time = F,
+  convert_time = FALSE,
   format = "\%H:\%M:\%S",
   fill_na = NULL,
   ...
