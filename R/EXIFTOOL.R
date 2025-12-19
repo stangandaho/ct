@@ -234,6 +234,7 @@ ct_exiftool_call <- function(path = NULL,
 #' \code{HierarchicalSubject} field is split into structured columns.
 #'
 #' @examples
+#' \donttest{
 #' # Example image path
 #' image_path <- file.path(system.file("img", package = "ct"), "large.jpeg")
 #'
@@ -251,6 +252,7 @@ ct_exiftool_call <- function(path = NULL,
 #' ct_read_metadata(path = image_path,
 #'                  tags = "standard",
 #'                  parse_hs = TRUE)
+#'}
 #' @seealso
 #' * [ct_get_hs()] to retrieve hierarchical subjects
 #' * [ct_create_hs()] to add hierarchical subjects

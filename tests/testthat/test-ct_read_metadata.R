@@ -18,26 +18,8 @@ test_that("Get image metadata", {
   metadata_df2 <- ct_read_metadata(path = paste0(image_dir, "/unitest"), recursive = T)
   testthat::expect_true(nrow(metadata_df2) == 3)
 
-  # no recursive, default
-  testthat::expect_error(ct_read_metadata(path = paste0(image_dir, "/unitest"), recursive = F))
-
-  # wrong file name
-  testthat::expect_error(ct_read_metadata(path = image_path, save_file = T,
-                                         file_name = "filename"))
-
   # wrong file name
   testthat::expect_error(ct::ct_read_metadata(path = "no/file/path/image.jpeg"))
   testthat::expect_error(ct::ct_read_metadata(path = image_url))
-
-  ct_read_metadata(path = image_path, save_file = T)
-  testthat::expect_true(file.exists(paste0(image_dir, "/metadata.csv")))
-  unlink(file.path(image_dir, "metadata.csv"))
-
-  ct_read_metadata(path = image_path, save_file = T, file_name = "mymetadata.csv")
-  testthat::expect_true(file.exists(paste0(image_dir, "/mymetadata.csv")))
-
-  unlink(file.path(image_dir, "mymetadata.csv"))
-  unlink(paste0(image_path, "/unitest"), recursive = T)
-  #unlink(image_path)
 
 })

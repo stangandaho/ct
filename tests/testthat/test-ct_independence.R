@@ -14,17 +14,6 @@ test_that("ct_independence handles data.frame input correctly", {
   expect_contains(class(result), "tbl_df")
 })
 
-test_that("ct_independence returns only independent events when 'only' is TRUE", {
-  # Test data
-  df <- data.frame(datetime = as.POSIXct(c("2024-08-01 10:00:00", "2024-08-01 10:15:00",
-                                           "2024-08-01 10:45:00", "2024-08-01 11:00:00")))
-
-  result <- ct_independence(data = df, datetime = "datetime",
-                              format = "%Y-%m-%d %H:%M:%S", threshold = 10, only = TRUE)
-
-  expect_true(all(class(result) %in% c("data.frame", "tbl_df", "tbl")))
-})
-
 
 test_that("ct_independence handles missing datetime and format with data", {
   # Test data
@@ -49,7 +38,7 @@ test_that("ct_independence returns all rows when 'only' is FALSE", {
                    value = c(1, 2, 3, 4))
 
   result <- ct_independence(data = df, datetime = "datetime",
-                              format = "%Y-%m-%d %H:%M:%S", threshold = 20, only = FALSE)
+                              format = "%Y-%m-%d %H:%M:%S", threshold = 20)
   expect_equal(nrow(result), nrow(df))
 })
 

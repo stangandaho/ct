@@ -21,6 +21,7 @@
 #' * [ct_read_metadata()] to read image metadata
 #'
 #' @examples
+#' \donttest{
 #' # Path to example image
 #' image_path <- file.path(system.file("img", package = "ct"), "large.jpeg")
 #'
@@ -38,7 +39,7 @@
 #'   value = c("Species" = "Eagle", "Location" = "Mountains")
 #' )
 #' ct_get_hs(path = image_path)  # Returns vector with both subjects
-#'
+#'}
 #' @export
 ct_get_hs <- function(path, hs_delimitor = "|", into_tibble = FALSE) {
   # Validate input

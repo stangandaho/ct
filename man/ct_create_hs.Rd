@@ -71,6 +71,7 @@ When using comma-separated values, the function splits each value string and
 creates separate hierarchical subjects for each position across all parents.
 }
 \examples{
+\donttest{
 # Path to example image
 image_path <- file.path(system.file("img", package = "ct"), "large.jpeg")
 
@@ -108,7 +109,7 @@ ct_create_hs(
   value = c("Species" = "Eagle"),
   overwrite = TRUE
 )
-
+}
 }
 \seealso{
 \itemize{

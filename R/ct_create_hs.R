@@ -50,6 +50,7 @@
 #' * [ct_read_metadata()] to read image metadata
 #'
 #' @examples
+#' \donttest{
 #' # Path to example image
 #' image_path <- file.path(system.file("img", package = "ct"), "large.jpeg")
 #'
@@ -87,7 +88,7 @@
 #'   value = c("Species" = "Eagle"),
 #'   overwrite = TRUE
 #' )
-#'
+#'}
 #' @export
 ct_create_hs <- function(path,
                          value = NULL,

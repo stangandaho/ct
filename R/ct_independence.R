@@ -153,7 +153,7 @@ ct_independence <- function(data = NULL,
     for (r in 2:nrow(data)) {
       diff_time <- difftime(time1 = data$datetime[r],
                             time2 = last_time, units = "secs")
-      if (abs(diff_time) >= threshold) {
+      if (!is.na(diff_time) && abs(diff_time) >= threshold) {
         selected_rows <- c(selected_rows, r)
         last_time <- data$datetime[r]
       }

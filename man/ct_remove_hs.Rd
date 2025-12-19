@@ -57,6 +57,7 @@ image files found. Use \code{recursive = TRUE} to include subdirectories. Note t
 validation of existing hierarchies is only performed for single files.
 }
 \examples{
+\donttest{
 # Path to example image
 image_path <- file.path(system.file("img", package = "ct"), "large.jpeg")
 
@@ -95,7 +96,7 @@ ct_remove_hs(
   hierarchy = c("Species" = "Vulture"),
   recursive = TRUE
 )
-
+}
 }
 \seealso{
 \itemize{

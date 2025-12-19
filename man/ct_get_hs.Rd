@@ -26,6 +26,7 @@ Hierarchical subjects follow a parent|child structure (e.g., "Species|Vulture")
 and are commonly used for taxonomic or categorical image classification.
 }
 \examples{
+\donttest{
 # Path to example image
 image_path <- file.path(system.file("img", package = "ct"), "large.jpeg")
 
@@ -43,7 +44,7 @@ ct_create_hs(
   value = c("Species" = "Eagle", "Location" = "Mountains")
 )
 ct_get_hs(path = image_path)  # Returns vector with both subjects
-
+}
 }
 \seealso{
 \itemize{

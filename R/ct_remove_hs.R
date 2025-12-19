@@ -42,6 +42,7 @@
 #' * [ct_read_metadata()] to read image metadata
 #'
 #' @examples
+#' \donttest{
 #' # Path to example image
 #' image_path <- file.path(system.file("img", package = "ct"), "large.jpeg")
 #'
@@ -80,7 +81,7 @@
 #'   hierarchy = c("Species" = "Vulture"),
 #'   recursive = TRUE
 #' )
-#'
+#'}
 #' @export
 ct_remove_hs <- function(path,
                          hierarchy = NULL,
