@@ -19,10 +19,6 @@
 #'   determine whether events are independent. Events are considered independent if the time
 #'   difference between them is greater than or equal to this threshold. The default is 30 minutes
 #'   (1800 seconds).
-#' @param only A `logical` value indicating whether to return only the rows of `data` that are
-#'   identified as independent events. If `TRUE`, only independent events are returned. If `FALSE`,
-#'   the entire data frame is returned with an additional column indicating the independence status.
-#'   The default is `TRUE`.
 #'
 #' @return
 #' - If `data` is provided and `only` is `TRUE`, a tibble of events identified as independent.
@@ -64,23 +60,22 @@
 #' # Load example dataset
 #' cam_data <- read.csv(system.file("penessoulou_season1.csv", package = "ct"))
 #'
-#' # Independence without considering species occurrence
+#' # Independence without considering species
 #' indep1 <- cam_data %>%
-#'   ct_independence(data = ., datetime = datetimes, format = "%Y-%m-%d %H:%M:%S",
-#'                   only = TRUE)
+#'   ct_independence(data = ., datetime = datetimes, format = "%Y-%m-%d %H:%M:%S")
 #'
 #' sprintf("Independent observations: %s", nrow(indep1))
 #'
-#' # Independence considering species occurrence
+#' # Independence considering species
 #' indep2 <- cam_data %>%
 #'   ct_independence(data = ., datetime = datetimes, format = "%Y-%m-%d %H:%M:%S",
-#'                   only = TRUE, species_column = "species")
+#'                   species_column = "species")
 #'
 #' sprintf("Independent observations: %s", nrow(indep2))
 #'
 #' # Use a standalone vector of datetime values
 #' dtime <- cam_data$datetimes
-#' ct_independence(datetime = dtime, format = "%Y-%m-%d %H:%M:%S", only = TRUE)
+#' ct_independence(datetime = dtime, format = "%Y-%m-%d %H:%M:%S")
 #'
 #' @export
 
@@ -89,8 +84,7 @@ ct_independence <- function(data = NULL,
                             site_column,
                             datetime,
                             format,
-                            threshold = 30*60,
-                            only = FALSE) {
+                            threshold = 30*60) {
 
   # Prevent all possible error
   if (!is.null(data)) {
@@ -152,6 +146,21 @@ ct_independence <- function(data = NULL,
   grouped_by <- c(site_column, species_column)
   grouped_by <- grouped_by[grouped_by != ""]
 
+  ##
+  .indep <- function(data) {
+    selected_rows <- c(1)
+    last_time <- data$datetime[1]
+    for (r in 2:nrow(data)) {
+      diff_time <- difftime(time1 = data$datetime[r],
+                            time2 = last_time, units = "secs")
+      if (abs(diff_time) >= threshold) {
+        selected_rows <- c(selected_rows, r)
+        last_time <- data$datetime[r]
+      }
+    }
+    return(data[selected_rows, ])
+  }
+
   if (length(grouped_by) > 0) {
     ## Confirm column presence
     missed_col_error(data = data, grouped_by)
@@ -159,22 +168,14 @@ ct_independence <- function(data = NULL,
     data <- data %>%
       dplyr::group_by(!!!rlang::syms(grouped_by)) %>%
       dplyr::arrange(datetime, .by_group = TRUE) %>%
-      dplyr::mutate(deltatime = c(0, as.numeric(diff(datetime), units = "secs")),
-                    event = c(TRUE, as.numeric(diff(datetime), units = "secs") >= threshold)) %>%
+      .indep() %>%
       dplyr::ungroup() %>%
       dplyr::select(-original_datetime)
   } else {
     data <- data %>%
       dplyr::arrange(datetime) %>%
-      dplyr::mutate(deltatime = c(0, as.numeric(diff(datetime), units = "secs")),
-                    event = c(TRUE, as.numeric(diff(datetime), units = "secs") >= threshold)) %>%
+      .indep() %>%
       dplyr::select(-original_datetime)
-  }
-
-  if (only) {
-    data <- data %>%
-      dplyr::filter(event == TRUE) %>%
-      dplyr::select(-c(event, deltatime))
   }
 
   return(data)

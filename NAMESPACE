@@ -6,10 +6,13 @@ importFrom(Rcpp, sourceCpp)
 export(ct_survey_design)
 ## Prepare media file
 export(ct_app)
-export(ct_get_metadata) #ok
 export(ct_get_hs) #ok
 export(ct_create_hs)#ok
 export(ct_remove_hs) #ok
+export(ct_clone_dir) #ok
+export(ct_read_metadata) #ok
+export(ct_install_exiftool)
+export(ct_exiftool_call)
 
 ## Prepare table
 export(ct_read) #ok
@@ -252,4 +255,5 @@ importFrom(Distance, ds)
 # sbd
 importFrom(sbd, sbm)
 
-# Vegan
+# utils
+importFrom("utils", "download.file", "read.csv", "untar", "unzip")

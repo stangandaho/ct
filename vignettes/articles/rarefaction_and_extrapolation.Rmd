@@ -60,8 +60,8 @@ camdata1 <- read.csv(ct:::table_files()[1]) %>%
                   site_column = camera,
                   datetime = datetimes,
                   threshold = 60, 
-                  format = "%Y-%m-%d %H:%M:%S", 
-                  only = TRUE)
+                  format = "%Y-%m-%d %H:%M:%S"
+                  )
 
 head(camdata1)
 ```

@@ -10,8 +10,7 @@ ct_independence(
   site_column,
   datetime,
   format,
-  threshold = 30 * 60,
-  only = FALSE
+  threshold = 30 * 60
 )
 }
 \arguments{
@@ -35,11 +34,6 @@ the \code{datetime} column.}
 determine whether events are independent. Events are considered independent if the time
 difference between them is greater than or equal to this threshold. The default is 30 minutes
 (1800 seconds).}
-
-\item{only}{A \code{logical} value indicating whether to return only the rows of \code{data} that are
-identified as independent events. If \code{TRUE}, only independent events are returned. If \code{FALSE},
-the entire data frame is returned with an additional column indicating the independence status.
-The default is \code{TRUE}.}
 }
 \value{
 \itemize{
@@ -77,23 +71,22 @@ library(dplyr)
 # Load example dataset
 cam_data <- read.csv(system.file("penessoulou_season1.csv", package = "ct"))
 
-# Independence without considering species occurrence
+# Independence without considering species
 indep1 <- cam_data \%>\%
-  ct_independence(data = ., datetime = datetimes, format = "\%Y-\%m-\%d \%H:\%M:\%S",
-                  only = TRUE)
+  ct_independence(data = ., datetime = datetimes, format = "\%Y-\%m-\%d \%H:\%M:\%S")
 
 sprintf("Independent observations: \%s", nrow(indep1))
 
-# Independence considering species occurrence
+# Independence considering species
 indep2 <- cam_data \%>\%
   ct_independence(data = ., datetime = datetimes, format = "\%Y-\%m-\%d \%H:\%M:\%S",
-                  only = TRUE, species_column = "species")
+                  species_column = "species")
 
 sprintf("Independent observations: \%s", nrow(indep2))
 
 # Use a standalone vector of datetime values
 dtime <- cam_data$datetimes
-ct_independence(datetime = dtime, format = "\%Y-\%m-\%d \%H:\%M:\%S", only = TRUE)
+ct_independence(datetime = dtime, format = "\%Y-\%m-\%d \%H:\%M:\%S")
 
 }
 \references{

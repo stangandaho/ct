@@ -2,36 +2,118 @@
 % Please edit documentation in R/ct_create_hs.R
 \name{ct_create_hs}
 \alias{ct_create_hs}
-\title{Create or add hierarchical subject values in image metadata}
+\title{Create or add hierarchical subject (hs) values in image metadata}
 \usage{
-ct_create_hs(path, value = c(), intern = TRUE, quiet = TRUE, ...)
+ct_create_hs(
+  path,
+  value = NULL,
+  overwrite = FALSE,
+  recursive = FALSE,
+  intern = TRUE,
+  quiet = TRUE,
+  ...
+)
 }
 \arguments{
-\item{path}{A character vector specifying the full path of the image file.}
+\item{path}{A character string specifying the full path to an image file or
+directory. If a directory is provided, hierarchical subjects will be added
+to all supported image files in that directory.}
 
-\item{value}{named character vector specifying the new hierarchical subjects to add.
-Each value must have a parent specified as the name, e.g c("Species" = "Vulture").}
+\item{value}{A named character vector specifying hierarchical subjects to add.
+Names represent parent categories, values represent child categories.
 
-\item{intern}{TRUE if output should be returned as a character vector.}
+\strong{Simple format:} \code{c("Species" = "Vulture", "Location" = "Africa")}
+creates "Species|Vulture" and "Location|Africa".
 
-\item{quiet}{Suppress output of the command itself.}
+\strong{Multiple values format:} \code{c("Species" = "Mammal, Bird", "Count" = "2, 3")}
+creates "Species|Mammal", "Species|Bird", "Count|2", and "Count|3".
+All parents must have equal number of comma-separated values.}
 
-\item{...}{additional arguments to be passed to \code{\link[=system2]{system2()}}}
+\item{overwrite}{Logical. If \code{TRUE}, replaces existing hierarchical subjects.
+If \code{FALSE} (default), adds to existing subjects. Default: \code{FALSE}.}
+
+\item{recursive}{Logical. If \code{TRUE} and \code{path} is a directory, searches for
+images recursively in subdirectories. Default: \code{FALSE}.}
+
+\item{intern}{Logical. If \code{TRUE}, returns output as a character vector.
+Default: \code{TRUE}.}
+
+\item{quiet}{Logical. If \code{TRUE}, suppresses command output. Default: \code{TRUE}.}
+
+\item{...}{Additional arguments passed to \code{\link[=system2]{system2()}}.}
+}
+\value{
+Invisibly returns \code{TRUE} on success. Called primarily for side effects
+(modifying image metadata).
 }
 \description{
-Create or add hierarchical subject values in image metadata
+Adds hierarchical subject metadata to image files. Hierarchical
+subjects follow a parent|child structure, allowing for organized taxonomic or
+categorical classification of images.
+}
+\details{
+Two input formats are supported:
+\enumerate{
+\item Simple format: One child per parent, e.g., \code{c("Species" = "Vulture")}
+\item Multiple values format: Multiple children per parent using comma-separated
+values, e.g., \code{c("Species" = "Mammal, Bird, Reptile")}. When using this
+format, all parents must have the same number of comma-separated values.
+}
+
+The function validates that all values have parent categories (names) and
+preserves existing hierarchical subjects unless \code{overwrite = TRUE}. Duplicate
+parent|child combinations are automatically removed.
+
+When processing directories, the function applies hierarchical subjects to all
+supported image files found. Use \code{recursive = TRUE} to include subdirectories.
+
+When using comma-separated values, the function splits each value string and
+creates separate hierarchical subjects for each position across all parents.
 }
 \examples{
-
-# Image path
+# Path to example image
 image_path <- file.path(system.file("img", package = "ct"), "large.jpeg")
 
-# Get Hierarchical Subject from the image - Before use ct_create_hs()
-ct_get_hs(path = image_path) #==> NULL
-
+# Simple format: single child per parent
 ct_create_hs(path = image_path, value = c("Species" = "Vulture"))
+ct_get_hs(path = image_path) # Returns: "Species|Vulture"
 
-# Get Hierarchical Subject from the image - Before use ct_create_hs()
-ct_get_hs(path = image_path) #==> "Species|Vulture"
+# Simple format: multiple parents, one child each
+ct_create_hs(
+  path = image_path,
+  value = c("Species" = "Vulture",
+            "Location" = "Africa",
+            "Status" = "Endangered")
+)
+ct_get_hs(path = image_path, into_tibble = TRUE)
 
+# Multiple values format: recording multiple observations
+ct_create_hs(
+  path = image_path,
+  value = c(
+    "Species" = "Gyps africanus, Kobus kob",
+    "Sex" = "Male, Female",
+    "Count" = "3, 2"
+  ),
+  overwrite = TRUE
+)
+ct_get_hs(path = image_path)
+
+# Parse Hierarchical Subject to tibble
+ct_get_hs(path = image_path, into_tibble = TRUE)
+
+# Overwrite existing hierarchical subjects
+ct_create_hs(
+  path = image_path,
+  value = c("Species" = "Eagle"),
+  overwrite = TRUE
+)
+
+}
+\seealso{
+\itemize{
+\item \code{\link[=ct_get_hs]{ct_get_hs()}} to retrieve hierarchical subjects
+\item \code{\link[=ct_remove_hs]{ct_remove_hs()}} to remove hierarchical subjects
+\item \code{\link[=ct_read_metadata]{ct_read_metadata()}} to read image metadata
+}
 }

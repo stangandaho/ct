@@ -1,0 +1,180 @@
+---
+title: "Manage Media Metadata"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Manage Media Metadata}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>"
+)
+```
+
+```{r echo=FALSE,include=FALSE}
+library(ct)
+library(kableExtra)
+library(dplyr)
+```
+
+<img src="https://zenodo.org/records/17978848/files/11030555.JPG" alt="Wildlife at Faro National Park, Cameroon" width="600" height="339"/>
+
+Camera traps generate vast amounts of data, primarily in the form of images or videos. While the visual content is the primary focus for identifying species and behaviors, the files themselves contain a hidden layer of crucial information: metadata. This embedded data serves as the backbone for transforming raw media into a structured dataset, providing the "when", "where", and "how" of each record.  
+
+## Media to Dataset
+
+The first step in any camera-trap analysis pipeline is converting a collection of image or video files into a structured dataset. This process relies on metadata embedded within the media files. A single image can contain **hundreds of metadata tags** (i.e. fields), but only a subset is typically relevant for camera-trap studies.
+
+For camera-trap data analysis, the most important tags fall into a few core categories: **time**, **location**, **camera identity and settings**, and **image identity**. Commonly used fields include:
+
+* **DateTimeOriginal**: The exact date and time the image was captured; essential for analysing activity patterns and detection histories.
+* **TimeZoneOffset / OffsetTimeOriginal**: Critical for avoiding time-shift errors when combining data from multiple cameras or regions.
+* **GPSLatitude**, **GPSLongitude**
+* **GPSAltitude** (optional)
+
+Most analyses rely heavily on DateTimeOriginal, and incorrect camera clocks are one of the most common sources of error in camera-trap datasets. In addition, **many camera traps do not record GPS information**; in such cases, camera locations are usually provided separately (e.g. in deployment tables or filenames).
+
+Because metadata are often incomplete or inconsistent, this step typically involves **quality control and enrichment** rather than simple extraction. This may include correcting timestamps (see `ct_correct_datetime()`), assigning missing coordinates, and linking images to external deployment information. The outcome is a clean, consistent, and analysis-ready dataset.
+
+
+## Managing Metadata with `ct`
+
+The `ct` package provides a suite of functions to not only read metadata but also to actively manage and enrich it using **Hierarchical Subjects (HS)**.
+
+### Reading Metadata
+
+The `ct_read_metadata()` function is the primary tool for extracting information. It leverages the [ExifTool](https://exiftool.org/) to parse standard tags and can also structure hierarchical tags into a usable format. For demonstration purposes, we use the image shown below, which can be downloaded [here](https://zenodo.org/records/17978848/files/10200034.JPG?download=1).
+
+<img src="https://zenodo.org/records/17978848/files/10200034.JPG" alt="Kobus kob at Faro National Park, Cameroon" width="600" height="339"/>
+
+As is typical for camera-trap images, basic information is overlaid directly on the image, including the camera ID, ambient temperature (in both Fahrenheit and Celsius), and the date and time of capture.
+
+Using a single image, it would be possible to manually construct a dataset by recording attributes such as the species present, temperature, date, time, and location. However, doing this manually for hundreds or thousands of images quickly becomes time-consuming and error-prone. This is where metadata extraction becomes essential.
+
+In the following sections, we demonstrate how the `ct` package can be used to perform this extraction and convert raw camera-trap media into a structured, analysis-ready dataset.
+
+
+```{r eval=FALSE}
+# Install the development version of the package
+pak::pkg_install("stangandaho/ct")
+# Load the package
+library(ct)
+
+# Read the metadata
+ct_read_metadata(path = "10200034.JPG", tags = "all")
+```
+
+```{r echo=FALSE}
+kob <- readRDS("kobus_kob.rds")
+kob %>% 
+  kableExtra::kable("html") %>% 
+  kableExtra::kable_styling("striped") %>% 
+  kableExtra::scroll_box(width = "100%")
+```
+
+This single file contains `r ncol(kob)` columns. However, not all of these fields (i.e. columns) are relevant for every analysis. During metadata extraction, you can filter the output to retain only the fields of interest by using the `tags` argument.
+
+A convenient first option is to use `tags = "standard"` (default), which returns a predefined set of commonly used metadata fields. Alternatively, you can explicitly specify the tags you want to extract. For example, to extract only the date the image was captured and its location information, you can do the following:
+
+```{r eval=FALSE}
+ct_read_metadata(
+  path = "10200034.JPG",
+  tags = c("DateTimeOriginal", "GPSLongitude", "GPSLatitude")
+)
+```
+
+```{r echo=FALSE}
+kob <- readRDS("kobus_kob.rds")
+kob %>% 
+  dplyr::select(1, c(DateTimeOriginal, GPSLongitude, GPSLatitude)) %>% 
+  kableExtra::kable("html") %>% 
+  kableExtra::kable_styling("striped") %>% 
+  kableExtra::scroll_box(width = "100%")
+```
+
+
+The `path` argument can point to a single image file or to a directory containing multiple images. If all images are located directly at the root of the directory, metadata are extracted automatically. If the images are stored within one or more subdirectories, you must set `recursive = TRUE`. Otherwise, no files will be detected and an empty tibble will be returned.
+
+For advanced users requiring specific ExifTool features not covered by the wrapper, `ct_exiftool_call()` allows direct access to the ExifTool command line interface from within R.
+
+### Hierarchical Subjects (HS)
+
+As shown above, we can extract information stored in the metadata written by the camera hardware. However, some key attributes are often missing. For example, the species captured, as well as its age, sex, or behaviour, are not recorded because the camera has no ability to identify these characteristics. We may also be interested in additional information such as habitat type or ambient temperature measured independently.
+
+If these attributes are required for a study, they must be added manually for all captured images, which can be a time-consuming task.
+
+A key feature of the `ct` package is its support for **hierarchical subjects**. These are structured tags stored directly in the image metadata using a `Parent|Child` format (e.g. `Species|Fox`, `Sex|Female`). This approach allows users to store and manage customized metadata consistently across large image collections.
+
+**Why use Hierarchical Subjects?**  
+- **Portability**: The data travels with the image. If you move the file, you don't lose the classification.  
+- **Standardization**: The `Parent|Child` structure enforces a consistent schema (e.g., always specifying "Species" vs. just "Fox").  
+- **Multi-dimensionality**: You can assign multiple attributes to a single image (e.g., Species, Sex, Behavior) without complex external lookup tables.  
+The package offers three key functions to manage these tags:
+
+1.  **`ct_create_hs()`**: Adds new hierarchical tags to an image.
+```{r, eval=FALSE}
+# Add a species tag
+ct_create_hs(path = "10200034.JPG", value = c("Species" = "Kobus_kob"))
+
+# Add multiple tags at once
+ct_create_hs(path = "10200034.JPG", 
+             value = c("Species" = "Kobus_kob", 
+                       "Count" = 1, 
+                       "Habitat" = "Shrub_savanah"))
+```
+
+When an image contains multiple species, their names and corresponding counts can be provided directly. For example: `c("Species" = "Kobus_kob, Bubalus_bubalis", "Count" = "1, 2")`. This indicates that the image contains **1 _Kobus kob_** and **2 _Bubalus bubalis_**.
+
+```{r eval=FALSE}
+ct_create_hs(path = "10200034.JPG", 
+             value = c("Species" = "Kobus_kob, Bubalus_bubalis", 
+                       "Count" = "1, 2", 
+                       "Sex" = "Male, Unknown",
+                       "Habitat" = "Shrub_savanah, Shrub_savanah"))
+```
+
+2.  **`ct_get_hs()`**: Reads the existing hierarchical tags.
+```{r, eval=FALSE}
+ct_get_hs(path = "10200034.JPG")
+#> [1] "Species|Kobus_kob"       "Count|1"                 "Sex|Male"               
+#> [4] "Habitat|Shrub_savanah"   "Species|Bubalus_bubalis" "Count|2"                
+#> [7] "Sex|Unknown" 
+```
+
+3.  **`ct_remove_hs()`**: Removes specific tags or clears them all.
+```{r, eval=FALSE}
+# Remove just the Count tag
+ct_remove_hs(path = "10200034.JPG", hierarchy = c("Count" = "1"))
+```
+
+Now that you understand how hierarchical subjects are managed, you can include them directly in the extracted metadata by setting `parse_hs = TRUE` in the `ct_read_metadata()` function. This option parses the `HierarchicalSubject` field into separate columns, where each parent category becomes its own column in the resulting tibble.
+
+```{r eval=FALSE}
+ct_read_metadata(
+  path = "10200034.JPG",
+  parse_hs = TRUE
+)
+```
+
+```{r echo=FALSE}
+kob <- readRDS("kobus_kob_hs.rds")
+kob %>% 
+  kableExtra::kable("html") %>% 
+  kableExtra::kable_styling("striped") %>% 
+  kableExtra::scroll_box(width = "100%")
+```
+
+
+<div style="border-left: 6px solid #D9C9BA; padding-left: 12px; margin: 16px 0;">
+  <p>
+    Adding or removing hierarchical subjects programmatically can be difficult to manage,
+    especially when working with hundreds or thousands of images. Manually locating an image,
+    providing its path to <code>ct_create_hs()</code>, and specifying attributes for each file
+    quickly becomes impractical. 
+    
+    The purpose of these functions is to provide a wrapper with a graphical user interface (GUI) that simplifies this process and makes managing hierarchical subjects more efficient and user-friendly.
+  </p>
+</div>

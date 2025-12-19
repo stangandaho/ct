@@ -31,7 +31,7 @@ for filtering independent detections, `ct_correct_datetime()` for timestamp corr
 and `ct_check_location()` for interactive spatial validation. **Community ecology** 
 functions enable activity pattern analysis with `ct_plot_density()` and 
 `ct_overlap_estimates()`, biodiversity assessment through `ct_alpha_diversity()` 
-and `ct_to_community()`, and occupancy modeling via `ct_to_occupancy()`. 
+and `ct_to_community()`, and occupancy modeling input preparation via `ct_to_occupancy()`. 
 **Quality control** tools include `ct_find_break()` for detecting temporal gaps, 
 `ct_plot_camtrap_activity()` for monitoring deployment status, and `ct_check_name()` 
 for taxonomic validation. The package also features Camera Trap Data Package integration, 

@@ -2,39 +2,105 @@
 % Please edit documentation in R/ct_remove_hs.R
 \name{ct_remove_hs}
 \alias{ct_remove_hs}
-\title{Remove specific or all hierarchical subject values from image metadata}
+\title{Remove hierarchical subject (hs) values from image metadata}
 \usage{
-ct_remove_hs(path, hierarchy = NULL, intern = TRUE, quiet = TRUE, ...)
+ct_remove_hs(
+  path,
+  hierarchy = NULL,
+  recursive = FALSE,
+  intern = TRUE,
+  quiet = TRUE,
+  ...
+)
 }
 \arguments{
-\item{path}{A character vector specifying the full path of the image file.}
+\item{path}{A character string specifying the full path to an image file or
+directory. If a directory is provided, hierarchical subjects will be removed
+from all supported image files in that directory.}
 
-\item{hierarchy}{A named character vector, e.g c("Species" = "Vulture") specifying the hierarchy to be removed.
-If NULL, the entire \verb{Hierarchical Subject} field is removed.}
+\item{hierarchy}{A named character vector specifying hierarchies to remove.
+Names represent parent categories, values represent child categories.
+Example: \code{c("Species" = "Vulture")} removes "Species|Vulture".
+If \code{NULL} (default), removes all hierarchical subjects from the image(s).}
 
-\item{intern}{TRUE if output should be returned as a character vector.}
+\item{recursive}{Logical. If \code{TRUE} and \code{path} is a directory, searches for
+images recursively in subdirectories. Default: \code{FALSE}.}
 
-\item{quiet}{Suppress output of the command itself.}
+\item{intern}{Logical. If \code{TRUE}, returns output as a character vector.
+Default: \code{TRUE}.}
 
-\item{...}{additional arguments to be passed to \code{\link[=system2]{system2()}}}
+\item{quiet}{Logical. If \code{TRUE}, suppresses command output. Default: \code{TRUE}.}
+
+\item{...}{Additional arguments passed to \code{\link[=system2]{system2()}}.}
 }
 \value{
-message indicating image updated
+Invisibly returns \code{TRUE} on success, \code{FALSE} if specified hierarchy
+doesn't exist. Displays informative messages about the operation. Called
+primarily for side effects (modifying image metadata).
 }
 \description{
-The ct_remove_hs function removes a specific hierarchy from the
-\verb{Hierarchical Subject} field in an image's metadata, or it removes the entire
-field if no specific hierarchy is provided. It uses exiftool
-to manipulate the metadata and ensure that only the desired changes are applied.
+Removes specific hierarchical subjects or clears the entire HierarchicalSubject
+field from image metadata using ExifTool. Can remove one or multiple specific
+parent|child hierarchies, or clear all hierarchical subjects at once.
+
+This function supports processing individual files or entire directories (with
+optional recursion), applying the removal to all supported image files found.
+}
+\details{
+When removing specific hierarchies from a single file, the function validates
+that they exist before attempting removal. If the last hierarchy is removed,
+the entire HierarchicalSubject field is cleared from the metadata. The
+function handles multiple hierarchies in a single call.
+
+When processing directories, the function applies the removal to all supported
+image files found. Use \code{recursive = TRUE} to include subdirectories. Note that
+validation of existing hierarchies is only performed for single files.
 }
 \examples{
-
-# Image path
+# Path to example image
 image_path <- file.path(system.file("img", package = "ct"), "large.jpeg")
 
-# Get Hierarchical Subject from the image
-no_hs <- ct_get_hs(path = image_path)
-ct_create_hs(image_path, c("A" = "AB"))
-ct_remove_hs(image_path, c("A" = "AB"))
+# Add some hierarchical subjects
+ct_create_hs(image_path, c("Species" = "Vulture", "Location" = "Africa"))
+ct_get_hs(image_path)
 
+# Remove a specific hierarchy
+ct_remove_hs(image_path, hierarchy = c("Species" = "Vulture"))
+ct_get_hs(image_path) # Only "Location|Africa" remains
+
+# Remove multiple hierarchies at once
+ct_create_hs(image_path, c("Species" = "Eagle", "Status" = "Endangered"))
+ct_remove_hs(
+  image_path,
+  hierarchy = c("Species" = "Eagle", "Status" = "Endangered")
+)
+
+# Remove all hierarchical subjects
+ct_remove_hs(image_path, hierarchy = NULL)
+ct_get_hs(image_path) # Returns NULL
+
+# Attempting to remove non-existent hierarchy
+ct_remove_hs(image_path, hierarchy = c("Species" = "NonExistent"))
+
+# Remove all hierarchical subjects from all images in a directory
+image_dir <- system.file("img", package = "ct")
+ct_remove_hs(path = image_dir, recursive = FALSE)
+
+# Remove recursively from directory and subdirectories
+ct_remove_hs(path = image_dir, recursive = TRUE)
+
+# Remove specific hierarchy from all images in a directory
+ct_remove_hs(
+  path = image_dir,
+  hierarchy = c("Species" = "Vulture"),
+  recursive = TRUE
+)
+
+}
+\seealso{
+\itemize{
+\item \code{\link[=ct_get_hs]{ct_get_hs()}} to retrieve hierarchical subjects
+\item \code{\link[=ct_create_hs]{ct_create_hs()}} to add hierarchical subjects
+\item \code{\link[=ct_read_metadata]{ct_read_metadata()}} to read image metadata
+}
 }

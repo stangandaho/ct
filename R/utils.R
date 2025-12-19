@@ -490,3 +490,57 @@ checked_packages <- function(packages) {
   still_missing <- !vapply(packages, requireNamespace, quietly = TRUE, FUN.VALUE = logical(1))
   return(!any(still_missing))
 }
+
+
+#' Determine the Per-User Directory for R Package Data, Config, or Cache
+#'
+#' @description
+#' Determine the per-user directory where packages can store data,
+#' configuration files, or caches.
+#'
+#' @param package Character string giving the package name.
+#' @param which Character string specifying the directory type.
+#'   Must be one of `"data"`, `"config"`, or `"cache"`.
+#'
+#' @return
+#' A character string giving the full path to the package-specific
+#' per-user directory.
+#' @keywords internal
+R_user_dir <- function(package,
+                       which = c("data", "config", "cache")) {
+  which <- match.arg(which)
+  os <- Sys.info()[["sysname"]]
+  home <- Sys.getenv("HOME")
+
+  if (os == "Windows") {
+    appdata      <- Sys.getenv("APPDATA", unset = file.path(home, "AppData", "Roaming"))
+    localappdata <- Sys.getenv("LOCALAPPDATA", unset = file.path(home, "AppData", "Local"))
+
+    base_dir <- switch(which,
+                       "data"   = file.path(appdata,      "R", "data", "R"),
+                       "config" = file.path(appdata,      "R", "config", "R"),
+                       "cache"  = file.path(localappdata, "R", "cache", "R")
+    )
+  } else if (os == "Darwin") {  # macOS
+    base_dir <- switch(which,
+                       "data"   = file.path(home, "Library", "Application Support", "org.R-project.R", "R", "data"),
+                       "config" = file.path(home, "Library", "Preferences", "org.R-project.R", "R", "config"),
+                       "cache"  = file.path(home, "Library", "Caches", "org.R-project.R", "R", "cache")
+    )
+  } else {  # Linux / Unix
+    xdg_data   <- Sys.getenv("XDG_DATA_HOME",   file.path(home, ".local", "share"))
+    xdg_config <- Sys.getenv("XDG_CONFIG_HOME", file.path(home, ".config"))
+    xdg_cache  <- Sys.getenv("XDG_CACHE_HOME",  file.path(home, ".cache"))
+
+    base_dir <- switch(which,
+                       "data"   = file.path(xdg_data,   "R", "data"),
+                       "config" = file.path(xdg_config, "R", "config"),
+                       "cache"  = file.path(xdg_cache,  "R", "cache")
+    )
+  }
+
+  ruser_dir <- suppressWarnings(normalizePath(file.path(base_dir, package),
+                                              winslash = "/"))
+  return(ruser_dir)
+}
+

@@ -38,6 +38,8 @@ navbar:
       menu:
       - text: Data preparation
         href: articles/camtrap_data_preparation.html
+      - text: Manage Media Metadata
+        href: articles/manage_media_metadata.html
       - text: Distance Measurement
         href: articles/distance_measurement.html
       - text: Guide to Distance Sampling
@@ -71,10 +73,13 @@ reference:
     Functions reading and writing metadata
   contents:
   - ct_app
-  - ct_get_metadata
+  - ct_install_exiftool
+  - ct_read_metadata
+  - ct_exiftool_call
   - ct_get_hs
   - ct_create_hs
   - ct_remove_hs
+  - ct_clone_dir
 - title: Data processing
   desc: |
     Functions for preparing and tansforming camera trap data

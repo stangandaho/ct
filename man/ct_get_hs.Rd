@@ -2,27 +2,53 @@
 % Please edit documentation in R/ct_get_hs.R
 \name{ct_get_hs}
 \alias{ct_get_hs}
-\title{Retrieve hierarchical subject values from image metadata}
+\title{Retrieve hierarchical subject (hs) values from image metadata}
 \usage{
-ct_get_hs(path)
+ct_get_hs(path, hs_delimitor = "|", into_tibble = FALSE)
 }
 \arguments{
-\item{path}{A character vector specifying the full path of the image file.}
+\item{path}{A character string specifying the full path to the image file.
+Must be a valid file path to an image with EXIF metadata support.}
+
+\item{hs_delimitor}{The character delimiting hierarchy levels in image metadata
+tags in field "HierarchicalSubject"}
+
+\item{into_tibble}{Logical. Parse hierarchical subjects into tibble.}
 }
 \value{
-A character vector of unique hierarchical subjects if they exist, otherwise NULL.
+A character vector or tibble of unique hierarchical subjects if they exist,
+otherwise \code{NULL}. Each element represents one hierarchical subject in
+"parent|child" format.
 }
 \description{
-The function retrieves the values from the \verb{Hierarchical Subject}
-field of an image's metadata. It uses exiftool to read the metadata and processes
-the results to extract and return the unique hierarchical subjects.
+Extracts hierarchical subject metadata from image files using ExifTool.
+Hierarchical subjects follow a parent|child structure (e.g., "Species|Vulture")
+and are commonly used for taxonomic or categorical image classification.
 }
 \examples{
-
-# Image path
+# Path to example image
 image_path <- file.path(system.file("img", package = "ct"), "large.jpeg")
 
-# Get Hierarchical Subject from the image
-ct_get_hs(path = image_path)
+# Retrieve hierarchical subjects (returns NULL if none exist)
+hs <- ct_get_hs(path = image_path)
+print(hs)
 
+# After adding hierarchical subjects
+ct_create_hs(path = image_path, value = c("Species" = "Vulture"))
+ct_get_hs(path = image_path)  # Returns: "Species|Vulture"
+
+# Multiple hierarchical subjects
+ct_create_hs(
+  path = image_path,
+  value = c("Species" = "Eagle", "Location" = "Mountains")
+)
+ct_get_hs(path = image_path)  # Returns vector with both subjects
+
+}
+\seealso{
+\itemize{
+\item \code{\link[=ct_create_hs]{ct_create_hs()}} to add hierarchical subjects
+\item \code{\link[=ct_remove_hs]{ct_remove_hs()}} to remove hierarchical subjects
+\item \code{\link[=ct_read_metadata]{ct_read_metadata()}} to read image metadata
+}
 }
