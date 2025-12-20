@@ -48,6 +48,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><span class="fa fa-blog"></span> Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/camtrap_data_preparation.html">Data preparation</a></li>
+    <li><a class="dropdown-item" href="../articles/manage_media_metadata.html">Manage Media Metadata</a></li>
     <li><a class="dropdown-item" href="../articles/distance_measurement.html">Distance Measurement</a></li>
     <li><a class="dropdown-item" href="../articles/distance_sampling_guide.html">Guide to Distance Sampling</a></li>
     <li><a class="dropdown-item" href="../articles/wildlife_density_estimation.html">Density Estimation With DS</a></li>
@@ -178,11 +179,11 @@ the <code>ct</code> package:</p>
 <span>                  site_column <span class="op">=</span> <span class="va">camera</span>,</span>
 <span>                  datetime <span class="op">=</span> <span class="va">datetimes</span>,</span>
 <span>                  threshold <span class="op">=</span> <span class="fl">60</span>, </span>
-<span>                  format <span class="op">=</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>, </span>
-<span>                  only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>                  format <span class="op">=</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span></span>
+<span>                  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">camdata1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 17</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 18</span></span></span>
 <span><span class="co">#&gt;   project camera   species       image_name number Make  Model   FOV dates times</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Last    CAMERA 1 Canis adustus DSCF0017.…      1 Gard… A3S    47.4 3/24… 22:0…</span></span>
@@ -191,8 +192,8 @@ the <code>ct</code> package:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Last    CAMERA 1 Canis adustus DSCF0061.…      1 Gard… A3S    47.4 3/27… 1:21…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Last    CAMERA 1 Canis adustus DSCF0065.…      1 Gard… A3S    47.4 3/27… 1:27…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Last    CAMERA 1 Canis adustus DSCF0081.…      1 Gard… A3S    47.4 3/27… 22:2…</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 7 more variables: FocalLength &lt;dbl&gt;, diel &lt;dbl&gt;, datetime &lt;dttm&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   longitude &lt;int&gt;, latitude &lt;int&gt;, radian &lt;dbl&gt;, site &lt;chr&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 8 more variables: FocalLength &lt;dbl&gt;, diel &lt;dbl&gt;, datetime &lt;dttm&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   deltatime &lt;int&gt;, longitude &lt;int&gt;, latitude &lt;int&gt;, radian &lt;dbl&gt;, site &lt;chr&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="create-daily-sampling-units">Create Daily Sampling Units<a class="anchor" aria-label="anchor" href="#create-daily-sampling-units"></a>
@@ -527,7 +528,7 @@ sites, treatments, or diversity measures visually.</p>
 <span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
 <span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span></code></pre></div>
-<p><img src="rarefaction_and_extrapolation_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<p><img src="rarefaction_and_extrapolation_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="plot-with-curves-faceted-by-order">Plot with curves faceted by order<a class="anchor" aria-label="anchor" href="#plot-with-curves-faceted-by-order"></a>
@@ -537,7 +538,7 @@ sites, treatments, or diversity measures visually.</p>
 <span><span class="co">#&gt; Warning in ggiNEXT.iNEXT(x = inext_object, type = type, se = se, facet.var =</span></span>
 <span><span class="co">#&gt; facet_var, : invalid color.var setting, the iNEXT object do not consist</span></span>
 <span><span class="co">#&gt; multiple assemblages, change setting as Order.q</span></span></code></pre></div>
-<p><img src="rarefaction_and_extrapolation_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
+<p><img src="rarefaction_and_extrapolation_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="customize-with-ggplot2">Customize with ggplot2<a class="anchor" aria-label="anchor" href="#customize-with-ggplot2"></a>
@@ -567,7 +568,7 @@ sites, treatments, or diversity measures visually.</p>
 <span><span class="co">#&gt; Warning in ggiNEXT.iNEXT(x = inext_object, type = type, se = se, facet.var =</span></span>
 <span><span class="co">#&gt; facet_var, : invalid color.var setting, the iNEXT object do not consist</span></span>
 <span><span class="co">#&gt; multiple assemblages, change setting as Order.q</span></span></code></pre></div>
-<p><img src="rarefaction_and_extrapolation_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
+<p><img src="rarefaction_and_extrapolation_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" width="700"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -581,7 +582,7 @@ sites, treatments, or diversity measures visually.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

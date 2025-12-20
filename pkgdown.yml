@@ -1,13 +1,14 @@
 pandoc: 3.1.11
-pkgdown: 2.1.3
+pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   camtrap_data_preparation: camtrap_data_preparation.html
   articles/distance_measurement: distance_measurement.html
   articles/distance_sampling_guide: distance_sampling_guide.html
+  articles/manage_media_metadata: manage_media_metadata.html
   articles/rarefaction_and_extrapolation: rarefaction_and_extrapolation.html
   articles/wildlife_density_estimation: wildlife_density_estimation.html
-last_built: 2025-10-02T21:02Z
+last_built: 2025-12-20T17:57Z
 urls:
   reference: https://stangandaho.github.io/ct/reference
   article: https://stangandaho.github.io/ct/articles

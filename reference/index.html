@@ -26,6 +26,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><span class="fa fa-blog"></span> Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/camtrap_data_preparation.html">Data preparation</a></li>
+    <li><a class="dropdown-item" href="../articles/manage_media_metadata.html">Manage Media Metadata</a></li>
     <li><a class="dropdown-item" href="../articles/distance_measurement.html">Distance Measurement</a></li>
     <li><a class="dropdown-item" href="../articles/distance_sampling_guide.html">Guide to Distance Sampling</a></li>
     <li><a class="dropdown-item" href="../articles/wildlife_density_estimation.html">Density Estimation With DS</a></li>
@@ -57,8 +58,7 @@
 
 
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -69,13 +69,15 @@
 
         </dt>
         <dd>Pendjari national park and surrounding areas</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ctdp.html">ctdp</a></code>
 
         </dt>
         <dd>Camera trap data package example</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="duikers.html">duikers</a></code>
 
@@ -86,8 +88,7 @@
 
       <div class="section-desc"><p>Functions reading and writing metadata</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -98,37 +99,61 @@
 
         </dt>
         <dd>Run App</dd>
-      </dl><dl><dt>
 
-          <code><a href="ct_get_metadata.html">ct_get_metadata()</a></code>
+        <dt>
+
+          <code><a href="ct_install_exiftool.html">ct_install_exiftool()</a></code>
 
         </dt>
-        <dd>Extract image metadata</dd>
-      </dl><dl><dt>
+        <dd>Install ExifTool, downloading (by default) the current version</dd>
+
+        <dt>
+
+          <code><a href="ct_read_metadata.html">ct_read_metadata()</a></code>
+
+        </dt>
+        <dd>Read Image Metadata</dd>
+
+        <dt>
+
+          <code><a href="ct_exiftool_call.html">ct_exiftool_call()</a></code>
+
+        </dt>
+        <dd>Call ExifTool</dd>
+
+        <dt>
 
           <code><a href="ct_get_hs.html">ct_get_hs()</a></code>
 
         </dt>
-        <dd>Retrieve hierarchical subject values from image metadata</dd>
-      </dl><dl><dt>
+        <dd>Retrieve hierarchical subject (hs) values from image metadata</dd>
+
+        <dt>
 
           <code><a href="ct_create_hs.html">ct_create_hs()</a></code>
 
         </dt>
-        <dd>Create or add hierarchical subject values in image metadata</dd>
-      </dl><dl><dt>
+        <dd>Create or add hierarchical subject (hs) values in image metadata</dd>
+
+        <dt>
 
           <code><a href="ct_remove_hs.html">ct_remove_hs()</a></code>
 
         </dt>
-        <dd>Remove specific or all hierarchical subject values from image metadata</dd>
+        <dd>Remove hierarchical subject (hs) values from image metadata</dd>
+
+        <dt>
+
+          <code><a href="ct_clone_dir.html">ct_clone_dir()</a></code>
+
+        </dt>
+        <dd>Clone directory structure</dd>
       </dl></div><div class="section level2">
       <h2 id="data-processing">Data processing<a class="anchor" aria-label="anchor" href="#data-processing"></a></h2>
 
       <div class="section-desc"><p>Functions for preparing and tansforming camera trap data</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -139,139 +164,162 @@
 
         </dt>
         <dd>Read a delimited file into a tibble</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_stack_df.html">ct_stack_df()</a></code>
 
         </dt>
         <dd>Stack a list of data frame</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_check_location.html">ct_check_location()</a></code>
 
         </dt>
         <dd>Interactive camera trap location adjustment</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_survey_design.html">ct_survey_design()</a></code>
 
         </dt>
         <dd>Create a survey design for camera trap deployment</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_independence.html">ct_independence()</a></code>
 
         </dt>
         <dd>Evaluate independent detections</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_to_radian.html">ct_to_radian()</a></code>
 
         </dt>
         <dd>Convert time to radians</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_solartime.html">ct_solartime()</a></code>
 
         </dt>
         <dd>Transform time to solar time anchored to sunrise and sunset</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_to_time.html">ct_to_time()</a></code>
 
         </dt>
         <dd>Convert radian to time</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_to_community.html">ct_to_community()</a></code>
 
         </dt>
         <dd>Convert data to a community matrix</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_standardize.html">ct_standardize()</a></code>
 
         </dt>
         <dd>Standardize community data matrix</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_check_name.html">ct_check_name()</a></code>
 
         </dt>
         <dd>Check species name and retrieve Taxonomic Serial Number (TSN) from ITIS</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_to_occupancy.html">ct_to_occupancy()</a></code>
 
         </dt>
         <dd>Convert camera trap data to occupancy format</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_find_break.html">ct_find_break()</a></code>
 
         </dt>
         <dd>Detect time gaps in a datetime series</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_correct_datetime.html">ct_correct_datetime()</a></code>
 
         </dt>
         <dd>Correct camera trap datetime records</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_get_effort.html">ct_get_effort()</a></code>
 
         </dt>
         <dd>Calculate camera trap deployment effort</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_traprate_data.html">ct_traprate_data()</a></code>
 
         </dt>
         <dd>Prepare data for trap rate estimation</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_dp_read.html">ct_dp_read()</a></code>
 
         </dt>
         <dd>Read camera trap data package</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_dp_table.html">ct_dp_table()</a></code>
 
         </dt>
         <dd>Get core tables</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_dp_example.html">ct_dp_example()</a></code>
 
         </dt>
         <dd>Read the Camtrap DP example dataset</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_dp_version.html">ct_dp_version()</a></code>
 
         </dt>
         <dd>Get Camtrap DP version Extracts the version number used by a Camera Trap Data Package object. This version number indicates what version of the <a href="https://camtrap-dp.tdwg.org" class="external-link">Camtrap DP standard</a> was used.</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_dp_filter.html">ct_dp_filter()</a></code>
 
         </dt>
         <dd>Filter camera trap data package</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_convert_unit.html">ct_convert_unit()</a></code>
 
         </dt>
         <dd>Convert values between different units</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_camera_day.html">ct_camera_day()</a></code>
 
         </dt>
         <dd>Calculate daily camera trap captures</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_camtrap_animal_distance.html">ct_camtrap_animal_distance()</a></code>
 
@@ -282,8 +330,7 @@
 
       <div class="section-desc"><p>Functions to run common camera trap data analysis</p></div>
 
-
-    </div><div class="section level2">
+      <dl></dl></div><div class="section level2">
 
 
 
@@ -294,163 +341,190 @@
 
         </dt>
         <dd>Descriptive statistic on dataset</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_plot_density.html">ct_plot_density()</a></code>
 
         </dt>
         <dd>Plot species' activity patterns</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_plot_overlap.html">ct_plot_overlap()</a></code>
 
         </dt>
         <dd>Plot overlap between two species' activity patterns</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_plot_overlap_coef.html">ct_plot_overlap_coef()</a></code>
 
         </dt>
         <dd>Plot overlap coefficient matrix</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_plot_rose_diagram.html">ct_plot_rose_diagram()</a></code>
 
         </dt>
         <dd>Plot a 24-hour rose diagram of daily activity</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_plot_camtrap_activity.html">ct_plot_camtrap_activity()</a></code>
 
         </dt>
         <dd>Plot camera trap activity over time</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_plot_inext.html">ct_plot_inext()</a></code>
 
         </dt>
         <dd>Plot diversity interploation and extrapolation</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_overlap_estimates.html">ct_overlap_estimates()</a></code>
 
         </dt>
         <dd>Estimates of coefficient of overlapping</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="bootstrap.html">ct_bootstrap()</a></code> <code><a href="bootstrap.html">ct_resample()</a></code> <code><a href="bootstrap.html">ct_boot_estimates()</a></code>
 
         </dt>
         <dd>Generate bootstrap estimates of overlap</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_boot_ci.html">ct_boot_ci()</a></code>
 
         </dt>
         <dd>Bootstrap confidence intervals</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_ci.html">ct_ci()</a></code>
 
         </dt>
         <dd>Calculate confidence interval</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_overlap_matrix.html">ct_overlap_matrix()</a></code>
 
         </dt>
         <dd>Estimate overlap coefficients for multiple species</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_temporal_shift.html">ct_temporal_shift()</a></code>
 
         </dt>
         <dd>Calculate the temporal shift of one species' activity over two periods</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_alpha_diversity.html">ct_alpha_diversity()</a></code>
 
         </dt>
         <dd>Alpha diversity index</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_dissimilarity.html">ct_dissimilarity()</a></code>
 
         </dt>
         <dd>Calculate dissimilarity between communities</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_spatial_coverage.html">ct_spatial_coverage()</a></code>
 
         </dt>
         <dd>Calculate observed spatial coverage of species</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_summarise_camtrap_activity.html">ct_summarise_camtrap_activity()</a></code>
 
         </dt>
         <dd>Create activity summary statistics</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_traprate_estimate.html">ct_traprate_estimate()</a></code>
 
         </dt>
         <dd>Estimate trap rate</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_fit_activity.html">ct_fit_activity()</a></code>
 
         </dt>
         <dd>Fit activity model to time-of-day data</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_fit_speedmodel.html">ct_fit_speedmodel()</a></code>
 
         </dt>
         <dd>Fit animal speed model</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_fit_detmodel.html">ct_fit_detmodel()</a></code>
 
         </dt>
         <dd>Fit animal detection</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_fit_rem.html">ct_fit_rem()</a></code>
 
         </dt>
         <dd>Fit Random Encounter Model (REM)</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_availability.html">ct_availability()</a></code>
 
         </dt>
         <dd>Temporal availability adjustment</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_select_model.html">ct_select_model()</a></code>
 
         </dt>
         <dd>Model selection for Distance Sampling detection functions</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_QAIC.html">ct_QAIC()</a></code>
 
         </dt>
         <dd>Compute QAIC for a set of detection function models</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_chi2_select.html">ct_chi2_select()</a></code>
 
         </dt>
         <dd>Select best detection function model by Chi-squared Goodness-of-fit</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_fit_ds.html">ct_fit_ds()</a></code>
 
         </dt>
         <dd>Fit detection functions and estimate density/abundance</dd>
-      </dl><dl><dt>
+
+        <dt>
 
           <code><a href="ct_inext.html">ct_inext()</a></code>
 
@@ -466,7 +540,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

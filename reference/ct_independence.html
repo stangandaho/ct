@@ -30,6 +30,7 @@ specified time window."><meta property="og:image" content="https://stangandaho.g
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><span class="fa fa-blog"></span> Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/camtrap_data_preparation.html">Data preparation</a></li>
+    <li><a class="dropdown-item" href="../articles/manage_media_metadata.html">Manage Media Metadata</a></li>
     <li><a class="dropdown-item" href="../articles/distance_measurement.html">Distance Measurement</a></li>
     <li><a class="dropdown-item" href="../articles/distance_sampling_guide.html">Guide to Distance Sampling</a></li>
     <li><a class="dropdown-item" href="../articles/wildlife_density_estimation.html">Density Estimation With DS</a></li>
@@ -72,8 +73,7 @@ specified time window.</p>
 <span>  <span class="va">site_column</span>,</span>
 <span>  <span class="va">datetime</span>,</span>
 <span>  <span class="va">format</span>,</span>
-<span>  threshold <span class="op">=</span> <span class="fl">30</span> <span class="op">*</span> <span class="fl">60</span>,</span>
-<span>  only <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  threshold <span class="op">=</span> <span class="fl">30</span> <span class="op">*</span> <span class="fl">60</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -112,13 +112,6 @@ the <code>datetime</code> column.</p></dd>
 determine whether events are independent. Events are considered independent if the time
 difference between them is greater than or equal to this threshold. The default is 30 minutes
 (1800 seconds).</p></dd>
-
-
-<dt id="arg-only">only<a class="anchor" aria-label="anchor" href="#arg-only"></a></dt>
-<dd><p>A <code>logical</code> value indicating whether to return only the rows of <code>data</code> that are
-identified as independent events. If <code>TRUE</code>, only independent events are returned. If <code>FALSE</code>,
-the entire data frame is returned with an additional column indicating the independence status.
-The default is <code>TRUE</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -162,26 +155,26 @@ Camera Traps in the Hindu Raj Mountains, Pakistan. Biology, 13(5), 341.
 <span class="r-in"><span><span class="co"># Load example dataset</span></span></span>
 <span class="r-in"><span><span class="va">cam_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"penessoulou_season1.csv"</span>, package <span class="op">=</span> <span class="st">"ct"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Independence without considering species occurrence</span></span></span>
+<span class="r-in"><span><span class="co"># Independence without considering species</span></span></span>
 <span class="r-in"><span><span class="va">indep1</span> <span class="op">&lt;-</span> <span class="va">cam_data</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">ct_independence</span><span class="op">(</span>data <span class="op">=</span> <span class="va">.</span>, datetime <span class="op">=</span> <span class="va">datetimes</span>, format <span class="op">=</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>,</span></span>
-<span class="r-in"><span>                  only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">ct_independence</span><span class="op">(</span>data <span class="op">=</span> <span class="va">.</span>, datetime <span class="op">=</span> <span class="va">datetimes</span>, format <span class="op">=</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Independent observations: %s"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">indep1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Independent observations: 177"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Independent observations: 195"</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Independence considering species occurrence</span></span></span>
+<span class="r-in"><span><span class="co"># Independence considering species</span></span></span>
 <span class="r-in"><span><span class="va">indep2</span> <span class="op">&lt;-</span> <span class="va">cam_data</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu">ct_independence</span><span class="op">(</span>data <span class="op">=</span> <span class="va">.</span>, datetime <span class="op">=</span> <span class="va">datetimes</span>, format <span class="op">=</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>,</span></span>
-<span class="r-in"><span>                  only <span class="op">=</span> <span class="cn">TRUE</span>, species_column <span class="op">=</span> <span class="st">"species"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">ct_independence</span><span class="op">(</span>data <span class="op">=</span> <span class="va">.</span>, datetime <span class="op">=</span> <span class="va">datetimes</span>,</span></span>
+<span class="r-in"><span>                  format <span class="op">=</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>,</span></span>
+<span class="r-in"><span>                  species_column <span class="op">=</span> <span class="st">"species"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Independent observations: %s"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">indep2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Independent observations: 183"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Independent observations: 201"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Use a standalone vector of datetime values</span></span></span>
 <span class="r-in"><span><span class="va">dtime</span> <span class="op">&lt;-</span> <span class="va">cam_data</span><span class="op">$</span><span class="va">datetimes</span></span></span>
-<span class="r-in"><span><span class="fu">ct_independence</span><span class="op">(</span>datetime <span class="op">=</span> <span class="va">dtime</span>, format <span class="op">=</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span>, only <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 177 × 1</span></span>
+<span class="r-in"><span><span class="fu">ct_independence</span><span class="op">(</span>datetime <span class="op">=</span> <span class="va">dtime</span>, format <span class="op">=</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 195 × 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    datetime           </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>             </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 2019-01-20 <span style="color: #949494;">15:24:41</span></span>
@@ -194,7 +187,7 @@ Camera Traps in the Hindu Raj Mountains, Pakistan. Biology, 13(5), 341.
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 2024-03-10 <span style="color: #949494;">10:21:56</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 2024-03-10 <span style="color: #949494;">15:04:38</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 2024-03-10 <span style="color: #949494;">17:28:11</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 167 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 185 more rows</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -207,7 +200,7 @@ Camera Traps in the Hindu Raj Mountains, Pakistan. Biology, 13(5), 341.
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

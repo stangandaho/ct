@@ -28,6 +28,7 @@ following the approach of Howe et al (2019)."><meta property="og:image" content=
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><span class="fa fa-blog"></span> Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/camtrap_data_preparation.html">Data preparation</a></li>
+    <li><a class="dropdown-item" href="../articles/manage_media_metadata.html">Manage Media Metadata</a></li>
     <li><a class="dropdown-item" href="../articles/distance_measurement.html">Distance Measurement</a></li>
     <li><a class="dropdown-item" href="../articles/distance_sampling_guide.html">Guide to Distance Sampling</a></li>
     <li><a class="dropdown-item" href="../articles/wildlife_density_estimation.html">Density Estimation With DS</a></li>
@@ -133,21 +134,21 @@ Model selection with overdispersed distance sampling data. <strong>Methods in Ec
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distend`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting hazard-rate key function</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 15168.943</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 15167.358</span>
 <span class="r-in"><span><span class="va">w3_hr1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Distance/man/ds.html" class="external-link">ds</a></span><span class="op">(</span><span class="va">duiker_data</span>, transect <span class="op">=</span> <span class="st">"point"</span>, key <span class="op">=</span> <span class="st">"hr"</span>, adjustment <span class="op">=</span> <span class="st">"cos"</span>,</span></span>
 <span class="r-in"><span>             order <span class="op">=</span> <span class="fl">2</span>, truncation <span class="op">=</span> <span class="va">truncation</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distend`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting hazard-rate key function with cosine(2) adjustments</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 15170.943</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 15169.358</span>
 <span class="r-in"><span><span class="va">w3_hr2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Distance/man/ds.html" class="external-link">ds</a></span><span class="op">(</span><span class="va">duiker_data</span>, transect <span class="op">=</span> <span class="st">"point"</span>, key <span class="op">=</span> <span class="st">"hr"</span>, adjustment <span class="op">=</span> <span class="st">"cos"</span>,</span></span>
 <span class="r-in"><span>             order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>, truncation <span class="op">=</span> <span class="va">truncation</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distend`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting hazard-rate key function with cosine(2,4) adjustments</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 15172.499</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 15171.252</span>
 <span class="r-in"><span><span class="co"># fit half-normal key models</span></span></span>
 <span class="r-in"><span><span class="va">w3_hn0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Distance/man/ds.html" class="external-link">ds</a></span><span class="op">(</span><span class="va">duiker_data</span>, transect <span class="op">=</span> <span class="st">"point"</span>, key <span class="op">=</span> <span class="st">"hn"</span>, adjustment <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>             truncation <span class="op">=</span> <span class="va">truncation</span><span class="op">)</span></span></span>
@@ -155,21 +156,21 @@ Model selection with overdispersed distance sampling data. <strong>Methods in Ec
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distend`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting half-normal key function</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 15188.691</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 15185.938</span>
 <span class="r-in"><span><span class="va">w3_hn1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Distance/man/ds.html" class="external-link">ds</a></span><span class="op">(</span><span class="va">duiker_data</span>, transect <span class="op">=</span> <span class="st">"point"</span>, key <span class="op">=</span> <span class="st">"hn"</span>, adjustment <span class="op">=</span> <span class="st">"cos"</span>,</span></span>
 <span class="r-in"><span>             order <span class="op">=</span> <span class="fl">2</span>, truncation <span class="op">=</span> <span class="va">truncation</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distend`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting half-normal key function with cosine(2) adjustments</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 15166.434</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 15164.566</span>
 <span class="r-in"><span><span class="va">w3_hn2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Distance/man/ds.html" class="external-link">ds</a></span><span class="op">(</span><span class="va">duiker_data</span>, transect <span class="op">=</span> <span class="st">"point"</span>, key <span class="op">=</span> <span class="st">"hn"</span>, adjustment <span class="op">=</span> <span class="st">"cos"</span>,</span></span>
 <span class="r-in"><span>             order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>, truncation <span class="op">=</span> <span class="va">truncation</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distend`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting half-normal key function with cosine(2,4) adjustments</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 15164.643</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 15163.643</span>
 <span class="r-in"><span><span class="co"># fit uniform key models</span></span></span>
 <span class="r-in"><span><span class="va">w3_u0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Distance/man/ds.html" class="external-link">ds</a></span><span class="op">(</span><span class="va">duiker_data</span>, transect <span class="op">=</span> <span class="st">"point"</span>, key <span class="op">=</span> <span class="st">"unif"</span>, adjustment <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>            truncation <span class="op">=</span> <span class="va">truncation</span><span class="op">)</span></span></span>
@@ -177,21 +178,21 @@ Model selection with overdispersed distance sampling data. <strong>Methods in Ec
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distend`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting uniform key function</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 17423.932</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 17430.372</span>
 <span class="r-in"><span><span class="va">w3_u1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Distance/man/ds.html" class="external-link">ds</a></span><span class="op">(</span><span class="va">duiker_data</span>, transect <span class="op">=</span> <span class="st">"point"</span>, key <span class="op">=</span> <span class="st">"unif"</span>, adjustment <span class="op">=</span> <span class="st">"cos"</span>,</span></span>
 <span class="r-in"><span>            order <span class="op">=</span> <span class="fl">2</span>, truncation <span class="op">=</span> <span class="va">truncation</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distend`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting uniform key function with cosine(2) adjustments</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 17425.932</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 17432.372</span>
 <span class="r-in"><span><span class="va">w3_u2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Distance/man/ds.html" class="external-link">ds</a></span><span class="op">(</span><span class="va">duiker_data</span>, transect <span class="op">=</span> <span class="st">"point"</span>, key <span class="op">=</span> <span class="st">"unif"</span>, adjustment <span class="op">=</span> <span class="st">"cos"</span>,</span></span>
 <span class="r-in"><span>            order <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span><span class="op">)</span>, truncation <span class="op">=</span> <span class="va">truncation</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distend`.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Unknown or uninitialised column: `distbegin`.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Fitting uniform key function with cosine(2,4) adjustments</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 17427.932</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> AIC= 17434.372</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Create model list</span></span></span>
 <span class="r-in"><span><span class="va">model_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">w3_hn0</span>, <span class="va">w3_hn1</span>, <span class="va">w3_hn2</span>,</span></span>
@@ -203,16 +204,16 @@ Model selection with overdispersed distance sampling data. <strong>Methods in Ec
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   model                                                    df  QAIC</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                 <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> hazard-rate key function                                  2  52.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> hazard-rate key function with cosine(2) adjustments       3  54.6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> hazard-rate key function with cosine(2,4) adjustments     4  56.6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> hazard-rate key function                                  2  52.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> hazard-rate key function with cosine(2) adjustments       3  54.4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> hazard-rate key function with cosine(2,4) adjustments     4  56.4</span>
 <span class="r-in"><span><span class="fu"><a href="ct_QAIC.html">ct_QAIC</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">w3_hn0</span>, <span class="va">w3_hn1</span>, <span class="va">w3_hn2</span><span class="op">)</span><span class="op">)</span> <span class="co"># All key functions must be the same</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   model                                                    df  QAIC</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                 <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> half-normal key function                                  1  51.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> half-normal key function with cosine(2) adjustments       2  53.8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> half-normal key function with cosine(2,4) adjustments     3  55.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> half-normal key function                                  1  51.8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> half-normal key function with cosine(2) adjustments       2  53.7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> half-normal key function with cosine(2,4) adjustments     3  55.7</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Compute Chi-squared Goodness-of-fit</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="ct_chi2_select.html">ct_chi2_select</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">w3_hn0</span>, <span class="va">w3_hr0</span>, <span class="va">w3_u0</span><span class="op">)</span><span class="op">)</span> <span class="co"># All key functions must be different</span></span></span>
@@ -221,14 +222,14 @@ Model selection with overdispersed distance sampling data. <strong>Methods in Ec
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> half-normal half-normal key function     307.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> hazard-rate hazard-rate key function     314.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> uniform     uniform key function         450.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> uniform     uniform key function         452.</span>
 <span class="r-in"><span><span class="fu"><a href="ct_chi2_select.html">ct_chi2_select</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">w3_hn2</span>, <span class="va">w3_hr1</span>, <span class="va">w3_u0</span><span class="op">)</span><span class="op">)</span> <span class="co"># All key functions must be different</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 3</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   key         model                                                 criteria</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> half-normal half-normal key function with cosine(2,4) adjustments     317.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> half-normal half-normal key function with cosine(2,4) adjustments     318.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> hazard-rate hazard-rate key function with cosine(2) adjustments       320.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> uniform     uniform key function                                      450.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> uniform     uniform key function                                      452.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Two-step model selection</span></span></span>
 <span class="r-in"><span><span class="fu">ct_select_model</span><span class="op">(</span><span class="va">model_list</span><span class="op">)</span></span></span>
@@ -236,15 +237,15 @@ Model selection with overdispersed distance sampling data. <strong>Methods in Ec
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 9 × 6</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      id key         model                                         df  QAIC best </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1 half-normal half-normal key function                       1  51.9 TRUE </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     2 half-normal half-normal key function with cosine(2) a…     2  53.8 FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     3 half-normal half-normal key function with cosine(2,4)…     3  55.8 FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     4 hazard-rate hazard-rate key function                       2  52.6 TRUE </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>     5 hazard-rate hazard-rate key function with cosine(2) a…     3  54.6 FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span>     6 hazard-rate hazard-rate key function with cosine(2,4)…     4  56.6 FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span>     7 uniform     uniform key function                           0  39.3 TRUE </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span>     8 uniform     uniform key function with cosine(2) adjus…     1  41.3 FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">9</span>     9 uniform     uniform key function with cosine(2,4) adj…     2  43.3 FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>     1 half-normal half-normal key function                       1  51.8 TRUE </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span>     2 half-normal half-normal key function with cosine(2) a…     2  53.7 FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span>     3 half-normal half-normal key function with cosine(2,4)…     3  55.7 FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span>     4 hazard-rate hazard-rate key function                       2  52.4 TRUE </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span>     5 hazard-rate hazard-rate key function with cosine(2) a…     3  54.4 FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">6</span>     6 hazard-rate hazard-rate key function with cosine(2,4)…     4  56.4 FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">7</span>     7 uniform     uniform key function                           0  39.2 TRUE </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">8</span>     8 uniform     uniform key function with cosine(2) adjus…     1  41.2 FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">9</span>     9 uniform     uniform key function with cosine(2,4) adj…     2  43.2 FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Best QAIC models`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Best QAIC models`[[1]]</span>
@@ -254,7 +255,7 @@ Model selection with overdispersed distance sampling data. <strong>Methods in Ec
 <span class="r-out co"><span class="r-pr">#&gt;</span> Detection function:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Half-normal key function </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Estimated abundance in covered region: 11540.24 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Estimated abundance in covered region: 11568.28 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Best QAIC models`[[2]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -263,7 +264,7 @@ Model selection with overdispersed distance sampling data. <strong>Methods in Ec
 <span class="r-out co"><span class="r-pr">#&gt;</span> Detection function:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Hazard-rate key function </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Estimated abundance in covered region: 8198.327 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Estimated abundance in covered region: 8261.735 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Best QAIC models`[[3]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -281,7 +282,7 @@ Model selection with overdispersed distance sampling data. <strong>Methods in Ec
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> half-normal half-normal key function     307. TRUE </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> hazard-rate hazard-rate key function     314. FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> uniform     uniform key function         450. FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> uniform     uniform key function         452. FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Final model`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -290,7 +291,7 @@ Model selection with overdispersed distance sampling data. <strong>Methods in Ec
 <span class="r-out co"><span class="r-pr">#&gt;</span> Detection function:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Half-normal key function </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Estimated abundance in covered region: 11540.24 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Estimated abundance in covered region: 11568.28 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
@@ -305,7 +306,7 @@ Model selection with overdispersed distance sampling data. <strong>Methods in Ec
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer></div>

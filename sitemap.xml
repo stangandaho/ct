@@ -7,11 +7,13 @@
 <url><loc>https://stangandaho.github.io/ct/articles/distance_measurement.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/articles/distance_sampling_guide.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/articles/index.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/articles/manage_media_metadata.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/articles/rarefaction_and_extrapolation.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/articles/wildlife_density_estimation.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/authors.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/index.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/news/index.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/R_user_dir.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/bootstrap.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/calc_active_periods.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct-package.html</loc></url>
@@ -26,6 +28,7 @@
 <url><loc>https://stangandaho.github.io/ct/reference/ct_check_name.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_chi2_select.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_ci.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/ct_clone_dir.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_convert_unit.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_correct_datetime.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_create_hs.html</loc></url>
@@ -36,6 +39,7 @@
 <url><loc>https://stangandaho.github.io/ct/reference/ct_dp_read.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_dp_table.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_dp_version.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/ct_exiftool_call.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_find_break.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_fit_activity.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_fit_detmodel.html</loc></url>
@@ -44,9 +48,9 @@
 <url><loc>https://stangandaho.github.io/ct/reference/ct_fit_speedmodel.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_get_effort.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_get_hs.html</loc></url>
-<url><loc>https://stangandaho.github.io/ct/reference/ct_get_metadata.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_independence.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_inext.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/ct_install_exiftool.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_overlap_estimates.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_overlap_matrix.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_plot_camtrap_activity.html</loc></url>
@@ -56,6 +60,7 @@
 <url><loc>https://stangandaho.github.io/ct/reference/ct_plot_overlap_coef.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_plot_rose_diagram.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_read.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/ct_read_metadata.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_remove_hs.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_select_model.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_solartime.html</loc></url>
@@ -72,9 +77,15 @@
 <url><loc>https://stangandaho.github.io/ct/reference/ct_traprate_data.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_traprate_estimate.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ctdp.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/download_exiftool.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/duikers.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/exiftool_version.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/find_exiftool.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/find_exiftool_path.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/get_os.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/index.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/lnorm_confint.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/parse_hs.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/pendjari.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/pipe.html</loc></url>
 </urlset>
