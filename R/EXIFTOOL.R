@@ -1,3 +1,4 @@
+# nocov start
 ##' Install the current version of ExifTool
 ##'
 ##' @title Install ExifTool, downloading (by default) the current version
@@ -467,3 +468,4 @@ file_extension <- function (x) {
   pos <- regexpr("\\.([[:alnum:]]+)$", x)
   ifelse(pos > -1L, substring(x, pos + 1L), "")
 }
+# nocov end
