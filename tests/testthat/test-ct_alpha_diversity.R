@@ -311,7 +311,7 @@ test_that("ct_alpha_diversity works with different column selection methods", {
     to_community = FALSE
   )
 
-  # Test with explicit column names (if supported)
+  # Test with explicit column names
   expect_no_error({
     result2 <- ct_alpha_diversity(
       data = community_matrix,

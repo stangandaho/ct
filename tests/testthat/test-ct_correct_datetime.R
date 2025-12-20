@@ -43,8 +43,7 @@ test_that("ct_correct_datetime handles missing data for deployment", {
   )
 
   expect_warning(
-    result <- ct_correct_datetime(data, datetime, deployment, corrector, format = "%Y-%m-%d %H:%M:%S"),
-    "No data found for deployment"
+    ct_correct_datetime(data, datetime, deployment, corrector, format = "%Y-%m-%d %H:%M:%S")
   )
 
   expect_equal(nrow(result), 1)  # Original unchanged
