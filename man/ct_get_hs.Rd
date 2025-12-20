@@ -26,7 +26,7 @@ Hierarchical subjects follow a parent|child structure (e.g., "Species|Vulture")
 and are commonly used for taxonomic or categorical image classification.
 }
 \examples{
-\donttest{
+\dontrun{
 # Path to example image
 image_path <- file.path(system.file("img", package = "ct"), "large.jpeg")
 

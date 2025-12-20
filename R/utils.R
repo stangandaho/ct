@@ -53,7 +53,7 @@ pair_to_list <- function(vec) {
 #' Check and return the seperator in the file (dataset to read)
 #' @keywords internal
 #' @noRd
-#'
+#' @importFrom cli cli_abort
 check_sep <- function(file_path){
 
   readed_line <- readLines(con = file_path, n = 1)
@@ -68,7 +68,7 @@ check_sep <- function(file_path){
   names(separators_is_in) <- NULL
 
   if (all(separators_is_in == FALSE)) {
-    rlang::abort("Unknow seperator in file")
+    cli_abort("Unknow seperator in file")
   }
 
   sep <- seps[separators_is_in][1L]
@@ -137,7 +137,7 @@ magrittr::`%<>%`
 #' Parses an input vector into POSIXct date-time object.
 #' @keywords internal
 #' @noRd
-#'
+#' @importFrom cli cli_abort
 parse_datetime <- function (datetime,
                             format,
                             time_zone,
@@ -152,13 +152,13 @@ parse_datetime <- function (datetime,
   }
   else {
     if (!inherits(datetime, "character"))
-      stop(paste("datetime must be a character:",
-                 deparse(substitute(datetime))), call. = FALSE)
+      cli_abort(paste("datetime must be a character:",
+                 deparse(substitute(datetime))), call = NULL)
   }
   if (check_na & any(is.na(datetime)))
-    stop(paste("there are NAs in", deparse(substitute(datetime))), call. = FALSE)
+    cli_abort(paste("there are NAs in", deparse(substitute(datetime))), call = NULL)
   if (check_empty & any(datetime == ""))
-    stop(paste("there are blank values in", deparse(substitute(datetime))), call. = FALSE)
+    cli_abort(paste("there are blank values in", deparse(substitute(datetime))), call = NULL)
   if (all(datetime == "") & allow_empty_output)
     return(NA)
   datetime_char <- as.character(datetime)
@@ -168,16 +168,16 @@ parse_datetime <- function (datetime,
   }
 
   if (all(is.na(out)))
-    stop(paste0("Cannot read datetime format in ", deparse(substitute(datetime)),
+    cli_abort(paste0("Cannot read datetime format in ", deparse(substitute(datetime)),
                 ". Output is all NA.\n", "expected:  ", format,
-                "\nactual:    ", datetime[1]), call. = FALSE)
+                "\nactual:    ", datetime[1]), call = NULL)
   if (check_na_out & any(is.na(out)))
-    stop(paste(sum(is.na(out)), "out of", length(out), "records in",
+    cli_abort(paste(sum(is.na(out)), "out of", length(out), "records in",
                deparse(substitute(datetime)), "cannot be interpreted using format:",
                format, "\n", "rows", paste(which(is.na(out)),
-                                           collapse = ", ")), call. = FALSE)
+                                           collapse = ", ")), call = NULL)
   if (inherits(datetime, c("POSIXct", "POSIXlt")))
-    stop("couldn't interpret datetime using specified format. Output is not POSIX object")
+    cli_abort("couldn't interpret datetime using specified format. Output is not POSIX object")
   return(out)
 }
 
@@ -188,19 +188,20 @@ parse_datetime <- function (datetime,
 #' Convert a matrix into a molten data frame
 #' @keywords internal
 #' @noRd
-#'
+#' @importFrom cli cli_abort
+#' @importFrom dplyr bind_rows
 
 melt <- function(data){
   if (any(!class(data) %in% c("matrix", "array"))) {
-    rlang::abort("Data must be a matrix", call = NULL)
+    cli_abort("Data must be a matrix", call = NULL)
   }
 
   if (is.null(colnames(data))) {
-    rlang::abort("The data must have column names", call = NULL)
+    cli_abort("The data must have column names", call = NULL)
   }
 
   if (is.null(rownames(data))) {
-    rlang::abort("The data must have row names",  call = NULL)
+    cli_abort("The data must have row names",  call = NULL)
   }
 
   tbl_list <- list()
@@ -211,7 +212,7 @@ melt <- function(data){
       tbl_list[[paste0(r,c)]] <- tbl
     }
   }
-  melt_data <- dplyr::bind_rows(tbl_list)
+  melt_data <- bind_rows(tbl_list)
 
   return(melt_data)
 }
@@ -223,17 +224,20 @@ melt <- function(data){
 #' Make sure the input data to fit kernel density is suitable
 #' @keywords internal
 #' @noRd
-#'
+#' @importFrom cli cli_abort
+
 check_density_input <- function (y)
 {
   if (!is.vector(y) || !is.numeric(y))
-    rlang::abort("The times of observations must be in a numeric vector.")
+    cli_abort("The times of observations must be in a numeric vector.", call = NULL)
   if (length(unique(y)) < 2)
-    rlang::abort(paste0("At least 2 different observations are needed to fit a density. Not ", length(unique(y)), "!"))
+    cli_abort(paste0("At least 2 different observations are needed to fit a density. Not ",
+                     length(unique(y)), "!"), call = NULL)
   if (any(is.na(y)))
-    rlang::abort("Your data have missing values.")
+    cli_abort("Your data have missing values.", call = NULL)
   if (any(y < 0 | y > 2 * pi))
-    rlang::abort("You have times < 0 or > 2*pi; make sure you are using radians.")
+    cli_abort("You have times < 0 or > 2*pi; make sure you are using radians.",
+              call = NULL)
   return(NULL)
 }
 
@@ -288,11 +292,12 @@ custom_cli <- function(text, color = "red") {
 #' Match argument
 #' @keywords internal
 #' @noRd
+#' @importFrom cli cli_abort
 match_arg <- function(arg, choices, argname = deparse(substitute(arg))) {
   tryCatch(
     match.arg(arg, choices),
     error = function(e) {
-      cli::cli_abort("{.field {argname}} must be one of {.code {choices}}", call = NULL)
+      cli_abort("{.field {argname}} must be one of {.code {choices}}", call = NULL)
     }
   )
 }
@@ -303,12 +308,14 @@ match_arg <- function(arg, choices, argname = deparse(substitute(arg))) {
 #' Get CRS type
 #' @keywords internal
 #' @noRd
-#'
+#' @importFrom cli cli_abort
+#' @importFrom sf st_crs
+
 crs_type <- function(sf_object) {
-  wkt <- sf::st_crs(sf_object)$wkt
+  wkt <- st_crs(sf_object)$wkt
   if (is.na(wkt)) {
     obj_name <- deparse(substitute(sf_object))
-    rlang::abort(sprintf("Coordinate Reference System (CRS) of `%s` cannot be NA. Assign a CRS.",
+    cli_abort(sprintf("Coordinate Reference System (CRS) of `%s` cannot be NA. Assign a CRS.",
                          obj_name), call = NULL)
   }
 
@@ -325,14 +332,16 @@ crs_type <- function(sf_object) {
 #' @description
 #' Make sure study area provided is sf object and represents a polygon
 #' @keywords internal
+#' @importFrom cli cli_abort
+#' @importFrom sf st_geometry_type
 #' @noRd
 valid_study_area <- function(sf_object) {
   if (!any(c("sf", "sfc_POLYGON" ,"sfc") %in% class(sf_object))) {
-    rlang::abort("Area of study must be simple feature (sf) object", call = NULL)
+    cli_abort("Area of study must be simple feature (sf) object", call = NULL)
   }
 
-  if (!any(c("MULTIPOLYGON", "POLYGON") %in% sf::st_geometry_type(sf_object))) {
-    rlang::abort("Area of study must be a polygon", call = NULL)
+  if (!any(c("MULTIPOLYGON", "POLYGON") %in% st_geometry_type(sf_object))) {
+    cli_abort("Area of study must be a polygon", call = NULL)
   }
 }
 
@@ -341,6 +350,8 @@ valid_study_area <- function(sf_object) {
 #' @description
 #' Make sure column(s) provided is/are present in the data
 #' @keywords internal
+#' @importFrom rlang ensyms
+#' @importFrom cli format_error cli_abort
 #' @noRd
 #'
 missed_col_error <- function(data, ..., use_object = TRUE){
@@ -348,12 +359,12 @@ missed_col_error <- function(data, ..., use_object = TRUE){
   if (use_object) {
     cols <- unlist(list(...))
   }else{
-    cols <- sapply(rlang::ensyms(...), rlang::as_string)
+    cols <- sapply(ensyms(...), rlang::as_string)
   }
 
   if (any(!cols %in% colnames(data))) {
     not_in <- cols[!cols %in% colnames(data)];
-    rlang::abort(cli::format_error("Column {not_in} not found in {deparse(substitute(data))}"), call = NULL)
+    cli_abort(format_error("Column {not_in} not found in {deparse(substitute(data))}"), call = NULL)
   }
 }
 
@@ -422,10 +433,10 @@ ct_ci <- function(x, alpha = .05, side = 'all') {
 #'   and \code{ucl} (lower and upper confidence limits).
 #'
 #' @keywords internal
-#'
+#' @importFrom cli cli_abort
 lnorm_confint <- function(estimate, se, percent = 95){
   if(length(estimate) != length(se))
-    rlang::abort("estimate and se must have the same number of values")
+    cli_abort("estimate and se must have the same number of values")
   z <- qt((1 - percent/100) / 2, Inf, lower.tail = FALSE)
   w <- exp(z * sqrt(log(1 + (se/estimate)^2)))
   data.frame(lower_bound = estimate/w, upper_bound = estimate*w)
@@ -436,8 +447,9 @@ lnorm_confint <- function(estimate, se, percent = 95){
 #' Get column name
 #' @keywords internal
 #' @noRd
+#' @importFrom dplyr select all_of
 get_column <- function(data, ...){
-  colname <- data %>% dplyr::select(dplyr::all_of(...)) %>% colnames()
+  colname <- data %>% select(all_of(...)) %>% colnames()
   if (length(colname) == 0) {
     return(NULL)
   }
@@ -457,28 +469,34 @@ try_formats <- c("%Y-%m-%d %H:%M:%OS", "%Y/%m/%d %H:%M:%OS",
                  "%Y/%m/%d %H:%M", "%Y:%m:%d %H:%M",
                  "%Y-%m-%d", "%Y/%m/%d", "%Y:%m:%d")
 
-
+#' Get column name
+#' @keywords internal
+#' @noRd
+#' @importFrom rlang is_symbol is_quosure as_name get_expr enquo
+#' @importFrom cli cli_abort
 as_colname <- function(arg) {
-  if (rlang::is_symbol(arg) || rlang::is_quosure(arg)) {
-    rlang::as_name(rlang::get_expr(arg))
+  if (is_symbol(arg) ||is_quosure(arg)) {
+    as_name(get_expr(arg))
   } else if (is.character(arg)) {
-    rlang::enquo(arg)
+    enquo(arg)
   } else {
-    cli::cli_abort("Column name must be a string or unquoted symbol.")
+    cli_abort("Column name must be a string or unquoted symbol.")
   }
 }
 
 #' Check package
 #' @noRd
+#' @importFrom cli cli_div cli_text
+#' @importFrom utils menu
 checked_packages <- function(packages) {
   # Check availability
   not_available <- !vapply(packages, requireNamespace, quietly = TRUE, FUN.VALUE = logical(1))
 
   if (any(not_available)) {
     to_install <- packages[not_available]
-    cli::cli_div(theme = list(span.emph = list(color = "#ef6d00")))
-    cli::cli_text("{ifelse(length(to_install) > 1, 'Packages', 'Package')} {.emph {to_install}} need to be installed.")
-    action <- utils::menu(choices = c("Install", "No"))
+    cli_div(theme = list(span.emph = list(color = "#ef6d00")))
+    cli_text("{ifelse(length(to_install) > 1, 'Packages', 'Package')} {.emph {to_install}} need to be installed.")
+    action <- menu(choices = c("Install", "No"))
     if (action == 1) {
       for (pkg in to_install) {
         install.packages(pkg, dependencies = TRUE)

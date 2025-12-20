@@ -53,7 +53,7 @@ returned where applicable. When \code{parse_hs = TRUE}, the
 \code{HierarchicalSubject} field is split into structured columns.
 }
 \examples{
-\donttest{
+\dontrun{
 # Example image path
 image_path <- file.path(system.file("img", package = "ct"), "large.jpeg")
 

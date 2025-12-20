@@ -21,7 +21,7 @@
 #' * [ct_read_metadata()] to read image metadata
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # Path to example image
 #' image_path <- file.path(system.file("img", package = "ct"), "large.jpeg")
 #'
@@ -40,15 +40,16 @@
 #' )
 #' ct_get_hs(path = image_path)  # Returns vector with both subjects
 #'}
+#' @importFrom cli cli_abort
 #' @export
 ct_get_hs <- function(path, hs_delimitor = "|", into_tibble = FALSE) {
   # Validate input
   if (missing(path) || is.null(path) || length(path) == 0) {
-    cli::cli_abort("{.arg path} must be provided.")
+    cli_abort("{.arg path} must be provided.")
   }
 
   if (!file.exists(path)) {
-    cli::cli_abort("File not found: {.path {path}}")
+    cli_abort("File not found: {.path {path}}")
   }
 
   # Check if HierarchicalSubject field exists in metadata
@@ -100,6 +101,9 @@ ct_get_hs <- function(path, hs_delimitor = "|", into_tibble = FALSE) {
 
 #' Parse Hierarchical Subjects into a Tibble
 #' @keywords internal
+#' @importFrom dplyr across everything mutate as_tibble tibble
+#' @importFrom cli cli_warn
+
 parse_hs <- function(hs_vector, hs_delimitor = "|") {
   # Handle NULL or empty input
   if (is.null(hs_vector) || length(hs_vector) == 0) {
@@ -113,7 +117,7 @@ parse_hs <- function(hs_vector, hs_delimitor = "|") {
   invalid_format <- lengths(split_hs) != 2
 
   if (any(invalid_format)) {
-    cli::cli_warn(
+    cli_warn(
       c(
         "Some hierarchical subjects don't contain '{hs_delimitor}' separator:",
         "x" = "{.val {hs_vector[invalid_format]}}",
@@ -134,7 +138,7 @@ parse_hs <- function(hs_vector, hs_delimitor = "|") {
   children <- sapply(split_hs, `[`, 2)
 
   # Create long format tibble
-  long_df <- dplyr::tibble(
+  long_df <- tibble(
     parent = parents,
     child = children
   )
@@ -157,7 +161,7 @@ parse_hs <- function(hs_vector, hs_delimitor = "|") {
 
   # Create tibble with parent names as column names
   names(wide_list) <- unique_parents
-  result <- dplyr::as_tibble(wide_list)
+  result <- as_tibble(wide_list)
 
   fill_na_ <- function(x) {
     for (i in 1:length(x)) {
@@ -169,7 +173,7 @@ parse_hs <- function(hs_vector, hs_delimitor = "|") {
   }
 
   result <- result %>%
-    dplyr::mutate(across(.cols = everything(), .fns = fill_na_))
+    mutate(across(.cols = everything(), .fns = fill_na_))
 
   return(result)
 }

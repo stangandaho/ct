@@ -37,7 +37,7 @@ ct_install_exiftool <- function(install_location = NULL,
                       quiet = quiet)
   } else {
     tmpfile <- local_exiftool
-    win_exe <- (tools::file_ext(tmpfile) == "zip")
+    win_exe <- (file_extension(tmpfile) == "zip")
   }
 
   ##---------------------------##
@@ -63,7 +63,7 @@ ct_install_exiftool <- function(install_location = NULL,
     if(!dir.exists(write_dir)) {
       dir.create(write_dir)
     }
-    ## This calls zip::unzip, not utils::unzip
+
     unzip(tmpfile, exdir = tmpdir)
     exif_dir <- dir(tmpdir, pattern = "exiftool-", full.names = TRUE)
     file.copy(dir(exif_dir, full.names = TRUE), write_dir, recursive = TRUE)
@@ -130,6 +130,7 @@ download_exiftool <- function(win_exe = FALSE,
 #' @param exiftool_path Path to ExifTool executable (auto-detected if NULL)
 #' @return If intern=TRUE, returns output as character vector. Otherwise returns exit status.
 #' @export
+#' @importFrom cli cli_abort
 ct_exiftool_call <- function(path = NULL,
                              args = NULL,
                              quiet = TRUE,
@@ -142,7 +143,7 @@ ct_exiftool_call <- function(path = NULL,
   }
 
   if (is.null(exiftool_path)) {
-    cli::cli_abort("ExifTool not found. Please install it using {.fn ct_install_exiftool}")
+    cli_abort("ExifTool not found. Please install it using {.fn ct_install_exiftool}")
   }
 
   # Build command arguments
@@ -164,7 +165,7 @@ ct_exiftool_call <- function(path = NULL,
     missing_files <- path[!file.exists(path)]
     if (length(missing_files) > 0) {
       fls <- ifelse(missing_files > 1, "Files not found: ", "File not found: ")
-      cli::cli_abort(paste0(fls, paste(basename(missing_files), collapse = ", ")))
+      cli_abort(paste0(fls, paste(basename(missing_files), collapse = ", ")))
     }
 
     cmd_args <- c(cmd_args, shQuote(path))
@@ -185,7 +186,7 @@ ct_exiftool_call <- function(path = NULL,
     if (!is.null(status) && status != 0) {
       # If there's an error, try to provide helpful info
       error_msg <- paste(result, collapse = "\n")
-      cli::cli_abort(paste0("ExifTool error (status ", status, "): ", error_msg))
+      cli_abort(paste0("ExifTool error (status ", status, "): ", error_msg))
     }
 
     return(result)
@@ -234,7 +235,7 @@ ct_exiftool_call <- function(path = NULL,
 #' \code{HierarchicalSubject} field is split into structured columns.
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # Example image path
 #' image_path <- file.path(system.file("img", package = "ct"), "large.jpeg")
 #'
@@ -257,7 +258,8 @@ ct_exiftool_call <- function(path = NULL,
 #' * [ct_get_hs()] to retrieve hierarchical subjects
 #' * [ct_create_hs()] to add hierarchical subjects
 #' * [ct_remove_hs()] to remove hierarchical subjects
-#'
+#' @importFrom cli cli_abort
+#' @importFrom dplyr bind_cols relocate all_of as_tibble
 #' @export
 ct_read_metadata <- function(path,
                              tags = NULL,
@@ -266,7 +268,7 @@ ct_read_metadata <- function(path,
                              args = NULL,
                              exiftool_path = NULL) {
   if (!is.character(path) || length(path) == 0) {
-    cli::cli_abort("path must be a non-empty character vector")
+    cli_abort("path must be a non-empty character vector")
   }
 
   # Build ExifTool arguments
@@ -318,7 +320,7 @@ ct_read_metadata <- function(path,
     encoding = "UTF-8"
   )
 
-  metadata <- dplyr::as_tibble(metadata)
+  metadata <- as_tibble(metadata)
 
   # Parse hierarchical subjects if requested
   if (parse_hs && "HierarchicalSubject" %in% colnames(metadata)) {
@@ -348,17 +350,17 @@ ct_read_metadata <- function(path,
       expanded_metadata <- row_data[rep(1, n_hs_rows), , drop = FALSE]
 
       # Combine with parsed hierarchical subjects
-      result <- dplyr::bind_cols(expanded_metadata, parsed_hs)
+      result <- bind_cols(expanded_metadata, parsed_hs)
 
       # Relocate parsed HS columns after HierarchicalSubject column
       hs_cols <- colnames(parsed_hs)
-      result <- dplyr::relocate(result, dplyr::all_of(hs_cols), .after = HierarchicalSubject)
+      result <- relocate(result, all_of(hs_cols), .after = "HierarchicalSubject")
 
       result
     })
 
     # Combine all rows efficiently
-    metadata <- dplyr::bind_rows(parsed_rows)
+    metadata <- bind_rows(parsed_rows)
   }
 
   return(metadata)
@@ -448,11 +450,20 @@ find_exiftool <- function(install_location = NULL) {
 #' @param exiftool_path Path to ExifTool executable (auto-detected if NULL)
 #' @return Character string with version number
 #' @keywords internal
+#' @importFrom cli cat_line
 exiftool_version <- function(exiftool_path = NULL) {
   version <- ct_exiftool_call(args = "-ver", exiftool_path = exiftool_path, intern = TRUE)
-  cli::cat_line(trimws(version[1]),
+  cat_line(trimws(version[1]),
                 col = sample(c("#a41500", "#007e36", "#002b91", "#ffa73b"), 1))
 }
 
 #' @keywords internal
 is_windows <- function() {.Platform$OS.type == "windows"}
+
+#' Retrieve file extension
+#' @keywords internal
+#' @noRd
+file_extension <- function (x) {
+  pos <- regexpr("\\.([[:alnum:]]+)$", x)
+  ifelse(pos > -1L, substring(x, pos + 1L), "")
+}

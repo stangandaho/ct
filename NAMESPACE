@@ -91,169 +91,70 @@ importFrom("stats", "aggregate", "as.formula", "qt", "sd", "window",
            "end", "predict", "quantile", "start", "setNames",
            "cov")
 importFrom("utils", "install.packages", "installed.packages", "read.table",
-           "write.csv", "head")
+           "write.csv", "head", "download.file", "read.csv", "untar", "unzip", "menu")
 
 # dplyr
-importFrom(dplyr, as_tibble)
-importFrom(dplyr, arrange)
-importFrom(dplyr, mutate)
-importFrom(dplyr, tibble)
-importFrom(dplyr, rename)
-importFrom(dplyr, bind_rows)
-importFrom(dplyr, bind_cols)
-importFrom(dplyr, relocate)
-importFrom(dplyr, left_join)
-importFrom(dplyr, count)
-importFrom(dplyr, ungroup)
-importFrom(dplyr, enquos)
-importFrom(dplyr, sym)
-importFrom(dplyr, syms)
-importFrom(dplyr, ensym)
-importFrom(dplyr, ensyms)
+importFrom(dplyr, as_tibble, arrange, mutate, tibble, rename, bind_rows, bind_cols,
+           relocate, left_join, count, ungroup, enquos, sym, syms, ensym, ensyms,
+           everything, across, select, all_of)
+
 
 #rlang
-importFrom(rlang, ":=")
+importFrom(rlang, ":=", enquo, is_symbol, is_quosure, as_name, get_expr)
 
 #tidyr
 importFrom(tidyr, pivot_wider)
 
 # magrittr
-importFrom(magrittr, '%>%')
-importFrom(magrittr, '%<>%')
+importFrom(magrittr, '%>%', '%<>%')
 
 # ggplot
-importFrom(ggplot2, ggplot)
-importFrom(ggplot2, aes)
-importFrom(ggplot2, geom_polygon)
-importFrom(ggplot2, geom_point)
-importFrom(ggplot2, geom_text)
-importFrom(ggplot2, labs)
-importFrom(ggplot2, theme_minimal)
-importFrom(ggplot2, theme)
-importFrom(ggplot2, element_line)
-importFrom(ggplot2, element_blank)
-importFrom(ggplot2, element_text)
-importFrom(ggplot2, geom_line)
-importFrom(ggplot2, geom_rug)
-importFrom(ggplot2, annotate)
-importFrom(ggplot2, scale_x_continuous)
-importFrom(ggplot2, scale_size_continuous)
-importFrom(ggplot2, scale_color_gradientn)
-importFrom(ggplot2, guides)
-importFrom(ggplot2, guide_colorbar)
-
+importFrom(ggplot2, ggplot, aes, geom_polygon, geom_point, geom_text, labs,
+           theme_minimal, theme, element_line, element_blank, element_text,
+           geom_line, geom_rug, annotate, scale_x_continuous, scale_size_continuous,
+           scale_color_gradientn, guides, guide_colorbar)
 
 #shiny
-importFrom(shiny, shinyOptions)
-importFrom(shiny, shinyApp)
-importFrom(shiny, modalDialog)
-importFrom(shiny, tagList)
-importFrom(shiny, actionButton)
-importFrom(shiny, icon)
-importFrom(shiny, modalButton)
-importFrom(shiny, fluidRow)
-importFrom(shiny, column)
-importFrom(shiny, checkboxInput)
-importFrom(shiny, selectInput)
-importFrom(shiny, verbatimTextOutput)
-importFrom(shiny, showModal)
-importFrom(shiny, reactive)
-importFrom(shiny, eventReactive)
-importFrom(shiny, renderText)
-importFrom(shiny, req)
-importFrom(shiny, strong)
-importFrom(shiny, h2)
-importFrom(shiny, shinyOptions)
-importFrom(shiny, shinyOptions)
-importFrom(shiny, shinyOptions)
-importFrom(shiny, shinyOptions)
-importFrom(shiny, br)
-importFrom(shiny, hr)
-importFrom(shiny, conditionalPanel)
-importFrom(shiny, numericInput)
-importFrom(shiny, renderPrint)
-importFrom(shiny, renderPlot)
-importFrom(shiny, tabsetPanel)
-importFrom(shiny, tabPanel)
-importFrom(shiny, plotOutput)
-importFrom(shiny, observe)
-importFrom(shiny, updateNumericInput)
-importFrom(shiny, reactiveValues)
-importFrom(shiny, eventReactive)
-importFrom(shiny, updateSelectInput )
-importFrom(shiny, updateTextInput)
-importFrom(shiny, observe)
+importFrom(shiny, shinyOptions, shinyApp, modalDialog, tagList, actionButton,
+           icon, modalButton, fluidRow, column, checkboxInput, selectInput,
+           verbatimTextOutput, showModal, reactive, eventReactive, renderText,
+           req, strong, h2, br, hr, conditionalPanel, numericInput, renderPrint,
+           renderPlot, tabsetPanel, tabPanel, plotOutput, observe, updateNumericInput,
+           reactiveValues, updateSelectInput, updateTextInput)
+
 
 #ds4Dash
-importFrom("bs4Dash", "dashboardHeader")
-importFrom("bs4Dash", "dashboardBody")
-importFrom("bs4Dash", "dashboardPage")
-importFrom("bs4Dash", "dashboardSidebar")
+importFrom("bs4Dash", "dashboardHeader", "dashboardBody", "dashboardPage", "dashboardSidebar")
 
 #leaflet
-importFrom("leaflet", "leafletOutput")
-importFrom("leaflet", "renderLeaflet")
+importFrom("leaflet", "leafletOutput", "renderLeaflet")
 
 #shinyFIles
-importFrom("shinyFiles", "getVolumes")
-importFrom("shinyFiles", "parseDirPath")
-importFrom("shinyFiles", "parseFilePaths")
-importFrom("shinyFiles", "parseSavePath")
-importFrom("shinyFiles", "shinyDirButton")
-importFrom("shinyFiles", "shinyDirChoose")
-importFrom("shinyFiles", "shinyDirLink")
-importFrom("shinyFiles", "shinyFileChoose")
-importFrom("shinyFiles", "shinyFileSave")
-importFrom("shinyFiles", "shinyFilesButton")
-importFrom("shinyFiles", "shinySaveButton")
+importFrom(shinyFiles, getVolumes, parseDirPath, parseFilePaths, parseSavePath,
+           shinyDirButton, shinyDirChoose, shinyDirLink, shinyFileChoose,
+           shinyFileSave, shinyFilesButton, shinySaveButton)
+
 
 #shinyTree
-importFrom("shinyTree", "renderTree")
-importFrom("shinyTree", "shinyTree")
+importFrom("shinyTree", "renderTree", "shinyTree")
 
 #overlap
-importFrom(overlap, bootCI)
-importFrom(overlap, bootCIlogit)
-importFrom(overlap, bootEst)
-importFrom(overlap, bootstrap)
-importFrom(overlap, densityFit)
-importFrom(overlap, densityPlot)
-importFrom(overlap, getBandWidth)
-importFrom(overlap, overlapEst)
-importFrom(overlap, overlapPlot)
-importFrom(overlap, overlapTrue)
-importFrom(overlap, resample)
-importFrom(overlap, sunTime)
-importFrom(overlap, sunTime)
+importFrom(overlap, bootCI, bootCIlogit, bootEst, bootstrap, densityFit, densityPlot,
+           getBandWidth, overlapEst, overlapPlot, overlapTrue, resample, sunTime)
+
 
 # sf
-importFrom(sf, st_as_sf)
-importFrom(sf, st_transform)
-importFrom(sf, st_coordinates)
+importFrom(sf, st_as_sf, st_transform, st_coordinates, st_crs, st_geometry_type)
 
 # terra
-importFrom(terra, rast)
-importFrom(terra, vect)
-importFrom(terra, values)
-importFrom(terra, as.polygons)
-importFrom(terra, extend)
-importFrom(terra, rasterize)
-importFrom(terra, global)
-importFrom(terra, mean)
+importFrom(terra, rast, vect, values, as.polygons, extend, rasterize, global, mean)
 
 # cli
-importFrom(cli, cli_alert_danger)
-importFrom(cli, cli_alert_danger)
-importFrom(cli, cli_alert_success)
-importFrom(cli, cli_alert_warning)
-importFrom(cli, cli_format)
-importFrom(cli, cli_text)
+importFrom(cli,cli_alert_danger,cli_alert_success,cli_alert_warning,cli_format,
+           cli_text, cli_abort, cli_warn, cli_div, cat_line, format_error)
 
 # Distance
 importFrom(Distance, ds)
 
 # sbd
 importFrom(sbd, sbm)
-
-# utils
-importFrom("utils", "download.file", "read.csv", "untar", "unzip")

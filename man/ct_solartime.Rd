@@ -74,8 +74,8 @@ read.csv(system.file("penessoulou_season1.csv", package = "ct")) \%>\%
  # Select independent events based on a given threshold
  ct::ct_independence(species_column = species,
                           datetime = datetimes, threshold = 60*5, # 5 minutes
-                          format = "\%Y-\%m-\%d \%H:\%M:\%S",
-                          only = TRUE) \%>\%
+                          format = "\%Y-\%m-\%d \%H:\%M:\%S"
+                          ) \%>\%
  # Transform Time to Solar Time
  ct_solartime(data = ., date = datetime, longitude = longitude, latitude = latitude,
                crs = "EPSG:32631", time_zone = 1)

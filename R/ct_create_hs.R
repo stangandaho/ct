@@ -50,7 +50,7 @@
 #' * [ct_read_metadata()] to read image metadata
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # Path to example image
 #' image_path <- file.path(system.file("img", package = "ct"), "large.jpeg")
 #'
@@ -71,7 +71,7 @@
 #' ct_create_hs(
 #'   path = image_path,
 #'   value = c(
-#'     "Species" = "Gyps africanus, Kobus kob",
+#'     "Species" = "Gyps_africanus, Kobus_kob",
 #'     "Sex" = "Male, Female",
 #'     "Count" = "3, 2"
 #'   ),

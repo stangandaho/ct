@@ -50,8 +50,8 @@
 #'   ct_independence(species_column = species,
 #'                   site_column = camera,
 #'                   datetime = datetimes,
-#'                   threshold = 60, format = "%Y-%m-%d %H:%M:%S",
-#'                   only = TRUE)
+#'                   threshold = 60, format = "%Y-%m-%d %H:%M:%S"
+#'                   )
 #' head(camdata1)
 #'
 #' # Prepare sampling data (camera-day)

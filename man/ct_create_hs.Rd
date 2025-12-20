@@ -71,7 +71,7 @@ When using comma-separated values, the function splits each value string and
 creates separate hierarchical subjects for each position across all parents.
 }
 \examples{
-\donttest{
+\dontrun{
 # Path to example image
 image_path <- file.path(system.file("img", package = "ct"), "large.jpeg")
 
@@ -92,7 +92,7 @@ ct_get_hs(path = image_path, into_tibble = TRUE)
 ct_create_hs(
   path = image_path,
   value = c(
-    "Species" = "Gyps africanus, Kobus kob",
+    "Species" = "Gyps_africanus, Kobus_kob",
     "Sex" = "Male, Female",
     "Count" = "3, 2"
   ),

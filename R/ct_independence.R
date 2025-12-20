@@ -68,7 +68,8 @@
 #'
 #' # Independence considering species
 #' indep2 <- cam_data %>%
-#'   ct_independence(data = ., datetime = datetimes, format = "%Y-%m-%d %H:%M:%S",
+#'   ct_independence(data = ., datetime = datetimes,
+#'                   format = "%Y-%m-%d %H:%M:%S",
 #'                   species_column = "species")
 #'
 #' sprintf("Independent observations: %s", nrow(indep2))
@@ -78,7 +79,6 @@
 #' ct_independence(datetime = dtime, format = "%Y-%m-%d %H:%M:%S")
 #'
 #' @export
-
 ct_independence <- function(data = NULL,
                             species_column,
                             site_column,

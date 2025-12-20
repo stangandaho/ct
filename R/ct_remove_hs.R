@@ -42,7 +42,7 @@
 #' * [ct_read_metadata()] to read image metadata
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # Path to example image
 #' image_path <- file.path(system.file("img", package = "ct"), "large.jpeg")
 #'
