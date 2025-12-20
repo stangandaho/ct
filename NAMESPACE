@@ -80,11 +80,6 @@ export(`%<>%`)
 
 ########### Import ##############
 
-# exifr
-importFrom(exifr, exiftool_call)
-importFrom(exifr, read_exif)
-
-
 # base
 importFrom("methods", "hasArg")
 importFrom("stats", "aggregate", "as.formula", "qt", "sd", "window",

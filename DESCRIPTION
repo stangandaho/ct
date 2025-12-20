@@ -16,9 +16,11 @@ Imports:
     methods,
     overlap (>= 0.3.9),
     sbd (>= 0.1.0),
+    sf (>= 1.0-19),
     shiny (>= 1.10.0),
     shinyFiles (>= 0.9.3),
     shinyTree (>= 0.3.1),
+    terra (>= 1.8-29),
     tidyr (>= 1.3.1),
     Rcpp (>= 1.0.14),
     rlang (>= 1.1.5)
@@ -41,8 +43,6 @@ Suggests:
     kableExtra (>= 1.4.0),
     knitr (>= 1.50),
     rmarkdown,
-    sf (>= 1.0-19),
-    terra (>= 1.8-29),
     testthat (>= 3.0.0),
     vegan (>= 2.6-6.1),
     xml2
