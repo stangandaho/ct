@@ -51,7 +51,7 @@ determined by their viewshed angle (e.g 45°, less than 180°). These
 differences necessitated the incorporation of temporal and spatial
 effort components into the camera trap distance sampling model.
 
-![](observer_vs_camera_trap.png)
+![Observer vs Camera Trap](observer_vs_camera_trap.png)
 
 ### The Mathematical Framework
 
@@ -83,7 +83,7 @@ detection function. \\\hat{p} = \int\_{r\_{min}}^{r\_{max}} g(r)\\ dr\\,
 where \\r\_{min}\\ is the left truncation distance (minimum distance),
 and \\r\_{max}\\ is the right truncation distance (maximum distance).
 
-![](detection_function_curve.png)
+![Detection function curve](detection_function_curve.png)
 
 #### Understanding Sampling Effort
 
@@ -92,7 +92,7 @@ temporal and spatial dimensions. A camera operating for longer periods
 accumulates more sampling effort, as does a camera with a wider field of
 view.
 
-![](cameratrap_effort_formula.png)
+![Camera trap effort formula](cameratrap_effort_formula.png)
 
 The effort equation captures this: \\e = \frac{\theta \times T}{2\pi
 \times t}\\
@@ -135,7 +135,8 @@ detection probability falls off with distance. When detection
 probability drops relatively uniformly with distance, the half-normal
 often provides a good fit.
 
-![](half_normal_probability_density_function.png)
+![Half normal probability density
+function](half_normal_probability_density_function.png)
 
 The half-normal key function is
 \\\exp\\\left(-\frac{r^{2}}{2\sigma^{2}}\right)\\ where *r* is the

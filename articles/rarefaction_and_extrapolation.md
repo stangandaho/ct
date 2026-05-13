@@ -437,7 +437,7 @@ ct_plot_inext(int_ext, type = 1, color_var = "Order.q")
 #> generated.
 ```
 
-![](rarefaction_and_extrapolation_files/figure-html/unnamed-chunk-12-1.png)
+![](rarefaction_and_extrapolation_files/figure-html/plot1-1.png)
 
 ### Plot with curves faceted by order
 
@@ -449,7 +449,7 @@ ct_plot_inext(int_ext, type = 1, facet_var = "Order.q")
 #> multiple assemblages, change setting as Order.q
 ```
 
-![](rarefaction_and_extrapolation_files/figure-html/unnamed-chunk-13-1.png)
+![](rarefaction_and_extrapolation_files/figure-html/plot2-1.png)
 
 ### Customize with ggplot2
 
@@ -481,4 +481,4 @@ ct_plot_inext(int_ext, type = 1, facet_var = "Order.q")+
 #> multiple assemblages, change setting as Order.q
 ```
 
-![](rarefaction_and_extrapolation_files/figure-html/unnamed-chunk-14-1.png)
+![](rarefaction_and_extrapolation_files/figure-html/plot3-1.png)

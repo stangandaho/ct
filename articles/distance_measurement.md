@@ -46,7 +46,8 @@ Classified Forest in southern Benin by Gilles Adounke. The camera used
 was a GardePro model with a field of view (FOV) of **120°**, which
 corresponds to **2.094 radians** after conversion (120\*3.14/180).
 
-![](camera_animal_distance_deduction.png)
+![Camera-animal distance
+deduction](camera_animal_distance_deduction.png)
 
 Our objective is to estimate the distance \\r\\ from the camera to a
 **bushbuck (*Tragelaphus scriptus*)** visible in the image. The stakes
