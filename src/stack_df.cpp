@@ -1,4 +1,5 @@
 #include <Rcpp.h>
+
 using namespace Rcpp;
 
 // Helper function to get column types from all data frames
@@ -31,8 +32,8 @@ List stack_list(List df_list) {
   // Get all unique column names from all data frames
   CharacterVector all_names;
   for (int i = 0; i < df_list.size(); ++i) {
-    if (!Rf_isFrame(df_list[i])) {
-      stop("All list elements must be data frames");
+    if (!Rf_inherits(df_list[i], "data.frame")) {
+      Rcpp::stop("All elements must be data frames.");
     }
     DataFrame df = as<DataFrame>(df_list[i]);
     CharacterVector names = df.names();
