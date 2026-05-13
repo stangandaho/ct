@@ -46,6 +46,8 @@ navbar:
         href: articles/distance_sampling_guide.html
       - text: Density Estimation With DS
         href: articles/wildlife_density_estimation.html
+      - text: Abundance with spaceNtime
+        href: articles/spaceNtime.html
       - text: Rarefaction and Extrapolation
         href: articles/rarefaction_and_extrapolation.html
     news:
@@ -68,11 +70,11 @@ reference:
   - pendjari
   - ctdp
   - duikers
+  - ACBR
 - title: Process media (images) file
   desc: |
     Functions reading and writing metadata
   contents:
-  - ct_app
   - ct_install_exiftool
   - ct_read_metadata
   - ct_exiftool_call
@@ -143,3 +145,6 @@ reference:
   - ct_chi2_select
   - ct_fit_ds
   - ct_inext
+  - ct_fit_ste
+  - ct_fit_tte
+  - ct_fit_ise

@@ -8,5 +8,9 @@ utils::globalVariables(c(
   ".", "Time", "Density", "Period", "n", "site", "species",
   "n_records", "total_duration",
   "QAIC", "best", "combn", "criteria", "id", "key", "model", "nadj2",
-  "scientific_name", "min_date", "max_date"
+  "scientific_name", "min_date", "max_date",
+  ### -----> spaceNtime
+  "area", "occ", "cam", "dens_ij", "D", "SE", "int", "occ_int",
+  "chk", "overlap", "d", "m", "nearest", "STE", "TTE", "censor",
+  "wthn", "allgood", "timefromfirst"
 ))

@@ -1,7 +1,7 @@
 
 server <- function(input, output, session) {
   volumes <- shinyFiles::getVolumes()()
-  shinyDirChoose(input, "dir", roots = volumes, session = session)
+  shinyFiles::shinyDirChoose(input, "dir", roots = volumes, session = session)
 
   observeEvent(input$dir, {
   folderPath <- shinyFiles::parseDirPath(volumes, input$dir)
@@ -35,7 +35,7 @@ server <- function(input, output, session) {
 
   ## METADATA TABLE
   observeEvent(input$image_clicked, {
-    metadata <- ct_get_metadata(path = input$image_clicked)
+    metadata <- ct_read_metadata(path = input$image_clicked)
     output$metadata_table <- renderTable(metadata, spacing = "l")
   })
 

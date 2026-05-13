@@ -82,7 +82,7 @@ ct_temporal_shift <- function(first_period,
   }
 
   if (width_at < 0 | width_at > 1) {
-    stop(sprintf("The width %f is out of [0, 1]", width_at))
+    rlang::abort(sprintf("The width %f is out of [0, 1]", width_at))
   }
 
 

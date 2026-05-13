@@ -74,7 +74,6 @@ This function visualizes the temporal overlap between two species' activity patt
 It uses kernel density estimation to estimate activity densities and highlights areas of overlap between the two species.
 }
 \examples{
-\dontrun{
   # Generate random data for two species
   set.seed(42)
   species_A <- runif(100, 0, 2 * pi)
@@ -90,6 +89,5 @@ It uses kernel density estimation to estimate activity densities and highlights 
   # Include rug plots and change transparency
   ct_plot_overlap(A = species_A, B = species_B, rug = TRUE,
   overlap_alpha = 0.5)
-}
 
 }

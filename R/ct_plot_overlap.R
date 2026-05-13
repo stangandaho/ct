@@ -28,7 +28,6 @@
 #'
 #'
 #' @examples
-#' \dontrun{
 #'   # Generate random data for two species
 #'   set.seed(42)
 #'   species_A <- runif(100, 0, 2 * pi)
@@ -44,7 +43,6 @@
 #'   # Include rug plots and change transparency
 #'   ct_plot_overlap(A = species_A, B = species_B, rug = TRUE,
 #'   overlap_alpha = 0.5)
-#' }
 #'
 #' @import ggplot2
 #' @import overlap

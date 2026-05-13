@@ -738,6 +738,7 @@ ct_select_model <- function(models,
 #' the Dryad dataset *Distance sampling with camera traps* (Howe et al., 2018)
 #'
 #' @format A named list with these tibbles:
+#'
 #' **DaytimeDistances**: A tibble of all Maxwell's duiker distance
 #'  observations (including non peak periods) recorded at camera stations
 #'  during daytime deployments. It has the following columns:

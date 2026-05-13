@@ -13,7 +13,7 @@ ct_dp_version(package)
 ct_read_dp().}
 }
 \value{
-Camera Trap Data Package object.
+A Camera Trap Data Package object.
 }
 \description{
 Get Camtrap DP version

@@ -85,12 +85,12 @@
 #' R. K., & Ellison, A. M. (2014). Rarefaction and extrapolation with
 #' Hill numbers: a framework for sampling and estimation in species diversity
 #' studies. Ecological Monographs, 84, 45–67.
-#' \doi{https://doi.org/https://doi.org/10.1890/13-0133.1}
+#' \doi{10.1890/13-0133.1}
 #'
 #' Hsieh, T. C., Ma, K. H., & Chao, A. (2016). iNEXT: an R package for
 #' rarefaction and extrapolation of species diversity (Hill numbers).
 #'  Methods in Ecology and Evolution, 7(12), 1451–1456.
-#'  \doi{https://doi.org/10.1111/2041-210X.12613}
+#'  \doi{10.1111/2041-210X.12613}
 #'
 #' @export
 ct_inext <- function(data,

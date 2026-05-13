@@ -5,8 +5,8 @@
 #'
 #' @inheritParams camtrapdp::read_camtrapdp
 #' @inherit camtrapdp::read_camtrapdp return
-#' @inheritSection camtrapdp::read_camtrapdp Assign taxonomic information
-#' @inheritSection camtrapdp::read_camtrapdp Assign eventIDs
+#' @inheritSection camtrapdp::read_camtrapdp Taxonomic information
+#' @inheritSection camtrapdp::read_camtrapdp Events
 #'
 #' @examples
 #' \donttest{

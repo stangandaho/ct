@@ -6,6 +6,7 @@
 \title{Maxwell's duiker camera-trap distance & video-start data}
 \format{
 A named list with these tibbles:
+
 \strong{DaytimeDistances}: A tibble of all Maxwell's duiker distance
 observations (including non peak periods) recorded at camera stations
 during daytime deployments. It has the following columns:

@@ -47,16 +47,15 @@ the bins. Supplying a distance column in your data and specifying cutpoints
 is the recommended approach for all standard binned analyses.
 Ensure that the first element is 0 (or the left truncation
 distance) and the last is the distance to the end of the furthest bin.
-(Default \code{NULL}, no binning.) If you have provided \code{distbegin} and \code{distend}
-columns in your data (note this should only be used when your cutpoints
-are not constant across all your data, e.g. planes flying at differing
-altitudes) then do not specify the cutpoints argument as this will cause
-the \code{distbegin} and \code{distend} columns in your data to be overwritten.}
+(Default \code{NULL}, no binning.) Provide \code{distbegin} and \code{distend} columns
+in your data only when your cutpoints are not constant across all your
+data, e.g. planes flying at differing altitudes then do not specify the
+cutpoints argument.}
 
 \item{truncation}{either truncation distance (numeric, e.g. 5) or percentage
-(as a string, e.g. "15\%"). Can be supplied as a \code{list} with elements \code{left}
-and \code{right} if left truncation is required (e.g.  \code{list(left=1,right=20)} or
-\code{list(left="1\%",right="15\%")} or even \code{list(left="1",right="15\%")}).  By
+(as a string, e.g. "15\%","15"). Can be supplied as a \code{list} with elements
+\code{left} and \code{right} if left truncation is required (e.g.  \code{list(left=1,right=20)}
+or \code{list(left="1\%",right="15\%")} or even \code{list(left="1",right="15\%")}).  By
 default for exact distances the maximum observed distance is used as the
 right truncation. When the data is binned, the right truncation is the
 largest bin end point. Default left truncation is set to zero.}
@@ -85,7 +84,7 @@ on the \code{key}and \code{adjustment}. For \code{key="unif"}, adjustments of or
 1, 2, 3, ... are fitted when \code{adjustment = "cos"} and order 2, 4, 6, ...
 otherwise. For \code{key="hn"} or \code{"hr"} adjustments of order 2, 3, 4, ... are
 fitted when \code{adjustment = "cos"} and order 4, 6, 8, ... otherwise. See
-Buckland et al. (2001, p. 47) for details.}
+Buckland et al. (2001) p. 47 for details.}
 
 \item{order}{order of adjustment terms to fit. The default value (\code{NULL})
 results in \code{ds} choosing the orders to use - see \code{nadj}. Otherwise a scalar
@@ -147,10 +146,13 @@ used.}
     \item{\code{max_adjustments}}{maximum number of adjustments to try (default 5) only
 used when \code{order=NULL}.}
     \item{\code{er_method}}{encounter rate variance calculation: default = 2 gives the
-method of Innes et al, using expected counts in the encounter rate. Setting
+method of Innes et al. (2002), using expected counts in the encounter rate. Setting
 to 1 gives observed counts (which matches Distance for Windows) and 0 uses
-binomial variance (only useful in the rare situation where study area =
-surveyed area). See \code{\link[mrds:dht.se]{dht.se}} for more details.}
+negative binomial variance (only useful in the rare situation where study area =
+surveyed area).
+See \code{\link[mrds:dht.se]{dht.se}} for more details, noting this \code{er_method}
+argument corresponds to the \code{varflag} element of the \code{options}
+argument in \code{dht.se}.}
     \item{\code{dht_se}}{should uncertainty be calculated when using \code{dht}? Safe to
 leave as \code{TRUE}, used in \code{bootdht}.}
     \item{\code{optimizer}}{By default this is set to 'both'. In this case
@@ -189,7 +191,7 @@ or bin end point. This is a default will not be appropriate for all data and
 can often be the cause of model convergence failures. It is recommended that
 one plots a histogram of the observed distances prior to model fitting so as
 to get a feel for an appropriate truncation distance. (Similar arguments go
-for left truncation, if appropriate). Buckland et al (2001) provide
+for left truncation, if appropriate). Buckland et al. (2001) provide
 guidelines on truncation.
 
 When specified as a percentage, the largest \code{right} and smallest \code{left}
@@ -221,7 +223,8 @@ lead to bias. To avoid this, the detection function can be constrained for
 monotonicity (and is by default for detection functions without covariates).
 
 Monotonicity constraints are supported in a similar way to that described
-in Buckland et al (2001). 20 equally spaced points over the range of the
+in Buckland et al. (2001). 20 equally spaced points over
+the range of the
 detection function (left to right truncation) are evaluated at each round
 of the optimisation and the function is constrained to be either always
 less than it's value at zero (\code{"weak"}) or such that each value is

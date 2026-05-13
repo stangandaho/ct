@@ -57,6 +57,8 @@ ct_check_location <- function(data,
                               crs,
                               new_data_name) {
 
+  rlang::check_installed(c("shiny", "leaflet"), reason = "launch the app")
+
   data_copy <- data
   coord_system <- match.arg(coord_system, choices = c("geographic", "projected"))
   lon_ <- paste0(dplyr::ensym(longitude))
@@ -97,10 +99,10 @@ ct_check_location <- function(data,
   }
 
   # shiny
-  ui <- leafletOutput("map", width = "100%", height = "100vh")#,  # The map output
+  ui <- leaflet::leafletOutput("map", width = "100%", height = "100vh")#,  # The map output
   server <- function(input, output, session) {
     # Render the leaflet map with a draggable marker
-    output$map <- renderLeaflet({
+    output$map <- leaflet::renderLeaflet({
       leaflet::leaflet() %>%
         leaflet::addTiles(attribution = "Maimer") %>%
         leaflet::addProviderTiles("OpenStreetMap.Mapnik", group = "OSM") %>%
