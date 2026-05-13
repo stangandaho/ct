@@ -27,7 +27,7 @@ The reference object method involves placing markers at known distances from the
 Let us consider an example from an image collected in the Lama Classified Forest in southern Benin by Gilles Adounke. The camera used was a GardePro model with a field of view (FOV) of **120°**, which corresponds to **2.094 radians** after conversion (120*3.14/180).
 
 
-```{r echo=FALSE, fig.align='center', out.width='100%', fig.cap=''}
+```{r echo=FALSE, fig.align='center', out.width='100%', fig.cap='', fig.alt='Camera-animal distance deduction'}
 knitr::include_graphics("camera_animal_distance_deduction.png")
 ```
 

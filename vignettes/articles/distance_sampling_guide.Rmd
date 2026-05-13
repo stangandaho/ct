@@ -30,7 +30,7 @@ Camera traps share fundamental similarities with human point transect surveys. B
 
 Where a human observer samples a point for mere seconds and typically visits only once or a few times, a camera trap samples continuously for days, weeks, or months. Human observers can pivot 360° around a point, whereas cameras remain fixed, sampling only a fraction of a circle determined by their viewshed angle (e.g 45°, less than 180°). These differences necessitated the incorporation of temporal and spatial effort components into the camera trap distance sampling model.
 
-```{r echo=FALSE, fig.align='center', out.width='100%', fig.cap=''}
+```{r echo=FALSE, fig.align='center', out.width='100%', fig.cap='', fig.alt='Observer vs Camera Trap'}
 knitr::include_graphics("observer_vs_camera_trap.png")
 ```
 
@@ -48,7 +48,7 @@ The truncation distance serves an important purpose. Beyond a certain distance, 
 
 Concerning **p̂**, it is the total detection probability within the study area. As we will see later, it is the area under the curve of the detection function. $\hat{p} = \int_{r_{min}}^{r_{max}} g(r)\, dr$, where $r_{min}$ is the left truncation distance (minimum distance), and $r_{max}$ is the right truncation distance (maximum distance).
 
-```{r echo=FALSE, fig.align='center', out.width='40%', out.height='40%', fig.cap=''}
+```{r echo=FALSE, fig.align='center', out.width='40%', out.height='40%', fig.cap='', fig.alt='Detection function curve'}
 knitr::include_graphics("detection_function_curve.png")
 ```
 
@@ -56,7 +56,7 @@ knitr::include_graphics("detection_function_curve.png")
 
 Sampling effort for camera traps requires careful consideration of both temporal and spatial dimensions. A camera operating for longer periods accumulates more sampling effort, as does a camera with a wider field of view. 
 
-```{r echo=FALSE, fig.align='left', out.width='40%', fig.cap=''}
+```{r echo=FALSE, fig.align='left', out.width='40%', fig.cap='', fig.alt='Camera trap effort formula'}
 knitr::include_graphics("cameratrap_effort_formula.png")
 ```
 
@@ -76,7 +76,7 @@ The detection function typically takes one of several mathematical forms, each c
 
 The half-normal key function assumes that detection probability decreases following a bell-curve shape (without the ascending portion). It contains a single scale parameter *σ* that determines how quickly detection probability falls off with distance. When detection probability drops relatively uniformly with distance, the half-normal often provides a good fit.  
 
-```{r echo=FALSE, fig.align='center', out.width='80%', fig.cap=''}
+```{r echo=FALSE, fig.align='center', out.width='80%', fig.cap='', fig.alt='Half normal probability density function'}
 knitr::include_graphics("half_normal_probability_density_function.png")
 ```
 

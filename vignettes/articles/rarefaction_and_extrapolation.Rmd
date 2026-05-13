@@ -171,17 +171,17 @@ The `ct_plot_inext()` transforms rarefaction and extrapolation results into cust
 
 ### Plot with curves colored by order
 
-```{r}
+```{r plot1}
 ct_plot_inext(int_ext, type = 1, color_var = "Order.q")
 ```
 
 ### Plot with curves faceted by order
-```{r}
+```{r plot2}
 ct_plot_inext(int_ext, type = 1, facet_var = "Order.q")
 ```
 
 ### Customize with ggplot2
-```{r}
+```{r plot3}
 library(ggplot2)
 ct_plot_inext(int_ext, type = 1, facet_var = "Order.q")+
   # Remove assemblage legend
