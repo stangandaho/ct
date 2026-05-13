@@ -130,13 +130,13 @@ ct_fit_ise(data, deployment_data,
 #> ℹ Building sampling occasions...
 #> ℹ Building encounter history...
 #> ℹ Running data checks
-#> ✔ Running data checks [41ms]
+#> ✔ Running data checks [42ms]
 #> 
 #> ℹ Building effort for each camera
-#> ✔ Building effort for each camera [38ms]
+#> ✔ Building effort for each camera [37ms]
 #> 
 #> ℹ Building encounter history
-#> ✔ Building encounter history [23ms]
+#> ✔ Building encounter history [22ms]
 #> 
 #> ℹ Calculating estimates...
 #> ✔ Estimation complete!
