@@ -5,7 +5,6 @@ importFrom(Rcpp, sourceCpp)
 ## Before field
 export(ct_survey_design)
 ## Prepare media file
-export(ct_app)
 export(ct_get_hs) #ok
 export(ct_create_hs)#ok
 export(ct_remove_hs) #ok
@@ -70,6 +69,9 @@ export(ct_QAIC) # no 2025-08-02
 export(ct_chi2_select) # no 2025-08-02
 export(ct_fit_ds) # no 2025-08-07
 export(ct_inext) # no 2025-09-21
+export(ct_fit_tte)
+export(ct_fit_ise)
+export(ct_fit_ste)
 
 
 
@@ -84,7 +86,7 @@ export(`%<>%`)
 importFrom("methods", "hasArg")
 importFrom("stats", "aggregate", "as.formula", "qt", "sd", "window",
            "end", "predict", "quantile", "start", "setNames",
-           "cov")
+           "cov", "D", "dexp", "pexp")
 importFrom("utils", "install.packages", "installed.packages", "read.table",
            "write.csv", "head", "download.file", "read.csv", "untar", "unzip", "menu")
 
@@ -103,35 +105,13 @@ importFrom(tidyr, pivot_wider)
 # magrittr
 importFrom(magrittr, '%>%', '%<>%')
 
+importFrom(lubridate,"%within%")
+
 # ggplot
 importFrom(ggplot2, ggplot, aes, geom_polygon, geom_point, geom_text, labs,
            theme_minimal, theme, element_line, element_blank, element_text,
            geom_line, geom_rug, annotate, scale_x_continuous, scale_size_continuous,
            scale_color_gradientn, guides, guide_colorbar)
-
-#shiny
-importFrom(shiny, shinyOptions, shinyApp, modalDialog, tagList, actionButton,
-           icon, modalButton, fluidRow, column, checkboxInput, selectInput,
-           verbatimTextOutput, showModal, reactive, eventReactive, renderText,
-           req, strong, h2, br, hr, conditionalPanel, numericInput, renderPrint,
-           renderPlot, tabsetPanel, tabPanel, plotOutput, observe, updateNumericInput,
-           reactiveValues, updateSelectInput, updateTextInput)
-
-
-#ds4Dash
-importFrom("bs4Dash", "dashboardHeader", "dashboardBody", "dashboardPage", "dashboardSidebar")
-
-#leaflet
-importFrom("leaflet", "leafletOutput", "renderLeaflet")
-
-#shinyFIles
-importFrom(shinyFiles, getVolumes, parseDirPath, parseFilePaths, parseSavePath,
-           shinyDirButton, shinyDirChoose, shinyDirLink, shinyFileChoose,
-           shinyFileSave, shinyFilesButton, shinySaveButton)
-
-
-#shinyTree
-importFrom("shinyTree", "renderTree", "shinyTree")
 
 #overlap
 importFrom(overlap, bootCI, bootCIlogit, bootEst, bootstrap, densityFit, densityPlot,
@@ -153,3 +133,4 @@ importFrom(Distance, ds)
 
 # sbd
 importFrom(sbd, sbm)
+
