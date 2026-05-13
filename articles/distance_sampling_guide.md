@@ -263,6 +263,6 @@ density using ct R package.
 ### Reference
 
 Howe, Eric J., Stephen T. Buckland, Marie‐Lyne Després‐Einspenner, and
-Hjalmar S. Kühl. 2017. “Distance sampling with camera traps.” Edited by
-Jason Matthiopoulos. *Methods in Ecology and Evolution* 8 (11): 1558–65.
+Hjalmar S. Kühl. 2017. “Distance sampling with camera traps.” *Methods
+in Ecology and Evolution* 8 (11): 1558–65.
 <https://doi.org/10.1111/2041-210X.12790>.

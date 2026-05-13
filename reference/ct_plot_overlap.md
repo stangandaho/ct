@@ -135,7 +135,6 @@ region is displayed.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
   # Generate random data for two species
   set.seed(42)
   species_A <- runif(100, 0, 2 * pi)
@@ -144,12 +143,14 @@ if (FALSE) { # \dontrun{
   # Plot overlap with default settings
   ct_plot_overlap(A = species_A, B = species_B)
 
+
   # Customize plot with specific colors and line types
   ct_plot_overlap(A = species_A, B = species_B, overlap_color = "blue",
   line_color = c("red", "green"))
 
+
   # Include rug plots and change transparency
   ct_plot_overlap(A = species_A, B = species_B, rug = TRUE,
   overlap_alpha = 0.5)
-} # }
+
 ```

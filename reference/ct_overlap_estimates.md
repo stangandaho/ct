@@ -87,6 +87,7 @@ curves at `n.grid` equally spaced points, and is best for small samples.
 ## Examples
 
 ``` r
+
 set.seed(42)
 species_A <- runif(100, 1.2, 2 * pi)
 species_B <- runif(100, 0.23, 2 * pi)

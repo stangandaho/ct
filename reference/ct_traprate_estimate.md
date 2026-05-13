@@ -54,6 +54,7 @@ A data frame with the following columns:
 ## Examples
 
 ``` r
+
 data("ctdp")
 deployments <- ctdp$data$deployments
 observations <- ctdp$data$observations %>%
@@ -69,5 +70,5 @@ trap_rate <- ct_traprate_data(observation_data = observations,
 
 ct_traprate_estimate(data = trap_rate, n_bootstrap = 1000)
 #>            estimate        se        cv  lower_ci upper_ci n   unit
-#> trap_rate 0.6206041 0.1829947 0.2948655 0.2985075 1.020408 3 n/days
+#> trap_rate 0.6206041 0.1830326 0.2949265 0.2985075 1.020408 3 n/days
 ```

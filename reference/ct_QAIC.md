@@ -65,7 +65,7 @@ Howe, E. J., Buckland, S. T., Després‐Einspenner, M., & Kühl, H. S.
 library(Distance)
 #> Loading required package: mrds
 #> This is mrds 3.0.1
-#> Built: R 4.5.0; ; 2025-07-06 04:17:12 UTC; unix
+#> Built: R 4.6.0; ; 2026-04-24 22:38:47 UTC; unix
 #> 
 #> Attaching package: ‘Distance’
 #> The following object is masked from ‘package:mrds’:
@@ -94,21 +94,21 @@ w3_hr0 <- ds(duiker_data, transect = "point", key = "hr", adjustment = NULL,
 #> Warning: Unknown or uninitialised column: `distend`.
 #> Warning: Unknown or uninitialised column: `distbegin`.
 #> Fitting hazard-rate key function
-#> AIC= 15007.689
+#> AIC= 14982.499
 w3_hr1 <- ds(duiker_data, transect = "point", key = "hr", adjustment = "cos",
              order = 2, truncation = truncation)
 #> Warning: Unknown or uninitialised column: `distbegin`.
 #> Warning: Unknown or uninitialised column: `distend`.
 #> Warning: Unknown or uninitialised column: `distbegin`.
 #> Fitting hazard-rate key function with cosine(2) adjustments
-#> AIC= 15009.689
+#> AIC= 14984.499
 w3_hr2 <- ds(duiker_data, transect = "point", key = "hr", adjustment = "cos",
              order = c(2, 4), truncation = truncation)
 #> Warning: Unknown or uninitialised column: `distbegin`.
 #> Warning: Unknown or uninitialised column: `distend`.
 #> Warning: Unknown or uninitialised column: `distbegin`.
 #> Fitting hazard-rate key function with cosine(2,4) adjustments
-#> AIC= 15011.693
+#> AIC= 14986.499
 # fit half-normal key models
 w3_hn0 <- ds(duiker_data, transect = "point", key = "hn", adjustment = NULL,
              truncation = truncation)
@@ -116,21 +116,21 @@ w3_hn0 <- ds(duiker_data, transect = "point", key = "hn", adjustment = NULL,
 #> Warning: Unknown or uninitialised column: `distend`.
 #> Warning: Unknown or uninitialised column: `distbegin`.
 #> Fitting half-normal key function
-#> AIC= 15034.041
+#> AIC= 15011.306
 w3_hn1 <- ds(duiker_data, transect = "point", key = "hn", adjustment = "cos",
              order = 2, truncation = truncation)
 #> Warning: Unknown or uninitialised column: `distbegin`.
 #> Warning: Unknown or uninitialised column: `distend`.
 #> Warning: Unknown or uninitialised column: `distbegin`.
 #> Fitting half-normal key function with cosine(2) adjustments
-#> AIC= 15009.335
+#> AIC= 14986.892
 w3_hn2 <- ds(duiker_data, transect = "point", key = "hn", adjustment = "cos",
              order = c(2, 4), truncation = truncation)
 #> Warning: Unknown or uninitialised column: `distbegin`.
 #> Warning: Unknown or uninitialised column: `distend`.
 #> Warning: Unknown or uninitialised column: `distbegin`.
 #> Fitting half-normal key function with cosine(2,4) adjustments
-#> AIC= 15004.757
+#> AIC= 14981.6
 # fit uniform key models
 w3_u0 <- ds(duiker_data, transect = "point", key = "unif", adjustment = NULL,
             truncation = truncation)
@@ -138,21 +138,25 @@ w3_u0 <- ds(duiker_data, transect = "point", key = "unif", adjustment = NULL,
 #> Warning: Unknown or uninitialised column: `distend`.
 #> Warning: Unknown or uninitialised column: `distbegin`.
 #> Fitting uniform key function
-#> AIC= 17311.325
+#> AIC= 17269.686
 w3_u1 <- ds(duiker_data, transect = "point", key = "unif", adjustment = "cos",
             order = 2, truncation = truncation)
 #> Warning: Unknown or uninitialised column: `distbegin`.
 #> Warning: Unknown or uninitialised column: `distend`.
 #> Warning: Unknown or uninitialised column: `distbegin`.
 #> Fitting uniform key function with cosine(2) adjustments
-#> AIC= 17313.325
+#> Warning: Detection function is not weakly monotonic!
+#> Warning: Detection function is greater than 1 at some distances
+#> AIC= 17271.686
+#> Warning: Detection function is not weakly monotonic!
+#> Warning: Detection function is greater than 1 at some distances
 w3_u2 <- ds(duiker_data, transect = "point", key = "unif", adjustment = "cos",
             order = c(2, 4), truncation = truncation)
 #> Warning: Unknown or uninitialised column: `distbegin`.
 #> Warning: Unknown or uninitialised column: `distend`.
 #> Warning: Unknown or uninitialised column: `distbegin`.
 #> Fitting uniform key function with cosine(2,4) adjustments
-#> AIC= 17315.325
+#> AIC= 17273.686
 
 # Create model list
 model_list <- list(w3_hn0, w3_hn1, w3_hn2,
@@ -164,16 +168,16 @@ ct_QAIC(list(w3_hr0, w3_hr1, w3_hr2)) # All key functions must be the same
 #> # A tibble: 3 × 3
 #>   model                                                    df  QAIC
 #>   <chr>                                                 <int> <dbl>
-#> 1 hazard-rate key function                                  2  52.3
-#> 2 hazard-rate key function with cosine(2) adjustments       3  54.3
-#> 3 hazard-rate key function with cosine(2,4) adjustments     4  56.3
+#> 1 hazard-rate key function                                  2  52.2
+#> 2 hazard-rate key function with cosine(2) adjustments       3  54.2
+#> 3 hazard-rate key function with cosine(2,4) adjustments     4  56.2
 ct_QAIC(list(w3_hn0, w3_hn1, w3_hn2)) # All key functions must be the same
 #> # A tibble: 3 × 3
 #>   model                                                    df  QAIC
 #>   <chr>                                                 <int> <dbl>
-#> 1 half-normal key function                                  1  51.7
-#> 2 half-normal key function with cosine(2) adjustments       2  53.6
-#> 3 half-normal key function with cosine(2,4) adjustments     3  55.6
+#> 1 half-normal key function                                  1  51.6
+#> 2 half-normal key function with cosine(2) adjustments       2  53.5
+#> 3 half-normal key function with cosine(2,4) adjustments     3  55.5
 
 # Compute Chi-squared Goodness-of-fit
 ct_chi2_select(list(w3_hn0, w3_hr0, w3_u0)) # All key functions must be different
@@ -182,14 +186,14 @@ ct_chi2_select(list(w3_hn0, w3_hr0, w3_u0)) # All key functions must be differen
 #>   <chr>       <chr>                       <dbl>
 #> 1 half-normal half-normal key function     305.
 #> 2 hazard-rate hazard-rate key function     312.
-#> 3 uniform     uniform key function         455.
+#> 3 uniform     uniform key function         454.
 ct_chi2_select(list(w3_hn2, w3_hr1, w3_u0)) # All key functions must be different
 #> # A tibble: 3 × 3
 #>   key         model                                                 criteria
 #>   <chr>       <chr>                                                    <dbl>
 #> 1 half-normal half-normal key function with cosine(2,4) adjustments     315.
 #> 2 hazard-rate hazard-rate key function with cosine(2) adjustments       318.
-#> 3 uniform     uniform key function                                      455.
+#> 3 uniform     uniform key function                                      454.
 
 # Two-step model selection
 ct_select_model(model_list)
@@ -197,15 +201,15 @@ ct_select_model(model_list)
 #> # A tibble: 9 × 6
 #>      id key         model                                         df  QAIC best 
 #>   <int> <chr>       <chr>                                      <int> <dbl> <lgl>
-#> 1     1 half-normal half-normal key function                       1  51.7 TRUE 
-#> 2     2 half-normal half-normal key function with cosine(2) a…     2  53.6 FALSE
-#> 3     3 half-normal half-normal key function with cosine(2,4)…     3  55.6 FALSE
-#> 4     4 hazard-rate hazard-rate key function                       2  52.3 TRUE 
-#> 5     5 hazard-rate hazard-rate key function with cosine(2) a…     3  54.3 FALSE
-#> 6     6 hazard-rate hazard-rate key function with cosine(2,4)…     4  56.3 FALSE
-#> 7     7 uniform     uniform key function                           0  38.7 TRUE 
-#> 8     8 uniform     uniform key function with cosine(2) adjus…     1  40.7 FALSE
-#> 9     9 uniform     uniform key function with cosine(2,4) adj…     2  42.7 FALSE
+#> 1     1 half-normal half-normal key function                       1  51.6 TRUE 
+#> 2     2 half-normal half-normal key function with cosine(2) a…     2  53.5 FALSE
+#> 3     3 half-normal half-normal key function with cosine(2,4)…     3  55.5 FALSE
+#> 4     4 hazard-rate hazard-rate key function                       2  52.2 TRUE 
+#> 5     5 hazard-rate hazard-rate key function with cosine(2) a…     3  54.2 FALSE
+#> 6     6 hazard-rate hazard-rate key function with cosine(2,4)…     4  56.2 FALSE
+#> 7     7 uniform     uniform key function                           0  38.6 TRUE 
+#> 8     8 uniform     uniform key function with cosine(2) adjus…     1  40.6 FALSE
+#> 9     9 uniform     uniform key function with cosine(2,4) adj…     2  42.6 FALSE
 #> 
 #> $`Best QAIC models`
 #> $`Best QAIC models`[[1]]
@@ -215,7 +219,7 @@ ct_select_model(model_list)
 #> Detection function:
 #>  Half-normal key function 
 #> 
-#> Estimated abundance in covered region: 11630.7 
+#> Estimated abundance in covered region: 11563.82 
 #> 
 #> $`Best QAIC models`[[2]]
 #> 
@@ -224,7 +228,7 @@ ct_select_model(model_list)
 #> Detection function:
 #>  Hazard-rate key function 
 #> 
-#> Estimated abundance in covered region: 8213.104 
+#> Estimated abundance in covered region: 8213.146 
 #> 
 #> $`Best QAIC models`[[3]]
 #> 
@@ -233,7 +237,7 @@ ct_select_model(model_list)
 #> Detection function:
 #>  Uniform key function 
 #> 
-#> Estimated abundance in covered region: 3133.71 
+#> Estimated abundance in covered region: 3127.602 
 #> 
 #> 
 #> $Chi2
@@ -242,7 +246,7 @@ ct_select_model(model_list)
 #>   <chr>       <chr>                       <dbl> <lgl>
 #> 1 half-normal half-normal key function     305. TRUE 
 #> 2 hazard-rate hazard-rate key function     312. FALSE
-#> 3 uniform     uniform key function         455. FALSE
+#> 3 uniform     uniform key function         454. FALSE
 #> 
 #> $`Final model`
 #> 
@@ -251,7 +255,7 @@ ct_select_model(model_list)
 #> Detection function:
 #>  Half-normal key function 
 #> 
-#> Estimated abundance in covered region: 11630.7 
+#> Estimated abundance in covered region: 11563.82 
 #> 
 # }
 ```

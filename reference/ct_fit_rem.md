@@ -127,6 +127,19 @@ ct_fit_rem(data = observations,
 #> ✔ Fitting activity model ... done
 #> 
 #> ℹ Calculating density
+#> Warning: There was 1 warning in `dplyr::mutate()`.
+#> ℹ In argument: `dplyr::across(.cols = 1:5, .fns = round, digit = 3)`.
+#> Caused by warning:
+#> ! The `...` argument of `across()` is deprecated as of dplyr 1.1.0.
+#> Supply arguments directly to `.fns` through an anonymous function instead.
+#> 
+#>   # Previously
+#>   across(a:b, mean, na.rm = TRUE)
+#> 
+#>   # Now
+#>   across(a:b, \(x) mean(x, na.rm = TRUE))
+#> ℹ The deprecated feature was likely used in the ct package.
+#>   Please report the issue at <https://github.com/stangandaho/ct/issues>.
 #> ✔ Calculating density ... done
 #> 
 #> 
@@ -137,8 +150,8 @@ ct_fit_rem(data = observations,
 #> 2 angle            44.4   11.3   0.254    0.39     1.16      5 degree 
 #> 3 active_speed      3.08   0.765 0.248    0.439    1.27      4 km/hour
 #> 4 activity_level    0.243  0.076 0.313    0.094    0.392    15 none   
-#> 5 overall_speed    17.9    7.17  0.4      0.045    0.37     NA km/day 
-#> 6 trap_rate         0.441  0.119 0.271    0.239    0.635     3 n/day  
+#> 5 overall_speed    17.9    7.18  0.4      0.045    0.371    NA km/day 
+#> 6 trap_rate         0.441  0.119 0.27     0.239    0.635     3 n/day  
 #> 7 density           6.66   3.54  0.532    2.50    17.7      NA n/km2  
 # }
 ```

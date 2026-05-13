@@ -62,6 +62,7 @@ zeroes (unlike the standard Aitchison).'><meta property="og:image" content="http
     <li><a class="dropdown-item" href="../articles/distance_measurement.html">Distance Measurement</a></li>
     <li><a class="dropdown-item" href="../articles/distance_sampling_guide.html">Guide to Distance Sampling</a></li>
     <li><a class="dropdown-item" href="../articles/wildlife_density_estimation.html">Density Estimation With DS</a></li>
+    <li><a class="dropdown-item" href="../articles/spaceNtime.html">Abundance with spaceNtime</a></li>
     <li><a class="dropdown-item" href="../articles/rarefaction_and_extrapolation.html">Rarefaction and Extrapolation</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html"><span class="fa fa-face-smile"></span> News</a></li>
@@ -300,8 +301,12 @@ result.</p>
   site \(k\), and \(S_j\) is the total number of individuals
   in the species present at site \(j\) that occur with only one
   individual in site \(k\) (Chao et al. 2005).</p>
-<p>Morisita index can be used with genuine count data (integers) only. Its
-  Horn–Morisita variant is able to handle any abundance data.</p>
+<p>Morisita index can be only used with genuine count data (integers). It
+  is based on the idea of resampling without replacement in finite
+  samples and should not be used with presence/absence data, and gives
+  meaningless results if compared sampling units (rows) have largest
+  integer 1. Its Horn–Morisita variant is able to handle any abundance
+  data, and should be used if data are unsuitable for Morisita.</p>
 <p>Mahalanobis distances are Euclidean distances of a matrix where
   columns are centred, have unit variance, and are uncorrelated.  The
   index is not commonly used for community data, but it is sometimes

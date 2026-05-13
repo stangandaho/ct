@@ -42,6 +42,7 @@ We next describe the main function
 with its default arguments.
 
 ``` r
+
 ct_inext(data, species_column, 
          site_column, size_column, 
          strata_column = NULL, diversity_order = 0, 
@@ -73,6 +74,7 @@ Let’s walk through a complete analysis using camera trap data from the
 ### Data Preparation
 
 ``` r
+
 library(ct)
 library(dplyr)
 
@@ -108,6 +110,7 @@ into standardized sampling units. We use camera-days as our sampling
 units:
 
 ``` r
+
 # Aggregate data to daily detection records per camera
 camday <- ct_camera_day(
   data = camdata1,
@@ -142,6 +145,7 @@ Now we can interpolate and extrapolate diversity trend across Hill
 number orders:
 
 ``` r
+
 # Run rarefaction and extrapolation analysis
 int_ext <- ct_inext(data = camday, 
                     diversity_order = c(0, 1, 2),
@@ -282,6 +286,7 @@ estimate (*SC*) along with its 95% confidence limits (*SC.LCL* and
 generate the sample completeness curve.
 
 ``` r
+
 int_ext$iNextEst$size_based %>% 
   dplyr::slice_sample(prop = 0.15) # Sample 15% of rows
 #>     Assemblage    t        Method Order.q          qD     qD.LCL     qD.UCL
@@ -337,6 +342,7 @@ coverage-based diversity estimates and confidence intervals are used to
 construct the coverage-based rarefaction/extrapolation (R/E) curves.
 
 ``` r
+
 int_ext$iNextEst$coverage_based %>% 
   dplyr::slice_sample(prop = 0.15) # Sample 15% of rows
 #>     Assemblage         SC    t        Method Order.q          qD     qD.LCL
@@ -419,13 +425,14 @@ options for comparing sites, treatments, or diversity measures visually.
 ### Plot with curves colored by order
 
 ``` r
+
 ct_plot_inext(int_ext, type = 1, color_var = "Order.q")
 #> Warning: `aes_string()` was deprecated in ggplot2 3.0.0.
 #> ℹ Please use tidy evaluation idioms with `aes()`.
 #> ℹ See also `vignette("ggplot2-in-packages")` for more information.
 #> ℹ The deprecated feature was likely used in the iNEXT package.
 #>   Please report the issue at <https://github.com/AnneChao/iNEXT/issues>.
-#> This warning is displayed once every 8 hours.
+#> This warning is displayed once per session.
 #> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
 #> generated.
 ```
@@ -435,6 +442,7 @@ ct_plot_inext(int_ext, type = 1, color_var = "Order.q")
 ### Plot with curves faceted by order
 
 ``` r
+
 ct_plot_inext(int_ext, type = 1, facet_var = "Order.q")
 #> Warning in ggiNEXT.iNEXT(x = inext_object, type = type, se = se, facet.var =
 #> facet_var, : invalid color.var setting, the iNEXT object do not consist
@@ -446,6 +454,7 @@ ct_plot_inext(int_ext, type = 1, facet_var = "Order.q")
 ### Customize with ggplot2
 
 ``` r
+
 library(ggplot2)
 ct_plot_inext(int_ext, type = 1, facet_var = "Order.q")+
   # Remove assemblage legend

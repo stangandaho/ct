@@ -105,7 +105,7 @@ Chao, A., Gotelli, N. J., Hsieh, T. C., Sander, E. L., Ma, K. H.,
 Colwell, R. K., & Ellison, A. M. (2014). Rarefaction and extrapolation
 with Hill numbers: a framework for sampling and estimation in species
 diversity studies. Ecological Monographs, 84, 45–67.
-[doi:https://doi.org/10.1890/13-0133.1](https://doi.org/https%3A//doi.org/10.1890/13-0133.1)
+[doi:10.1890/13-0133.1](https://doi.org/10.1890/13-0133.1)
 
 Hsieh, T. C., Ma, K. H., & Chao, A. (2016). iNEXT: an R package for
 rarefaction and extrapolation of species diversity (Hill numbers).

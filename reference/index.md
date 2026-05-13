@@ -8,13 +8,13 @@
   trap data package example
 - [`duikers`](https://stangandaho.github.io/ct/reference/duikers.md) :
   Maxwell's duiker camera-trap distance & video-start data
+- [`ACBR`](https://stangandaho.github.io/ct/reference/ACBR.md) : Camera
+  trap dataset from Agonve Community Wetland Reserve (ACBR)
 
 ## Process media (images) file
 
 Functions reading and writing metadata
 
-- [`ct_app()`](https://stangandaho.github.io/ct/reference/ct_app.md) :
-  Run App
 - [`ct_install_exiftool()`](https://stangandaho.github.io/ct/reference/ct_install_exiftool.md)
   : Install ExifTool, downloading (by default) the current version
 - [`ct_read_metadata()`](https://stangandaho.github.io/ct/reference/ct_read_metadata.md)
@@ -174,3 +174,9 @@ Functions to run common camera trap data analysis
   : Fit detection functions and estimate density/abundance
 - [`ct_inext()`](https://stangandaho.github.io/ct/reference/ct_inext.md)
   : Interpolation and extrapolation of Hill number
+- [`ct_fit_ste()`](https://stangandaho.github.io/ct/reference/ct_fit_ste.md)
+  : Estimate abundance from Space-To-Event (STE) Data
+- [`ct_fit_tte()`](https://stangandaho.github.io/ct/reference/ct_fit_tte.md)
+  : Estimate abundance from Time-To-Event (TTE) Data
+- [`ct_fit_ise()`](https://stangandaho.github.io/ct/reference/ct_fit_ise.md)
+  : Estimate abundance from Instantaneous Sampling (ISE) Data

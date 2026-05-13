@@ -105,6 +105,7 @@ A ggplot object representing the activity density curves of the species.
 ## Examples
 
 ``` r
+
  # Generate random data for two species
  set.seed(42)
  A <- runif(100, 0, 2 * pi)

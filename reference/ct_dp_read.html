@@ -32,6 +32,7 @@ dataset into memory."><meta property="og:image" content="https://stangandaho.git
     <li><a class="dropdown-item" href="../articles/distance_measurement.html">Distance Measurement</a></li>
     <li><a class="dropdown-item" href="../articles/distance_sampling_guide.html">Guide to Distance Sampling</a></li>
     <li><a class="dropdown-item" href="../articles/wildlife_density_estimation.html">Density Estimation With DS</a></li>
+    <li><a class="dropdown-item" href="../articles/spaceNtime.html">Abundance with spaceNtime</a></li>
     <li><a class="dropdown-item" href="../articles/rarefaction_and_extrapolation.html">Rarefaction and Extrapolation</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html"><span class="fa fa-face-smile"></span> News</a></li>
@@ -77,10 +78,10 @@ dataset into memory.</p>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Camera Trap Data Package object.</p>
+    <p>A Camera Trap Data Package object.</p>
     </div>
     <div class="section level2">
-    <h2 id="assign-taxonomic-information">Assign taxonomic information<a class="anchor" aria-label="anchor" href="#assign-taxonomic-information"></a></h2>
+    <h2 id="taxonomic-information">Taxonomic information<a class="anchor" aria-label="anchor" href="#taxonomic-information"></a></h2>
 
 
 
@@ -89,24 +90,26 @@ dataset into memory.</p>
 information for each <code>scientificName</code> found in observations.
 Such information can include higher taxonomy (<code>family</code>, <code>order</code>, etc.) and
 vernacular names in multiple languages.</p>
-<p>This function <strong>will automatically include this taxonomic information in
-observations</strong>, as extra columns starting with <code>taxon.</code>.</p>
+<p>The <code>read_camtrapdp()</code> function <strong>will automatically include this taxonomic
+information in observations</strong>, as extra columns starting with <code>taxon.</code>.
+It will then update the <code>taxonomic</code> scope in the metadata to the unique
+<code><a href="https://inbo.github.io/camtrapdp/reference/taxa.html" class="external-link">taxa()</a></code> found in the data.</p>
     </div>
     <div class="section level2">
-    <h2 id="assign-eventids">Assign eventIDs<a class="anchor" aria-label="anchor" href="#assign-eventids"></a></h2>
+    <h2 id="events">Events<a class="anchor" aria-label="anchor" href="#events"></a></h2>
 
 
 
 
-<p>Observations can contain two classifications at two levels:</p>
-<p><strong>Media-based</strong> observations (<code>observationLevel = "media"</code>) are based on a
-single media file and are directly linked to it via <code>mediaID</code>.</p>
-<p><strong>Event-based</strong> observations (<code>observationLevel = "event"</code>) are based on an
+<p>Observations can contain classifications at two levels:</p><ul><li><p><strong>Media-based</strong> observations (<code>observationLevel = "media"</code>) are based on a
+single media file and are directly linked to it via <code>mediaID</code>.</p></li>
+<li><p><strong>Event-based</strong> observations (<code>observationLevel = "event"</code>) are based on an
 event, defined as a combination of <code>eventID</code>, <code>eventStart</code> and <code>eventEnd</code>.
 This event can consist of one or more media files, but is not directly linked
-to these.</p>
-<p>This function <strong>will automatically assign <code>eventID</code>s to media</strong>, using
-<code>media.deploymentID = event.deploymentID</code> and <code>eventStart &lt;= media.timestamp &lt;= eventEnd</code>.
+to these.</p></li>
+</ul><p>The <code>read_camtrapdp()</code> function <strong>will automatically assign <code>eventID</code>s to
+media</strong>, using <code>media.deploymentID = observations.deploymentID</code> and
+<code>observations.eventStart &lt;= media.timestamp &lt;= observations.eventEnd</code>.
 Note that this can result in media being linked to multiple events (and thus
 being duplicated), for example when events and sub-events were defined.</p>
     </div>

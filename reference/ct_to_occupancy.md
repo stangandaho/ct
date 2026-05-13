@@ -74,6 +74,7 @@ either detection counts or presence-absence (0/1).
 ## Examples
 
 ``` r
+
 data <- data.frame(
   date = c("01-01-2023", "03-01-2023", "10-01-2023", "15-01-2023"),
   site = c("A", "A", "B", "B"),

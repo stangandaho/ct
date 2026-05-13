@@ -14,10 +14,11 @@ duikers
 
 ## Format
 
-A named list with these tibbles: **DaytimeDistances**: A tibble of all
-Maxwell's duiker distance observations (including non peak periods)
-recorded at camera stations during daytime deployments. It has the
-following columns:
+A named list with these tibbles:
+
+**DaytimeDistances**: A tibble of all Maxwell's duiker distance
+observations (including non peak periods) recorded at camera stations
+during daytime deployments. It has the following columns:
 
 - `distance`: the midpoint (m) of the assigned distance interval between
   animal and camera.

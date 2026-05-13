@@ -44,10 +44,10 @@ Please come back later 👨💻 …
 
 Buckland, S. T., E. A. Rexstad, T. A. Marques, and C. S. Oedekoven.
 2015. *Distance Sampling: Methods and Applications*. Methods in
-Statistical Ecology. Cham: Springer International Publishing.
+Statistical Ecology. Springer International Publishing.
 <https://doi.org/10.1007/978-3-319-19219-2>.
 
 Clarke, Jamie, Holger Bohm, Cole Burton, and Alexia Constantinou. 2023.
-“Using Camera Traps to Estimate Medium and Large Mammal Density:
-Comparison of Methods and Recommendations for Wildlife Managers,” no.
+*Using Camera Traps to Estimate Medium and Large Mammal Density:
+Comparison of Methods and Recommendations for Wildlife Managers*. no.
 February. <https://doi.org/10.13140/RG.2.2.18364.72320>.

@@ -95,6 +95,7 @@ function from `ct` package can be used to calculate easily this
 distance.
 
 ``` r
+
 library(ct)
 
 ct_camtrap_animal_distance(fov = 120, # camera field of view
@@ -115,8 +116,8 @@ time-consuming, this method can achieve high accuracy.
 
 ## Automatic pipeline
 
-Automated distance estimation for wildlife camera trapping (Johanns,
-Haucke, and Steinhage 2022) is a good ressource. The relevant
+Automated distance estimation for wildlife camera trapping (Johanns et
+al. 2022) is a good ressource. The relevant
 [repository](https://github.com/PJ-cs/DistanceEstimationTracking?tab=readme-ov-file#table-of-contents)
 provides the source code. It introduces a fully automatic pipeline
 eliminating the need for manual annotation, additional sensors, or

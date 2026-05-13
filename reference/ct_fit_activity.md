@@ -100,5 +100,5 @@ fit_act$activity
 #> # A tibble: 1 × 4
 #>     act     se lower_ci upper_ci
 #>   <dbl>  <dbl>    <dbl>    <dbl>
-#> 1 0.243 0.0812    0.168    0.460
+#> 1 0.243 0.0732    0.177    0.441
 ```

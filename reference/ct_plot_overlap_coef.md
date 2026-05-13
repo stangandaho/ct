@@ -79,6 +79,7 @@ visualization.
 ## Examples
 
 ``` r
+
 library(ggplot2)
 # Example overlap coefficient matrix
 overlap_matrix <- matrix(c(1, 0.8, 0.7, 0.8, 1, 0.9, 0.7, 0.9, 1), ncol = 3)

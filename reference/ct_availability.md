@@ -102,11 +102,9 @@ Methods in Ecology and Evolution, 5(11), 1170-1179.
 # Example with times already in radians
 radian_times <- c(1.2, 3.4, 5.1, 0.5, 2.8)
 ct_availability(radian_times, sample = "data")
-#> Warning: max(dat) < 1, expecting radian data
-#> Warning: max(dat) < 1, expecting radian data
 #> $creation
 #>        rate         SE
-#> 1 0.4614052 0.08683349
+#> 1 0.4614052 0.08291023
 #> 
 
 # Example with formatted times
@@ -114,14 +112,14 @@ time_strings <- c("06:30", "18:15", "12:00", "23:45")
 ct_availability(time_strings, sample = "data", format = "%H:%M")
 #> $creation
 #>        rate        SE
-#> 1 0.9499413 0.2171634
+#> 1 0.9499413 0.2356493
 #> 
 
 # With bootstrap resampling
 ct_availability(radian_times, sample = "data", n_bootstrap = 100)
 #> $creation
 #>        rate         SE
-#> 1 0.4614052 0.07927602
+#> 1 0.4614052 0.07930454
 #> 
 # }
 ```

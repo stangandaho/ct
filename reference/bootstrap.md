@@ -129,6 +129,7 @@ Mike Meredith, Martin Ridout.
 ## Examples
 
 ``` r
+
 # Generate random data for two species
 set.seed(42)
 species_A <- runif(100, 1.2, 2 * pi)

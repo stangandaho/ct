@@ -38,6 +38,7 @@ and camera sampling effort."><meta property="og:image" content="https://stangand
     <li><a class="dropdown-item" href="../articles/distance_measurement.html">Distance Measurement</a></li>
     <li><a class="dropdown-item" href="../articles/distance_sampling_guide.html">Guide to Distance Sampling</a></li>
     <li><a class="dropdown-item" href="../articles/wildlife_density_estimation.html">Density Estimation With DS</a></li>
+    <li><a class="dropdown-item" href="../articles/spaceNtime.html">Abundance with spaceNtime</a></li>
     <li><a class="dropdown-item" href="../articles/rarefaction_and_extrapolation.html">Rarefaction and Extrapolation</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html"><span class="fa fa-face-smile"></span> News</a></li>
@@ -154,11 +155,9 @@ and Evolution, 5(11), 1170-1179.  <a href="https://doi.org/10.1111/2041-210X.122
 <span class="r-in"><span><span class="co"># Example with times already in radians</span></span></span>
 <span class="r-in"><span><span class="va">radian_times</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.2</span>, <span class="fl">3.4</span>, <span class="fl">5.1</span>, <span class="fl">0.5</span>, <span class="fl">2.8</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">ct_availability</span><span class="op">(</span><span class="va">radian_times</span>, sample <span class="op">=</span> <span class="st">"data"</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>max(dat) &lt; 1, expecting radian data</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>max(dat) &lt; 1, expecting radian data</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $creation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        rate         SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.4614052 0.08683349</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.4614052 0.08291023</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example with formatted times</span></span></span>
@@ -166,14 +165,14 @@ and Evolution, 5(11), 1170-1179.  <a href="https://doi.org/10.1111/2041-210X.122
 <span class="r-in"><span><span class="fu">ct_availability</span><span class="op">(</span><span class="va">time_strings</span>, sample <span class="op">=</span> <span class="st">"data"</span>, format <span class="op">=</span> <span class="st">"%H:%M"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $creation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        rate        SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.9499413 0.2171634</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.9499413 0.2356493</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># With bootstrap resampling</span></span></span>
 <span class="r-in"><span><span class="fu">ct_availability</span><span class="op">(</span><span class="va">radian_times</span>, sample <span class="op">=</span> <span class="st">"data"</span>, n_bootstrap <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $creation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        rate         SE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.4614052 0.07927602</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.4614052 0.07930454</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>

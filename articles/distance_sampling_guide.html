@@ -52,6 +52,7 @@
     <li><a class="dropdown-item" href="../articles/distance_measurement.html">Distance Measurement</a></li>
     <li><a class="dropdown-item" href="../articles/distance_sampling_guide.html">Guide to Distance Sampling</a></li>
     <li><a class="dropdown-item" href="../articles/wildlife_density_estimation.html">Density Estimation With DS</a></li>
+    <li><a class="dropdown-item" href="../articles/spaceNtime.html">Abundance with spaceNtime</a></li>
     <li><a class="dropdown-item" href="../articles/rarefaction_and_extrapolation.html">Rarefaction and Extrapolation</a></li>
   </ul>
 </li>
@@ -145,7 +146,7 @@ whereas cameras remain fixed, sampling only a fraction of a circle
 determined by their viewshed angle (e.g 45°, less than 180°). These
 differences necessitated the incorporation of temporal and spatial
 effort components into the camera trap distance sampling model.</p>
-<p><img src="observer_vs_camera_trap.png" class="r-plt" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="observer_vs_camera_trap.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level3">
@@ -178,7 +179,7 @@ curve of the detection function. <span class="math inline">\(\hat{p} =
 \int_{r_{min}}^{r_{max}} g(r)\, dr\)</span>, where <span class="math inline">\(r_{min}\)</span> is the left truncation distance
 (minimum distance), and <span class="math inline">\(r_{max}\)</span> is
 the right truncation distance (maximum distance).</p>
-<p><img src="detection_function_curve.png" class="r-plt" width="40%" height="40%" style="display: block; margin: auto;"></p>
+<p><img src="detection_function_curve.png" class="r-plt" alt="" width="40%" height="40%" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
 <h4 id="understanding-sampling-effort">Understanding Sampling Effort<a class="anchor" aria-label="anchor" href="#understanding-sampling-effort"></a>
@@ -187,7 +188,7 @@ the right truncation distance (maximum distance).</p>
 both temporal and spatial dimensions. A camera operating for longer
 periods accumulates more sampling effort, as does a camera with a wider
 field of view.</p>
-<p><img src="cameratrap_effort_formula.png" class="r-plt" width="40%" style="display: block; margin: auto auto auto 0;"></p>
+<p><img src="cameratrap_effort_formula.png" class="r-plt" alt="" width="40%" style="display: block; margin: auto auto auto 0;"></p>
 <p>The effort equation captures this: <span class="math inline">\(e =
 \frac{\theta \times T}{2\pi \times t}\)</span></p>
 <p>Here <strong>T</strong> represents the total time the camera was
@@ -226,7 +227,7 @@ It contains a single scale parameter <em>σ</em> that determines how
 quickly detection probability falls off with distance. When detection
 probability drops relatively uniformly with distance, the half-normal
 often provides a good fit.</p>
-<p><img src="half_normal_probability_density_function.png" class="r-plt" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="half_normal_probability_density_function.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <p>The half-normal key function is <span class="math inline">\(\exp\!\left(-\frac{r^{2}}{2\sigma^{2}}\right)\)</span>
 where <em>r</em> is the camera-animal distances. Note that it is called
 Half-normal because it considers one part (here, the right-hand side) of
@@ -359,12 +360,12 @@ density using ct R package.</p>
 <div class="section level3">
 <h3 class="unnumbered" id="reference">Reference<a class="anchor" aria-label="anchor" href="#reference"></a>
 </h3>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Howe2017" class="csl-entry">
 Howe, Eric J., Stephen T. Buckland, Marie‐Lyne Després‐Einspenner, and
 Hjalmar S. Kühl. 2017. <span>“<span class="nocase">Distance sampling
-with camera traps</span>.”</span> Edited by Jason Matthiopoulos.
-<em>Methods in Ecology and Evolution</em> 8 (11): 1558–65. <a href="https://doi.org/10.1111/2041-210X.12790" class="external-link">https://doi.org/10.1111/2041-210X.12790</a>.
+with camera traps</span>.”</span> <em>Methods in Ecology and
+Evolution</em> 8 (11): 1558–65. <a href="https://doi.org/10.1111/2041-210X.12790" class="external-link">https://doi.org/10.1111/2041-210X.12790</a>.
 </div>
 </div>
 </div>

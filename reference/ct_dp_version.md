@@ -18,7 +18,7 @@ ct_dp_version(package)
 
 ## Value
 
-Camera Trap Data Package object.
+A Camera Trap Data Package object.
 
 ## Details
 
@@ -36,5 +36,5 @@ The version number is derived as follows:
 ``` r
 dp <- ct_dp_example()
 ct_dp_version(dp)
-#> [1] "1.0.1"
+#> [1] "1.0.2"
 ```

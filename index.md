@@ -64,6 +64,7 @@ website](https://stangandaho.github.io/ct/reference/index.html)**
 You can install *ct* directly from GitHub:
 
 ``` r
+
 # Install pak firstly if not installed
 if (!requireNamespace("pak", quietly = TRUE)) {
   install.packages("pak", dependencies = TRUE)
