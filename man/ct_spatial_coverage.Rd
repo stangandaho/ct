@@ -66,16 +66,18 @@ CRS units), \code{SE} (bootstrap SE; \code{NA} if \code{n_boot = 0}), \code{CI_l
 }
 }
 \description{
-Estimates the \strong{utilization distribution} (spatial coverage / home range) of
+Estimates spatial coverage
 a species from camera-trap detection data using a kernel density approach.
-The kernel bandwidth \eqn{\hat{\sigma}} is estimated objectively from the
+The kernel bandwidth \eqn{\hat{\sigma}} is estimated from the
 spatial spread of detection sites via \strong{Silverman's reference bandwidth rule}
-(Silverman 1986), eliminating the need for a subjective smoothing parameter.
-Bootstrap resampling quantifies the uncertainty on \eqn{\hat{\sigma}}.
-An optional exclusion mask constrains the estimate to ecologically suitable
-habitat.
+(Silverman 1986).
 }
 \details{
+The term home range is typically associated with dynamic movement data, such as
+those recorded by radio-tracking or GPS devices, which provide continuous or
+near-continuous tracking of an individual animal's movements. Since camera traps
+are static and only capture presence/absence or activity within their specific
+locations, the concept of home range might not fully apply.
 \subsection{Method}{
 
 Each camera station where the species was detected contributes equally (binary

@@ -1,14 +1,11 @@
 #' Estimate species spatial coverage from camera trap detections
 #'
 #' @description
-#' Estimates the **utilization distribution** (spatial coverage / home range) of
+#' Estimates spatial coverage
 #' a species from camera-trap detection data using a kernel density approach.
-#' The kernel bandwidth \eqn{\hat{\sigma}} is estimated objectively from the
+#' The kernel bandwidth \eqn{\hat{\sigma}} is estimated from the
 #' spatial spread of detection sites via **Silverman's reference bandwidth rule**
-#' (Silverman 1986), eliminating the need for a subjective smoothing parameter.
-#' Bootstrap resampling quantifies the uncertainty on \eqn{\hat{\sigma}}.
-#' An optional exclusion mask constrains the estimate to ecologically suitable
-#' habitat.
+#' (Silverman 1986).
 #'
 #' @param data A data frame of species detection records.
 #' @param site_column Column name of the camera-trap site identifier.
@@ -34,6 +31,12 @@
 #'   \eqn{\hat{\sigma}}. Set to `0` to skip (default `200`).
 #'
 #' @details
+#' The term home range is typically associated with dynamic movement data, such as
+#' those recorded by radio-tracking or GPS devices, which provide continuous or
+#' near-continuous tracking of an individual animal's movements. Since camera traps
+#' are static and only capture presence/absence or activity within their specific
+#' locations, the concept of home range might not fully apply.
+#'
 #' ## Method
 #'
 #' Each camera station where the species was detected contributes equally (binary
