@@ -16,6 +16,8 @@ ct_temporal_shift(
   width_at = 1/2,
   format = "\%H:\%M:\%S",
   time_zone,
+  n_boot = 999,
+  boot_ci = 0.95,
   plot = TRUE,
   linestyle_1 = list(),
   linestyle_2 = list(),
@@ -25,9 +27,9 @@ ct_temporal_shift(
 )
 }
 \arguments{
-\item{first_period}{A numeric vector representing activity times in radians for the first period.}
+\item{first_period}{A numeric vector of activity times in radians for the first period.}
 
-\item{second_period}{A numeric vector representing activity times in radians for the second period.}
+\item{second_period}{A numeric vector of activity times in radians for the second period.}
 
 \item{convert_time}{Logical. If \code{TRUE}, converts times to radians before analysis.}
 
@@ -41,65 +43,83 @@ ct_temporal_shift(
 
 \item{adjust}{A numeric value to adjust the bandwidth of the kernel density estimation. Default is 1.}
 
-\item{width_at}{Numeric. The fraction of maximum density at which the activity width is measured (default is 0.5).}
+\item{width_at}{Numeric. Fraction of peak density at which the activity window width
+is measured (default \code{0.5}, i.e. half-maximum).}
 
-\item{format}{Character. Format of time input (default is "\%H:\%M:\%S"). Used if \code{convert_time = TRUE}.}
+\item{format}{Character. Input time format (default \code{"\%H:\%M:\%S"}).
+Only used when \code{convert_time = TRUE}.}
 
-\item{time_zone}{Character. Time zone for time conversion. Required if \code{convert_time = TRUE}.}
+\item{time_zone}{Character. Time zone for conversion. Required when \code{convert_time = TRUE}.}
 
-\item{plot}{Logical. If \code{TRUE}, generates a plot comparing the activity distributions of the two periods.}
+\item{n_boot}{Integer. Number of bootstrap resamples used to compute a confidence interval
+for the shift size. Set to \code{0} to skip bootstrapping (default \code{999}).}
 
-\item{linestyle_1}{List. Line style settings for the first period's density plot. Includes \code{linetype}, \code{linewidth}, and \code{color}.}
+\item{boot_ci}{Numeric. Confidence level for the bootstrap CI, strictly between 0 and 1
+(default \code{0.95}).}
 
-\item{linestyle_2}{List. Line style settings for the second period's density plot. Includes \code{linetype}, \code{linewidth}, and \code{color}.}
+\item{plot}{Logical. If \code{TRUE}, prints and returns a ggplot comparing the activity
+distributions of the two periods.}
 
-\item{posestyle_1}{List. Marker style settings for the first period's density range. Includes \code{shape}, \code{size}, \code{color}, and \code{alpha}.}
+\item{linestyle_1}{List. Line style for the first period's density curve.
+Accepts: \code{linetype}, \code{linewidth}, \code{color}.}
 
-\item{posestyle_2}{List. Marker style settings for the second period's density range. Includes \code{shape}, \code{size}, \code{color}, and \code{alpha}.}
+\item{linestyle_2}{List. Line style for the second period's density curve.
+Accepts: \code{linetype}, \code{linewidth}, \code{color}.}
+
+\item{posestyle_1}{List. Marker style for the first period's activity-range indicator.
+Accepts: \code{shape}, \code{size}, \code{color}, \code{alpha}.}
+
+\item{posestyle_2}{List. Marker style for the second period's activity-range indicator.
+Accepts: \code{shape}, \code{size}, \code{color}, \code{alpha}.}
 
 \item{...}{Additional arguments (currently unused).}
 }
 \value{
-A list containing:
-
-\strong{A tibble with:}
-\itemize{
-\item \verb{First period range}: The start and end times of active periods in the first dataset.
-\item \verb{Second period range}: The start and end times of active periods in the second dataset.
-\item \verb{Shift size (in hour)}: The absolute difference in activity duration between the two periods.
-\item \code{Move}: A categorical description of the shift ("Forward", "Backward", "Expanded", "Contracted", etc.).
+When \code{plot = FALSE}: a tibble. When \code{plot = TRUE}: a list whose first element
+is the tibble and whose \verb{$plot} element is a \code{ggplot2} object. The tibble contains:
+\describe{
+\item{\verb{First period range}}{Start and end of the active window for the first period.}
+\item{\verb{Second period range}}{Start and end of the active window for the second period.}
+\item{\verb{Shift size (in hour)}}{Absolute difference in activity-window duration between periods.}
+\item{\verb{Shift CI lower (XX\%)}/\verb{Shift CI upper (XX\%)}}{Bootstrap CI bounds
+(only when \code{n_boot > 0}).}
+\item{\code{Move}}{Direction/type of shift: \code{"Forward"}, \code{"Backward"}, \code{"Enlarged"},
+\code{"Contracted"}, \code{"Constant"}, \code{"Forward Edge"}, \code{"Backward Edge"},
+\code{"Contracted Edge (Max)"}, \code{"Contracted Edge (Min)"}, or \code{"Undefined"}.}
 }
-
-\strong{\verb{A plot}} (optional): A \code{ggplot2} object visualizing the density distributions if \code{plot = TRUE}.
 }
 \description{
-This function estimates and analyzes the temporal shift in the activity of a
-species between two time periods using kernel density estimation. It computes
-the activity distributions and determines the magnitude and direction of the shift.
+Estimates and analyzes the temporal shift in the activity of a species between
+two time periods using kernel density estimation. The activity distributions are
+compared and the magnitude, direction, and (optionally) a bootstrap confidence
+interval for the shift size are returned.
 }
 \examples{
 library(ggplot2)
-# Using radians as input
 
-first_period <- c(1.3, 2.3, 2.5, 5.2, 6.1, 2.3)  # Example timestamps for period 1
-second_period <- c(1.8, 2.2, 2.5)  # Example timestamps for period 2
-result <- ct_temporal_shift(first_period, second_period, plot = TRUE, xcenter = "noon",
-                            linestyle_1 = list(color = "gray10", linetype = 1, linewidth = 1),
-                            linestyle_2 = list(color = "#b70000", linetype = 5, linewidth = .5))
+# Using radians as input
+first_period  <- c(1.3, 2.3, 2.5, 5.2, 6.1, 2.3)
+second_period <- c(1.8, 2.2, 2.5)
+result <- ct_temporal_shift(
+  first_period, second_period, plot = TRUE, xcenter = "noon", n_boot = 100,
+  linestyle_1 = list(color = "gray10", linetype = 1, linewidth = 1),
+  posestyle_1 = list(color = "gray10"),
+
+  linestyle_2 = list(color = "#b70000", linetype = 5, linewidth = 0.5),
+  posestyle_2 = list(color = "#b70000")
+)
+
 result
 
-# customize the graph associated result
-result$plot+
-  labs(color = "Periods")+
-  theme(legend.position = "top")
+# Customize the returned plot
+result$plot + theme(legend.position = "top")
 
 # Using time strings as input
-first_period <- c("12:03:05", "13:10:09", "14:08:10", "14:18:30", "18:22:11")
+first_period  <- c("12:03:05", "13:10:09", "14:08:10", "14:18:30", "18:22:11")
 second_period <- c("13:00:20", "14:20:10", "15:55:20", "16:03:01", "16:47:00")
-result <- ct_temporal_shift(first_period, second_period,
-                            convert_time = TRUE,
-                            format = "\%H:\%M:\%S",
-                            time_zone = "UTC")
-
+result <- ct_temporal_shift(
+  first_period, second_period,
+  convert_time = TRUE, format = "\%H:\%M:\%S", time_zone = "UTC"
+)
 
 }

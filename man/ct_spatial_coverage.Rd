@@ -2,106 +2,152 @@
 % Please edit documentation in R/ct_spatial_coverage.R
 \name{ct_spatial_coverage}
 \alias{ct_spatial_coverage}
-\title{Calculate observed spatial coverage of species}
+\title{Estimate species spatial coverage from camera trap detections}
 \usage{
 ct_spatial_coverage(
   data,
   site_column,
-  size_column = NULL,
   longitude,
   latitude,
   crs = c(4326, NULL),
   study_area = NULL,
+  mask = NULL,
   resolution,
-  spread_factor = 0.1
+  isopleth = 0.95,
+  n_boot = 200
 )
 }
 \arguments{
-\item{data}{A data frame containing species occurrence records, including site, longitude, latitude, and optionally size (abundance).}
+\item{data}{A data frame of species detection records.}
 
-\item{site_column}{Column name specifying the site identifier.}
+\item{site_column}{Column name of the camera-trap site identifier.}
 
-\item{size_column}{Optional column specifying the abundance of species at each site.
-Defaults to NULL, in which case counts per site are used.}
+\item{longitude}{Column name of site longitude (or UTM easting).}
 
-\item{longitude}{Column name specifying the longitude of observation sites.}
+\item{latitude}{Column name of site latitude (or UTM northing).}
 
-\item{latitude}{Column name specifying the latitude of observation sites.}
-
-\item{crs}{A vector of length two specifying the coordinate reference systems: \code{c(crs1, crs2)}.
+\item{crs}{A vector of length two specifying the coordinate reference systems: \code{c(crs_in, crs_out)}.
 \itemize{
-\item \code{crs1} represents the current CRS of the data (e.g., 4326 for latitude/longitude).
-\item \code{crs2} represents the CRS to transform into (e.g., "EPSG:32631", a UTM EPSG code) for accurate distance calculations.
-If \code{crs2} is NULL, no transformation is applied. Defaults to \code{c(4326, NULL)}
+\item \code{crs_in} represents the current CRS of the data (e.g., 4326 for latitude/longitude).
+\item \code{crs_out} represents the CRS to transform into (e.g., "EPSG:32631", a UTM EPSG code) for accurate distance calculations.
+If \code{crs_out} is NULL, no transformation is applied. Defaults to \code{c(4326, NULL)}
 }}
 
-\item{study_area}{An optional simple feature (sf) polygon representing the study area. If provided, the raster extends to cover the area.}
+\item{study_area}{Optional \code{sf} polygon defining the full study extent.
+If provided, the raster grid is extended to cover the polygon.}
 
-\item{resolution}{Numeric value specifying the spatial resolution (grid size) for rasterization.}
+\item{mask}{Optional \code{sf} polygon (or multipolygon) of areas to \strong{exclude}
+from the coverage estimate (e.g. water bodies, settlements, cliffs).
+Raster cells inside the mask are set to \code{NA} in the output. Note that
+Euclidean distances are used throughout; the mask filters the final surface
+but does not reroute distance calculations around barriers.}
 
-\item{spread_factor}{A scale factor for the half-normal distribution.
-Higher values create a more spread-out distribution, while lower values make
-it more concentrated. The value must be in ]0; 1]}
+\item{resolution}{Numeric. Side length of one grid cell in the units of the
+active CRS (metres if projected).}
+
+\item{isopleth}{Numeric in \verb{(0, 1]}. Isopleth level for home-range
+delineation. \code{0.95} (default) returns the smallest area containing 95 \% of
+the total kernel density — the standard 95 \% kernel home range.}
+
+\item{n_boot}{Integer. Bootstrap resamples for the standard error of
+\eqn{\hat{\sigma}}. Set to \code{0} to skip (default \code{200}).}
 }
 \value{
-A list containing:
-\itemize{
-\item \strong{Coverage raster}: A raster object representing species abundance across space.
-\item \strong{Coverage stats}: A tibble with spatial coverage statistics, including area (km²), average abundance, maximum abundance, and standard deviation.
+A named list with three elements:
+\describe{
+\item{\verb{Coverage raster}}{A \code{SpatRaster} (\code{terra}) containing the kernel
+density surface, clipped to the \code{isopleth} isopleth, with masked and
+out-of-isopleth cells set to \code{NA}.}
+\item{\code{Bandwidth}}{A named numeric vector: \code{sigma} (estimated bandwidth in
+CRS units), \code{SE} (bootstrap SE; \code{NA} if \code{n_boot = 0}), \code{CI_low} and
+\code{CI_high} (95 \% bootstrap CI), \code{n_sites}, and \code{isopleth}.}
+\item{\verb{Coverage stats}}{A one-row tibble: coverage area in km²,
+\eqn{\hat{\sigma}} ± SE, detection-site count, and isopleth level.}
 }
 }
 \description{
-This function calculates the \emph{Observed Spatial Coverage} of a species like \emph{Home Range},
-but based on camera trap data.
-The term home range is typically associated with dynamic movement data, such as
-those recorded by radio-tracking or GPS devices, which provide continuous or
-near-continuous tracking of an individual animal's movements. Since camera traps
-are static and only capture presence/absence or activity within their specific
-locations, the concept of home range might not fully apply.
+Estimates the \strong{utilization distribution} (spatial coverage / home range) of
+a species from camera-trap detection data using a kernel density approach.
+The kernel bandwidth \eqn{\hat{\sigma}} is estimated objectively from the
+spatial spread of detection sites via \strong{Silverman's reference bandwidth rule}
+(Silverman 1986), eliminating the need for a subjective smoothing parameter.
+Bootstrap resampling quantifies the uncertainty on \eqn{\hat{\sigma}}.
+An optional exclusion mask constrains the estimate to ecologically suitable
+habitat.
 }
 \details{
-The function applies a half-normal kernel to model species abundance over space,
-using the scale rate to control the spread of the distribution:
+\subsection{Method}{
 
-\deqn{\bar{K}(x) = \frac{\sum w * \text{e}^{(-0.5 * (\frac{x}{\sigma})^2)}}{N}}
+Each camera station where the species was detected contributes equally (binary
+detection). A Gaussian kernel is centred at each
+detection site and the average surface is computed:
 
-where:
-\itemize{
-\item \eqn{\bar{K}(x)} is the mean abundance kernel across all sites,
-\item \eqn{w} is the species abundance at each site,
-\item \eqn{\sigma} is the standard deviation of the spatial distance (scaled by spread_factor),
-\item \eqn{N} is the total number of sites.
+\deqn{
+  \hat{f}(\mathbf{x}) =
+    \frac{1}{n} \sum_{i=1}^{n}
+    \exp\!\left(-\frac{\|\mathbf{x} - \mathbf{x}_i\|^2}{2\,\hat{\sigma}^2}\right)
+}
+}
+
+\subsection{Bandwidth estimation}{
+
+The bandwidth \eqn{\hat{\sigma}} is the \strong{reference bandwidth} (Silverman
+1986, eq. 4.14, extended to 2-D):
+
+\deqn{\hat{\sigma} = \sqrt{\hat{\sigma}_x \, \hat{\sigma}_y} \; n^{-1/6}}
+
+where \eqn{\hat{\sigma}_x} and \eqn{\hat{\sigma}_y} are the standard
+deviations of the detection-site coordinates and \eqn{n} is the number of
+detection sites. This is the asymptotically MISE-optimal bandwidth under a
+bivariate normal reference distribution. It shrinks with more sites and widens
+when detections are spatially dispersed.
+
+The standard error of \eqn{\hat{\sigma}} is obtained by \strong{nonparametric
+bootstrap}: sites are resampled with replacement \code{n_boot} times and
+\eqn{\hat{\sigma}} recomputed each time; the SE is the standard deviation
+of those bootstrap estimates, and the 95 \% CI is their 2.5th – 97.5th
+percentiles.
+}
+
+\subsection{Home-range isopleth}{
+
+Cells are ranked by kernel density (descending). The \code{isopleth} isopleth
+retains the smallest set of cells whose cumulative density equals
+\code{isopleth} of the total - the standard minimum-volume contour estimator
+(Worton 1989).
 }
 }
 \examples{
 library(dplyr)
-cam_data <- system.file("penessoulou_season2.csv", package = "ct") \%>\%
+cam_data <- system.file("penessoulou_season2.csv", package = "ct") |>
   read.csv() \%>\%
-  dplyr::filter(Species == "Erythrocebus patas")
+  dplyr::filter(Species == "Erythrocebus patas", Count > 0)
 
 spc <- ct_spatial_coverage(
   data = cam_data,
   site_column = Camera,
-  crs = "EPSG:32631", ,
-  resolution = 30,
-  spread_factor = 0.4,
-  size_column = Count,
   longitude = Longitude,
-  latitude = Latitude
+  latitude = Latitude,
+  crs = "EPSG:32631",
+  resolution = 30 # meter
 )
 
-## Abundance stats
-spc[[2]] \%>\%
-  dplyr::select(-1)
+# Plot coverage raster
+library(terra)
+terra::plot(spc$`Coverage raster`)
 
-## Plot spatial coverage
-library(ggplot2)
-spc_vect <- terra::as.polygons(spc[[1]]) \%>\%
-  sf::st_as_sf()
+## Bandwidth estimate with uncertainty
+spc$Bandwidth
 
-ggplot() +
-  geom_sf(data = spc_vect, aes(fill = Abundance), color = NA) +
-  theme_minimal() +
-  scale_fill_viridis_c()
+## Coverage area summary
+spc$`Coverage stats`
 
+}
+\references{
+Silverman, B. W. (1986). \emph{Density Estimation for Statistics and Data
+Analysis}. Chapman and Hall, London.
+
+Worton, B. J. (1989). Kernel methods for estimating the utilization
+distribution in home-range studies. \emph{Ecology}, \strong{70}(1), 164–168.
+\doi{10.2307/1938423}
 }
