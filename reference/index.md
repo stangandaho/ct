@@ -149,7 +149,7 @@ Functions to run common camera trap data analysis
 - [`ct_dissimilarity()`](https://stangandaho.github.io/ct/reference/ct_dissimilarity.md)
   : Calculate dissimilarity between communities
 - [`ct_spatial_coverage()`](https://stangandaho.github.io/ct/reference/ct_spatial_coverage.md)
-  : Calculate observed spatial coverage of species
+  : Estimate species spatial coverage from camera trap detections
 - [`ct_summarise_camtrap_activity()`](https://stangandaho.github.io/ct/reference/ct_summarise_camtrap_activity.md)
   : Create activity summary statistics
 - [`ct_traprate_estimate()`](https://stangandaho.github.io/ct/reference/ct_traprate_estimate.md)

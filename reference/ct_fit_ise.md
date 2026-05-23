@@ -125,7 +125,7 @@ ct_fit_ise(data, deployment_data,
 #> 
 #> ── Instantaneous Sampling (ISE) Estimation ─────────────────────────────────────
 #> ℹ Running data checks
-#> [43ms]
+#> [46ms]
 #> 
 #> ℹ Building sampling occasions...
 #> ℹ Building encounter history...

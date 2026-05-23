@@ -1,9 +1,10 @@
 # Calculate the temporal shift of one species' activity over two periods
 
-This function estimates and analyzes the temporal shift in the activity
-of a species between two time periods using kernel density estimation.
-It computes the activity distributions and determines the magnitude and
-direction of the shift.
+Estimates and analyzes the temporal shift in the activity of a species
+between two time periods using kernel density estimation. The activity
+distributions are compared and the magnitude, direction, and
+(optionally) a bootstrap confidence interval for the shift size are
+returned.
 
 ## Usage
 
@@ -20,6 +21,8 @@ ct_temporal_shift(
   width_at = 1/2,
   format = "%H:%M:%S",
   time_zone,
+  n_boot = 999,
+  boot_ci = 0.95,
   plot = TRUE,
   linestyle_1 = list(),
   linestyle_2 = list(),
@@ -33,13 +36,11 @@ ct_temporal_shift(
 
 - first_period:
 
-  A numeric vector representing activity times in radians for the first
-  period.
+  A numeric vector of activity times in radians for the first period.
 
 - second_period:
 
-  A numeric vector representing activity times in radians for the second
-  period.
+  A numeric vector of activity times in radians for the second period.
 
 - convert_time:
 
@@ -72,43 +73,54 @@ ct_temporal_shift(
 
 - width_at:
 
-  Numeric. The fraction of maximum density at which the activity width
-  is measured (default is 0.5).
+  Numeric. Fraction of peak density at which the activity window width
+  is measured (default `0.5`, i.e. half-maximum).
 
 - format:
 
-  Character. Format of time input (default is "%H:%M:%S"). Used if
+  Character. Input time format (default `"%H:%M:%S"`). Only used when
   `convert_time = TRUE`.
 
 - time_zone:
 
-  Character. Time zone for time conversion. Required if
+  Character. Time zone for conversion. Required when
   `convert_time = TRUE`.
+
+- n_boot:
+
+  Integer. Number of bootstrap resamples used to compute a confidence
+  interval for the shift size. Set to `0` to skip bootstrapping (default
+  `999`).
+
+- boot_ci:
+
+  Numeric. Confidence level for the bootstrap CI, strictly between 0 and
+  1 (default `0.95`).
 
 - plot:
 
-  Logical. If `TRUE`, generates a plot comparing the activity
+  Logical. If `TRUE`, prints and returns a ggplot comparing the activity
   distributions of the two periods.
 
 - linestyle_1:
 
-  List. Line style settings for the first period's density plot.
-  Includes `linetype`, `linewidth`, and `color`.
+  List. Line style for the first period's density curve. Accepts:
+  `linetype`, `linewidth`, `color`.
 
 - linestyle_2:
 
-  List. Line style settings for the second period's density plot.
-  Includes `linetype`, `linewidth`, and `color`.
+  List. Line style for the second period's density curve. Accepts:
+  `linetype`, `linewidth`, `color`.
 
 - posestyle_1:
 
-  List. Marker style settings for the first period's density range.
-  Includes `shape`, `size`, `color`, and `alpha`.
+  List. Marker style for the first period's activity-range indicator.
+  Accepts: `shape`, `size`, `color`, `alpha`.
 
 - posestyle_2:
 
-  List. Marker style settings for the second period's density range.
-  Includes `shape`, `size`, `color`, and `alpha`.
+  List. Marker style for the second period's activity-range indicator.
+  Accepts: `shape`, `size`, `color`, `alpha`.
 
 - ...:
 
@@ -116,61 +128,74 @@ ct_temporal_shift(
 
 ## Value
 
-A list containing:
+When `plot = FALSE`: a tibble. When `plot = TRUE`: a list whose first
+element is the tibble and whose `$plot` element is a `ggplot2` object.
+The tibble contains:
 
-**A tibble with:**
+- `First period range`:
 
-- `First period range`: The start and end times of active periods in the
-  first dataset.
+  Start and end of the active window for the first period.
 
-- `Second period range`: The start and end times of active periods in
-  the second dataset.
+- `Second period range`:
 
-- `Shift size (in hour)`: The absolute difference in activity duration
-  between the two periods.
+  Start and end of the active window for the second period.
 
-- `Move`: A categorical description of the shift ("Forward", "Backward",
-  "Expanded", "Contracted", etc.).
+- `Shift size (in hour)`:
 
-**`A plot`** (optional): A `ggplot2` object visualizing the density
-distributions if `plot = TRUE`.
+  Absolute difference in activity-window duration between periods.
+
+- `Shift CI lower (XX%)`/`Shift CI upper (XX%)`:
+
+  Bootstrap CI bounds (only when `n_boot > 0`).
+
+- `Move`:
+
+  Direction/type of shift: `"Forward"`, `"Backward"`, `"Enlarged"`,
+  `"Contracted"`, `"Constant"`, `"Forward Edge"`, `"Backward Edge"`,
+  `"Contracted Edge (Max)"`, `"Contracted Edge (Min)"`, or
+  `"Undefined"`.
 
 ## Examples
 
 ``` r
 library(ggplot2)
-# Using radians as input
 
-first_period <- c(1.3, 2.3, 2.5, 5.2, 6.1, 2.3)  # Example timestamps for period 1
-second_period <- c(1.8, 2.2, 2.5)  # Example timestamps for period 2
-result <- ct_temporal_shift(first_period, second_period, plot = TRUE, xcenter = "noon",
-                            linestyle_1 = list(color = "gray10", linetype = 1, linewidth = 1),
-                            linestyle_2 = list(color = "#b70000", linetype = 5, linewidth = .5))
+# Using radians as input
+first_period  <- c(1.3, 2.3, 2.5, 5.2, 6.1, 2.3)
+second_period <- c(1.8, 2.2, 2.5)
+result <- ct_temporal_shift(
+  first_period, second_period, plot = TRUE, xcenter = "noon", n_boot = 100,
+  linestyle_1 = list(color = "gray10", linetype = 1, linewidth = 1),
+  posestyle_1 = list(color = "gray10"),
+
+  linestyle_2 = list(color = "#b70000", linetype = 5, linewidth = 0.5),
+  posestyle_2 = list(color = "#b70000")
+)
+
 
 result
 #> [[1]]
-#> # A tibble: 1 × 4
-#>   `First period range` `Second period range` `Shift size (in hour)` Move    
-#>   <chr>                <chr>                                  <dbl> <chr>   
-#> 1 06:59:32 - 10:34:58  06:25:31 - 10:12:18                     0.19 Backward
+#> # A tibble: 1 × 6
+#>   `First period range` `Second period range` `Shift size (in hour)`
+#>   <chr>                <chr>                                  <dbl>
+#> 1 06:59:32 - 10:34:58  06:25:31 - 10:12:18                     0.19
+#> # ℹ 3 more variables: `Shift CI lower (95%)` <dbl>,
+#> #   `Shift CI upper (95%)` <dbl>, Move <chr>
 #> 
 #> $plot
 
 #> 
 
-# customize the graph associated result
-result$plot+
-  labs(color = "Periods")+
-  theme(legend.position = "top")
+# Customize the returned plot
+result$plot + theme(legend.position = "top")
 
 
 # Using time strings as input
-first_period <- c("12:03:05", "13:10:09", "14:08:10", "14:18:30", "18:22:11")
+first_period  <- c("12:03:05", "13:10:09", "14:08:10", "14:18:30", "18:22:11")
 second_period <- c("13:00:20", "14:20:10", "15:55:20", "16:03:01", "16:47:00")
-result <- ct_temporal_shift(first_period, second_period,
-                            convert_time = TRUE,
-                            format = "%H:%M:%S",
-                            time_zone = "UTC")
-
+result <- ct_temporal_shift(
+  first_period, second_period,
+  convert_time = TRUE, format = "%H:%M:%S", time_zone = "UTC"
+)
 
 ```
