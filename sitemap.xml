@@ -9,6 +9,7 @@
 <url><loc>https://stangandaho.github.io/ct/articles/index.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/articles/manage_media_metadata.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/articles/rarefaction_and_extrapolation.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/articles/rest.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/articles/spaceNtime.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/articles/wildlife_density_estimation.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/authors.html</loc></url>
@@ -47,6 +48,7 @@
 <url><loc>https://stangandaho.github.io/ct/reference/ct_fit_ds.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_fit_ise.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_fit_rem.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/ct_fit_rest.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_fit_speedmodel.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_fit_ste.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_fit_tte.html</loc></url>
@@ -66,6 +68,11 @@
 <url><loc>https://stangandaho.github.io/ct/reference/ct_read.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_read_metadata.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_remove_hs.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/ct_rest_activity.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/ct_rest_effort.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/ct_rest_passes.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/ct_rest_select_stay.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/ct_rest_stay.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_select_model.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_solartime.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_spatial_coverage.html</loc></url>
@@ -92,5 +99,9 @@
 <url><loc>https://stangandaho.github.io/ct/reference/parse_hs.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/pendjari.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/pipe.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/print.ct_rest.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/print.ct_rest_stay.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/rest_detection.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/rest_station.html</loc></url>
 </urlset>
 

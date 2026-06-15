@@ -1,4 +1,4 @@
-# Camera trap dataset from Agonve Community Wetland Reserve (ACBR)
+# Camera trap dataset from Agbogon Community Biological Reserve (ACBR), Benin
 
 A curated camera trap dataset from the Agonve Community Wetland Reserve
 in West Africa, adapted from Gandaho et al. (2026). The dataset contains

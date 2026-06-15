@@ -74,7 +74,7 @@ ct_spatial_coverage(
 
   Numeric in `(0, 1]`. Isopleth level for home-range delineation. `0.95`
   (default) returns the smallest area containing 95 % of the total
-  kernel density — the standard 95 % kernel home range.
+  kernel density - the standard 95 % kernel home range.
 
 - n_boot:
 
@@ -99,7 +99,7 @@ A named list with three elements:
 
 - `Coverage stats`:
 
-  A one-row tibble: coverage area in km², \\\hat{\sigma}\\ ± SE,
+  A one-row tibble: coverage area in km^2, \\\hat{\sigma}\\ +/- SE,
   detection-site count, and isopleth level.
 
 ## Details
@@ -138,7 +138,7 @@ and widens when detections are spatially dispersed.
 The standard error of \\\hat{\sigma}\\ is obtained by **nonparametric
 bootstrap**: sites are resampled with replacement `n_boot` times and
 \\\hat{\sigma}\\ recomputed each time; the SE is the standard deviation
-of those bootstrap estimates, and the 95 % CI is their 2.5th – 97.5th
+of those bootstrap estimates, and the 95 % CI is their 2.5th - 97.5th
 percentiles.
 
 ### Home-range isopleth
@@ -154,7 +154,7 @@ Silverman, B. W. (1986). *Density Estimation for Statistics and Data
 Analysis*. Chapman and Hall, London.
 
 Worton, B. J. (1989). Kernel methods for estimating the utilization
-distribution in home-range studies. *Ecology*, **70**(1), 164–168.
+distribution in home-range studies. *Ecology*, **70**(1), 164-168.
 [doi:10.2307/1938423](https://doi.org/10.2307/1938423)
 
 ## Examples
@@ -173,23 +173,6 @@ spc <- ct_spatial_coverage(
   crs = "EPSG:32631",
   resolution = 30 # meter
 )
-#> Simple feature collection with 13 features and 1 field
-#> Geometry type: POINT
-#> Dimension:     XY
-#> Bounding box:  xmin: 337270 ymin: 1023540 xmax: 347787 ymax: 1027521
-#> Projected CRS: WGS 84 / UTM zone 31N
-#> First 10 features:
-#>    Camera               geometry
-#> 1     3G2 POINT (341800 1024528)
-#> 2     3G3 POINT (340266 1026530)
-#> 3     5G1 POINT (340237 1023540)
-#> 4     5G2 POINT (337270 1025550)
-#> 5     8G3 POINT (338754 1024530)
-#> 6     6G3 POINT (340266 1027472)
-#> 7     9G2 POINT (341840 1025537)
-#> 8    11G1 POINT (343294 1026537)
-#> 9    12G1 POINT (344786 1026551)
-#> 10    6G1 POINT (343273 1027521)
 
 # Plot coverage raster
 library(terra)
@@ -205,8 +188,7 @@ spc$Bandwidth
 ## Coverage area summary
 spc$`Coverage stats`
 #> # A tibble: 1 × 5
-#>   `Spatial coverage (km²)` `Bandwidth σ` `Bandwidth SE` `Detection sites (n)`
-#>                      <dbl>         <dbl>          <dbl>                 <int>
-#> 1                     33.9         1226.           164.                    13
-#> # ℹ 1 more variable: `Isopleth level` <dbl>
+#>   `Spatial coverage` Sigma `Bandwidth SE` `Detection sites (n)` `Isopleth level`
+#>                <dbl> <dbl>          <dbl>                 <int>            <dbl>
+#> 1               33.9 1226.           164.                    13             0.95
 ```

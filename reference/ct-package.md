@@ -1,4 +1,4 @@
-# ct: Camera Trap Data Tool
+# ct: Integrated Camera-Trap Data Management and Analysis
 
 Tool to edit, extract, visualize, and analyze camera trap data for
 wildlife monitoring and ecological research.

@@ -13,6 +13,8 @@
 - [Rarefaction and Extrapolation of Species Diversity Estimation with
   Camera Trap Data using ct R
   package](https://stangandaho.github.io/ct/articles/rarefaction_and_extrapolation.md):
+- [Estimating Density With REST and RAD-REST
+  Models](https://stangandaho.github.io/ct/articles/rest.md):
 - [Estimating Wildlife Abundance from Camera Traps With SpaceNTime
   Methods](https://stangandaho.github.io/ct/articles/spaceNtime.md):
 - [Wildlife Density Estimation With ct R Package Using Distance

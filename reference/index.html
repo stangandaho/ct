@@ -31,6 +31,7 @@
     <li><a class="dropdown-item" href="../articles/distance_sampling_guide.html">Guide to Distance Sampling</a></li>
     <li><a class="dropdown-item" href="../articles/wildlife_density_estimation.html">Density Estimation With DS</a></li>
     <li><a class="dropdown-item" href="../articles/spaceNtime.html">Abundance with spaceNtime</a></li>
+    <li><a class="dropdown-item" href="../articles/rest.html">Density with REST and RAD-REST</a></li>
     <li><a class="dropdown-item" href="../articles/rarefaction_and_extrapolation.html">Rarefaction and Extrapolation</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html"><span class="fa fa-face-smile"></span> News</a></li>
@@ -90,9 +91,23 @@
           <code><a href="ACBR.html">ACBR</a></code>
 
         </dt>
-        <dd>Camera trap dataset from Agonve Community Wetland Reserve (ACBR)</dd>
+        <dd>Camera trap dataset from Agbogon Community Biological Reserve (ACBR), Benin</dd>
+
+        <dt>
+
+          <code><a href="rest_detection.html">rest_detection</a></code>
+
+        </dt>
+        <dd>Simulated camera-trap detections for the REST / RAD-REST workflow</dd>
+
+        <dt>
+
+          <code><a href="rest_station.html">rest_station</a></code>
+
+        </dt>
+        <dd>Camera-station table for the REST / RAD-REST example</dd>
       </dl></div><div class="section level2">
-      <h2 id="process-media-images-file">Process media (images) file<a class="anchor" aria-label="anchor" href="#process-media-images-file"></a></h2>
+      <h2 id="process-media-file">Process media file<a class="anchor" aria-label="anchor" href="#process-media-file"></a></h2>
 
       <div class="section-desc"><p>Functions reading and writing metadata</p></div>
 
@@ -152,7 +167,7 @@
       </dl></div><div class="section level2">
       <h2 id="data-processing">Data processing<a class="anchor" aria-label="anchor" href="#data-processing"></a></h2>
 
-      <div class="section-desc"><p>Functions for preparing and tansforming camera trap data</p></div>
+      <div class="section-desc"><p>Functions for processing camera trap data</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -326,6 +341,34 @@
 
         </dt>
         <dd>Estimate distance from camera trap to animal</dd>
+
+        <dt>
+
+          <code><a href="ct_rest_stay.html">ct_rest_stay()</a></code>
+
+        </dt>
+        <dd>Prepare staying-time data for REST</dd>
+
+        <dt>
+
+          <code><a href="ct_rest_passes.html">ct_rest_passes()</a></code>
+
+        </dt>
+        <dd>Aggregate the number of animal passes per station for REST / RAD-REST</dd>
+
+        <dt>
+
+          <code><a href="ct_rest_effort.html">ct_rest_effort()</a></code>
+
+        </dt>
+        <dd>Add camera-trapping effort (days) to formatted station data</dd>
+
+        <dt>
+
+          <code><a href="ct_rest_activity.html">ct_rest_activity()</a></code>
+
+        </dt>
+        <dd>Prepare activity (time-of-day) data for REST</dd>
       </dl></div><div class="section level2">
       <h2 id="data-analysis">Data analysis<a class="anchor" aria-label="anchor" href="#data-analysis"></a></h2>
 
@@ -552,6 +595,20 @@
 
         </dt>
         <dd>Estimate abundance from Instantaneous Sampling (ISE) Data</dd>
+
+        <dt>
+
+          <code><a href="ct_fit_rest.html">ct_fit_rest()</a></code>
+
+        </dt>
+        <dd>Fit the Random Encounter and Staying Time (REST / RAD-REST) model</dd>
+
+        <dt>
+
+          <code><a href="ct_rest_select_stay.html">ct_rest_select_stay()</a></code>
+
+        </dt>
+        <dd>Choose a staying-time distribution for REST by WAIC</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

@@ -125,7 +125,7 @@ ct_fit_ise(data, deployment_data,
 #> 
 #> ── Instantaneous Sampling (ISE) Estimation ─────────────────────────────────────
 #> ℹ Running data checks
-#> [46ms]
+#> [41ms]
 #> 
 #> ℹ Building sampling occasions...
 #> ℹ Building encounter history...
@@ -133,10 +133,10 @@ ct_fit_ise(data, deployment_data,
 #> ✔ Running data checks [43ms]
 #> 
 #> ℹ Building effort for each camera
-#> ✔ Building effort for each camera [40ms]
+#> ✔ Building effort for each camera [49ms]
 #> 
 #> ℹ Building encounter history
-#> ✔ Building encounter history [24ms]
+#> ✔ Building encounter history [23ms]
 #> 
 #> ℹ Calculating estimates...
 #> ✔ Estimation complete!

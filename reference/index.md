@@ -9,9 +9,13 @@
 - [`duikers`](https://stangandaho.github.io/ct/reference/duikers.md) :
   Maxwell's duiker camera-trap distance & video-start data
 - [`ACBR`](https://stangandaho.github.io/ct/reference/ACBR.md) : Camera
-  trap dataset from Agonve Community Wetland Reserve (ACBR)
+  trap dataset from Agbogon Community Biological Reserve (ACBR), Benin
+- [`rest_detection`](https://stangandaho.github.io/ct/reference/rest_detection.md)
+  : Simulated camera-trap detections for the REST / RAD-REST workflow
+- [`rest_station`](https://stangandaho.github.io/ct/reference/rest_station.md)
+  : Camera-station table for the REST / RAD-REST example
 
-## Process media (images) file
+## Process media file
 
 Functions reading and writing metadata
 
@@ -32,7 +36,7 @@ Functions reading and writing metadata
 
 ## Data processing
 
-Functions for preparing and tansforming camera trap data
+Functions for processing camera trap data
 
 - [`ct_read()`](https://stangandaho.github.io/ct/reference/ct_read.md) :
   Read a delimited file into a tibble
@@ -111,6 +115,19 @@ Functions for preparing and tansforming camera trap data
 - [`ct_camtrap_animal_distance()`](https://stangandaho.github.io/ct/reference/ct_camtrap_animal_distance.md)
   : Estimate distance from camera trap to animal
 
+- [`ct_rest_stay()`](https://stangandaho.github.io/ct/reference/ct_rest_stay.md)
+  : Prepare staying-time data for REST
+
+- [`ct_rest_passes()`](https://stangandaho.github.io/ct/reference/ct_rest_passes.md)
+  : Aggregate the number of animal passes per station for REST /
+  RAD-REST
+
+- [`ct_rest_effort()`](https://stangandaho.github.io/ct/reference/ct_rest_effort.md)
+  : Add camera-trapping effort (days) to formatted station data
+
+- [`ct_rest_activity()`](https://stangandaho.github.io/ct/reference/ct_rest_activity.md)
+  : Prepare activity (time-of-day) data for REST
+
 ## Data analysis
 
 Functions to run common camera trap data analysis
@@ -180,3 +197,7 @@ Functions to run common camera trap data analysis
   : Estimate abundance from Time-To-Event (TTE) Data
 - [`ct_fit_ise()`](https://stangandaho.github.io/ct/reference/ct_fit_ise.md)
   : Estimate abundance from Instantaneous Sampling (ISE) Data
+- [`ct_fit_rest()`](https://stangandaho.github.io/ct/reference/ct_fit_rest.md)
+  : Fit the Random Encounter and Staying Time (REST / RAD-REST) model
+- [`ct_rest_select_stay()`](https://stangandaho.github.io/ct/reference/ct_rest_select_stay.md)
+  : Choose a staying-time distribution for REST by WAIC
