@@ -31,3 +31,44 @@
 #'
 #' @format A list holding study data and metadata.
 "ctdp"
+
+
+#' Simulated camera-trap detections for the REST / RAD-REST workflow
+#'
+#' A small simulated dataset illustrating the inputs needed by [ct_fit_rest()]
+#' and the `ct_rest_*` preparation helpers. It contains detections of a focal
+#' species (`"Red duiker"`) recorded at 8 stations over roughly one month,
+#' together with two background species.
+#'
+#' @format A tibble with one row per video (detection) and columns:
+#'   - `Station`: Camera station ID.
+#'   - `Species`: Detected species name.
+#'   - `DateTime`: Capture time as a `"YYYY-MM-DD HH:MM:SS"` string.
+#'   - `y`: Number of passes through the focal area in that video
+#'     (`NA` for background species).
+#'   - `Stay`: Staying time within the focal area in seconds
+#'     (`NA` when the animal did not enter).
+#'   - `Cens`: Right-censoring flag for `Stay` (1 = censored, 0 = observed).
+#'
+#' @seealso [rest_station], [ct_fit_rest()]
+#' @examples
+#' data(rest_detection)
+#' head(rest_detection)
+"rest_detection"
+
+
+#' Camera-station table for the REST / RAD-REST example
+#'
+#' Per-station information to accompany [rest_detection], with one row per
+#' station and a habitat covariate that can be used in `density_formula` or
+#' `stay_formula`.
+#'
+#' @format A tibble with one row per station and columns:
+#'   - `Station`: Camera station ID.
+#'   - `Habitat`: Habitat type at the station (`"forest"` or `"savanna"`).
+#'
+#' @seealso [rest_detection], [ct_fit_rest()]
+#' @examples
+#' data(rest_station)
+#' rest_station
+"rest_station"

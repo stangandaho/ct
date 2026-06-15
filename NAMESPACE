@@ -72,6 +72,15 @@ export(ct_inext) # no 2025-09-21
 export(ct_fit_tte)
 export(ct_fit_ise)
 export(ct_fit_ste)
+## REST / RAD-REST
+export(ct_fit_rest)
+export(ct_rest_stay)
+export(ct_rest_passes)
+export(ct_rest_effort)
+export(ct_rest_activity)
+export(ct_rest_select_stay)
+S3method(print, ct_rest)
+S3method(print, ct_rest_stay)
 
 
 
@@ -97,7 +106,7 @@ importFrom(dplyr, as_tibble, arrange, mutate, tibble, rename, bind_rows, bind_co
 
 
 #rlang
-importFrom(rlang, ":=", enquo, is_symbol, is_quosure, as_name, get_expr)
+importFrom(rlang, ":=", enquo, is_symbol, is_quosure, as_name, get_expr, .data, "%||%")
 
 #tidyr
 importFrom(tidyr, pivot_wider)

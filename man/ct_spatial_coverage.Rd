@@ -47,7 +47,7 @@ active CRS (metres if projected).}
 
 \item{isopleth}{Numeric in \verb{(0, 1]}. Isopleth level for home-range
 delineation. \code{0.95} (default) returns the smallest area containing 95 \% of
-the total kernel density — the standard 95 \% kernel home range.}
+the total kernel density - the standard 95 \% kernel home range.}
 
 \item{n_boot}{Integer. Bootstrap resamples for the standard error of
 \eqn{\hat{\sigma}}. Set to \code{0} to skip (default \code{200}).}
@@ -61,8 +61,8 @@ out-of-isopleth cells set to \code{NA}.}
 \item{\code{Bandwidth}}{A named numeric vector: \code{sigma} (estimated bandwidth in
 CRS units), \code{SE} (bootstrap SE; \code{NA} if \code{n_boot = 0}), \code{CI_low} and
 \code{CI_high} (95 \% bootstrap CI), \code{n_sites}, and \code{isopleth}.}
-\item{\verb{Coverage stats}}{A one-row tibble: coverage area in km²,
-\eqn{\hat{\sigma}} ± SE, detection-site count, and isopleth level.}
+\item{\verb{Coverage stats}}{A one-row tibble: coverage area in km^2,
+\eqn{\hat{\sigma}} +/- SE, detection-site count, and isopleth level.}
 }
 }
 \description{
@@ -107,7 +107,7 @@ when detections are spatially dispersed.
 The standard error of \eqn{\hat{\sigma}} is obtained by \strong{nonparametric
 bootstrap}: sites are resampled with replacement \code{n_boot} times and
 \eqn{\hat{\sigma}} recomputed each time; the SE is the standard deviation
-of those bootstrap estimates, and the 95 \% CI is their 2.5th – 97.5th
+of those bootstrap estimates, and the 95 \% CI is their 2.5th - 97.5th
 percentiles.
 }
 
@@ -150,6 +150,6 @@ Silverman, B. W. (1986). \emph{Density Estimation for Statistics and Data
 Analysis}. Chapman and Hall, London.
 
 Worton, B. J. (1989). Kernel methods for estimating the utilization
-distribution in home-range studies. \emph{Ecology}, \strong{70}(1), 164–168.
+distribution in home-range studies. \emph{Ecology}, \strong{70}(1), 164-168.
 \doi{10.2307/1938423}
 }

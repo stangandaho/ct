@@ -26,7 +26,7 @@
 #'   active CRS (metres if projected).
 #' @param isopleth Numeric in `(0, 1]`. Isopleth level for home-range
 #'   delineation. `0.95` (default) returns the smallest area containing 95 % of
-#'   the total kernel density — the standard 95 % kernel home range.
+#'   the total kernel density - the standard 95 % kernel home range.
 #' @param n_boot Integer. Bootstrap resamples for the standard error of
 #'   \eqn{\hat{\sigma}}. Set to `0` to skip (default `200`).
 #'
@@ -65,7 +65,7 @@
 #' The standard error of \eqn{\hat{\sigma}} is obtained by **nonparametric
 #' bootstrap**: sites are resampled with replacement `n_boot` times and
 #' \eqn{\hat{\sigma}} recomputed each time; the SE is the standard deviation
-#' of those bootstrap estimates, and the 95 % CI is their 2.5th – 97.5th
+#' of those bootstrap estimates, and the 95 % CI is their 2.5th - 97.5th
 #' percentiles.
 #'
 #' ## Home-range isopleth
@@ -80,7 +80,7 @@
 #'   Analysis*. Chapman and Hall, London.
 #'
 #' Worton, B. J. (1989). Kernel methods for estimating the utilization
-#'   distribution in home-range studies. *Ecology*, **70**(1), 164–168.
+#'   distribution in home-range studies. *Ecology*, **70**(1), 164-168.
 #'   \doi{10.2307/1938423}
 #'
 #' @return A named list with three elements:
@@ -91,8 +91,8 @@
 #'   \item{`Bandwidth`}{A named numeric vector: `sigma` (estimated bandwidth in
 #'     CRS units), `SE` (bootstrap SE; `NA` if `n_boot = 0`), `CI_low` and
 #'     `CI_high` (95 % bootstrap CI), `n_sites`, and `isopleth`.}
-#'   \item{`Coverage stats`}{A one-row tibble: coverage area in km²,
-#'     \eqn{\hat{\sigma}} ± SE, detection-site count, and isopleth level.}
+#'   \item{`Coverage stats`}{A one-row tibble: coverage area in km^2,
+#'     \eqn{\hat{\sigma}} +/- SE, detection-site count, and isopleth level.}
 #' }
 #'
 #' @examples
@@ -176,7 +176,7 @@ ct_spatial_coverage <- function(data,
     coords = c(rlang::as_name(longitude), rlang::as_name(latitude)),
     crs = active_crs
   )
-print(sf_data)
+
   if (length(crs) > 1L && !is.null(crs[2L])) {
     crs_out <- .parse_crs(crs[2L])
     sf_data <- sf::st_transform(sf_data, crs = crs_out)
@@ -280,7 +280,7 @@ print(sf_data)
 
   coverage_rast <- avg_kernel
 
-  # Coverage area in km²
+  # Coverage area in km^2
   coverage_area_km2 <- tryCatch({
     cov_union <- terra::as.polygons(coverage_rast, dissolve = TRUE) %>%
       sf::st_as_sf() %>%
@@ -299,8 +299,8 @@ print(sf_data)
   )
 
   coverage_stats <- dplyr::tibble(
-    `Spatial coverage (km²)` = round(coverage_area_km2, 4),
-    `Bandwidth σ` = round(sigma_hat, 3),
+    `Spatial coverage` = round(coverage_area_km2, 4),
+    `Sigma` = round(sigma_hat, 3),
     `Bandwidth SE` = round(sigma_se,  3),
     `Detection sites (n)` = n_sites,
     `Isopleth level` = isopleth

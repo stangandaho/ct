@@ -12,5 +12,11 @@ utils::globalVariables(c(
   ### -----> spaceNtime
   "area", "occ", "cam", "dens_ij", "D", "SE", "int", "occ_int",
   "chk", "overlap", "d", "m", "nearest", "STE", "TTE", "censor",
-  "wthn", "allgood", "timefromfirst"
+  "wthn", "allgood", "timefromfirst",
+  ### -----> REST / RAD-REST
+  # Posterior-summary column names produced by MCMCvis
+  "2.5%", "50%", "97.5%",
+  # Symbols inside the von Mises mixture nimbleCode (activity model)
+  "C", "stick_breaking", "v", "dvonMises", "act_data", "act_data_pred",
+  "mu_mix", "kappa_mix", "group", "ndens", "dens.x"
 ))

@@ -48,6 +48,8 @@ navbar:
         href: articles/wildlife_density_estimation.html
       - text: Abundance with spaceNtime
         href: articles/spaceNtime.html
+      - text: Density with REST and RAD-REST
+        href: articles/rest.html
       - text: Rarefaction and Extrapolation
         href: articles/rarefaction_and_extrapolation.html
     news:
@@ -71,7 +73,9 @@ reference:
   - ctdp
   - duikers
   - ACBR
-- title: Process media (images) file
+  - rest_detection
+  - rest_station
+- title: Process media file
   desc: |
     Functions reading and writing metadata
   contents:
@@ -84,7 +88,7 @@ reference:
   - ct_clone_dir
 - title: Data processing
   desc: |
-    Functions for preparing and tansforming camera trap data
+    Functions for processing camera trap data
   contents:
   - ct_read
   - ct_stack_df
@@ -110,6 +114,10 @@ reference:
   - ct_convert_unit
   - ct_camera_day
   - ct_camtrap_animal_distance
+  - ct_rest_stay
+  - ct_rest_passes
+  - ct_rest_effort
+  - ct_rest_activity
 
 - title: Data analysis
   desc: |
@@ -148,3 +156,6 @@ reference:
   - ct_fit_ste
   - ct_fit_tte
   - ct_fit_ise
+  - ct_fit_rest
+  - ct_rest_select_stay
+

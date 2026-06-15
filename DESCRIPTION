@@ -1,6 +1,6 @@
 Package: ct
 Type: Package
-Title: Camera Trap Data Tool
+Title: Integrated Camera-Trap Data Management and Analysis
 Version: 0.3.0
 Date: 2026-05-05
 Imports: 
@@ -18,7 +18,9 @@ Imports:
     sbd (>= 0.1.0),
     sf (>= 1.0-19),
     terra (>= 1.8-29),
+    tibble,
     tidyr (>= 1.3.1),
+    tidyselect,
     Rcpp (>= 1.0.14)
 Authors@R: c(
     person(given = "Stanislas Mahussi", family = "Gandaho", email = "stangandaho@gmail.com", role = c("aut", "cre"),
@@ -41,7 +43,10 @@ Suggests:
     knitr (>= 1.50),
     leaflet (>= 2.2.2),
     MASS,
+    MCMCvis,
     msm,
+    nimble,
+    coda,
     rmarkdown,
     shiny (>= 1.10.0),
     testthat (>= 3.0.0),

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ACBR.R
 \name{ACBR}
 \alias{ACBR}
-\title{Camera trap dataset from Agonve Community Wetland Reserve (ACBR)}
+\title{Camera trap dataset from Agbogon Community Biological Reserve (ACBR), Benin}
 \format{
 A named list with two tibbles:
 \describe{
