@@ -24,6 +24,7 @@ ct_fit_ds(
   availability,
   n_bootstrap = 100,
   n_cores = 1,
+  seed = NULL,
   ...
 )
 ```
@@ -167,6 +168,15 @@ ct_fit_ds(
   Integer. Number of CPU cores to use for parallel bootstrap
   computation. Default is 1.
 
+- seed:
+
+  Optional integer. If supplied, the random-number generator is seeded
+  with this value immediately before bootstrapping, making the
+  resampling reproducible. If `NULL` (default), the current RNG state is
+  used and results vary between runs. Note that a single fixed seed can
+  occasionally land on a resample that is slow to fit; leave it `NULL`
+  unless you specifically need reproducible bootstrap draws.
+
 - ...:
 
   Arguments passed on to
@@ -255,9 +265,9 @@ ct_fit_ds(
 
 A named list containing: A list containing:
 
-- `QAIC`: (Only if `select_model = TRUE`) QAIC comparison table.
+- `QAIC`: (only if `select_model = TRUE`) QAIC comparison table.
 
-- `Chi2`: (Only if `select_model = TRUE`) Chi-squared goodness-of-fit
+- `Chi2`: (only if `select_model = TRUE`) Chi-squared goodness-of-fit
   comparison.
 
 - `best_model`: The best fitted detection function model selected.

@@ -1,5 +1,50 @@
 # Changelog
 
+## ct 0.4.0
+
+### 2026-06-20
+
+- [`ct_temporal_shift()`](https://stangandaho.github.io/ct/reference/ct_temporal_shift.md)
+  now also returns `Displacement (in hour)`: the signed shift of the
+  activity window along the day, measured at its midpoint (positive =
+  later, negative = earlier). This captures a pure time shift, which
+  `Shift size` (a change in window *duration*) reports as ~0.
+- [`ct_temporal_shift()`](https://stangandaho.github.io/ct/reference/ct_temporal_shift.md)
+  gains `period_names` and `legend_title` arguments to set the legend
+  labels (e.g. `c("Dry", "Rainy")`) and legend title directly, instead
+  of the fixed “First period”/“Second period”/“Period”.
+- Fixed a major performance bug in
+  [`ct_fit_ds()`](https://stangandaho.github.io/ct/reference/ct_fit_ds.md)
+  bootstrapping.
+  [`Distance::bootdht()`](https://rdrr.io/pkg/Distance/man/bootdht.html)
+  re-resolves a model’s symbolic call arguments with
+  `parent.frame(n = 3)`, which misfires because
+  [`ct_fit_ds()`](https://stangandaho.github.io/ct/reference/ct_fit_ds.md)
+  calls it from one stack frame deeper: arguments such as `cutpoints`
+  failed to resolve, so each bootstrap replicate silently dropped the
+  distance binning and fell back to the far slower exact-distance
+  likelihood (observed ~19x slowdown, e.g. ~25 min vs ~1.3 min for one
+  replicate). The model’s stored call is now frozen to literal values
+  before bootstrapping, so the bootstrap refits on the intended binned
+  data.
+- [`ct_fit_ds()`](https://stangandaho.github.io/ct/reference/ct_fit_ds.md)
+  gains a `seed` argument.
+- [`ct_fit_ds()`](https://stangandaho.github.io/ct/reference/ct_fit_ds.md)
+  now shows a progress bar with an ETA during bootstrapping when the
+  `progress` package is installed and `n_cores == 1`. When
+  `n_cores > 1`, it reports up front that live progress is unavailable
+  (a `Distance` limitation), so a long parallel run is not mistaken for
+  a freeze.
+- [`ct_fit_rest()`](https://stangandaho.github.io/ct/reference/ct_fit_rest.md)
+  Fit the Random Encounter and Staying Time (REST / RAD-REST) model
+- [`ct_fit_tte()`](https://stangandaho.github.io/ct/reference/ct_fit_tte.md),
+  [`ct_fit_ste()`](https://stangandaho.github.io/ct/reference/ct_fit_ste.md),
+  and
+  [`ct_fit_ise()`](https://stangandaho.github.io/ct/reference/ct_fit_ise.md)
+  for Time To Event (TTE), Space To EVent (STE), and Instantaneous
+  Sampling Estimator (ISE) respectively for density/abundance
+  estimation.
+
 ## ct 0.3.0
 
 ### 2025-08-09

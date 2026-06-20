@@ -19,7 +19,7 @@ interval for the shift size are returned."><meta property="og:image" content="ht
 
     <a class="navbar-brand me-2" href="../index.html">ct</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,6 +91,8 @@ interval for the shift size are returned.</p>
 <span>  linestyle_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  posestyle_1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  posestyle_2 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  period_names <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"First period"</span>, <span class="st">"Second period"</span><span class="op">)</span>,</span>
+<span>  legend_title <span class="op">=</span> <span class="st">"Period"</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -180,6 +182,16 @@ Accepts: <code>shape</code>, <code>size</code>, <code>color</code>, <code>alpha<
 Accepts: <code>shape</code>, <code>size</code>, <code>color</code>, <code>alpha</code>.</p></dd>
 
 
+<dt id="arg-period-names">period_names<a class="anchor" aria-label="anchor" href="#arg-period-names"></a></dt>
+<dd><p>Character vector of length 2 giving the legend labels for the
+first and second periods (default <code>c("First period", "Second period")</code>). For
+example, <code>c("Dry", "Rainy")</code>.</p></dd>
+
+
+<dt id="arg-legend-title">legend_title<a class="anchor" aria-label="anchor" href="#arg-legend-title"></a></dt>
+<dd><p>Character. Title shown above the period legend (default <code>"Period"</code>).</p></dd>
+
+
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional arguments (currently unused).</p></dd>
 
@@ -195,6 +207,13 @@ is the tibble and whose <code>$plot</code> element is a <code>ggplot2</code> obj
 
 <dt><code>Shift size (in hour)</code></dt>
 <dd><p>Absolute difference in activity-window duration between periods.</p></dd>
+
+<dt><code>Displacement (in hour)</code></dt>
+<dd><p>Signed shift of the activity window along the day,
+measured at its midpoint: positive means the second period is active later,
+negative earlier. Unlike <code>Shift size</code> (a duration change), this captures a pure
+time shift, so a window that slides without changing length has
+<code>Shift size</code> near 0 but a non-zero <code>Displacement</code>.</p></dd>
 
 <dt><code>Shift CI lower (XX%)</code>/<code>Shift CI upper (XX%)</code></dt>
 <dd><p>Bootstrap CI bounds
@@ -227,12 +246,12 @@ is the tibble and whose <code>$plot</code> element is a <code>ggplot2</code> obj
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">result</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 6</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   `First period range` `Second period range` `Shift size (in hour)`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 06:59:32 - 10:34:58  06:25:31 - 10:12:18                     0.19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 3 more variables: `Shift CI lower (95%)` &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `Shift CI upper (95%)` &lt;dbl&gt;, Move &lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 06:59:32 - 10:34:58  06:25:31 - 10:12:18                    0.189</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 4 more variables: `Displacement (in hour)` &lt;dbl&gt;,</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   `Shift CI lower (95%)` &lt;dbl&gt;, `Shift CI upper (95%)` &lt;dbl&gt;, Move &lt;chr&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $plot</span>
 <span class="r-plt img"><img src="ct_temporal_shift-2.png" alt="" width="700" height="433"></span>

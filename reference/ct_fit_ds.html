@@ -17,7 +17,7 @@ single model fitting and automated model selection procedures."><meta property="
 
     <a class="navbar-brand me-2" href="../index.html">ct</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,6 +85,7 @@ single model fitting and automated model selection procedures.</p>
 <span>  <span class="va">availability</span>,</span>
 <span>  n_bootstrap <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  n_cores <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -212,6 +213,15 @@ confidence intervals but increase computation time.</p></dd>
 Default is 1.</p></dd>
 
 
+<dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
+<dd><p>Optional integer. If supplied, the random-number generator is seeded
+with this value immediately before bootstrapping, making the resampling
+reproducible. If <code>NULL</code> (default), the current RNG state is used and results
+vary between runs. Note that a single fixed seed can occasionally land on a
+resample that is slow to fit; leave it <code>NULL</code> unless you specifically need
+reproducible bootstrap draws.</p></dd>
+
+
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Arguments passed on to <code><a href="https://rdrr.io/pkg/Distance/man/ds.html" class="external-link">Distance::ds</a></code></p><dl><dt><code>scale</code></dt>
 <dd><p>the scale by which the distances in the adjustment terms are
@@ -283,8 +293,8 @@ see <code><a href="https://rdrr.io/pkg/mrds/man/mcds_dot_exe.html" class="extern
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A named list containing:
-A list containing:</p><ul><li><p><code>QAIC</code>: (Only if <code>select_model = TRUE</code>) QAIC comparison table.</p></li>
-<li><p><code>Chi2</code>: (Only if <code>select_model = TRUE</code>) Chi-squared goodness-of-fit comparison.</p></li>
+A list containing:</p><ul><li><p><code>QAIC</code>: (only if <code>select_model = TRUE</code>) QAIC comparison table.</p></li>
+<li><p><code>Chi2</code>: (only if <code>select_model = TRUE</code>) Chi-squared goodness-of-fit comparison.</p></li>
 <li><p><code>best_model</code>: The best fitted detection function model selected.</p></li>
 <li><p><code>rho</code>: Estimated effective detection radius (in meters).</p></li>
 <li><p><code>density</code> or <code>abundance</code>: A tibble with density or abundance estimates containing:

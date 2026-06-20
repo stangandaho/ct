@@ -28,6 +28,8 @@ ct_temporal_shift(
   linestyle_2 = list(),
   posestyle_1 = list(),
   posestyle_2 = list(),
+  period_names = c("First period", "Second period"),
+  legend_title = "Period",
   ...
 )
 ```
@@ -122,6 +124,16 @@ ct_temporal_shift(
   List. Marker style for the second period's activity-range indicator.
   Accepts: `shape`, `size`, `color`, `alpha`.
 
+- period_names:
+
+  Character vector of length 2 giving the legend labels for the first
+  and second periods (default `c("First period", "Second period")`). For
+  example, `c("Dry", "Rainy")`.
+
+- legend_title:
+
+  Character. Title shown above the period legend (default `"Period"`).
+
 - ...:
 
   Additional arguments (currently unused).
@@ -143,6 +155,14 @@ The tibble contains:
 - `Shift size (in hour)`:
 
   Absolute difference in activity-window duration between periods.
+
+- `Displacement (in hour)`:
+
+  Signed shift of the activity window along the day, measured at its
+  midpoint: positive means the second period is active later, negative
+  earlier. Unlike `Shift size` (a duration change), this captures a pure
+  time shift, so a window that slides without changing length has
+  `Shift size` near 0 but a non-zero `Displacement`.
 
 - `Shift CI lower (XX%)`/`Shift CI upper (XX%)`:
 
@@ -175,12 +195,12 @@ result <- ct_temporal_shift(
 
 result
 #> [[1]]
-#> # A tibble: 1 × 6
+#> # A tibble: 1 × 7
 #>   `First period range` `Second period range` `Shift size (in hour)`
 #>   <chr>                <chr>                                  <dbl>
-#> 1 06:59:32 - 10:34:58  06:25:31 - 10:12:18                     0.19
-#> # ℹ 3 more variables: `Shift CI lower (95%)` <dbl>,
-#> #   `Shift CI upper (95%)` <dbl>, Move <chr>
+#> 1 06:59:32 - 10:34:58  06:25:31 - 10:12:18                    0.189
+#> # ℹ 4 more variables: `Displacement (in hour)` <dbl>,
+#> #   `Shift CI lower (95%)` <dbl>, `Shift CI upper (95%)` <dbl>, Move <chr>
 #> 
 #> $plot
 

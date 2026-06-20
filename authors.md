@@ -13,12 +13,12 @@ Source:
 [`DESCRIPTION`](https://github.com/stangandaho/ct/blob/main/DESCRIPTION)
 
 Gandaho S (2026). *ct: Integrated Camera-Trap Data Management and
-Analysis*. R package version 0.3.0, <https://stangandaho.github.io/ct/>.
+Analysis*. R package version 0.4.0, <https://stangandaho.github.io/ct/>.
 
     @Manual{,
       title = {ct: Integrated Camera-Trap Data Management and Analysis},
       author = {Stanislas Mahussi Gandaho},
       year = {2026},
-      note = {R package version 0.3.0},
+      note = {R package version 0.4.0},
       url = {https://stangandaho.github.io/ct/},
     }

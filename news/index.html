@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ct</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,6 +56,25 @@
       <small>Source: <a href="https://github.com/stangandaho/ct/blob/main/NEWS.md" class="external-link"><code>NEWS.md</code></a></small>
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.0" id="ct-040">ct 0.4.0<a class="anchor" aria-label="anchor" href="#ct-040"></a></h2>
+<div class="section level3">
+<h3 id="id_2026-0-4-0">2026-06-20<a class="anchor" aria-label="anchor" href="#id_2026-0-4-0"></a></h3>
+<ul><li>
+<code><a href="../reference/ct_temporal_shift.html">ct_temporal_shift()</a></code> now also returns <code>Displacement (in hour)</code>: the signed shift of the activity window along the day, measured at its midpoint (positive = later, negative = earlier). This captures a pure time shift, which <code>Shift size</code> (a change in window <em>duration</em>) reports as ~0.</li>
+<li>
+<code><a href="../reference/ct_temporal_shift.html">ct_temporal_shift()</a></code> gains <code>period_names</code> and <code>legend_title</code> arguments to set the legend labels (e.g. <code>c("Dry", "Rainy")</code>) and legend title directly, instead of the fixed “First period”/“Second period”/“Period”.</li>
+<li>Fixed a major performance bug in <code><a href="../reference/ct_fit_ds.html">ct_fit_ds()</a></code> bootstrapping. <code><a href="https://rdrr.io/pkg/Distance/man/bootdht.html" class="external-link">Distance::bootdht()</a></code> re-resolves a model’s symbolic call arguments with <code>parent.frame(n = 3)</code>, which misfires because <code><a href="../reference/ct_fit_ds.html">ct_fit_ds()</a></code> calls it from one stack frame deeper: arguments such as <code>cutpoints</code> failed to resolve, so each bootstrap replicate silently dropped the distance binning and fell back to the far slower exact-distance likelihood (observed ~19x slowdown, e.g. ~25 min vs ~1.3 min for one replicate). The model’s stored call is now frozen to literal values before bootstrapping, so the bootstrap refits on the intended binned data.</li>
+<li>
+<code><a href="../reference/ct_fit_ds.html">ct_fit_ds()</a></code> gains a <code>seed</code> argument.</li>
+<li>
+<code><a href="../reference/ct_fit_ds.html">ct_fit_ds()</a></code> now shows a progress bar with an ETA during bootstrapping when the <code>progress</code> package is installed and <code>n_cores == 1</code>. When <code>n_cores &gt; 1</code>, it reports up front that live progress is unavailable (a <code>Distance</code> limitation), so a long parallel run is not mistaken for a freeze.</li>
+<li>
+<code><a href="../reference/ct_fit_rest.html">ct_fit_rest()</a></code> Fit the Random Encounter and Staying Time (REST / RAD-REST) model</li>
+<li>
+<code><a href="../reference/ct_fit_tte.html">ct_fit_tte()</a></code>, <code><a href="../reference/ct_fit_ste.html">ct_fit_ste()</a></code>, and <code><a href="../reference/ct_fit_ise.html">ct_fit_ise()</a></code> for Time To Event (TTE), Space To EVent (STE), and Instantaneous Sampling Estimator (ISE) respectively for density/abundance estimation.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.3.0" id="ct-030">ct 0.3.0<a class="anchor" aria-label="anchor" href="#ct-030"></a></h2>
 <div class="section level3">
