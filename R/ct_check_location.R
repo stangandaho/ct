@@ -59,6 +59,11 @@ ct_check_location <- function(data,
 
   rlang::check_installed(c("shiny", "leaflet"), reason = "launch the app")
 
+  # Environment to write the corrected dataset into when the user drags a marker.
+  # Captured at call time so the result lands in the caller's workspace, rather
+  # than being hard-coded to the global environment (which R CMD check flags).
+  target_env <- parent.frame()
+
   data_copy <- data
   coord_system <- match.arg(coord_system, choices = c("geographic", "projected"))
   lon_ <- paste0(dplyr::ensym(longitude))
@@ -144,7 +149,7 @@ ct_check_location <- function(data,
         dplyr::select(- dplyr::all_of(c(lon_, lat_))) %>%
         dplyr::left_join(y = coord, by = plc_)
 
-      assign(new_data_name, data_to_return, pos = ".GlobalEnv")
+      assign(new_data_name, data_to_return, envir = target_env)
     })
   }
   # shiny end

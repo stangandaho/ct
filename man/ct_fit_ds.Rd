@@ -20,6 +20,7 @@ ct_fit_ds(
   availability,
   n_bootstrap = 100,
   n_cores = 1,
+  seed = NULL,
   ...
 )
 }
@@ -119,6 +120,13 @@ confidence intervals but increase computation time.}
 \item{n_cores}{Integer. Number of CPU cores to use for parallel bootstrap computation.
 Default is 1.}
 
+\item{seed}{Optional integer. If supplied, the random-number generator is seeded
+with this value immediately before bootstrapping, making the resampling
+reproducible. If \code{NULL} (default), the current RNG state is used and results
+vary between runs. Note that a single fixed seed can occasionally land on a
+resample that is slow to fit; leave it \code{NULL} unless you specifically need
+reproducible bootstrap draws.}
+
 \item{...}{
   Arguments passed on to \code{\link[Distance:ds]{Distance::ds}}
   \describe{
@@ -169,8 +177,8 @@ see \code{\link[mrds:mcds_dot_exe]{mcds_dot_exe}} for more details.}
 A named list containing:
 A list containing:
 \itemize{
-\item \code{QAIC}: (Only if \code{select_model = TRUE}) QAIC comparison table.
-\item \code{Chi2}: (Only if \code{select_model = TRUE}) Chi-squared goodness-of-fit comparison.
+\item \code{QAIC}: (only if \code{select_model = TRUE}) QAIC comparison table.
+\item \code{Chi2}: (only if \code{select_model = TRUE}) Chi-squared goodness-of-fit comparison.
 \item \code{best_model}: The best fitted detection function model selected.
 \item \code{rho}: Estimated effective detection radius (in meters).
 \item \code{density} or \code{abundance}: A tibble with density or abundance estimates containing:

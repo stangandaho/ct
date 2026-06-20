@@ -28,6 +28,10 @@
 #'   Accepts: `shape`, `size`, `color`, `alpha`.
 #' @param posestyle_2 List. Marker style for the second period's activity-range indicator.
 #'   Accepts: `shape`, `size`, `color`, `alpha`.
+#' @param period_names Character vector of length 2 giving the legend labels for the
+#'   first and second periods (default `c("First period", "Second period")`). For
+#'   example, `c("Dry", "Rainy")`.
+#' @param legend_title Character. Title shown above the period legend (default `"Period"`).
 #' @param ... Additional arguments (currently unused).
 #'
 #' @return When `plot = FALSE`: a tibble. When `plot = TRUE`: a list whose first element
@@ -36,6 +40,11 @@
 #'     \item{`First period range`}{Start and end of the active window for the first period.}
 #'     \item{`Second period range`}{Start and end of the active window for the second period.}
 #'     \item{`Shift size (in hour)`}{Absolute difference in activity-window duration between periods.}
+#'     \item{`Displacement (in hour)`}{Signed shift of the activity window along the day,
+#'       measured at its midpoint: positive means the second period is active later,
+#'       negative earlier. Unlike `Shift size` (a duration change), this captures a pure
+#'       time shift, so a window that slides without changing length has
+#'       `Shift size` near 0 but a non-zero `Displacement`.}
 #'     \item{`Shift CI lower (XX%)`/`Shift CI upper (XX%)`}{Bootstrap CI bounds
 #'       (only when `n_boot > 0`).}
 #'     \item{`Move`}{Direction/type of shift: `"Forward"`, `"Backward"`, `"Enlarged"`,
@@ -92,7 +101,13 @@ ct_temporal_shift <- function(first_period,
                               linestyle_2 = list(),
                               posestyle_1 = list(),
                               posestyle_2 = list(),
+                              period_names = c("First period", "Second period"),
+                              legend_title = "Period",
                               ...) {
+
+  if (length(period_names) != 2 || !is.character(period_names))
+    rlang::abort("`period_names` must be a character vector of length 2.")
+  p1 <- period_names[1]; p2 <- period_names[2]
 
   if (convert_time) {
     first_period  <- ct_to_radian(times = first_period,  format = format, time_zone = time_zone)
@@ -141,7 +156,13 @@ ct_temporal_shift <- function(first_period,
   sp   <- ct_to_time(abs(c(times_min2, times_max2)) / xsc)
   sp_h <- convert_to_hour(sp)
 
-  shift_size <- round(abs((fp_h[2] - fp_h[1]) - (sp_h[2] - sp_h[1])), 2)
+  shift_size <- round(abs((fp_h[2] - fp_h[1]) - (sp_h[2] - sp_h[1])), 3)
+
+  # Temporal displacement: how far the activity window slid along the day,
+  # measured at its midpoint. Positive = the second period is active later,
+  # negative = earlier. Complements `shift_size`, which only captures a change in
+  # the window's duration (so a pure time shift has shift_size 0 but displacement != 0).
+  displacement <- round(mean(sp_h) - mean(fp_h), 2)
 
   # Bootstrap CI for shift size
   if (n_boot > 0) {
@@ -196,9 +217,10 @@ ct_temporal_shift <- function(first_period,
             else "Undefined"
 
   temporal_shift <- list(
-    `First period range`   = paste0(fp, collapse = " - "),
-    `Second period range`  = paste0(sp, collapse = " - "),
-    `Shift size (in hour)` = shift_size
+    `First period range`     = paste0(fp, collapse = " - "),
+    `Second period range`    = paste0(sp, collapse = " - "),
+    `Shift size (in hour)`   = shift_size,
+    `Displacement (in hour)` = displacement
   )
 
   if (n_boot > 0) {
@@ -233,16 +255,13 @@ ct_temporal_shift <- function(first_period,
     alpha = ifelse(!is.null(posestyle_2$alpha), posestyle_2$alpha, 1)
   )
 
-  # Build plot data
+  # Build plot data. Column names (and hence legend labels) come from period_names.
+  plot_tbl <- dplyr::tibble(Time = xx, kde1 = kde_times1, kde2 = kde_times2)
+  names(plot_tbl) <- c("Time", p1, p2)
   plot_data <- tidyr::pivot_longer(
-    dplyr::tibble(
-      Time = xx,
-      `First period` = kde_times1,
-      `Second period` = kde_times2
-    ),
-    cols = -Time, names_to = "Period", values_to = "Density"
+    plot_tbl, cols = -Time, names_to = "Period", values_to = "Density"
   )
-  plot_data$Period <- factor(plot_data$Period, levels = c("First period", "Second period"))
+  plot_data$Period <- factor(plot_data$Period, levels = c(p1, p2))
 
   pose_data <- dplyr::tibble(
     times_min1 = times_min1, times_max1 = times_max1,
@@ -261,16 +280,16 @@ ct_temporal_shift <- function(first_period,
       )
     ) +
     ggplot2::scale_color_manual(
-      name = "Period",
-      values = c(`First period` = ls1$color, `Second period` = ls2$color)
+      name = legend_title,
+      values = stats::setNames(c(ls1$color, ls2$color), c(p1, p2))
     ) +
     ggplot2::scale_linetype_manual(
-      name = "Period",
-      values = c(`First period` = ls1$linetype, `Second period` = ls2$linetype)
+      name = legend_title,
+      values = stats::setNames(c(ls1$linetype, ls2$linetype), c(p1, p2))
     ) +
     ggplot2::scale_linewidth_manual(
-      name = "Period",
-      values = c(`First period` = ls1$linewidth, `Second period` = ls2$linewidth)
+      name = legend_title,
+      values = stats::setNames(c(ls1$linewidth, ls2$linewidth), c(p1, p2))
     ) +
     # Merge color + linetype into one legend; normalize key linewidth for readability.
     ggplot2::guides(

@@ -23,6 +23,8 @@ ct_temporal_shift(
   linestyle_2 = list(),
   posestyle_1 = list(),
   posestyle_2 = list(),
+  period_names = c("First period", "Second period"),
+  legend_title = "Period",
   ...
 )
 }
@@ -72,6 +74,12 @@ Accepts: \code{shape}, \code{size}, \code{color}, \code{alpha}.}
 \item{posestyle_2}{List. Marker style for the second period's activity-range indicator.
 Accepts: \code{shape}, \code{size}, \code{color}, \code{alpha}.}
 
+\item{period_names}{Character vector of length 2 giving the legend labels for the
+first and second periods (default \code{c("First period", "Second period")}). For
+example, \code{c("Dry", "Rainy")}.}
+
+\item{legend_title}{Character. Title shown above the period legend (default \code{"Period"}).}
+
 \item{...}{Additional arguments (currently unused).}
 }
 \value{
@@ -81,6 +89,11 @@ is the tibble and whose \verb{$plot} element is a \code{ggplot2} object. The tib
 \item{\verb{First period range}}{Start and end of the active window for the first period.}
 \item{\verb{Second period range}}{Start and end of the active window for the second period.}
 \item{\verb{Shift size (in hour)}}{Absolute difference in activity-window duration between periods.}
+\item{\verb{Displacement (in hour)}}{Signed shift of the activity window along the day,
+measured at its midpoint: positive means the second period is active later,
+negative earlier. Unlike \verb{Shift size} (a duration change), this captures a pure
+time shift, so a window that slides without changing length has
+\verb{Shift size} near 0 but a non-zero \code{Displacement}.}
 \item{\verb{Shift CI lower (XX\%)}/\verb{Shift CI upper (XX\%)}}{Bootstrap CI bounds
 (only when \code{n_boot > 0}).}
 \item{\code{Move}}{Direction/type of shift: \code{"Forward"}, \code{"Backward"}, \code{"Enlarged"},

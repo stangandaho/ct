@@ -40,12 +40,18 @@
 #'   confidence intervals but increase computation time.
 #' @param n_cores Integer. Number of CPU cores to use for parallel bootstrap computation.
 #' Default is 1.
+#' @param seed Optional integer. If supplied, the random-number generator is seeded
+#'   with this value immediately before bootstrapping, making the resampling
+#'   reproducible. If `NULL` (default), the current RNG state is used and results
+#'   vary between runs. Note that a single fixed seed can occasionally land on a
+#'   resample that is slow to fit; leave it `NULL` unless you specifically need
+#'   reproducible bootstrap draws.
 #'
 #' @return A named list containing:
 #' A list containing:
 #'
-#' - `QAIC`: (Only if `select_model = TRUE`) QAIC comparison table.
-#' - `Chi2`: (Only if `select_model = TRUE`) Chi-squared goodness-of-fit comparison.
+#' - `QAIC`: (only if `select_model = TRUE`) QAIC comparison table.
+#' - `Chi2`: (only if `select_model = TRUE`) Chi-squared goodness-of-fit comparison.
 #' - `best_model`: The best fitted detection function model selected.
 #' - `rho`: Estimated effective detection radius (in meters).
 #' - `density` or `abundance`: A tibble with density or abundance estimates containing:
@@ -127,6 +133,7 @@ ct_fit_ds <- function(data,
                       availability,
                       n_bootstrap = 100,
                       n_cores = 1,
+                      seed = NULL,
                       ...
 ) {
 
@@ -208,6 +215,12 @@ ct_fit_ds <- function(data,
           )
         })
       }, error = function(e){cli::cli_warn(e$message)})
+      # Freeze the stored call to literal values now, while the loop's args still
+      # match this model, so bootdht() cannot later mis-resolve them (see
+      # freeze_ds_call()).
+      if (!is.null(models[[i]]$ddf)) {
+        models[[i]] <- freeze_ds_call(models[[i]], environment())
+      }
       models[[i]]$id <- i # uniquely ID for each model
       cli::cli_status_update(id = sb, msg = msg)
 
@@ -254,6 +267,7 @@ ct_fit_ds <- function(data,
                    ...
       )
     })
+    ds_model <- freeze_ds_call(ds_model, environment())
     cli::cli_status_clear(id = df_sb)
     cli::cli_alert_success("Fitting complete!")
 
@@ -268,10 +282,27 @@ ct_fit_ds <- function(data,
   sample_fraction <- data %>%
     dplyr::select(dplyr::all_of(c("Sample.Label", "fraction")))
 
-  # Bootstrap for variance estimation
-  cli::cli_inform("Bootstrapping ...")
+  # Bootstrap for variance estimation.
+  # Seed only when the user asks: a hard-coded seed pins every run to one
+  # resample (which may, by chance, be slow to fit) and defeats RNG independence.
+  if (!is.null(seed)) set.seed(seed)
+
+  # Pick the most informative progress bar available. bootdht forces "none"
+  # when cores > 1, so in that case there is no live progress to show; warn the
+  # user up front so a slow parallel run is not mistaken for a freeze. With a
+  # single core, "progress" gives an ETA when the package is installed.
+  if (n_cores > 1) {
+    progress_bar <- "none"
+    cli::cli_inform(c(
+      "Bootstrapping ({n_bootstrap} replicate{?s} on {n_cores} cores) ...",
+      "i" = "Live progress is unavailable when {.code n_cores > 1}."
+    ))
+  } else {
+    progress_bar <- if (requireNamespace("progress", quietly = TRUE)) "progress" else "base"
+    cli::cli_inform("Bootstrapping ({n_bootstrap} replicate{?s}) ...")
+  }
+
   boot_result <- suppressMessages({
-    set.seed(1235561)
     Distance::bootdht(model = ds_model,
                       flatfile = data,
                       resample_transects = TRUE,
@@ -284,7 +315,7 @@ ct_fit_ds <- function(data,
                       sample_fraction = sample_fraction,
                       convert_units = convert_units,
                       multipliers = availability,
-                      progress_bar = "base")
+                      progress_bar = progress_bar)
   })
 
   estimated <- summary(boot_result)
@@ -315,6 +346,34 @@ ct_fit_ds <- function(data,
   names(density_result)[names(density_result) == estimate_name] <- estimate
 
   return(density_result)
+}
+
+
+#' Bake literal values into a fitted model's stored call
+#'
+#' `Distance::bootdht()` re-resolves any symbolic arguments in `model$call` with
+#' `parent.frame(n = 3)`, which assumes it was called directly by the user. When
+#' `ct_fit_ds()` calls `bootdht()` there is an extra stack frame, so arguments
+#' such as `cutpoints` fail to resolve, the bootstrap refit silently loses its
+#' binning, and every replicate falls back to the much slower exact-distance
+#' likelihood. Substituting the evaluated values here makes the call
+#' self-contained, so `bootdht()` has no symbols left to mis-resolve. `env` must
+#' be the frame in which the model was fit, so the resolved values match it.
+#' @noRd
+freeze_ds_call <- function(model, env) {
+  if (is.null(model$call)) return(model)
+  parts <- as.list(model$call)
+  if (length(parts) > 1) {
+    for (i in seq_along(parts)[-1]) {
+      if (is.symbol(parts[[i]])) {
+        # Single-bracket assignment so a resolved NULL is kept, not dropped.
+        parts[i] <- list(tryCatch(eval(parts[[i]], envir = env),
+                                   error = function(e) parts[[i]]))
+      }
+    }
+    model$call <- as.call(parts)
+  }
+  model
 }
 
 
