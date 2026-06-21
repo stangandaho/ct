@@ -161,7 +161,7 @@ distribution in home-range studies. *Ecology*, **70**(1), 164-168.
 
 ``` r
 library(dplyr)
-cam_data <- system.file("penessoulou_season2.csv", package = "ct") |>
+cam_data <- system.file("penessoulou_season2.csv", package = "ct") %>%
   read.csv() %>%
   dplyr::filter(Species == "Erythrocebus patas", Count > 0)
 
