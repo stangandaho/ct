@@ -20,8 +20,6 @@ visualizations.
 
 ## Key Features
 
-<a href='https://stangandaho.github.io/ct'><img src="https://raw.githubusercontent.com/sjevelazco/ct/main/man/figures/ct_r_package_workflow.jpg" align="centre"/></a>
-
 The `ct` package provides a comprehensive suite of 60+ functions covering the 
 complete camera trap data analysis workflow. **Population density estimation** 
 is supported through Random Encounter Models, (REM), Camera Trap Distance Sampling (CTDS)
@@ -30,7 +28,9 @@ and Random Encounter and Staying Time (REST/RAD-REST). **Data management** capab
 filtering independent detections, timestamp correction, and interactive spatial validation. 
 **Community ecology**  functions enable activity pattern analysis, biodiversity index assessment, and 
 occupancy modeling input preparation. **Quality control** tools include detecting temporal gaps, 
-monitoring deployment status, and taxonomic validation.
+monitoring deployment status, and taxonomic validation.  
+
+<a href='https://stangandaho.github.io/ct'><img src="https://raw.githubusercontent.com/sjevelazco/ct/main/man/figures/ct_r_package_workflow.jpg" align="centre"/></a>
 
 **For a full overview of all available functions, please visit the [ct website](https://stangandaho.github.io/ct/reference/index.html)**
 
