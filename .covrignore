@@ -1,0 +1,27 @@
+# Files excluded from test-coverage reports (covr).
+
+# Camera-trap distance sampling: bootstrap refits are too slow for CI.
+R/CTDS.R
+
+# ExifTool wrappers: require an external ExifTool installation.
+R/EXIFTOOL.R
+
+# Taxonomic name check: queries the live ITIS web service.
+R/ct_check_name.R
+
+# Interactive Shiny/leaflet coordinate editor: cannot run unattended.
+R/ct_check_location.R
+
+# REST / RAD-REST estimator: compiles a nimble model and runs MCMC (too slow for CI).
+R/ct_fit_rest.R
+R/ct_rest_select_stay.R
+
+# Utilities for nimble model code for the REST / RAD-REST estimator.
+R/ct_fit_rest_models.R
+
+# Utilities for the Random Encounter Model.
+R/REM.R
+
+# Utilities
+R/from_vegan.R
+R/utils.R

@@ -28,7 +28,7 @@
 #' ct_convert_unit(180, "deg", "rad")
 #' ct_convert_unit(pi, "rad", "deg")
 #'
-#' @seealso [units_table()] for supported units and synonyms.
+#' @seealso `units_table()` for supported units and synonyms.
 #'
 #' @export
 ct_convert_unit <- function(x, from, to, show_units = FALSE) {

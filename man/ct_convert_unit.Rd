@@ -40,5 +40,5 @@ ct_convert_unit(pi, "rad", "deg")
 
 }
 \seealso{
-\code{\link[=units_table]{units_table()}} for supported units and synonyms.
+\code{units_table()} for supported units and synonyms.
 }

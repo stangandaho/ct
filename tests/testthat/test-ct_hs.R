@@ -2,7 +2,14 @@
 # image so the packaged file is never modified. Requires ExifTool.
 
 has_exiftool <- function() {
-  !inherits(try(find_exiftool(), silent = TRUE), "try-error")
+  # find_exiftool() returns NULL (not an error) when ExifTool is absent, so a
+  # try()-based check is not enough. Actually invoke ExifTool: this mirrors what
+  # ct_exiftool_call() needs, so the skip is accurate on machines (e.g. CI)
+  # where ExifTool is not installed.
+  isTRUE(tryCatch({
+    v <- ct_exiftool_call(args = "-ver", intern = TRUE)
+    length(v) > 0 && nzchar(v[1])
+  }, error = function(e) FALSE))
 }
 
 temp_image <- function() {
