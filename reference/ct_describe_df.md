@@ -51,11 +51,11 @@ ct_describe_df(data = data.frame(x = c(1:3, NA),
                fn = list('sum' = list(na.rm = TRUE), 'sd' = list(na.rm = TRUE))
               )
 #> # A tibble: 4 × 12
-#>   Group  Prop     N Variable   sum   Min `CI Right`   Max Median  Mean `CI Left`
-#>   <chr> <dbl> <int> <chr>    <int> <dbl>      <dbl> <dbl>  <dbl> <dbl>     <dbl>
-#> 1 NA       NA     2 y            7     3       9.85     4    3.5   3.5    -2.85 
-#> 2 NA       NA     3 x            6     1       4.48     3    2     2      -0.484
-#> 3 A        75     3 z           NA    NA      NA       NA   NA    NA      NA    
-#> 4 B        25     1 z           NA    NA      NA       NA   NA    NA      NA    
+#>   Variable Group  Prop     N   sum   Min   Max `CI Right` Median  Mean `CI Left`
+#>   <chr>    <chr> <dbl> <int> <int> <dbl> <dbl>      <dbl>  <dbl> <dbl>     <dbl>
+#> 1 y        NA       NA     2     7     3     4       9.85    3.5   3.5    -2.85 
+#> 2 x        NA       NA     3     6     1     3       4.48    2     2      -0.484
+#> 3 z        A        75     3    NA    NA    NA      NA      NA    NA      NA    
+#> 4 z        B        25     1    NA    NA    NA      NA      NA    NA      NA    
 #> # ℹ 1 more variable: sd <dbl>
 ```
