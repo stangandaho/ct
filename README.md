@@ -30,7 +30,7 @@ filtering independent detections, timestamp correction, and interactive spatial 
 occupancy modeling input preparation. **Quality control** tools include detecting temporal gaps, 
 monitoring deployment status, and taxonomic validation.  
 
-<a href='https://stangandaho.github.io/ct'><img src="https://raw.githubusercontent.com/sjevelazco/ct/main/man/figures/ct_r_package_workflow.jpg" align="centre"/></a>
+<a href='https://stangandaho.github.io/ct'><img src="https://raw.githubusercontent.com/stangandaho/ct/main/man/figures/ct_r_package_workflow.jpg" align="centre"/></a>
 
 **For a full overview of all available functions, please visit the [ct website](https://stangandaho.github.io/ct/reference/index.html)**
 
