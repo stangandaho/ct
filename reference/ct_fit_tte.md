@@ -145,7 +145,7 @@ ct_fit_tte(data,
 #> 
 #> ── Time-To-Event (TTE) Estimation ──────────────────────────────────────────────
 #> ℹ Running data checks
-#> [42ms]
+#> [41ms]
 #> 
 #> ℹ Building sampling occasions...
 #> ℹ Building encounter history...
