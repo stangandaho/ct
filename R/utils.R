@@ -1,4 +1,3 @@
-# nocov start
 #' Path list
 #' @keywords internal
 #' @noRd
@@ -562,5 +561,3 @@ R_user_dir <- function(package,
                                               winslash = "/"))
   return(ruser_dir)
 }
-
-# nocov end

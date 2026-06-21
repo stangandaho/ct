@@ -168,7 +168,7 @@ ct_standardize <- function (data,
   METHODS <- c("total", "max", "frequency", "normalize", "range",
                "rank", "rrank", "standardize", "pa", "chi.square", "hellinger",
                "log", "clr", "rclr", "alr")
-  method <- match.arg(method, METHODS)
+  method <- rlang::arg_match(method, METHODS)
   if (any(data < 0, na.rm = TRUE)) {
     k <- min(data, na.rm = TRUE)
     if (method %in% c("total", "frequency", "pa", "chi.square",
@@ -237,7 +237,7 @@ ct_standardize <- function (data,
          rrank = {
            if (missing(margin)) margin <- 1
            data <- vegan::decostand(data, "rank", margin = margin)
-           data <- sweep(data, margin, vegan::specnumber(data, margin = margin),
+           data <- sweep(data, margin, vegan::specnumber(data, MARGIN = margin),
                          "/")
            attr <- list(margin = margin)
          },

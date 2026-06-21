@@ -252,8 +252,7 @@ ct_fit_detmodel <- function(formula,
 #' @keywords internal
 #' @noRd
 rem <- function (parameters){
-  required_rows <- c("trap_rate", "overall_speed", "radius",
-                     "angle")
+  required_rows <- c("trap_rate", "overall_speed", "radius", "angle")
   required_cols <- c("estimate", "se", "unit")
   if (!all(required_rows %in% rownames(parameters)) | !all(required_cols %in%
                                                            colnames(parameters))){

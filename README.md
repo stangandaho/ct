@@ -6,34 +6,31 @@
 <!-- badges: end -->
 
 ## Overview
-Camera traps are an essential tool for wildlife monitoring and ecological research. 
-They generate vast amounts of data that require careful processing, cleaning, and 
-analysis to extract meaningful insights. Researchers use camera trap data for tasks 
-such as species identification, biodiversity assessment, activity pattern analysis, 
-occupancy modeling, and among other.
+Camera traps are an essential tool for wildlife monitoring and ecological research, 
+especially for species identification, biodiversity assessment, activity pattern analysis, 
+occupancy modeling, *density/abundance estimation*, and among other.
 
 Processing and analyzing camera trap data in R often requires multiple steps, 
 from cleaning raw data to statistical modeling and visualization. The **ct** 
 R package addresses these challenges by providing a **modern, tidyverse-friendly workflow**. 
-It enables users to efficiently manipulate and transform datasets. Additionally, it integrates 
+It enables users to efficiently process data, and estimate density or abundance
+with several (~6) documented methods. Additionally, it integrates 
 seamlessly with **ggplot2**, allowing users to generate highly customizable 
 visualizations.
 
 ## Key Features
 
+<a href='https://stangandaho.github.io/ct'><img src="https://raw.githubusercontent.com/sjevelazco/ct/main/man/figures/ct_r_package_workflow.jpg" align="centre"/></a>
+
 The `ct` package provides a comprehensive suite of 60+ functions covering the 
 complete camera trap data analysis workflow. **Population density estimation** 
-is supported through Distance Sampling with automated model 
-selection, Random Encounter Models, Time-To-Event, Space-To-Event, and 
-Instantaneous Sampling. **Data management** capabilities include 
-filtering independent detections, timestamp correction, 
-and interactive spatial validation. **Community ecology** 
-functions enable activity pattern analysis with, biodiversity assessment, and 
-occupancy modeling input preparation. 
-**Quality control** tools include detecting temporal gaps, 
-monitoring deployment status, and taxonomic validation. 
-The package also features Camera Trap Data Package integration, 
-survey design tools, and more.
+is supported through Random Encounter Models, (REM), Camera Trap Distance Sampling (CTDS)
+Time-To-Event (TTE), Space-To-Event (STE), Instantaneous Sampling Estimator (ISE),
+and Random Encounter and Staying Time (REST/RAD-REST). **Data management** capabilities include 
+filtering independent detections, timestamp correction, and interactive spatial validation. 
+**Community ecology**  functions enable activity pattern analysis, biodiversity index assessment, and 
+occupancy modeling input preparation. **Quality control** tools include detecting temporal gaps, 
+monitoring deployment status, and taxonomic validation.
 
 **For a full overview of all available functions, please visit the [ct website](https://stangandaho.github.io/ct/reference/index.html)**
 
