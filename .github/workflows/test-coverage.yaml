@@ -38,6 +38,20 @@ jobs:
           covr::to_cobertura(cov)
         shell: Rscript {0}
 
+      # Pre-import Codecov's signing key so the codecov CLI's own GPG
+      # self-verification succeeds even when its bundled key import fails
+      # (cause of "gpg: Can't check signature: No public key"). The key is
+      # fetched from public keyservers into the default keyring the CLI uses.
+      - name: Import Codecov signing key
+        run: |
+          for ks in keyserver.ubuntu.com keys.openpgp.org pgp.mit.edu; do
+            if gpg --keyserver "hkps://$ks" --recv-keys 27034E7FDB850E0BBC2C62FF806BB28AED779869; then
+              echo "Imported Codecov key from $ks"
+              break
+            fi
+          done
+        shell: bash
+
       - uses: codecov/codecov-action@57e3a136b779b570ffcdbf80b3bdc90e7fab3de2 # v6
         with:
           # Fail if error if not on PR, or if on PR and token is given
