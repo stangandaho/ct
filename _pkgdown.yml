@@ -36,6 +36,8 @@ navbar:
       text: Articles
       icon: fa-blog
       menu:
+      - text: Analyse before you collect
+        href: articles/analyse_before_you_collect.html
       - text: Data preparation
         href: articles/camtrap_data_preparation.html
       - text: Manage Media Metadata
