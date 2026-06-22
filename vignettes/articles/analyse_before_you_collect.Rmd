@@ -103,7 +103,7 @@ REM estimates density from the rate at which animals are photographed, corrected
 
   
 ```{r echo=FALSE, fig.align='center', out.width='30%', fig.cap='Detection zone identification', fig.alt='Detection zone'}
-knitr::include_graphics("images/rem_detection_zone.png")
+knitr::include_graphics("rem_detection_zone.png")
 ```
 
 
@@ -170,7 +170,7 @@ REST estimates density from how often animals pass through a small focal area, h
 - A focal area of known size, placed in front of the camera.
 
 ```{r echo=FALSE, fig.align='center', out.width='25%', fig.cap='The view-angle and total area in which camera traps can successfully detect passing animals and capture video images of them (grey triangle). Only video data capturing animals that passed within the larger (white; 2.67 m2) or smaller focal area (black; 0.67 m 2) were used for density estimations. Source: Nakashima et al. (2018).', fig.alt='view-angle'}
-knitr::include_graphics("images/detection_zone_Nakashima.png")
+knitr::include_graphics("detection_zone_Nakashima.png")
 ```
 
 - The staying time, that is how long each animal remains inside the focal area.
@@ -204,7 +204,7 @@ A short rule connects every row. If you cannot collect the data in the key colum
 
 The `ct` package brings these methods together under one consistent, tidy interface. It supports CTDS through `ct_fit_ds()`, with availability correction and automated model selection. It supports REM through `ct_fit_rem()`, with helpers for the detection zone, the movement speed, and the activity level. It supports the three Moeller estimators through `ct_fit_tte()`, `ct_fit_ste()`, and `ct_fit_ise()`. It supports REST and RAD-REST through `ct_fit_rest()`, with `ct_rest_stay()`, `ct_rest_passes()`, `ct_rest_effort()`, and `ct_rest_activity()` to prepare the staying time, the passes, the effort, and the activity.
 
-The package also covers the steps before the model. Use `ct_independence()` to keep independent detections for a trap rate. Use `ct_camtrap_animal_distance()` to recover an animal distance from the field of view geometry of a reference image. Use `ct_to_radian()` and `ct_fit_activity()` for activity, and `ct_get_effort()` and `ct_traprate_data()` for effort and trap rate. Because every step shares the same data structure, you can prepare your detections once and then compare several estimators with little extra code. The full function reference is available at <https://stangandaho.github.io/ct/reference/index.html>.
+The package also covers the steps before the model. Use `ct_independence()` to keep independent detections for a trap rate. Use `ct_camtrap_animal_distance()` to recover an animal distance from the field of view geometry of a reference image. Use `ct_to_radian()` and `ct_fit_activity()` for activity, and `ct_get_effort()` and `ct_traprate_data()` for effort and trap rate. Because every step shares the same data structure, you can prepare your detections once and then compare several estimators with little extra code. The full function reference is available [**here**](https://stangandaho.github.io/ct/reference/index.html).
 
 ## 6. Closing
 
