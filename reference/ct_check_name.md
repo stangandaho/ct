@@ -93,20 +93,11 @@ ct_check_name("Panthera leo", search_type = "scientific_name")
 
 # Search by common name with interactive selection
 ct_check_name("Lion", search_type = "common_name")
-#> # A tibble: 1,117 × 7
-#>    search tsn   common_name scientific_name         author itis_url taxon_status
-#>    <chr>  <chr> <chr>       <chr>                   <chr>  <chr>    <chr>       
-#>  1 Lion   5272  NA          Nitzschia tryblionella… Arn. … https:/… not accepted
-#>  2 Lion   10885 NA          Chilionema              NA     https:/… accepted    
-#>  3 Lion   10886 NA          Chilionema ocellatum    Kuetz… https:/… accepted    
-#>  4 Lion   10887 NA          Chilionema reptans      NA     https:/… accepted    
-#>  5 Lion   11682 NA          Nemalion                Duby   https:/… accepted    
-#>  6 Lion   11683 NA          Nemalion multifidum     NA     https:/… accepted    
-#>  7 Lion   11684 NA          Nemalion helminthoides  Velle… https:/… accepted    
-#>  8 Lion   11685 NA          Nemalion pulvinatum     NA     https:/… accepted    
-#>  9 Lion   11686 NA          Nemalion virens         NA     https:/… accepted    
-#> 10 Lion   11687 NA          Nemalion lubricum       Duby,… https:/… accepted    
-#> # ℹ 1,107 more rows
+#> ! Failed to retrieve data from ITIS: Failed to perform HTTP request.
+#> # A tibble: 1 × 7
+#>   search tsn   common_name scientific_name author itis_url taxon_status
+#>   <chr>  <lgl> <lgl>       <lgl>           <lgl>  <lgl>    <lgl>       
+#> 1 Lion   NA    NA          NA              NA     NA       NA          
 # }
 
 ```
