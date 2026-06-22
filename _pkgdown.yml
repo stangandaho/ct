@@ -10,6 +10,17 @@ template:
     code_font:
       google: JetBrains Mono
   math-rendering: mathjax
+  opengraph:
+    image:
+      src: man/figures/logo.png
+      alt: "ct: camera-trap data management and analysis in R"
+    twitter:
+      card: summary_large_image
+  includes:
+    in_header: |
+      <meta name="description" content="ct is an R package for camera-trap data management and analysis, from image metadata to species density estimation (random encounter model, distance sampling, time-to-event, space-to-event, REST, instantaneous sampling estimators).">
+      <meta name="keywords" content="camera trap, camera-trap, R package, wildlife monitoring, density estimation, abundance, random encounter model, camera-trap distance sampling, occupancy, activity patterns, ecology, Camtrap DP, spatial coverage, temporal shift">
+      <meta name="google-site-verification" content="IsJnmZmB57RlAonI3vWGJq4FadQgHj87SJhl1Q3oBak" />
 navbar:
   structure:
     left:
