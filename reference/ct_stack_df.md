@@ -31,9 +31,9 @@ z <- data.frame(age = 26, fruit = "Lemo", weight = 12, height = 45)
 alldf <- list(x,y,z)
 ct_stack_df(alldf)
 #> # A tibble: 3 × 4
-#>   height weight fruit    age
+#>   weight height fruit    age
 #>    <dbl>  <dbl> <chr>  <dbl>
-#> 1     NA     12 Apple     15
+#> 1     12     NA Apple     15
 #> 2     NA     NA Tomato    51
-#> 3     45     12 Lemo      26
+#> 3     12     45 Lemo      26
 ```

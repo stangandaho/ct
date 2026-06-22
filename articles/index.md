@@ -2,6 +2,10 @@
 
 ### All vignettes
 
+- [Analyse before you
+  collect](https://stangandaho.github.io/ct/articles/analyse_before_you_collect.md):
+- [Analyse before you
+  collect](https://stangandaho.github.io/ct/articles/article_analyse_before_you_collect.md):
 - [Introduction to data
   preparation](https://stangandaho.github.io/ct/articles/camtrap_data_preparation.md):
 - [How to estimate distance between camera trap and
