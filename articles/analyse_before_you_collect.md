@@ -1,6 +1,6 @@
 # Analyse before you collect
 
-![© Habib Agossou](analyse_before_you_collect.jpg)
+![© Habib Agossou](images/analyse_before_you_collect.jpg)
 
 © Habib Agossou
 
@@ -87,7 +87,7 @@ camera.
 
 ![Placement of visible markers at known distances and angles in front of
 a camera. Source:
-\<https://youtu.be/UUlum77d5Cg\>](distance_deduction.png)
+\<https://youtu.be/UUlum77d5Cg\>](images/distance_deduction.png)
 
 Placement of visible markers at known distances and angles in front of a
 camera. Source: <https://youtu.be/UUlum77d5Cg>
@@ -183,7 +183,7 @@ them (Rowcliffe et al., 2008). It does not need individual recognition.
   measured detection distances and angles, using the same reference
   frame as in CTDS.
 
-![Detection zone](rem_detection_zone.png)
+![Detection zone](images/rem_detection_zone.png)
 
 Detection zone identification
 
@@ -283,7 +283,7 @@ video, to handle miscounting.
 
 - A focal area of known size, placed in front of the camera.
 
-![view-angle](detection_zone_Nakashima.png)
+![view-angle](images/detection_zone_Nakashima.png)
 
 The view-angle and total area in which camera traps can successfully
 detect passing animals and capture video images of them (grey triangle).

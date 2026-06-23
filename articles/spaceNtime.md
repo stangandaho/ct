@@ -46,7 +46,7 @@ metres) and angle \\\theta\\ (the horizontal field of view, in degrees):
 where \\A\\ is the viewshed area in m², \\r\\ is the detection radius,
 and \\\theta\\ is the camera’s field-of-view angle.
 
-![Single camera representation.png](single_camera_representation.png)
+![Single camera representation](images/single_camera_representation.png)
 
 Figure 1: Schematic representation of a camera trap detection zone,
 showing the radial detection distance (r) and detection angle (θ) that
@@ -80,7 +80,7 @@ occasion \\j\\. This is essentially a ratio estimator of density:
 animals per unit area. Multiplied by the total study area, it gives
 \\\hat{N}\\.
 
-![Instantaneous Sampling Method](Instantaneous_Sampling.png)
+![Instantaneous Sampling Method](images/Instantaneous_Sampling.png)
 
 Figure 2: Instantaneous Sampling (ISE). At a fixed snapshot moment, each
 camera reports a count of animals in its viewshed. Cameras with larger
@@ -113,7 +113,7 @@ likelihood](https://medium.com/data-science/probability-concepts-explained-maxim
 The result is a density estimate that explicitly accounts for how much
 habitat was surveyed.
 
-![Space to Time Method](Space_To_Event.png)
+![Space to Time Method](images/Space_To_Event.png)
 
 Figure 3: Space-To-Event (STE). Cameras are placed in a random order.
 Viewshed areas are accumulated until the first animal is detected. The
@@ -141,7 +141,7 @@ The question is: how long does it take for the first animal to enter the
 viewshed? If animals are dense and moving, the wait is short. If animals
 are sparse, the wait is long.
 
-![Time to Event Method](Time_To_Event.png)
+![Time to Event Method](images/Time_To_Event.png)
 
 Figure 4: The clock starts when the sampling period opens. Camera 2
 detects an animal at 1.5 hours and Camera 2 at 1.25 hours — that’s the

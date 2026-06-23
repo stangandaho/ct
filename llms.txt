@@ -281,22 +281,20 @@ Functions to run common camera trap data analysis
 
 - [Analyse before you
   collect](https://stangandaho.github.io/ct/articles/analyse_before_you_collect.md):
-- [Analyse before you
-  collect](https://stangandaho.github.io/ct/articles/article_analyse_before_you_collect.md):
+- [Distance Sampling with Camera
+  Traps](https://stangandaho.github.io/ct/articles/camera_trap_distance_sampling_guideline.md):
+- [Manage Media
+  Metadata](https://stangandaho.github.io/ct/articles/camera_trap_media_metadata_management.md):
 - [Introduction to data
   preparation](https://stangandaho.github.io/ct/articles/camtrap_data_preparation.md):
+- [Wildlife Density Estimation With ct R Package Using Distance
+  Sampling](https://stangandaho.github.io/ct/articles/density_estimation_with_distance_sampling.md):
 - [How to estimate distance between camera trap and
-  animals?](https://stangandaho.github.io/ct/articles/distance_measurement.md):
-- [Distance Sampling with Camera
-  Traps](https://stangandaho.github.io/ct/articles/distance_sampling_guide.md):
-- [Manage Media
-  Metadata](https://stangandaho.github.io/ct/articles/manage_media_metadata.md):
+  animals?](https://stangandaho.github.io/ct/articles/distance_to_animal_measurement.md):
+- [Estimating Density With REST and RAD-REST
+  Models](https://stangandaho.github.io/ct/articles/random_encounter_and_staying_time.md):
 - [Rarefaction and Extrapolation of Species Diversity Estimation with
   Camera Trap Data using ct R
   package](https://stangandaho.github.io/ct/articles/rarefaction_and_extrapolation.md):
-- [Estimating Density With REST and RAD-REST
-  Models](https://stangandaho.github.io/ct/articles/rest.md):
 - [Estimating Wildlife Abundance from Camera Traps With SpaceNTime
   Methods](https://stangandaho.github.io/ct/articles/spaceNtime.md):
-- [Wildlife Density Estimation With ct R Package Using Distance
-  Sampling](https://stangandaho.github.io/ct/articles/wildlife_density_estimation.md):
