@@ -50,8 +50,8 @@ $$A = \frac{\pi r^2 \theta}{360}$$
 
 where $A$ is the viewshed area in m², $r$ is the detection radius, and $\theta$ is the camera's field-of-view angle. 
 
-```{r echo=FALSE, fig.align='center', fig.alt='single camera representation', fig.cap="Figure 1: Schematic representation of a camera trap detection zone, showing the radial detection distance (r) and detection angle (θ) that define the camera’s viewshed area (also called field of view)", fig.alt='Single camera representation.png'}
-knitr::include_graphics("single_camera_representation.png")
+```{r echo=FALSE, fig.align='center', fig.alt='single camera representation', fig.cap="Figure 1: Schematic representation of a camera trap detection zone, showing the radial detection distance (r) and detection angle (θ) that define the camera’s viewshed area (also called field of view)", fig.alt='Single camera representation'}
+knitr::include_graphics("images/single_camera_representation.png")
 ```
 
 The value of $r$ and $\theta$ are generally specified by the camera manufacturer. At any given moment, an animal is either inside that viewshed or it is not. Over time, animals wander in and out as they move through the landscape.
@@ -69,7 +69,7 @@ $$\hat{D} = \frac{1}{MK} \sum_{i=1}^{M} \sum_{j=1}^{K} \frac{y_{ij}}{A_{ij}}$$
 where $M$ is the number of cameras, $K$ is the number of sampling occasions, and $A_{ij}$ is the viewshed area of camera $i$ at occasion $j$. This is essentially a ratio estimator of density: animals per unit area. Multiplied by the total study area, it gives $\hat{N}$.
 
 ```{r echo=FALSE, fig.align='center',out.width="100%", fig.alt='Instantaneous Sampling (ISE)', fig.cap='Figure 2: Instantaneous Sampling (ISE). At a fixed snapshot moment, each camera reports a count of animals in its viewshed. Cameras with larger viewsheds contribute more area to the denominator. The density estimate is the mean count-per-unit-area across all cameras and occasions.', fig.alt='Instantaneous Sampling Method'}
-knitr::include_graphics("Instantaneous_Sampling.png")
+knitr::include_graphics("images/Instantaneous_Sampling.png")
 ```
 
 The ISE is analogous to a point count in avian surveys. Its limitation is that it only counts animals *inside* the viewshed at the exact sampling moment, so it needs enough occasions and cameras to produce a reliable mean.
@@ -83,7 +83,7 @@ On each sampling occasion, cameras are conceptually ordered in a random sequence
 Formally, the STE values are modelled as an exponential distribution with rate parameter $\lambda$ (density), which is estimated via [maximum likelihood](https://medium.com/data-science/probability-concepts-explained-maximum-likelihood-estimation-c7b4342fdbb1). The result is a density estimate that explicitly accounts for how much habitat was surveyed.
 
 ```{r echo=FALSE, fig.align='center', out.width="100%", fig.alt='Space-To-Event (STE)', fig.cap='Figure 3: Space-To-Event (STE). Cameras are placed in a random order. Viewshed areas are accumulated until the first animal is detected. The total accumulated area at that point is the Space-To-Event value (here 212 m² here) and representes the key statistic. Cameras after the first detection (crossed out) contribute nothing to the current occasion. Across many occasions, STE values are modelled as an exponential distribution to estimate density.', fig.alt='Space to Time Method'}
-knitr::include_graphics("Space_To_Event.png")
+knitr::include_graphics("images/Space_To_Event.png")
 ```
 
 STE values across all occasions are modelled as Exp(λ), where λ = density (animals per m²). High density → small STE values and Low density → large STE values. λ is estimated by maximum likelihood. Abundance: N̂ = λ̂ × study area. The STE estimator is particularly valuable when animal activity within a sampling period is sparse — a single detection per occasion is all it needs.
@@ -95,7 +95,7 @@ The TTE estimator applies the same exponential-distribution logic to the *tempor
 Each camera is activated for a short sampling period. The clock starts. The question is: how long does it take for the first animal to enter the viewshed? If animals are dense and moving, the wait is short. If animals are sparse, the wait is long.
 
 ```{r echo=FALSE, fig.align='center', out.width="100%", fig.alt='Space-To-Event (STE)', fig.cap="Figure 4: The clock starts when the sampling period opens. Camera 2 detects an animal at 1.5 hours and Camera 2 at 1.25 hours — that's the TTE. Camera 1 et 4 detect nothing; the TTE is censored at the end of the period and contributes to the likelihood differently. Both observed and censored times are used in the exponential Maximum Likelihood Estimate.", fig.alt='Time to Event Method'}
-knitr::include_graphics("Time_To_Event.png")
+knitr::include_graphics("images/Time_To_Event.png")
 ```
 
 A censored observation corresponds to a camera-trap site where the target species was not detected before the end of the sampling period. It does not mean zero detection. The true detection time is longer than the observed time, but we do not know exactly how much longer. These cameras were treated as right-censored observations.

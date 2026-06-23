@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 
 
 ```{r echo=FALSE, fig.align='center', out.width='100%', fig.cap='© Habib Agossou'}
-knitr::include_graphics("analyse_before_you_collect.jpg")
+knitr::include_graphics("images/analyse_before_you_collect.jpg")
 ```
 
 
@@ -59,7 +59,7 @@ If this baseline is missing or inconsistent, most density methods become impossi
 A practical technique appears in several methods below, so I describe it once here. I call it the reference frame. Before or after a deployment, place visible markers at known distances and angles in front of the camera.
 
 ```{r echo=FALSE, fig.align='center', out.width='50%', fig.cap='Placement of visible markers at known distances and angles in front of a camera. Source: <https://youtu.be/UUlum77d5Cg>'}
-knitr::include_graphics("distance_deduction.png")
+knitr::include_graphics("images/distance_deduction.png")
 ```
 
 
@@ -104,7 +104,7 @@ REM estimates density from the rate at which animals are photographed, corrected
 
   
 ```{r echo=FALSE, fig.align='center', out.width='30%', fig.cap='Detection zone identification', fig.alt='Detection zone'}
-knitr::include_graphics("rem_detection_zone.png")
+knitr::include_graphics("images/rem_detection_zone.png")
 ```
 
 
@@ -171,7 +171,7 @@ REST estimates density from how often animals pass through a small focal area, h
 - A focal area of known size, placed in front of the camera.
 
 ```{r echo=FALSE, fig.align='center', out.width='25%', fig.cap='The view-angle and total area in which camera traps can successfully detect passing animals and capture video images of them (grey triangle). Only video data capturing animals that passed within the larger (white; 2.67 m2) or smaller focal area (black; 0.67 m 2) were used for density estimations. Source: Nakashima et al. (2018).', fig.alt='view-angle'}
-knitr::include_graphics("detection_zone_Nakashima.png")
+knitr::include_graphics("images/detection_zone_Nakashima.png")
 ```
 
 - The staying time, that is how long each animal remains inside the focal area.
