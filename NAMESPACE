@@ -40,6 +40,8 @@ export(ct_camtrap_animal_distance) # no 2025-10-02
 
 ## Analysis
 export(ct_describe_df)
+export(ct_plot_calendar)
+export(ct_fit_distribution)
 export(ct_plot_density)
 export(ct_plot_overlap)#ok
 export(ct_plot_overlap_coef)

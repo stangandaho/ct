@@ -1,5 +1,11 @@
 test_that("ct_standardize preserves dimensions and removes NAs", {
-  cam <- read.csv(system.file("penessoulou_season1.csv", package = "ct"))
+
+  library(dplyr)
+  data(penessoulou)
+
+  cam <- penessoulou %>%
+    dplyr::filter(project == "Last")
+
   comm <- ct_to_community(cam, site_column = camera, species_column = species,
                           size_column = number, values_fill = 0)
   mat <- comm[, -1]                                 # drop the site column
@@ -10,7 +16,12 @@ test_that("ct_standardize preserves dimensions and removes NAs", {
 })
 
 test_that("ct_standardize method = 'total' makes rows sum to 1", {
-  cam <- read.csv(system.file("penessoulou_season1.csv", package = "ct"))
+  library(dplyr)
+  data(penessoulou)
+
+  cam <- penessoulou %>%
+    dplyr::filter(project == "Last")
+
   comm <- ct_to_community(cam, site_column = camera, species_column = species,
                           size_column = number, values_fill = 0)
   std <- ct_standardize(data = comm[, -1], method = "total")
@@ -19,7 +30,12 @@ test_that("ct_standardize method = 'total' makes rows sum to 1", {
 })
 
 test_that("ct_standardize runs across all supported methods", {
-  cam <- read.csv(system.file("penessoulou_season1.csv", package = "ct"))
+  library(dplyr)
+  data(penessoulou)
+
+  cam <- penessoulou %>%
+    dplyr::filter(project == "Last")
+
   comm <- ct_to_community(cam, site_column = camera, species_column = species,
                           size_column = number, values_fill = 0)
   mat <- comm[, -1]
@@ -47,7 +63,12 @@ test_that("ct_standardize rejects an unknown method", {
 })
 
 test_that("ct_standardize 'pa' yields a presence-absence matrix", {
-  cam <- read.csv(system.file("penessoulou_season1.csv", package = "ct"))
+  library(dplyr)
+  data(penessoulou)
+
+  cam <- penessoulou %>%
+    dplyr::filter(project == "Last")
+
   comm <- ct_to_community(cam, site_column = camera, species_column = species,
                           size_column = number, values_fill = 0)
   pa <- ct_standardize(data = comm[, -1], method = "pa")

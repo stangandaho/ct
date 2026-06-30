@@ -41,9 +41,9 @@
 #' where \eqn{n_{i}} is the number of individuals in species *i*,
 #' N = total number of individuals of all species, and \eqn{\frac{n_{i}}{N} = pi}
 #' (proportion of individuals of species *i*), and S = species richness.
-#' The value of Simpson’s *D* ranges from 0 to 1, with 0 representing infinite
+#' The value of Simpson's *D* ranges from 0 to 1, with 0 representing infinite
 #' diversity and 1 representing no diversity, so the larger the value of D,
-#' the lower the diversity. For this reason, Simpson’s index is often as its
+#' the lower the diversity. For this reason, Simpson's index is often as its
 #' complement (*1-D*). Simpson's Dominance Index is the inverse of the
 #' Simpson's Index (\eqn{1/D}).
 #'
@@ -61,7 +61,6 @@
 #'
 #'
 #' \deqn{H = -\sum_{i=1}^{S} p_{i} * \ln p_{i}}
-#'
 #'
 #' where \eqn{p_{i}} = proportion of individuals of species *i*, and *ln* is the natural logarithm,
 #' and  S = species richness. The value of H ranges from 0 to Hmax.
@@ -87,7 +86,7 @@
 #'
 #' @references
 #' Pielou, E.C. (1966). The measurement of diversity in different types of
-#' biological collections. Journal of Theoretical Biology, 13, pp. 131–144.
+#' biological collections. Journal of Theoretical Biology, 13, pp. 131-144.
 #' \doi{10.1016/0022-5193(66)90013-0}.
 #'
 #' Simpson, E.H. (1949). Measurement of diversity. Nature, 163, pp. 688.
@@ -97,7 +96,9 @@
 #' Technical Journal, 27, pp. 379-423.\doi{10.1002/j.1538-7305.1948.tb01338.x}
 #'
 #' @examples
-#' cam_data <- read.csv(system.file('penessoulou_season1.csv', package = 'ct'))
+#' data(penessoulou)
+#' cam_data <- penessoulou %>%
+#'   dplyr::filter(project == "Last")
 #'
 #' # Transform data to community format and compute diversity indices
 #' alpha1 <- cam_data %>%
@@ -169,7 +170,7 @@ ct_alpha_diversity <- function(data,
 
     if (i == "simpson") {
       # simpson
-      simpson = apply(data, margin, function(x){
+      simpson <- apply(data, margin, function(x){
         sum((x/sum(x, na.rm = TRUE))**2)
       })
       ind_value <- 1 - simpson
@@ -177,7 +178,7 @@ ct_alpha_diversity <- function(data,
 
     }else if(i == "invsimpson"){
       # simpson inverse
-      simpson = apply(data, margin, function(x){
+      simpson <- apply(data, margin, function(x){
         round(sum((x/sum(x, na.rm = TRUE))**2), 3)
       })
       ind_value <- 1/simpson

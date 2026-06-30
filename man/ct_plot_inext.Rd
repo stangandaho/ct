@@ -53,9 +53,12 @@ plot sample-size-based and coverage-based rarefaction/extrapolation curves along
 with a bridging sample completeness curve
 }
 \examples{
+\donttest{
 if (requireNamespace("iNEXT", quietly = TRUE)) {
 ## Import example data
-camdata1 <- read.csv(ct:::table_files()[1]) \%>\%
+data(penessoulou)
+camdata1 <- penessoulou \%>\%
+  dplyr::filter(project == "Last") \%>\%
   dplyr::mutate(site = "pene") \%>\%
   # remove consecutive entry of the same species at the same location within 60s
   ct_independence(species_column = species,
@@ -89,4 +92,5 @@ ct_plot_inext(int_ext, type = 1, color_var = "Order.q")
 # plot with curves faceted by order
 ct_plot_inext(int_ext, type = 1, facet_var = "Order.q")
  }
+}
 }

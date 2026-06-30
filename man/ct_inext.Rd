@@ -67,9 +67,12 @@ The first element of the vector is the number of sampling units, followed by spe
 If \code{strata_column} is provided, the conversion is done separately for each stratum.
 }
 \examples{
+\donttest{
 if (requireNamespace("iNEXT", quietly = TRUE)) {
 ## Import example data
-camdata1 <- read.csv(ct:::table_files()[1]) \%>\%
+data(penessoulou)
+camdata1 <- penessoulou \%>\%
+  dplyr::filter(project == "Last") \%>\%
   dplyr::mutate(site = "pene") \%>\%
   # remove consecutive entry of the same species at the same location within 60s
   ct_independence(species_column = species,
@@ -104,16 +107,17 @@ ct_plot_inext(int_ext, type = 1, color_var = "Order.q")
 ct_plot_inext(int_ext, type = 1, facet_var = "Order.q")
  }
 }
+}
 \references{
 Chao, A., Gotelli, N. J., Hsieh, T. C., Sander, E. L., Ma, K. H., Colwell,
 R. K., & Ellison, A. M. (2014). Rarefaction and extrapolation with
 Hill numbers: a framework for sampling and estimation in species diversity
-studies. Ecological Monographs, 84, 45–67.
+studies. Ecological Monographs, 84, 45-67.
 \doi{10.1890/13-0133.1}
 
 Hsieh, T. C., Ma, K. H., & Chao, A. (2016). iNEXT: an R package for
 rarefaction and extrapolation of species diversity (Hill numbers).
-Methods in Ecology and Evolution, 7(12), 1451–1456.
+Methods in Ecology and Evolution, 7(12), 1451-1456.
 \doi{10.1111/2041-210X.12613}
 }
 \seealso{

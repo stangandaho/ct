@@ -46,8 +46,10 @@
 #'
 #' @examples
 #' library(dplyr)
+#' data(penessoulou)
 #'
-#' read.csv(system.file("penessoulou_season1.csv", package = "ct")) %>%
+#' cam_data <- penessoulou %>%
+#'   dplyr::filter(project == "Last") %>%
 #'  dplyr::filter(species == "Erythrocebus patas") %>%
 #'  # Select independent events based on a given threshold
 #'  ct::ct_independence(species_column = species,
@@ -69,7 +71,7 @@ ct_solartime <- function (data = NULL,
                           ...){
 
 
-  try_format = c("%Y-%m-%d %H:%M:%OS", "%Y/%m/%d %H:%M:%OS",
+  try_format <-  c("%Y-%m-%d %H:%M:%OS", "%Y/%m/%d %H:%M:%OS",
                  "%Y:%m:%d %H:%M:%OS", "%Y-%m-%d %H:%M",
                  "%Y/%m/%d %H:%M", "%Y:%m:%d %H:%M",
                  "%Y-%m-%d", "%Y/%m/%d", "%Y:%m:%d")

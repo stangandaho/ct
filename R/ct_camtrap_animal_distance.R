@@ -6,7 +6,7 @@
 #'
 #'
 #' @param fov Numeric. The camera's horizontal field of view in degrees.
-#'   Common values range from 30° to 60° depending on camera model.
+#'   Common values range from \eqn{30^\circ} to \eqn{60^\circ} depending on camera model.
 #' @param forward_distance Numeric. The forward distance (in meters) from the camera to the
 #'   animal along the central axis, estimated using reference markers visible
 #'   in the image.

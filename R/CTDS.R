@@ -11,7 +11,7 @@
 #' - `Sample.Label`: identifier for the sample (transect id)
 #' - `Effort`: number of a given second (e.g 0.25, 2, or 3) time steps the camera operated (i.e. temporal effort)
 #' - `Region.Label`: label for a given stratum
-#' - `Area`: area of the strata⁠ in km^2
+#' - `Area`: area of the strata in km^2
 #' - `fraction`: fraction of a full circle covered (field of view/360)
 #' Other columns could be used as covariate. Note that in the simplest case
 #' (one area surveyed only once) there is only one Region.Label and a single
@@ -103,11 +103,11 @@
 #' Buckland, S.T., Anderson, D.R., Burnham, K.P., Laake, J.L., Borchers, D.L.,
 #' and Thomas, L. (2001). Distance Sampling. Oxford University Press. Oxford, UK.
 #'
-#' Howe, E. J., Buckland, S. T., Després-Einspenner, M., & Kühl, H. S. (2017).
+#' Howe, E. J., Buckland, S. T., Despr\enc{é}{e}s-Einspenner, M., & K\enc{ü}{u}hl, H. S. (2017).
 #' Distance sampling with camera traps. Methods in Ecology and Evolution, 8(11),
 #' 1558-1565. \doi{10.1111/2041-210X.12790}
 #'
-#' Howe, E. J., Buckland, S. T., Després-Einspenner, M., & Kühl, H. S. (2019).
+#' Howe, E. J., Buckland, S. T., Despr\enc{é}{e}s-Einspenner, M., & K\enc{ü}{u}hl, H. S. (2019).
 #' Model selection with overdispersed distance sampling data. Methods in Ecology and Evolution,
 #' 10(1), 38-47.  \doi{10.1111/2041-210X.13082}
 #'
@@ -472,7 +472,7 @@ combine_formula <- function(formula) {
 #'
 #' @references
 #'
-#' Howe, E. J., Buckland, S. T., Després-Einspenner, M. L., & Kühl, H. S. (2017).
+#' Howe, E. J., Buckland, S. T., Despr\enc{é}{e}s-Einspenner, M. L., & K\enc{ü}{u}hl, H. S. (2017).
 #' Distance sampling with camera traps. Methods in Ecology and Evolution, 8(11), 1558-1565.
 #'  \doi{10.1111/2041-210X.12790}
 #'
@@ -503,11 +503,6 @@ ct_availability <- function(times, format = NULL,
   avail <- list(creation = data.frame(rate = act_result$activity[['act']]/prop_camera_time,
                                       SE = act_result$activity[['se']]/prop_camera_time))
   return(avail)
-}
-
-##
-`%||%` <- function(a, b) {
-  if (!is.null(a)) a else b
 }
 
 #' Retreive detection function key
@@ -731,7 +726,7 @@ ct_chi2_select <- function(models) {
 #' @seealso [ct_QAIC()], [ct_chi2_select()]
 #'
 #' @references
-#' Howe, E. J., Buckland, S. T., Després‐Einspenner, M., & Kühl, H. S. (2019).
+#' Howe, E. J., Buckland, S. T., Despr\enc{é}{e}s-Einspenner, M., & K\enc{ü}{u}hl, H. S. (2019).
 #' Model selection with overdispersed distance sampling data. **Methods in Ecology and Evolution**,
 #' 10(1), 38-47. \doi{10.1111/2041-210X.13082}
 #'
@@ -793,7 +788,7 @@ ct_select_model <- function(models,
 #'
 #' The **`duikers`** dataset is a **named list** of three tibbles derived from
 #' Maxwell's duiker (_Philantomba maxwellii_) camera trap and distance sampling
-#' data collected in Taï National Park, Côte d'Ivoire (2014), and archived as
+#' data collected in Ta\enc{ï}{i} National Park, Côte d'Ivoire (2014), and archived as
 #' the Dryad dataset *Distance sampling with camera traps* (Howe et al., 2018)
 #'
 #' @format A named list with these tibbles:
@@ -817,7 +812,7 @@ ct_select_model <- function(models,
 #'  **DaytimeDistances**, but includes **only** observations during the
 #'  species' peak activity periods (no dawn or late day records).
 #'
-#'  **VideoStartTimesFullDays**: A tibble of camera‑trigger times for duiker
+#'  **VideoStartTimesFullDays**: A tibble of camera-trigger times for duiker
 #'  videos that were recorded on **full day deployments** (i.e. days without
 #'  researcher visits). Columns include:
 #'  - `order`: sequential order of video events at each
@@ -837,6 +832,6 @@ ct_select_model <- function(models,
 #'  - `datetime`: date pasted with time
 #'
 #' @references
-#' Howe, E. J., Buckland, S. T., Després-Einspenner, M. L., Kühl, H. S., & Buckland, S. T. (2018).
+#' Howe, E. J., Buckland, S. T., Despr\enc{é}{e}s-Einspenner, M. L., K\enc{ü}{u}hl, H. S., & Buckland, S. T. (2018).
 #' Data from: Distance sampling with camera traps. \doi{10.5061/dryad.b4c70}
 "duikers"

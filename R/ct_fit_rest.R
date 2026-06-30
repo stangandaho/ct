@@ -161,7 +161,7 @@ ct_fit_rest <- function(stay_data,
                         cores = 3,
                         quiet = FALSE) {
 
-  # --- Dependencies & argument matching ---------------------------------------
+  # Dependencies & argument matching
   # REST relies on heavy Bayesian machinery that is not part of ct's hard
   # dependencies. rlang::check_installed() prompts the user to install any that
   # are missing when the session is interactive.
@@ -183,7 +183,7 @@ ct_fit_rest <- function(stay_data,
 
   if (!quiet) cli::cli_h1("{model} density estimation")
 
-  # --- 1. Staying-time data ---------------------------------------------------
+  # 1. Staying-time data
   # Keep one species, attach station-level effort, and split the staying times
   # into observed vs. censored. Censored records (animal still present at the
   # end of the clip) are passed to nimble as NA with an interval-censoring bound.
@@ -191,7 +191,7 @@ ct_fit_rest <- function(stay_data,
   stay <- rest_prepare_stay(stay_data, station_data, species,
                             stay_formula, stay_random_effect, focal_area)
 
-  # --- 2. Activity proportion -------------------------------------------------
+  # 2. Activity proportion
   # The fraction of the day the species is active. With "kernel" we get a single
   # number now; with "mixture" we run a small MCMC and feed its posterior draws
   # into the main model as the activity prior.
@@ -200,14 +200,14 @@ ct_fit_rest <- function(stay_data,
                             bandwidth_adjust, mixture_components,
                             iterations, burnin, thin, chains, cores)
 
-  # --- 3. Candidate density formulas ------------------------------------------
+  # 3. Candidate density formulas
   density_formulas <- if (compare_models) {
     rest_all_formulas(all.vars(density_formula))
   } else {
     list(density_formula)
   }
 
-  # --- 4. Fit each candidate model --------------------------------------------
+  # 4. Fit each candidate model
   if (!quiet) cli::cli_progress_step("Running MCMC ({chains} chains)", spinner = TRUE)
   fits <- lapply(density_formulas, function(fd) {
     rest_fit_one(model, stay, activity, station_data, species,
@@ -217,7 +217,7 @@ ct_fit_rest <- function(stay_data,
   })
   if (!quiet) cli::cli_progress_done()
 
-  # --- 5. Rank by WAIC and summarise the best model ---------------------------
+  # 5. Rank by WAIC and summarise the best model
   waic <- vapply(fits, `[[`, numeric(1), "waic")
   best <- which.min(waic)
 
@@ -239,9 +239,7 @@ ct_fit_rest <- function(stay_data,
 }
 
 
-# ----------------------------------------------------------------------------
 # Internal helpers
-# ----------------------------------------------------------------------------
 
 #' Validate ct_fit_rest() inputs
 #' @keywords internal

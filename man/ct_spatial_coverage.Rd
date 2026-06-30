@@ -121,15 +121,16 @@ retains the smallest set of cells whose cumulative density equals
 }
 \examples{
 library(dplyr)
-cam_data <- system.file("penessoulou_season2.csv", package = "ct") \%>\%
-  read.csv() \%>\%
-  dplyr::filter(Species == "Erythrocebus patas", Count > 0)
+data(penessoulou)
+cam_data <- penessoulou \%>\%
+  dplyr::filter(project == "First") \%>\%
+  dplyr::filter(species == "Erythrocebus patas", number > 0)
 
 spc <- ct_spatial_coverage(
   data = cam_data,
-  site_column = Camera,
-  longitude = Longitude,
-  latitude = Latitude,
+  site_column = camera,
+  longitude = longitude,
+  latitude = latitude,
   crs = "EPSG:32631",
   resolution = 30 # meter
 )

@@ -139,7 +139,11 @@ with modifications to improved handling.
 }
 \examples{
 # Example usage with sample data
-cam_data <- read.csv(system.file('penessoulou_season1.csv', package = 'ct'))
+library(dplyr)
+data(penessoulou)
+
+cam_data <- penessoulou \%>\%
+  dplyr::filter(project == "Last")
 cam_data <- cam_data \%>\%
   ct_to_community(site_column = camera, species_column = species,
                   size_column = number, values_fill = 0)

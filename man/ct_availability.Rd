@@ -66,7 +66,7 @@ ct_availability(radian_times, sample = "data", n_bootstrap = 100)
 
 }
 \references{
-Howe, E. J., Buckland, S. T., Després-Einspenner, M. L., & Kühl, H. S. (2017).
+Howe, E. J., Buckland, S. T., Despr\enc{é}{e}s-Einspenner, M. L., & K\enc{ü}{u}hl, H. S. (2017).
 Distance sampling with camera traps. Methods in Ecology and Evolution, 8(11), 1558-1565.
 \doi{10.1111/2041-210X.12790}
 

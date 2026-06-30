@@ -33,7 +33,7 @@ following columns:
 \item \code{Sample.Label}: identifier for the sample (transect id)
 \item \code{Effort}: number of a given second (e.g 0.25, 2, or 3) time steps the camera operated (i.e. temporal effort)
 \item \code{Region.Label}: label for a given stratum
-\item \code{Area}: area of the strata⁠ in km^2
+\item \code{Area}: area of the strata in km^2
 \item \code{fraction}: fraction of a full circle covered (field of view/360)
 Other columns could be used as covariate. Note that in the simplest case
 (one area surveyed only once) there is only one Region.Label and a single
@@ -304,11 +304,11 @@ duiker_density$density
 Buckland, S.T., Anderson, D.R., Burnham, K.P., Laake, J.L., Borchers, D.L.,
 and Thomas, L. (2001). Distance Sampling. Oxford University Press. Oxford, UK.
 
-Howe, E. J., Buckland, S. T., Després-Einspenner, M., & Kühl, H. S. (2017).
+Howe, E. J., Buckland, S. T., Despr\enc{é}{e}s-Einspenner, M., & K\enc{ü}{u}hl, H. S. (2017).
 Distance sampling with camera traps. Methods in Ecology and Evolution, 8(11),
 1558-1565. \doi{10.1111/2041-210X.12790}
 
-Howe, E. J., Buckland, S. T., Després-Einspenner, M., & Kühl, H. S. (2019).
+Howe, E. J., Buckland, S. T., Despr\enc{é}{e}s-Einspenner, M., & K\enc{ü}{u}hl, H. S. (2019).
 Model selection with overdispersed distance sampling data. Methods in Ecology and Evolution,
 10(1), 38-47.  \doi{10.1111/2041-210X.13082}
 

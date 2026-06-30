@@ -51,7 +51,7 @@ A tibble with the following columns:
 \item \code{date} (Date of observation)
 \item \code{species_column} (species name)
 \item \code{size_column} (daily count, \code{0} if no observations)
-\item \code{sampling_unit} (unique identifier for location × date combination)
+\item \code{sampling_unit} (unique identifier for location x date combination)
 }
 }
 \description{

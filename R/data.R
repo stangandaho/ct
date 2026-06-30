@@ -72,3 +72,31 @@
 #' data(rest_station)
 #' rest_station
 "rest_station"
+
+
+#' Camera-trap detections from the Penessoulou Classified Forest
+#'
+#' Camera-trap image records in the Penessoulou
+#' Classified Forest, Benin. One row per recorded image in 2024.
+#'
+#' @format A tibble with 4724 rows and 12 columns, including:
+#' \describe{
+#'   \item{`project`}{Survey/project name.}
+#'   \item{`image_name`}{Source image file name.}
+#'   \item{`camera`}{Camera station identifier.}
+#'   \item{`make`, `model`}{Camera mak and mode}
+#'   \item{`species`}{Recorded species name.}
+#'   \item{`number`}{Number of individuals in the record.}
+#'   \item{`dates`, `times`}{Date and time parts of the record.}
+#'   \item{`datetimes`}{Record date-time as a `"YYYY-MM-DD HH:MM:SS"` string.}
+#'   \item{`longitude`, `latitude`}{Station coordinates in decimal degrees.}
+#' }
+#'
+#' @source Ayegnon, D.T.D., Nobim\enc{è}{e}, G., Azihou, F., Houinato, M., &
+#'   Djagoun, C.A.M.S. (2026). Seasonal variation in the diversity, abundance,
+#'   and spatial distribution of terrestrial mammals in the
+#'   P\enc{é}{e}n\enc{é}{e}ssoulou Classified Forest. \emph{Wild}, 3(1), 2.
+#'   \doi{10.3390/wild3010002}
+#' @examples
+#' head(penessoulou)
+"penessoulou"

@@ -59,5 +59,5 @@ ct_check_name("Lion", search_type = "common_name")
 
 }
 \seealso{
-\url{https://www.itis.gov}
+\url{https://www.itis.gov/}
 }

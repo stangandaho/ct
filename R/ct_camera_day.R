@@ -24,7 +24,7 @@
 #' - `date` (Date of observation)
 #' - `species_column` (species name)
 #' - `size_column` (daily count, `0` if no observations)
-#' - `sampling_unit` (unique identifier for location × date combination)
+#' - `sampling_unit` (unique identifier for location x date combination)
 #'
 #' @examples
 #' # Example observation data
@@ -118,7 +118,7 @@ ct_camera_day <- function(data,
     # Create a date column (24h grouping)
     data$date <- as.Date(data[[datetime_column]])
 
-    # Aggregate data (species × location × date)
+    # Aggregate data (species x location x date)
     agg <- aggregate(data[[size_column]],
                      by = list(location = data[[deployment_column]],
                                date = data$date,
@@ -140,7 +140,7 @@ ct_camera_day <- function(data,
     # Get all unique species from the aggregated data
     all_species <- unique(agg$species)
 
-    # Create complete grid: all deployments × all dates × all species
+    # Create complete grid: all deployments x all dates x all species
     complete_grid <- tidyr::expand_grid(
       deployment_dates,
       species = all_species
@@ -163,7 +163,7 @@ ct_camera_day <- function(data,
     deployment_column <- data %>% dplyr::select({{deployment_column}}) %>% colnames()
     data$date <- as.Date(data[[datetime_column]])
 
-    # Aggregate data (species × location × date)
+    # Aggregate data (species x location x date)
     agg <- aggregate(data[[size_column]],
                      by = list(location = data[[deployment_column]],
                                date = data$date,
@@ -188,7 +188,7 @@ ct_camera_day <- function(data,
     # Get all unique species from the aggregated data
     all_species <- unique(agg$species)
 
-    # Create complete grid: all locations × all dates × all species
+    # Create complete grid: all locations x all dates x all species
     complete_grid <- tidyr::expand_grid(
       location_dates,
       species = all_species

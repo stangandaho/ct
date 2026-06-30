@@ -36,8 +36,9 @@
 #' @examples
 #' # Load camera trap data
 #' library(dplyr)
+#' data(penessoulou)
 #'
-#' camtrap_data <- read.csv(ct:::table_files()[1]) %>%
+#' camtrap_data <- penessoulou %>%
 #'   dplyr::filter(project == "Last")
 #'
 #' # Create correction table

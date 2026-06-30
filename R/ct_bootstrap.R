@@ -79,9 +79,6 @@ ct_bootstrap <- function(A,
   return(out)
 }
 
-##################
-
-
 #' @rdname bootstrap
 #' @inheritParams overlap::resample
 #' @inheritParams ct_plot_overlap
@@ -104,9 +101,6 @@ ct_resample <- function(x,
   return(out)
 }
 
-#######################
-
-
 #' @rdname bootstrap
 #' @inheritParams ct_plot_overlap
 #' @param type the name of the estimator to use, or "all" to produce all three
@@ -116,10 +110,10 @@ ct_resample <- function(x,
 ct_boot_estimates <- function(Amat,
                               Bmat,
                               kmax = 3,
-                              adjust=c(0.8, 1, 4),
+                              adjust = c(0.8, 1, 4),
                               n_grid = 128,
-                              type=c("all", "Dhat1", "Dhat4", "Dhat5"),
-                              cores=1) {
+                              type = c("all", "Dhat1", "Dhat4", "Dhat5"),
+                              cores = 1) {
 
   out <- overlap::bootEst(Amat = Amat,
                           Bmat = Bmat,

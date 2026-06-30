@@ -32,7 +32,7 @@ ct_install_exiftool <- function(install_location = NULL,
   ##------------------------------------------------##
   if (is.null(local_exiftool)) {
     tmpfile <- file.path(tmpdir, "xx")
-    on.exit(unlink(tmpfile))
+    on.exit(unlink(tmpfile), add = TRUE)
     download_exiftool(win_exe = win_exe,
                       download_path = tmpfile,
                       quiet = quiet)
@@ -310,7 +310,7 @@ ct_read_metadata <- function(path,
 
   # Create a text connection from the output
   con <- textConnection(csv_output)
-  on.exit(close(con))
+  on.exit(close(con), add = TRUE)
 
   # Read CSV with read.csv
   metadata <- read.csv(

@@ -5,15 +5,15 @@
 #' community ecologists. All indices use quantitative data, although they would be
 #' named by the corresponding binary index, but you can calculate the binary index
 #' using an appropriate argument. If you do not find your favourite index here, you
-#' can see if it can be implemented using designdist. Gower, Bray–Curtis, Jaccard
+#' can see if it can be implemented using designdist. Gower, Bray-Curtis, Jaccard
 #' and Kulczynski indices are good in detecting underlying ecological gradients
-#' (Faith et al. 1987). Morisita, Horn–Morisita, Binomial, Cao and Chao indices
+#' (Faith et al. 1987). Morisita, Horn-Morisita, Binomial, Cao and Chao indices
 #' should be able to handle different sample sizes
 #' (Wolda 1981, Krebs 1999, Anderson & Millar 2004), and Mountford (1962) and
-#' Raup-Crick indices for presence–absence data should be able to handle unknown
+#' Raup-Crick indices for presence-absence data should be able to handle unknown
 #' (and variable) sample sizes. Most of these indices are discussed by Krebs (1999)
 #' and Legendre & Legendre (2012), and their properties further compared by Wolda
-#' (1981) and Legendre & De Cáceres (2012). Aitchison (1986) distance is equivalent
+#' (1981) and Legendre & De Caceres (2012). Aitchison (1986) distance is equivalent
 #' to Euclidean distance between CLR-transformed samples ("clr") and deals with
 #' positive compositional data. Robust Aitchison distance by Martino et al. (2019)
 #' uses robust CLR ("rlcr"), making it applicable to non-negative data including
@@ -62,7 +62,11 @@
 #'
 #' @inherit vegan::vegdist author
 #'
-#' @inherit vegan::vegdist references
+#' @references
+#' This function adapts the dissimilarity methods of \pkg{vegan}. See
+#' \code{\link[vegan]{vegdist}} for the methods and their original references.
+#' Oksanen, J. et al. vegan: Community Ecology Package.
+#' \url{https://CRAN.R-project.org/package=vegan}
 #'
 #'
 #' @export

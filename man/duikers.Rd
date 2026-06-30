@@ -27,7 +27,7 @@ the camera's 42 deg field of view (42/360).
 \strong{DaytimeDistances}, but includes \strong{only} observations during the
 species' peak activity periods (no dawn or late day records).
 
-\strong{VideoStartTimesFullDays}: A tibble of camera‑trigger times for duiker
+\strong{VideoStartTimesFullDays}: A tibble of camera-trigger times for duiker
 videos that were recorded on \strong{full day deployments} (i.e. days without
 researcher visits). Columns include:
 \itemize{
@@ -54,11 +54,11 @@ duikers
 \description{
 The \strong{\code{duikers}} dataset is a \strong{named list} of three tibbles derived from
 Maxwell's duiker (\emph{Philantomba maxwellii}) camera trap and distance sampling
-data collected in Taï National Park, Côte d'Ivoire (2014), and archived as
+data collected in Ta\enc{ï}{i} National Park, Côte d'Ivoire (2014), and archived as
 the Dryad dataset \emph{Distance sampling with camera traps} (Howe et al., 2018)
 }
 \references{
-Howe, E. J., Buckland, S. T., Després-Einspenner, M. L., Kühl, H. S., & Buckland, S. T. (2018).
+Howe, E. J., Buckland, S. T., Despr\enc{é}{e}s-Einspenner, M. L., K\enc{ü}{u}hl, H. S., & Buckland, S. T. (2018).
 Data from: Distance sampling with camera traps. \doi{10.5061/dryad.b4c70}
 }
 \keyword{datasets}

@@ -2,17 +2,17 @@ test_that("ct_spatial_coverage returns a raster, bandwidth and stats", {
   skip_if_not_installed("terra")
   skip_if_not_installed("sf")
 
-  f <- system.file("penessoulou_season2.csv", package = "ct")
-  skip_if(f == "", "bundled CSV not found")
+  data(penessoulou)
+  cam <- penessoulou %>%
+    dplyr::filter(project == "First") %>%
+    dplyr::filter(species == "Erythrocebus patas", number > 0)
 
-  cam <- read.csv(f)
-  cam <- cam[cam$Species == "Erythrocebus patas" & cam$Count > 0, ]
 
   spc <- ct_spatial_coverage(
     data = cam,
-    site_column = Camera,
-    longitude = Longitude,
-    latitude = Latitude,
+    site_column = camera,
+    longitude = longitude,
+    latitude = latitude,
     crs = "EPSG:32631",
     resolution = 100,
     isopleth = 0.95,

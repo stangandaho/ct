@@ -1,53 +1,3 @@
-#' Path list
-#' @keywords internal
-#' @noRd
-table_files <- function(){
-  c(system.file("penessoulou_season1.csv", package = "ct"),
-       system.file("penessoulou_season2.csv", package = "ct"))
-}
-
-#' Deep list
-#'
-#' @description
-#' Convert list to tree object format for jstree library
-#' @keywords internal
-#' @noRd
-#'
-deep_list <- function(list_item){
-  setlist <- list()
-  listname <- names(list_item)
-
-  for (n in listname) {
-    val <- list_item[[n]]
-    listed <- as.list(setNames(rep("", length(val)), val))
-
-    setlist[[n]] <- listed
-  }
-
-  return(setlist)
-}
-
-#' Pair to list
-#'
-#' @description
-#' Convert a vector into a list with pairs of elements (i.e., two-by-two)
-#' @keywords internal
-#' @noRd
-#'
-pair_to_list <- function(vec) {
-  if (length(vec) %% 2 != 0) {
-    stop("The length of the vector must be even.")
-  }
-
-  result_list <- list()
-  for (i in seq(1, length(vec), by = 2)) {
-    result_list[[vec[i]]] <- vec[i + 1]
-  }
-
-  return(result_list)
-}
-
-
 #' Check seperator
 #' @description
 #' Check and return the seperator in the file (dataset to read)
@@ -448,13 +398,24 @@ lnorm_confint <- function(estimate, se, percent = 95){
 #' @keywords internal
 #' @noRd
 #' @importFrom dplyr select all_of
-get_column <- function(data, ...){
-  colname <- data %>% select(all_of(...)) %>% colnames()
-  if (length(colname) == 0) {
-    return(NULL)
-  }
+# get_column <- function(data, ...){
+#   colname <- data %>% select(all_of(...)) %>% colnames()
+#   if (length(colname) == 0) {
+#     return(NULL)
+#   }
+#
+#   return(colname)
+# }
 
-  return(colname)
+get_column <- function(data, var, arg) {
+  if (rlang::quo_is_null(var)) return(NULL)
+  tryCatch(
+    tidyselect::vars_pull(names(data), !!var),
+    error = function(e) cli_abort(
+      c("Can't select columns that don't exist",
+        "x" = conditionMessage(e)),
+      call = NULL)
+  )
 }
 
 #' Common datetime formats for parsing
@@ -535,8 +496,8 @@ R_user_dir <- function(package,
     localappdata <- Sys.getenv("LOCALAPPDATA", unset = file.path(home, "AppData", "Local"))
 
     base_dir <- switch(which,
-                       "data"   = file.path(appdata,      "R", "data", "R"),
-                       "config" = file.path(appdata,      "R", "config", "R"),
+                       "data"   = file.path(appdata, "R", "data", "R"),
+                       "config" = file.path(appdata, "R", "config", "R"),
                        "cache"  = file.path(localappdata, "R", "cache", "R")
     )
   } else if (os == "Darwin") {  # macOS

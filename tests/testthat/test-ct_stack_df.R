@@ -12,13 +12,3 @@ test_that("ct_stack_df row-binds frames with differing columns", {
   # missing cells are filled with NA
   expect_true(is.na(out$height[out$fruit == "Apple"]))
 })
-
-test_that("ct_read imports a bundled delimited file as a tibble", {
-  f <- system.file("penessoulou_season1.csv", package = "ct")
-  skip_if(f == "", "bundled CSV not found")
-
-  df <- ct_read(f, sep = ",")
-  expect_s3_class(df, "data.frame")
-  expect_gt(nrow(df), 0)
-  expect_true("species" %in% colnames(df))
-})

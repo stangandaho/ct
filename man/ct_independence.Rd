@@ -67,9 +67,11 @@ assuming animals are equally detectable during their active periods.
 \examples{
 
 library(dplyr)
+data(penessoulou)
 
 # Load example dataset
-cam_data <- read.csv(system.file("penessoulou_season1.csv", package = "ct"))
+cam_data <- penessoulou \%>\%
+  dplyr::filter(project == "Last")
 
 # Independence without considering species
 indep1 <- cam_data \%>\%

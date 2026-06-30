@@ -13,7 +13,11 @@
 #'
 #' @examples
 #' library(dplyr)
-#' pene <- read.csv(ct:::table_files()[1])
+#' data(penessoulou)
+#'
+#' pene <- penessoulou %>%
+#'   dplyr::filter(project == "Last")
+#'
 #'
 #' set_cam <- pene %>%
 #'   dplyr::filter(camera == "CAMERA 3")

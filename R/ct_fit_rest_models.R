@@ -239,7 +239,7 @@ rest_code_activity <- function() {
   nimble::nimbleCode({
     for (k in 1:(C - 1)) { v[k] ~ dbeta(1, alpha) }
     alpha ~ dgamma(1, 1)
-    w[1:C] <- stick_breaking(v[1:(C - 1)])           # Dirichlet-process weights
+    w[1:C] <- stick_breaking(v[1:(C - 1)]) # Dirichlet-process weights
     for (k in 1:C) {
       mu_mix[k] ~ dunif(0, 2 * 3.141592654)
       kappa_mix[k] ~ dgamma(1, 0.01)

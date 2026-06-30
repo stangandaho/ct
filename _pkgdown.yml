@@ -87,6 +87,8 @@ reference:
   - ACBR
   - rest_detection
   - rest_station
+  - penessoulou_season1
+  - penessoulou_season2
 - title: Process media file
   desc: |
     Functions reading and writing metadata
@@ -136,6 +138,8 @@ reference:
     Functions to run common camera trap data analysis
   contents:
   - ct_describe_df
+  - ct_plot_calendar
+  - ct_fit_distribution
   - ct_plot_density
   - ct_plot_overlap
   - ct_plot_overlap_coef

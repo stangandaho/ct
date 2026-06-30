@@ -296,7 +296,7 @@ ct_temporal_shift <- function(first_period,
       color = ggplot2::guide_legend(override.aes = list(linewidth = 1)),
       linewidth = "none"
     ) +
-    # Range markers — first period
+    # Range markers - first period
     ggplot2::geom_point(
       data = pose_data,
       ggplot2::aes(x = times_min1, y = ytime1),
@@ -312,7 +312,7 @@ ct_temporal_shift <- function(first_period,
       ggplot2::aes(x = times_min1, xend = times_max1, y = ytime1, yend = ytime1),
       linetype = ls1$linetype, linewidth = ls1$linewidth, color = ls1$color
     ) +
-    # Range markers — second period
+    # Range markers - second period
     ggplot2::geom_point(
       data = pose_data,
       ggplot2::aes(x = times_min2, y = ytime2),

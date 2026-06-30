@@ -22,8 +22,10 @@
 #' @return A `ggplot2` object showing periods of activity (and optionally gaps) for each deployment.
 #'
 #' @examples
-#' # Load example data and filter for one project
-#' camtrap_data <- read.csv(ct:::table_files()[1]) %>%
+#' # Load example data and filter for one project phase
+#' data(penessoulou)
+#'
+#' camtrap_data <- penessoulou %>%
 #'   dplyr::filter(project == "Last")
 #'
 #' # Plot with default styles
@@ -246,14 +248,16 @@ calc_active_periods <- function(data, threshold, time_unit) {
 #'
 #' @examples
 #' # Get activity summary
-#' camtrap_data <- read.csv(ct:::table_files()[1]) %>%
-#' dplyr::filter(project == "Last")
+#' library(dplyr)
+#' data(penessoulou)
+#' camtrap_data <- penessoulou %>%
+#'   filter(project == "Last")
 #'
-#'   ct_summarise_camtrap_activity(data = camtrap_data,
-#'                                 deployment_column = "camera",
-#'                                 datetime_column = datetimes,
-#'                                 threshold = 15,
-#'                                 time_unit = "days")
+#' ct_summarise_camtrap_activity(data = camtrap_data,
+#'                               deployment_column = "camera",
+#'                               datetime_column = datetimes,
+#'                               threshold = 15,
+#'                               time_unit = "days")
 #'
 #' @export
 ct_summarise_camtrap_activity <- function(data,

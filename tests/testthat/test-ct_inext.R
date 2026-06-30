@@ -3,10 +3,10 @@
 test_that("ct_inext returns an iNEXT object and ct_plot_inext a ggplot", {
   skip_if_not_installed("iNEXT")
 
-  f <- system.file("penessoulou_season1.csv", package = "ct")
-  skip_if(f == "", "bundled CSV not found")
+  data(penessoulou)
 
-  camdata <- read.csv(f) %>%
+  camdata <- penessoulou %>%
+    dplyr::filter(project == "Last") %>%
     dplyr::mutate(site = "pene") %>%
     ct_independence(species_column = species, site_column = camera,
                     datetime = datetimes, threshold = 60,

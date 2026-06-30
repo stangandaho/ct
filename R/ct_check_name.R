@@ -36,7 +36,7 @@
 #' }
 #'
 #'
-#' @seealso \url{https://www.itis.gov}
+#' @seealso \url{https://www.itis.gov/}
 #'
 #' @export
 #'

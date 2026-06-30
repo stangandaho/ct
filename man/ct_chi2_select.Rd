@@ -85,7 +85,7 @@ ct_select_model(model_list)
 
 }
 \references{
-Howe, E. J., Buckland, S. T., Després‐Einspenner, M., & Kühl, H. S. (2019).
+Howe, E. J., Buckland, S. T., Despr\enc{é}{e}s-Einspenner, M., & K\enc{ü}{u}hl, H. S. (2019).
 Model selection with overdispersed distance sampling data. \strong{Methods in Ecology and Evolution},
 10(1), 38-47. \doi{10.1111/2041-210X.13082}
 }

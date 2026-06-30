@@ -61,8 +61,10 @@ Visualizes the activity history of camera trap deployments to show periods of da
 It also optionally highlights periods of inactivity (break/gap).
 }
 \examples{
-# Load example data and filter for one project
-camtrap_data <- read.csv(ct:::table_files()[1]) \%>\%
+# Load example data and filter for one project phase
+data(penessoulou)
+
+camtrap_data <- penessoulou \%>\%
   dplyr::filter(project == "Last")
 
 # Plot with default styles
