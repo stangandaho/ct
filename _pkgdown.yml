@@ -87,8 +87,7 @@ reference:
   - ACBR
   - rest_detection
   - rest_station
-  - penessoulou_season1
-  - penessoulou_season2
+  - penessoulou
 - title: Process media file
   desc: |
     Functions reading and writing metadata
