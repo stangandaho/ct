@@ -89,7 +89,7 @@ A tibble with the following columns:
 
 - `size_column` (daily count, `0` if no observations)
 
-- `sampling_unit` (unique identifier for location × date combination)
+- `sampling_unit` (unique identifier for location x date combination)
 
 ## See also
 

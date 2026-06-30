@@ -87,6 +87,8 @@ methods, and standardized data integration workflows.
   : Simulated camera-trap detections for the REST / RAD-REST workflow
 - [`rest_station`](https://stangandaho.github.io/ct/reference/rest_station.md)
   : Camera-station table for the REST / RAD-REST example
+- [`penessoulou`](https://stangandaho.github.io/ct/reference/penessoulou.md)
+  : Camera-trap detections from the Penessoulou Classified Forest
 
 ## Process media file
 
@@ -207,6 +209,10 @@ Functions to run common camera trap data analysis
 
 - [`ct_describe_df()`](https://stangandaho.github.io/ct/reference/ct_describe_df.md)
   : Descriptive statistic on dataset
+- [`ct_plot_calendar()`](https://stangandaho.github.io/ct/reference/ct_plot_calendar.md)
+  : Plot a calendar heatmap of daily camera trap activity
+- [`ct_fit_distribution()`](https://stangandaho.github.io/ct/reference/ct_fit_distribution.md)
+  : Fit a count distribution by maximum likelihood
 - [`ct_plot_density()`](https://stangandaho.github.io/ct/reference/ct_plot_density.md)
   : Plot species' activity patterns
 - [`ct_plot_overlap()`](https://stangandaho.github.io/ct/reference/ct_plot_overlap.md)

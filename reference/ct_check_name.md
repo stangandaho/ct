@@ -66,7 +66,7 @@ A tibble containing taxonomic details:
 
 ## See also
 
-<https://www.itis.gov>
+<https://www.itis.gov/>
 
 ## Examples
 

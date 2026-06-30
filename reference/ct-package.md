@@ -1,7 +1,12 @@
 # ct: Integrated Camera-Trap Data Management and Analysis
 
-Tool to edit, extract, visualize, and analyze camera trap data for
-wildlife monitoring and ecological research.
+An integrated, tidyverse-friendly workflow for camera trap data in
+wildlife monitoring and ecological research. Reads and edits image
+metadata, filters independent detections, analyses activity patterns and
+species diversity, prepares occupancy-format data, and estimates species
+density or abundance with several methods, including the random
+encounter model, camera-trap distance sampling, time-to-event,
+space-to-event, and the random encounter and staying-time model.
 
 ## See also
 

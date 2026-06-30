@@ -5,15 +5,15 @@ popular with community ecologists. All indices use quantitative data,
 although they would be named by the corresponding binary index, but you
 can calculate the binary index using an appropriate argument. If you do
 not find your favourite index here, you can see if it can be implemented
-using designdist. Gower, Bray–Curtis, Jaccard and Kulczynski indices are
+using designdist. Gower, Bray-Curtis, Jaccard and Kulczynski indices are
 good in detecting underlying ecological gradients (Faith et al. 1987).
-Morisita, Horn–Morisita, Binomial, Cao and Chao indices should be able
+Morisita, Horn-Morisita, Binomial, Cao and Chao indices should be able
 to handle different sample sizes (Wolda 1981, Krebs 1999, Anderson &
 Millar 2004), and Mountford (1962) and Raup-Crick indices for
-presence–absence data should be able to handle unknown (and variable)
+presence-absence data should be able to handle unknown (and variable)
 sample sizes. Most of these indices are discussed by Krebs (1999) and
 Legendre & Legendre (2012), and their properties further compared by
-Wolda (1981) and Legendre & De Cáceres (2012). Aitchison (1986) distance
+Wolda (1981) and Legendre & De Caceres (2012). Aitchison (1986) distance
 is equivalent to Euclidean distance between CLR-transformed samples
 ("clr") and deals with positive compositional data. Robust Aitchison
 distance by Martino et al. (2019) uses robust CLR ("rlcr"), making it
@@ -342,70 +342,10 @@ species and you should remove empty sites from community data.
 
 ## References
 
-Aitchison, J. The Statistical Analysis of Compositional Data (1986).
-London, UK: Chapman & Hall.
-
-Aitchison, J., Barceló-Vidal, C., Martín-Fernández, J.A.,
-Pawlowsky-Glahn, V. (2000). Logratio analysis and compositional
-distance. *Math. Geol.* **32**, 271–275.
-
-Anderson, M.J. and Millar, R.B. (2004). Spatial variation and effects of
-habitat on temperate reef fish assemblages in northeastern New Zealand.
-*Journal of Experimental Marine Biology and Ecology* 305, 191–221.
-
-Anderson, M.J., Ellingsen, K.E. & McArdle, B.H. (2006). Multivariate
-dispersion as a measure of beta diversity. *Ecology Letters* 9, 683–693.
-
-Anderson, M.J & Thompson, A.A. (2004). Multivariate control charts for
-ecological and environmental monitoring. *Ecological Applications* 14,
-1921–1935.
-
-Cao, Y., Williams, W.P. & Bark, A.W. (1997). Similarity measure bias in
-river benthic Auswuchs community analysis. *Water Environment Research*
-69, 95–106.
-
-Chao, A., Chazdon, R. L., Colwell, R. K. and Shen, T. (2005). A new
-statistical approach for assessing similarity of species composition
-with incidence and abundance data. *Ecology Letters* 8, 148–159.
-
-Chase, J.M., Kraft, N.J.B., Smith, K.G., Vellend, M. and Inouye, B.D.
-(2011). Using null models to disentangle variation in community
-dissimilarity from variation in \\\alpha\\-diversity. *Ecosphere*
-2:art24 [doi:10.1890/ES10-00117.1](https://doi.org/10.1890/ES10-00117.1)
-
-Faith, D. P, Minchin, P. R. and Belbin, L. (1987). Compositional
-dissimilarity as a robust measure of ecological distance. *Vegetatio*
-69, 57–68.
-
-Gower, J. C. (1971). A general coefficient of similarity and some of its
-properties. *Biometrics* 27, 623–637.
-
-Krebs, C. J. (1999). *Ecological Methodology.* Addison Wesley Longman.
-
-Legendre, P. & De Cáceres, M. (2012). Beta diversity as the variance of
-community data: dissimilarity coefficients and partitioning. *Ecology
-Letters* 16, 951–963.
-[doi:10.1111/ele.12141](https://doi.org/10.1111/ele.12141)
-
-Legendre, P. and Legendre, L. (2012) *Numerical Ecology*. 3rd English
-ed. Elsevier.
-
-Mardia, K.V., Kent, J.T. and Bibby, J.M. (1979). *Multivariate
-analysis*. Academic Press.
-
-Martino, C., Morton, J.T., Marotz, C.A., Thompson, L.R., Tripathi, A.,
-Knight, R. & Zengler, K. (2019) A novel sparse compositional technique
-reveals microbial perturbations. *mSystems* **4**, 1.
-
-Mountford, M. D. (1962). An index of similarity and its application to
-classification problems. In: P.W.Murphy (ed.), *Progress in Soil
-Zoology*, 43–50. Butterworths.
-
-Veech, J. A. (2013). A probabilistic model for analysing species
-co-occurrence. *Global Ecology and Biogeography* 22, 252–260.
-
-Wolda, H. (1981). Similarity indices, sample size and diversity.
-*Oecologia* 50, 296–302.
+This function adapts the dissimilarity methods of vegan. See
+[`vegdist`](https://vegandevs.github.io/vegan/reference/vegdist.html)
+for the methods and their original references. Oksanen, J. et al. vegan:
+Community Ecology Package. <https://CRAN.R-project.org/package=vegan>
 
 ## Author
 

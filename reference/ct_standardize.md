@@ -222,29 +222,31 @@ multidimensional scaling. *Vegetatio* **52**, 181–189.
 
 ``` r
 # Example usage with sample data
-cam_data <- read.csv(system.file('penessoulou_season1.csv', package = 'ct'))
+library(dplyr)
+data(penessoulou)
+
+cam_data <- penessoulou %>%
+  dplyr::filter(project == "Last")
 cam_data <- cam_data %>%
   ct_to_community(site_column = camera, species_column = species,
                   size_column = number, values_fill = 0)
 
 standardized_data <- ct_standardize(data = cam_data[, 2:11], method = "total")
 standardized_data
-#> # A tibble: 13 × 10
+#> # A tibble: 11 × 10
 #>    `Syncerus caffer` `Lepus crawshayi` `Erythrocebus patas`
 #>                <dbl>             <dbl>                <dbl>
-#>  1            0.981              0                   0.0169
-#>  2            0                  0.375               0.5   
-#>  3            0.430              0                   0.522 
-#>  4            0.941              0                   0     
-#>  5            0                  0                   0.0714
-#>  6            0.480              0                   0.341 
-#>  7            0                  0                   1     
-#>  8            0.247              0                   0.306 
-#>  9            0                  0                   0     
-#> 10            0                  0                   0     
-#> 11            0                  0                   0     
-#> 12            0                  0                   0     
-#> 13            0.0240             0                   0.974 
+#>  1             0.981             0                   0.0169
+#>  2             0                 0.375               0.5   
+#>  3             0.479             0                   0.466 
+#>  4             0.941             0                   0     
+#>  5             0                 0                   0.0714
+#>  6             0.480             0                   0.341 
+#>  7             0                 0                   1     
+#>  8             0.205             0                   0.591 
+#>  9             0                 0                   0     
+#> 10             0                 0                   0     
+#> 11             0                 0                   0     
 #> # ℹ 7 more variables: `Tragelaphus scriptus` <dbl>,
 #> #   `Chlorocebus aethiops` <dbl>, `Canis adustus` <dbl>,
 #> #   `Mellivora capensis` <dbl>, `Sylvicapra grimmia` <dbl>,

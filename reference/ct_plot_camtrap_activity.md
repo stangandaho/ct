@@ -99,8 +99,10 @@ each deployment.
 ## Examples
 
 ``` r
-# Load example data and filter for one project
-camtrap_data <- read.csv(ct:::table_files()[1]) %>%
+# Load example data and filter for one project phase
+data(penessoulou)
+
+camtrap_data <- penessoulou %>%
   dplyr::filter(project == "Last")
 
 # Plot with default styles

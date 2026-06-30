@@ -109,16 +109,18 @@ Pakistan. Biology, 13(5), 341.
 ``` r
 
 library(dplyr)
+data(penessoulou)
 
 # Load example dataset
-cam_data <- read.csv(system.file("penessoulou_season1.csv", package = "ct"))
+cam_data <- penessoulou %>%
+  dplyr::filter(project == "Last")
 
 # Independence without considering species
 indep1 <- cam_data %>%
   ct_independence(data = ., datetime = datetimes, format = "%Y-%m-%d %H:%M:%S")
 
 sprintf("Independent observations: %s", nrow(indep1))
-#> [1] "Independent observations: 195"
+#> [1] "Independent observations: 140"
 
 # Independence considering species
 indep2 <- cam_data %>%
@@ -127,23 +129,23 @@ indep2 <- cam_data %>%
                   species_column = "species")
 
 sprintf("Independent observations: %s", nrow(indep2))
-#> [1] "Independent observations: 201"
+#> [1] "Independent observations: 146"
 
 # Use a standalone vector of datetime values
 dtime <- cam_data$datetimes
 ct_independence(datetime = dtime, format = "%Y-%m-%d %H:%M:%S")
-#> # A tibble: 195 × 1
+#> # A tibble: 140 × 1
 #>    datetime           
 #>    <dttm>             
-#>  1 2019-01-20 15:24:41
-#>  2 2019-01-21 15:23:38
-#>  3 2019-01-23 15:35:20
-#>  4 2019-01-24 06:01:07
-#>  5 2023-09-20 16:15:28
-#>  6 2023-09-21 13:32:45
-#>  7 2024-03-02 22:32:10
-#>  8 2024-03-10 10:21:56
-#>  9 2024-03-10 15:04:38
-#> 10 2024-03-10 17:28:11
-#> # ℹ 185 more rows
+#>  1 2024-03-10 20:09:27
+#>  2 2024-03-12 00:07:36
+#>  3 2024-03-12 02:54:31
+#>  4 2024-03-12 04:16:32
+#>  5 2024-03-16 03:14:26
+#>  6 2024-03-16 23:04:41
+#>  7 2024-03-17 15:14:29
+#>  8 2024-03-17 22:11:38
+#>  9 2024-03-18 21:22:46
+#> 10 2024-03-19 21:41:35
+#> # ℹ 130 more rows
 ```

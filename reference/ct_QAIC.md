@@ -53,7 +53,7 @@ overdispersion, and \\k\\ is the number of parameters.
 
 ## References
 
-Howe, E. J., Buckland, S. T., Després‐Einspenner, M., & Kühl, H. S.
+Howe, E. J., Buckland, S. T., Després-Einspenner, M., & Kühl, H. S.
 (2019). Model selection with overdispersed distance sampling data.
 **Methods in Ecology and Evolution**, 10(1), 38-47.
 [doi:10.1111/2041-210X.13082](https://doi.org/10.1111/2041-210X.13082)

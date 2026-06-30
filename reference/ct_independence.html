@@ -154,16 +154,18 @@ Camera Traps in the Hindu Raj Mountains, Pakistan. Biology, 13(5), 341.
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">penessoulou</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Load example dataset</span></span></span>
-<span class="r-in"><span><span class="va">cam_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"penessoulou_season1.csv"</span>, package <span class="op">=</span> <span class="st">"ct"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">cam_data</span> <span class="op">&lt;-</span> <span class="va">penessoulou</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">project</span> <span class="op">==</span> <span class="st">"Last"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Independence without considering species</span></span></span>
 <span class="r-in"><span><span class="va">indep1</span> <span class="op">&lt;-</span> <span class="va">cam_data</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">ct_independence</span><span class="op">(</span>data <span class="op">=</span> <span class="va">.</span>, datetime <span class="op">=</span> <span class="va">datetimes</span>, format <span class="op">=</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Independent observations: %s"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">indep1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Independent observations: 195"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Independent observations: 140"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Independence considering species</span></span></span>
 <span class="r-in"><span><span class="va">indep2</span> <span class="op">&lt;-</span> <span class="va">cam_data</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
@@ -172,25 +174,25 @@ Camera Traps in the Hindu Raj Mountains, Pakistan. Biology, 13(5), 341.
 <span class="r-in"><span>                  species_column <span class="op">=</span> <span class="st">"species"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html" class="external-link">sprintf</a></span><span class="op">(</span><span class="st">"Independent observations: %s"</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">indep2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Independent observations: 201"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Independent observations: 146"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Use a standalone vector of datetime values</span></span></span>
 <span class="r-in"><span><span class="va">dtime</span> <span class="op">&lt;-</span> <span class="va">cam_data</span><span class="op">$</span><span class="va">datetimes</span></span></span>
 <span class="r-in"><span><span class="fu">ct_independence</span><span class="op">(</span>datetime <span class="op">=</span> <span class="va">dtime</span>, format <span class="op">=</span> <span class="st">"%Y-%m-%d %H:%M:%S"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 195 × 1</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 140 × 1</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    datetime           </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 2019-01-20 <span style="color: #949494;">15:24:41</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 2019-01-21 <span style="color: #949494;">15:23:38</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 2019-01-23 <span style="color: #949494;">15:35:20</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 2019-01-24 <span style="color: #949494;">06:01:07</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 2023-09-20 <span style="color: #949494;">16:15:28</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 2023-09-21 <span style="color: #949494;">13:32:45</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 2024-03-02 <span style="color: #949494;">22:32:10</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 2024-03-10 <span style="color: #949494;">10:21:56</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 2024-03-10 <span style="color: #949494;">15:04:38</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 2024-03-10 <span style="color: #949494;">17:28:11</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 185 more rows</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> 2024-03-10 <span style="color: #949494;">20:09:27</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> 2024-03-12 <span style="color: #949494;">00:07:36</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> 2024-03-12 <span style="color: #949494;">02:54:31</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> 2024-03-12 <span style="color: #949494;">04:16:32</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> 2024-03-16 <span style="color: #949494;">03:14:26</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> 2024-03-16 <span style="color: #949494;">23:04:41</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> 2024-03-17 <span style="color: #949494;">15:14:29</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 2024-03-17 <span style="color: #949494;">22:11:38</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 2024-03-18 <span style="color: #949494;">21:22:46</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 2024-03-19 <span style="color: #949494;">21:41:35</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 130 more rows</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

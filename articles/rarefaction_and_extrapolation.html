@@ -178,8 +178,11 @@ the <code>ct</code> package:</p>
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://stangandaho.github.io/ct/">ct</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Import and prepare camera trap data</span></span>
-<span><span class="va">camdata1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="fu">ct</span><span class="fu">:::</span><span class="fu">table_files</span><span class="op">(</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span><span class="co"># Load prepare camera trap data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">penessoulou</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">camdata1</span> <span class="op">&lt;-</span> <span class="va">penessoulou</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">project</span> <span class="op">==</span> <span class="st">"Last"</span><span class="op">)</span><span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>site <span class="op">=</span> <span class="st">"pene"</span><span class="op">)</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="co"># Remove consecutive detections of the same species within 60 seconds</span></span>
 <span>  <span class="fu"><a href="../reference/ct_independence.html">ct_independence</a></span><span class="op">(</span>species_column <span class="op">=</span> <span class="va">species</span>, </span>
@@ -190,17 +193,17 @@ the <code>ct</code> package:</p>
 <span>                  <span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">camdata1</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 18</span></span></span>
-<span><span class="co">#&gt;   project camera   species       image_name number Make  Model   FOV dates times</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Last    CAMERA 1 Canis adustus DSCF0017.…      1 Gard… A3S    47.4 3/24… 22:0…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Last    CAMERA 1 Canis adustus DSCF0045.…      1 Gard… A3S    47.4 3/27… 0:30…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Last    CAMERA 1 Canis adustus DSCF0057.…      1 Gard… A3S    47.4 3/27… 0:33…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Last    CAMERA 1 Canis adustus DSCF0061.…      1 Gard… A3S    47.4 3/27… 1:21…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Last    CAMERA 1 Canis adustus DSCF0065.…      1 Gard… A3S    47.4 3/27… 1:27…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Last    CAMERA 1 Canis adustus DSCF0081.…      1 Gard… A3S    47.4 3/27… 22:2…</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 8 more variables: FocalLength &lt;dbl&gt;, diel &lt;dbl&gt;, datetime &lt;dttm&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   deltatime &lt;int&gt;, longitude &lt;int&gt;, latitude &lt;int&gt;, radian &lt;dbl&gt;, site &lt;chr&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 13</span></span></span>
+<span><span class="co">#&gt;   project image_name   camera   make     model species       number dates  times</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> Last    DSCF0017.JPG CAMERA 1 GardePro A3S   Canis adustus      1 3/24/… 22:0…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> Last    DSCF0045.JPG CAMERA 1 GardePro A3S   Canis adustus      1 3/27/… 0:30…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> Last    DSCF0057.JPG CAMERA 1 GardePro A3S   Canis adustus      1 3/27/… 0:33…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> Last    DSCF0061.JPG CAMERA 1 GardePro A3S   Canis adustus      1 3/27/… 1:21…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> Last    DSCF0065.JPG CAMERA 1 GardePro A3S   Canis adustus      1 3/27/… 1:27…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> Last    DSCF0081.JPG CAMERA 1 GardePro A3S   Canis adustus      1 3/27/… 22:2…</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: datetime &lt;dttm&gt;, longitude &lt;int&gt;, latitude &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   site &lt;chr&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="create-daily-sampling-units">Create Daily Sampling Units<a class="anchor" aria-label="anchor" href="#create-daily-sampling-units"></a>
@@ -218,7 +221,7 @@ units:</p>
 <span>  size_column <span class="op">=</span> <span class="va">number</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">camday</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 21,820 × 5</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 2,600 × 5</span></span></span>
 <span><span class="co">#&gt;    camera   date       species                 number sampling_unit   </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;date&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> CAMERA 1 2024-03-24 Canis adustus                1 CAMERA 120240324</span></span>
@@ -231,7 +234,7 @@ units:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> CAMERA 1 2024-03-24 Syncerus caffer              1 CAMERA 120240324</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> CAMERA 1 2024-03-24 Thryonomys swinderianus      0 CAMERA 120240324</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> CAMERA 1 2024-03-24 Tragelaphus scriptus         0 CAMERA 120240324</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 21,810 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2,590 more rows</span></span></span></code></pre></div>
 <p>This creates a dataset where each row represents one day of sampling
 at one camera location, with species detection counts for that day.</p>
 </div>
@@ -257,89 +260,89 @@ which is presented as follows:</p>
 <span><span class="co">#&gt; $class: iNEXT</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $DataInfo: basic data information</span></span>
-<span><span class="co">#&gt;   Assemblage    T   U S.obs    SC Q1 Q2 Q3 Q4 Q5 Q6 Q7 Q8 Q9 Q10</span></span>
-<span><span class="co">#&gt; 1     site.1 2182 148    10 0.973  4  1  0  0  0  1  0  0  0   0</span></span>
+<span><span class="co">#&gt;   Assemblage   T   U S.obs    SC Q1 Q2 Q3 Q4 Q5 Q6 Q7 Q8 Q9 Q10</span></span>
+<span><span class="co">#&gt; 1     site.1 260 119    10 0.958  5  1  0  0  0  0  0  0  0   1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $iNextEst: diversity estimates with rarefied and extrapolated samples.</span></span>
 <span><span class="co">#&gt; $size_based (LCL and UCL are obtained for fixed size.)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;      Assemblage    t        Method Order.q          qD     qD.LCL     qD.UCL</span></span>
-<span><span class="co">#&gt; 1   Assemblage1    1   Rarefaction       0  0.06782768 0.05549376  0.0801616</span></span>
-<span><span class="co">#&gt; 10  Assemblage1 1091   Rarefaction       0  7.73388404 5.65183611  9.8159320</span></span>
-<span><span class="co">#&gt; 20  Assemblage1 2182      Observed       0 10.00000000 6.45278453 13.5472155</span></span>
-<span><span class="co">#&gt; 30  Assemblage1 3216 Extrapolation       0 11.68742261 6.90948356 16.4653617</span></span>
-<span><span class="co">#&gt; 40  Assemblage1 4364 Extrapolation       0 13.14714588 7.04674821 19.2475435</span></span>
-<span><span class="co">#&gt; 41  Assemblage1    1   Rarefaction       1  0.06782768 0.05549376  0.0801616</span></span>
-<span><span class="co">#&gt; 50  Assemblage1 1091   Rarefaction       1  4.09322273 3.37870474  4.8077407</span></span>
-<span><span class="co">#&gt; 60  Assemblage1 2182      Observed       1  4.26415736 3.47825185  5.0500629</span></span>
-<span><span class="co">#&gt; 70  Assemblage1 3216 Extrapolation       1  4.34598713 3.52332286  5.1686514</span></span>
-<span><span class="co">#&gt; 80  Assemblage1 4364 Extrapolation       1  4.40797808 3.55577337  5.2601828</span></span>
-<span><span class="co">#&gt; 81  Assemblage1    1   Rarefaction       2  0.06782768 0.05549376  0.0801616</span></span>
-<span><span class="co">#&gt; 90  Assemblage1 1091   Rarefaction       2  3.16396450 2.65383192  3.6740971</span></span>
-<span><span class="co">#&gt; 100 Assemblage1 2182      Observed       2  3.23163175 2.69947555  3.7637880</span></span>
-<span><span class="co">#&gt; 110 Assemblage1 3216 Extrapolation       2  3.25400711 2.71438537  3.7936288</span></span>
-<span><span class="co">#&gt; 120 Assemblage1 4364 Extrapolation       2  3.26656250 2.72271162  3.8104134</span></span>
-<span><span class="co">#&gt;            SC     SC.LCL     SC.UCL</span></span>
-<span><span class="co">#&gt; 1   0.0205398 0.01541636 0.02566324</span></span>
-<span><span class="co">#&gt; 10  0.9648520 0.93976793 0.98993597</span></span>
-<span><span class="co">#&gt; 20  0.9729792 0.95053086 0.99542748</span></span>
-<span><span class="co">#&gt; 30  0.9786812 0.95671169 1.00000000</span></span>
-<span><span class="co">#&gt; 40  0.9836139 0.96413600 1.00000000</span></span>
-<span><span class="co">#&gt; 41  0.0205398 0.01541636 0.02566324</span></span>
-<span><span class="co">#&gt; 50  0.9648520 0.93976793 0.98993597</span></span>
-<span><span class="co">#&gt; 60  0.9729792 0.95053086 0.99542748</span></span>
-<span><span class="co">#&gt; 70  0.9786812 0.95671169 1.00000000</span></span>
-<span><span class="co">#&gt; 80  0.9836139 0.96413600 1.00000000</span></span>
-<span><span class="co">#&gt; 81  0.0205398 0.01541636 0.02566324</span></span>
-<span><span class="co">#&gt; 90  0.9648520 0.93976793 0.98993597</span></span>
-<span><span class="co">#&gt; 100 0.9729792 0.95053086 0.99542748</span></span>
-<span><span class="co">#&gt; 110 0.9786812 0.95671169 1.00000000</span></span>
-<span><span class="co">#&gt; 120 0.9836139 0.96413600 1.00000000</span></span>
+<span><span class="co">#&gt;      Assemblage   t        Method Order.q         qD    qD.LCL     qD.UCL</span></span>
+<span><span class="co">#&gt; 1   Assemblage1   1   Rarefaction       0  0.4576923 0.3855279  0.5298567</span></span>
+<span><span class="co">#&gt; 10  Assemblage1 130   Rarefaction       0  7.2497576 5.2696274  9.2298879</span></span>
+<span><span class="co">#&gt; 20  Assemblage1 260      Observed       0 10.0000000 6.5199444 13.4800556</span></span>
+<span><span class="co">#&gt; 30  Assemblage1 383 Extrapolation       0 12.1527849 7.2589429 17.0466269</span></span>
+<span><span class="co">#&gt; 40  Assemblage1 520 Extrapolation       0 14.1154484 7.7297582 20.5011385</span></span>
+<span><span class="co">#&gt; 41  Assemblage1   1   Rarefaction       1  0.4576923 0.3855279  0.5298567</span></span>
+<span><span class="co">#&gt; 50  Assemblage1 130   Rarefaction       1  3.8872824 3.1828793  4.5916855</span></span>
+<span><span class="co">#&gt; 60  Assemblage1 260      Observed       1  4.0886141 3.2885043  4.8887240</span></span>
+<span><span class="co">#&gt; 70  Assemblage1 383 Extrapolation       1  4.1920397 3.3434437  5.0406357</span></span>
+<span><span class="co">#&gt; 80  Assemblage1 520 Extrapolation       1  4.2740551 3.3880481  5.1600622</span></span>
+<span><span class="co">#&gt; 81  Assemblage1   1   Rarefaction       2  0.4576923 0.3855279  0.5298567</span></span>
+<span><span class="co">#&gt; 90  Assemblage1 130   Rarefaction       2  2.9897202 2.4437318  3.5357085</span></span>
+<span><span class="co">#&gt; 100 Assemblage1 260      Observed       2  3.0552319 2.4813815  3.6290823</span></span>
+<span><span class="co">#&gt; 110 Assemblage1 383 Extrapolation       2  3.0768843 2.4935752  3.6601935</span></span>
+<span><span class="co">#&gt; 120 Assemblage1 520 Extrapolation       2  3.0890764 2.5003862  3.6777666</span></span>
+<span><span class="co">#&gt;            SC    SC.LCL    SC.UCL</span></span>
+<span><span class="co">#&gt; 1   0.1465235 0.1106875 0.1823595</span></span>
+<span><span class="co">#&gt; 10  0.9494027 0.9177360 0.9810694</span></span>
+<span><span class="co">#&gt; 20  0.9580480 0.9264475 0.9896484</span></span>
+<span><span class="co">#&gt; 30  0.9653010 0.9355559 0.9950460</span></span>
+<span><span class="co">#&gt; 40  0.9719134 0.9455758 0.9982510</span></span>
+<span><span class="co">#&gt; 41  0.1465235 0.1106875 0.1823595</span></span>
+<span><span class="co">#&gt; 50  0.9494027 0.9177360 0.9810694</span></span>
+<span><span class="co">#&gt; 60  0.9580480 0.9264475 0.9896484</span></span>
+<span><span class="co">#&gt; 70  0.9653010 0.9355559 0.9950460</span></span>
+<span><span class="co">#&gt; 80  0.9719134 0.9455758 0.9982510</span></span>
+<span><span class="co">#&gt; 81  0.1465235 0.1106875 0.1823595</span></span>
+<span><span class="co">#&gt; 90  0.9494027 0.9177360 0.9810694</span></span>
+<span><span class="co">#&gt; 100 0.9580480 0.9264475 0.9896484</span></span>
+<span><span class="co">#&gt; 110 0.9653010 0.9355559 0.9950460</span></span>
+<span><span class="co">#&gt; 120 0.9719134 0.9455758 0.9982510</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; NOTE: The above output only shows five estimates for each assemblage; call iNEXT.object$iNextEst$size_based to view complete output.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $coverage_based (LCL and UCL are obtained for fixed coverage; interval length is wider due to varying size in bootstraps.)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;      Assemblage         SC    t        Method Order.q          qD     qD.LCL</span></span>
-<span><span class="co">#&gt; 1   Assemblage1 0.02053992    1   Rarefaction       0  0.06782807 0.05767988</span></span>
-<span><span class="co">#&gt; 10  Assemblage1 0.96485195 1091   Rarefaction       0  7.73388398 1.28040548</span></span>
-<span><span class="co">#&gt; 20  Assemblage1 0.97297917 2182      Observed       0 10.00000000 1.93391465</span></span>
-<span><span class="co">#&gt; 30  Assemblage1 0.97868123 3216 Extrapolation       0 11.68742261 2.59890626</span></span>
-<span><span class="co">#&gt; 40  Assemblage1 0.98361385 4364 Extrapolation       0 13.14714588 3.06307696</span></span>
-<span><span class="co">#&gt; 41  Assemblage1 0.02053992    1   Rarefaction       1  0.06782807 0.05769723</span></span>
-<span><span class="co">#&gt; 50  Assemblage1 0.96485195 1091   Rarefaction       1  4.09322273 3.15250792</span></span>
-<span><span class="co">#&gt; 60  Assemblage1 0.97297917 2182      Observed       1  4.26415736 3.29986732</span></span>
-<span><span class="co">#&gt; 70  Assemblage1 0.97868123 3216 Extrapolation       1  4.34598713 3.39142092</span></span>
-<span><span class="co">#&gt; 80  Assemblage1 0.98361385 4364 Extrapolation       1  4.40797808 3.46044406</span></span>
-<span><span class="co">#&gt; 81  Assemblage1 0.02053992    1   Rarefaction       2  0.06782807 0.05772344</span></span>
-<span><span class="co">#&gt; 90  Assemblage1 0.96485195 1091   Rarefaction       2  3.16396449 2.59647057</span></span>
-<span><span class="co">#&gt; 100 Assemblage1 0.97297917 2182      Observed       2  3.23163175 2.66031200</span></span>
-<span><span class="co">#&gt; 110 Assemblage1 0.97868123 3216 Extrapolation       2  3.25400711 2.69131604</span></span>
-<span><span class="co">#&gt; 120 Assemblage1 0.98361385 4364 Extrapolation       2  3.26656250 2.71129307</span></span>
-<span><span class="co">#&gt;          qD.UCL</span></span>
-<span><span class="co">#&gt; 1    0.07797626</span></span>
-<span><span class="co">#&gt; 10  14.18736249</span></span>
-<span><span class="co">#&gt; 20  18.06608535</span></span>
-<span><span class="co">#&gt; 30  20.77593896</span></span>
-<span><span class="co">#&gt; 40  23.23121479</span></span>
-<span><span class="co">#&gt; 41   0.07795892</span></span>
-<span><span class="co">#&gt; 50   5.03393753</span></span>
-<span><span class="co">#&gt; 60   5.22844741</span></span>
-<span><span class="co">#&gt; 70   5.30055334</span></span>
-<span><span class="co">#&gt; 80   5.35551211</span></span>
-<span><span class="co">#&gt; 81   0.07793269</span></span>
-<span><span class="co">#&gt; 90   3.73145842</span></span>
-<span><span class="co">#&gt; 100  3.80295150</span></span>
-<span><span class="co">#&gt; 110  3.81669818</span></span>
-<span><span class="co">#&gt; 120  3.82183193</span></span>
+<span><span class="co">#&gt;      Assemblage        SC   t        Method Order.q         qD    qD.LCL</span></span>
+<span><span class="co">#&gt; 1   Assemblage1 0.1465261   1   Rarefaction       0  0.4577010 0.3838308</span></span>
+<span><span class="co">#&gt; 10  Assemblage1 0.9494027 130   Rarefaction       0  7.2497578 0.0000000</span></span>
+<span><span class="co">#&gt; 20  Assemblage1 0.9580480 260      Observed       0 10.0000000 1.3962742</span></span>
+<span><span class="co">#&gt; 30  Assemblage1 0.9653010 383 Extrapolation       0 12.1527849 2.4725003</span></span>
+<span><span class="co">#&gt; 40  Assemblage1 0.9719134 520 Extrapolation       0 14.1154484 3.4587261</span></span>
+<span><span class="co">#&gt; 41  Assemblage1 0.1465261   1   Rarefaction       1  0.4577005 0.3858037</span></span>
+<span><span class="co">#&gt; 50  Assemblage1 0.9494027 130   Rarefaction       1  3.8872824 2.8828462</span></span>
+<span><span class="co">#&gt; 60  Assemblage1 0.9580480 260      Observed       1  4.0886141 3.0836106</span></span>
+<span><span class="co">#&gt; 70  Assemblage1 0.9653010 383 Extrapolation       1  4.1920397 3.2050746</span></span>
+<span><span class="co">#&gt; 80  Assemblage1 0.9719134 520 Extrapolation       1  4.2740551 3.2917196</span></span>
+<span><span class="co">#&gt; 81  Assemblage1 0.1465261   1   Rarefaction       2  0.4576999 0.3883336</span></span>
+<span><span class="co">#&gt; 90  Assemblage1 0.9494027 130   Rarefaction       2  2.9897202 2.3978015</span></span>
+<span><span class="co">#&gt; 100 Assemblage1 0.9580480 260      Observed       2  3.0552319 2.4493834</span></span>
+<span><span class="co">#&gt; 110 Assemblage1 0.9653010 383 Extrapolation       2  3.0768843 2.4779360</span></span>
+<span><span class="co">#&gt; 120 Assemblage1 0.9719134 520 Extrapolation       2  3.0890764 2.4857005</span></span>
+<span><span class="co">#&gt;         qD.UCL</span></span>
+<span><span class="co">#&gt; 1    0.5315712</span></span>
+<span><span class="co">#&gt; 10  14.5068947</span></span>
+<span><span class="co">#&gt; 20  18.6037258</span></span>
+<span><span class="co">#&gt; 30  21.8330694</span></span>
+<span><span class="co">#&gt; 40  24.7721707</span></span>
+<span><span class="co">#&gt; 41   0.5295973</span></span>
+<span><span class="co">#&gt; 50   4.8917187</span></span>
+<span><span class="co">#&gt; 60   5.0936177</span></span>
+<span><span class="co">#&gt; 70   5.1790048</span></span>
+<span><span class="co">#&gt; 80   5.2563907</span></span>
+<span><span class="co">#&gt; 81   0.5270662</span></span>
+<span><span class="co">#&gt; 90   3.5816389</span></span>
+<span><span class="co">#&gt; 100  3.6610805</span></span>
+<span><span class="co">#&gt; 110  3.6758327</span></span>
+<span><span class="co">#&gt; 120  3.6924523</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; NOTE: The above output only shows five estimates for each assemblage; call iNEXT.object$iNextEst$coverage_based to view complete output.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $AsyEst: asymptotic diversity estimates along with related statistics.</span></span>
 <span><span class="co">#&gt;                    Observed Estimator  Est_s.e. 95% Lower 95% Upper</span></span>
-<span><span class="co">#&gt; Species Richness  10.000000 17.996334 7.3307086  3.628409 32.364258</span></span>
-<span><span class="co">#&gt; Shannon diversity  4.264157  4.532674 0.4064015  3.736142  5.329207</span></span>
-<span><span class="co">#&gt; Simpson diversity  3.231632  3.302261 0.2402749  2.831331  3.773191</span></span></code></pre>
+<span><span class="co">#&gt; Species Richness  10.000000 22.451923 8.5534475  5.687474 39.216372</span></span>
+<span><span class="co">#&gt; Shannon diversity  4.088614  4.463869 0.5389215  3.407602  5.520135</span></span>
+<span><span class="co">#&gt; Simpson diversity  3.055232  3.123680 0.2822613  2.570458  3.676902</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -391,44 +394,44 @@ completeness curve.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">int_ext</span><span class="op">$</span><span class="va">iNextEst</span><span class="op">$</span><span class="va">size_based</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_sample</a></span><span class="op">(</span>prop <span class="op">=</span> <span class="fl">0.15</span><span class="op">)</span> <span class="co"># Sample 15% of rows</span></span>
-<span><span class="co">#&gt;     Assemblage    t        Method Order.q          qD     qD.LCL     qD.UCL</span></span>
-<span><span class="co">#&gt; 1  Assemblage1 1817   Rarefaction       2  3.21780739 2.69021811  3.7453967</span></span>
-<span><span class="co">#&gt; 2  Assemblage1 3904 Extrapolation       0 12.60789672 7.02541054 18.1903829</span></span>
-<span><span class="co">#&gt; 3  Assemblage1 2871 Extrapolation       1  4.32191612 3.51027631  5.1335559</span></span>
-<span><span class="co">#&gt; 4  Assemblage1  606   Rarefaction       2  3.06135913 2.58304900  3.5396693</span></span>
-<span><span class="co">#&gt; 5  Assemblage1  243   Rarefaction       0  4.64720825 3.92567958  5.3687369</span></span>
-<span><span class="co">#&gt; 6  Assemblage1 4249 Extrapolation       1  4.40283387 3.55315932  5.2525084</span></span>
-<span><span class="co">#&gt; 7  Assemblage1 3330 Extrapolation       1  4.35332054 3.52725509  5.1793860</span></span>
-<span><span class="co">#&gt; 8  Assemblage1 2871 Extrapolation       0 11.16823550 6.80114788 15.5353231</span></span>
-<span><span class="co">#&gt; 9  Assemblage1 3101 Extrapolation       1  4.33828555 3.51917100  5.1574001</span></span>
-<span><span class="co">#&gt; 10 Assemblage1 4249 Extrapolation       0 13.01761652 7.04481677 18.9904163</span></span>
-<span><span class="co">#&gt; 11 Assemblage1 1696   Rarefaction       0  9.05942507 6.11433729 12.0045128</span></span>
-<span><span class="co">#&gt; 12 Assemblage1  122   Rarefaction       2  2.37424050 2.06285421  2.6856268</span></span>
-<span><span class="co">#&gt; 13 Assemblage1 1212   Rarefaction       0  8.01646774 5.74921988 10.2837156</span></span>
-<span><span class="co">#&gt; 14 Assemblage1    1   Rarefaction       1  0.06782768 0.05549376  0.0801616</span></span>
-<span><span class="co">#&gt; 15 Assemblage1 4364 Extrapolation       1  4.40797808 3.55577337  5.2601828</span></span>
-<span><span class="co">#&gt; 16 Assemblage1  122   Rarefaction       0  3.51417715 3.02217604  4.0061783</span></span>
-<span><span class="co">#&gt; 17 Assemblage1  606   Rarefaction       1  3.88750364 3.24201163  4.5329956</span></span>
-<span><span class="co">#&gt; 18 Assemblage1 1696   Rarefaction       2  3.21194719 2.68628335  3.7376110</span></span>
-<span><span class="co">#&gt;           SC     SC.LCL     SC.UCL</span></span>
-<span><span class="co">#&gt; 1  0.9707125 0.94855277 0.99287221</span></span>
-<span><span class="co">#&gt; 2  0.9817916 0.96120284 1.00000000</span></span>
-<span><span class="co">#&gt; 3  0.9769268 0.95451141 0.99934222</span></span>
-<span><span class="co">#&gt; 4  0.9501860 0.92079918 0.97957284</span></span>
-<span><span class="co">#&gt; 5  0.8925114 0.86064831 0.92437442</span></span>
-<span><span class="co">#&gt; 6  0.9831762 0.96341324 1.00000000</span></span>
-<span><span class="co">#&gt; 7  0.9792311 0.95745329 1.00000000</span></span>
-<span><span class="co">#&gt; 8  0.9769268 0.95451141 0.99934222</span></span>
-<span><span class="co">#&gt; 9  0.9781118 0.95596928 1.00000000</span></span>
-<span><span class="co">#&gt; 10 0.9831762 0.96341324 1.00000000</span></span>
-<span><span class="co">#&gt; 11 0.9699462 0.94763044 0.99226193</span></span>
-<span><span class="co">#&gt; 12 0.8142276 0.76634492 0.86211020</span></span>
-<span><span class="co">#&gt; 13 0.9662391 0.94197884 0.99049929</span></span>
-<span><span class="co">#&gt; 14 0.0205398 0.01541636 0.02566324</span></span>
-<span><span class="co">#&gt; 15 0.9836139 0.96413600 1.00000000</span></span>
-<span><span class="co">#&gt; 16 0.8142276 0.76634492 0.86211020</span></span>
-<span><span class="co">#&gt; 17 0.9501860 0.92079918 0.97957284</span></span>
-<span><span class="co">#&gt; 18 0.9699462 0.94763044 0.99226193</span></span></code></pre></div>
+<span><span class="co">#&gt;     Assemblage   t        Method Order.q         qD    qD.LCL     qD.UCL</span></span>
+<span><span class="co">#&gt; 1  Assemblage1 115   Rarefaction       2  2.9730896 2.4339945  3.5121847</span></span>
+<span><span class="co">#&gt; 2  Assemblage1 274 Extrapolation       1  4.1021361 3.2956020  4.9086703</span></span>
+<span><span class="co">#&gt; 3  Assemblage1 356 Extrapolation       0 11.7145883 7.1280613 16.3011154</span></span>
+<span><span class="co">#&gt; 4  Assemblage1   1   Rarefaction       2  0.4576923 0.3855279  0.5298567</span></span>
+<span><span class="co">#&gt; 5  Assemblage1  58   Rarefaction       2  2.8386028 2.3526166  3.3245891</span></span>
+<span><span class="co">#&gt; 6  Assemblage1 370 Extrapolation       0 11.9440798 7.1978250 16.6903347</span></span>
+<span><span class="co">#&gt; 7  Assemblage1 438 Extrapolation       0 12.9908703 7.4825563 18.4991843</span></span>
+<span><span class="co">#&gt; 8  Assemblage1  72   Rarefaction       2  2.8898855 2.3841974  3.3955736</span></span>
+<span><span class="co">#&gt; 9  Assemblage1  29   Rarefaction       2  2.6012088 2.1978087  3.0046088</span></span>
+<span><span class="co">#&gt; 10 Assemblage1 216   Rarefaction       1  4.0396000 3.2630342  4.8161659</span></span>
+<span><span class="co">#&gt; 11 Assemblage1 520 Extrapolation       0 14.1154484 7.7297582 20.5011385</span></span>
+<span><span class="co">#&gt; 12 Assemblage1   1   Rarefaction       0  0.4576923 0.3855279  0.5298567</span></span>
+<span><span class="co">#&gt; 13 Assemblage1 274 Extrapolation       2  3.0586564 2.4833184  3.6339945</span></span>
+<span><span class="co">#&gt; 14 Assemblage1 329 Extrapolation       2  3.0693374 2.4893393  3.6493355</span></span>
+<span><span class="co">#&gt; 15 Assemblage1 342 Extrapolation       2  3.0713684 2.4904807  3.6522561</span></span>
+<span><span class="co">#&gt; 16 Assemblage1  44   Rarefaction       0  4.8799061 4.0911842  5.6686281</span></span>
+<span><span class="co">#&gt; 17 Assemblage1 301 Extrapolation       1  4.1268537 3.3086420  4.9450654</span></span>
+<span><span class="co">#&gt; 18 Assemblage1 244   Rarefaction       0  9.6887437 6.3825683 12.9949190</span></span>
+<span><span class="co">#&gt;           SC    SC.LCL    SC.UCL</span></span>
+<span><span class="co">#&gt; 1  0.9480325 0.9152425 0.9808225</span></span>
+<span><span class="co">#&gt; 2  0.9589446 0.9274475 0.9904418</span></span>
+<span><span class="co">#&gt; 3  0.9638246 0.9335165 0.9941328</span></span>
+<span><span class="co">#&gt; 4  0.1465235 0.1106875 0.1823595</span></span>
+<span><span class="co">#&gt; 5  0.9297139 0.8892463 0.9701815</span></span>
+<span><span class="co">#&gt; 6  0.9645978 0.9345739 0.9946218</span></span>
+<span><span class="co">#&gt; 7  0.9681246 0.9396764 0.9965727</span></span>
+<span><span class="co">#&gt; 8  0.9382836 0.9002105 0.9763567</span></span>
+<span><span class="co">#&gt; 9  0.8826113 0.8364191 0.9288036</span></span>
+<span><span class="co">#&gt; 10 0.9551929 0.9257415 0.9846442</span></span>
+<span><span class="co">#&gt; 11 0.9719134 0.9455758 0.9982510</span></span>
+<span><span class="co">#&gt; 12 0.1465235 0.1106875 0.1823595</span></span>
+<span><span class="co">#&gt; 13 0.9589446 0.9274475 0.9904418</span></span>
+<span><span class="co">#&gt; 14 0.9622855 0.9314863 0.9930847</span></span>
+<span><span class="co">#&gt; 15 0.9630346 0.9324615 0.9936076</span></span>
+<span><span class="co">#&gt; 16 0.9145171 0.8715972 0.9574371</span></span>
+<span><span class="co">#&gt; 17 0.9606201 0.9294090 0.9918313</span></span>
+<span><span class="co">#&gt; 18 0.9570098 0.9271957 0.9868240</span></span></code></pre></div>
 <p>The <code>$coverage_based</code> data frame provides results
 standardized by sample coverage rather than sample size. For each
 coverage level, it reports the assemblage name, the standardized sample
@@ -445,44 +448,44 @@ rarefaction/extrapolation (R/E) curves.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">int_ext</span><span class="op">$</span><span class="va">iNextEst</span><span class="op">$</span><span class="va">coverage_based</span> <span class="op"><a href="../reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_sample</a></span><span class="op">(</span>prop <span class="op">=</span> <span class="fl">0.15</span><span class="op">)</span> <span class="co"># Sample 15% of rows</span></span>
-<span><span class="co">#&gt;     Assemblage         SC    t        Method Order.q          qD     qD.LCL</span></span>
-<span><span class="co">#&gt; 1  Assemblage1 0.98226537 4019 Extrapolation       2  3.26353436 2.70476727</span></span>
-<span><span class="co">#&gt; 2  Assemblage1 0.98179165 3904 Extrapolation       2  3.26240749 2.70287541</span></span>
-<span><span class="co">#&gt; 3  Assemblage1 0.81422757  122   Rarefaction       0  3.51417722 2.76345678</span></span>
-<span><span class="co">#&gt; 4  Assemblage1 0.95643633  727   Rarefaction       1  3.95904302 3.08373839</span></span>
-<span><span class="co">#&gt; 5  Assemblage1 0.96623906 1212   Rarefaction       1  4.12325291 3.17645120</span></span>
-<span><span class="co">#&gt; 6  Assemblage1 0.89251137  243   Rarefaction       1  3.38854773 2.72370396</span></span>
-<span><span class="co">#&gt; 7  Assemblage1 0.97868123 3216 Extrapolation       2  3.25400711 2.69131604</span></span>
-<span><span class="co">#&gt; 8  Assemblage1 0.98272676 4134 Extrapolation       0 12.88462723 2.96024949</span></span>
-<span><span class="co">#&gt; 9  Assemblage1 0.98272676 4134 Extrapolation       1  4.39747745 3.44560102</span></span>
-<span><span class="co">#&gt; 10 Assemblage1 0.96994619 1696   Rarefaction       0  9.05942515 1.58936781</span></span>
-<span><span class="co">#&gt; 11 Assemblage1 0.98179165 3904 Extrapolation       1  4.38609256 3.43212598</span></span>
-<span><span class="co">#&gt; 12 Assemblage1 0.97436686 2412 Extrapolation       1  4.28501287 3.31986339</span></span>
-<span><span class="co">#&gt; 13 Assemblage1 0.97071249 1817   Rarefaction       0  9.30294984 1.67539080</span></span>
-<span><span class="co">#&gt; 14 Assemblage1 0.97298536 2183 Extrapolation       2  3.23166341 2.66034647</span></span>
-<span><span class="co">#&gt; 15 Assemblage1 0.96994619 1696   Rarefaction       2  3.21194719 2.63938296</span></span>
-<span><span class="co">#&gt; 16 Assemblage1 0.02053992    1   Rarefaction       1  0.06782807 0.05769723</span></span>
-<span><span class="co">#&gt; 17 Assemblage1 0.97752710 2986 Extrapolation       2  3.25034905 2.68445848</span></span>
-<span><span class="co">#&gt; 18 Assemblage1 0.98272676 4134 Extrapolation       2  3.26459926 2.70676993</span></span>
-<span><span class="co">#&gt;         qD.UCL</span></span>
-<span><span class="co">#&gt; 1   3.82230146</span></span>
-<span><span class="co">#&gt; 2   3.82193956</span></span>
-<span><span class="co">#&gt; 3   4.26489765</span></span>
-<span><span class="co">#&gt; 4   4.83434765</span></span>
-<span><span class="co">#&gt; 5   5.07005463</span></span>
-<span><span class="co">#&gt; 6   4.05339150</span></span>
-<span><span class="co">#&gt; 7   3.81669818</span></span>
-<span><span class="co">#&gt; 8  22.80900498</span></span>
-<span><span class="co">#&gt; 9   5.34935387</span></span>
-<span><span class="co">#&gt; 10 16.52948249</span></span>
-<span><span class="co">#&gt; 11  5.34005913</span></span>
-<span><span class="co">#&gt; 12  5.25016235</span></span>
-<span><span class="co">#&gt; 13 16.93050889</span></span>
-<span><span class="co">#&gt; 14  3.80298035</span></span>
-<span><span class="co">#&gt; 15  3.78451142</span></span>
-<span><span class="co">#&gt; 16  0.07795892</span></span>
-<span><span class="co">#&gt; 17  3.81623962</span></span>
-<span><span class="co">#&gt; 18  3.82242859</span></span></code></pre></div>
+<span><span class="co">#&gt;     Assemblage        SC   t        Method Order.q        qD    qD.LCL</span></span>
+<span><span class="co">#&gt; 1  Assemblage1 0.9551929 216   Rarefaction       2  3.041655 2.4361631</span></span>
+<span><span class="co">#&gt; 2  Assemblage1 0.8826114  29   Rarefaction       1  3.168595 2.4624766</span></span>
+<span><span class="co">#&gt; 3  Assemblage1 0.9523985 173   Rarefaction       2  3.021932 2.4158888</span></span>
+<span><span class="co">#&gt; 4  Assemblage1 0.9551929 216   Rarefaction       0  9.125750 0.8550295</span></span>
+<span><span class="co">#&gt; 5  Assemblage1 0.9589446 274 Extrapolation       1  4.102136 3.0977334</span></span>
+<span><span class="co">#&gt; 6  Assemblage1 0.9719134 520 Extrapolation       0 14.115448 3.4587261</span></span>
+<span><span class="co">#&gt; 7  Assemblage1 0.9622855 329 Extrapolation       2  3.069337 2.4666276</span></span>
+<span><span class="co">#&gt; 8  Assemblage1 0.9514096 158   Rarefaction       0  7.885387 0.2687914</span></span>
+<span><span class="co">#&gt; 9  Assemblage1 0.9542194 201   Rarefaction       2  3.035706 2.4296699</span></span>
+<span><span class="co">#&gt; 10 Assemblage1 0.9494027 130   Rarefaction       2  2.989720 2.3978015</span></span>
+<span><span class="co">#&gt; 11 Assemblage1 0.9480325 115   Rarefaction       1  3.845925 2.8453109</span></span>
+<span><span class="co">#&gt; 12 Assemblage1 0.9638246 356 Extrapolation       2  3.073392 2.4742850</span></span>
+<span><span class="co">#&gt; 13 Assemblage1 0.9681246 438 Extrapolation       1  4.228537 3.2450702</span></span>
+<span><span class="co">#&gt; 14 Assemblage1 0.9622855 329 Extrapolation       0 11.257748 1.9902402</span></span>
+<span><span class="co">#&gt; 15 Assemblage1 0.9494027 130   Rarefaction       0  7.249758 0.0000000</span></span>
+<span><span class="co">#&gt; 16 Assemblage1 0.9480325 115   Rarefaction       2  2.973090 2.3834818</span></span>
+<span><span class="co">#&gt; 17 Assemblage1 0.9561014 230   Rarefaction       0  9.410157 1.0235024</span></span>
+<span><span class="co">#&gt; 18 Assemblage1 0.9598221 288 Extrapolation       1  4.115171 3.1120128</span></span>
+<span><span class="co">#&gt;       qD.UCL</span></span>
+<span><span class="co">#&gt; 1   3.647147</span></span>
+<span><span class="co">#&gt; 2   3.874713</span></span>
+<span><span class="co">#&gt; 3   3.627975</span></span>
+<span><span class="co">#&gt; 4  17.396470</span></span>
+<span><span class="co">#&gt; 5   5.106539</span></span>
+<span><span class="co">#&gt; 6  24.772171</span></span>
+<span><span class="co">#&gt; 7   3.672047</span></span>
+<span><span class="co">#&gt; 8  15.501983</span></span>
+<span><span class="co">#&gt; 9   3.641743</span></span>
+<span><span class="co">#&gt; 10  3.581639</span></span>
+<span><span class="co">#&gt; 11  4.846540</span></span>
+<span><span class="co">#&gt; 12  3.672500</span></span>
+<span><span class="co">#&gt; 13  5.212004</span></span>
+<span><span class="co">#&gt; 14 20.525256</span></span>
+<span><span class="co">#&gt; 15 14.506895</span></span>
+<span><span class="co">#&gt; 16  3.562697</span></span>
+<span><span class="co">#&gt; 17 17.796812</span></span>
+<span><span class="co">#&gt; 18  5.118329</span></span></code></pre></div>
 <p>Note that in this example, we do not have a specific assemblage or
 site. Here, “Assemblage” refers to the different strata levels (for
 example, habitat types such as “Savanna,” “Forest,” etc.) where the

@@ -82,9 +82,9 @@ reaches 1. Simpson's Index is computed using the following formula:
 where \\n\_{i}\\ is the number of individuals in species *i*, N = total
 number of individuals of all species, and \\\frac{n\_{i}}{N} = pi\\
 (proportion of individuals of species *i*), and S = species richness.
-The value of Simpson’s *D* ranges from 0 to 1, with 0 representing
+The value of Simpson's *D* ranges from 0 to 1, with 0 representing
 infinite diversity and 1 representing no diversity, so the larger the
-value of D, the lower the diversity. For this reason, Simpson’s index is
+value of D, the lower the diversity. For this reason, Simpson's index is
 often as its complement (*1-D*). Simpson's Dominance Index is the
 inverse of the Simpson's Index (\\1/D\\).
 
@@ -126,7 +126,7 @@ indicates that 1 or few species dominate the community.
 ## References
 
 Pielou, E.C. (1966). The measurement of diversity in different types of
-biological collections. Journal of Theoretical Biology, 13, pp. 131–144.
+biological collections. Journal of Theoretical Biology, 13, pp. 131-144.
 [doi:10.1016/0022-5193(66)90013-0](https://doi.org/10.1016/0022-5193%2866%2990013-0)
 .
 
@@ -140,7 +140,9 @@ System Technical Journal, 27, pp.
 ## Examples
 
 ``` r
-cam_data <- read.csv(system.file('penessoulou_season1.csv', package = 'ct'))
+data(penessoulou)
+cam_data <- penessoulou %>%
+  dplyr::filter(project == "Last")
 
 # Transform data to community format and compute diversity indices
 alpha1 <- cam_data %>%
@@ -163,22 +165,20 @@ alpha2 <- cam_data %>%
     index = c("shannon", "evenness", "invsimpson")
   )
 alpha2
-#> # A tibble: 13 × 4
+#> # A tibble: 11 × 4
 #>    camera          shannon evenness invsimpson
 #>    <chr>             <dbl>    <dbl>      <dbl>
 #>  1 CAMERA 10         0.103    0.045       1.04
 #>  2 CAMERA 3          0.974    0.423       2.46
-#>  3 CAMERA 5          0.893    0.388       2.18
+#>  3 CAMERA 5          0.913    0.397       2.23
 #>  4 CAMERA 8          0.224    0.097       1.12
 #>  5 CAMERA 2          0.509    0.221       1.34
 #>  6 CAMERA 1          1.14     0.497       2.73
 #>  7 CAMERA 12         0        0           1   
-#>  8 CAMERA 4          1.31     0.57        3.55
+#>  8 CAMERA 4          0.96     0.417       2.31
 #>  9 CAMERA 11         0        0           1   
 #> 10 CAMERA 3 - Bait   0.562    0.244       1.6 
 #> 11 CAMERA 1 - Bait   0        0           1   
-#> 12 CAMERA 19         0.637    0.276       1.80
-#> 13 FCPEN             0.131    0.057       1.06
 # Compare results
 all(alpha1 == alpha2) # TRUE
 #> [1] TRUE

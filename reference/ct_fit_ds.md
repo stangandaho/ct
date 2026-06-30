@@ -48,7 +48,7 @@ ct_fit_ds(
 
   - `Region.Label`: label for a given stratum
 
-  - `Area`: area of the strata⁠ in km^2
+  - `Area`: area of the strata in km^2
 
   - `fraction`: fraction of a full circle covered (field of view/360)
     Other columns could be used as covariate. Note that in the simplest

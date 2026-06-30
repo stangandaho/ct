@@ -102,8 +102,10 @@ version 1.3.4. https://CRAN.R-project.org/package=activity
 
 ``` r
 library(dplyr)
+data(penessoulou)
 
-read.csv(system.file("penessoulou_season1.csv", package = "ct")) %>%
+cam_data <- penessoulou %>%
+  dplyr::filter(project == "Last") %>%
  dplyr::filter(species == "Erythrocebus patas") %>%
  # Select independent events based on a given threshold
  ct::ct_independence(species_column = species,
@@ -113,18 +115,4 @@ read.csv(system.file("penessoulou_season1.csv", package = "ct")) %>%
  # Transform Time to Solar Time
  ct_solartime(data = ., date = datetime, longitude = longitude, latitude = latitude,
                crs = "EPSG:32631", time_zone = 1)
-#> # A tibble: 77 × 5
-#>    longitude latitude datetime            clock solar
-#>        <dbl>    <dbl> <dttm>              <dbl> <dbl>
-#>  1      1.57     9.28 2024-03-17 15:14:29  3.99  3.97
-#>  2      1.57     9.28 2024-03-20 11:32:33  3.02  3.00
-#>  3      1.57     9.28 2024-03-21 14:34:27  3.82  3.80
-#>  4      1.57     9.28 2024-03-21 14:54:21  3.90  3.89
-#>  5      1.57     9.28 2024-03-22 14:23:41  3.77  3.75
-#>  6      1.57     9.28 2024-03-22 14:51:09  3.89  3.88
-#>  7      1.57     9.28 2024-03-25 13:38:37  3.57  3.56
-#>  8      1.57     9.28 2024-03-25 13:50:19  3.62  3.61
-#>  9      1.57     9.28 2024-03-28 17:06:38  4.48  4.48
-#> 10      1.57     9.28 2024-03-29 11:22:19  2.98  2.97
-#> # ℹ 67 more rows
 ```

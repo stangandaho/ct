@@ -45,7 +45,7 @@ during daytime deployments. It has the following columns:
 **DaytimeDistances**, but includes **only** observations during the
 species' peak activity periods (no dawn or late day records).
 
-**VideoStartTimesFullDays**: A tibble of camera‑trigger times for duiker
+**VideoStartTimesFullDays**: A tibble of camera-trigger times for duiker
 videos that were recorded on **full day deployments** (i.e. days without
 researcher visits). Columns include:
 

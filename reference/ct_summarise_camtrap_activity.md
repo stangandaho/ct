@@ -52,14 +52,16 @@ A tibble with activity summary statistics for each deployment.
 
 ``` r
 # Get activity summary
-camtrap_data <- read.csv(ct:::table_files()[1]) %>%
-dplyr::filter(project == "Last")
+library(dplyr)
+data(penessoulou)
+camtrap_data <- penessoulou %>%
+  filter(project == "Last")
 
-  ct_summarise_camtrap_activity(data = camtrap_data,
-                                deployment_column = "camera",
-                                datetime_column = datetimes,
-                                threshold = 15,
-                                time_unit = "days")
+ct_summarise_camtrap_activity(data = camtrap_data,
+                              deployment_column = "camera",
+                              datetime_column = datetimes,
+                              threshold = 15,
+                              time_unit = "days")
 #> Warning: No deployment has a gap exceeding 15 days.
 #> Warning: No deployment has a gap exceeding 15 days.
 #> Warning: No deployment has a gap exceeding 15 days.

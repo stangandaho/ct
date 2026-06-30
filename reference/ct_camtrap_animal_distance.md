@@ -14,7 +14,8 @@ ct_camtrap_animal_distance(fov, forward_distance, ref_halfwidth, animal_offset)
 - fov:
 
   Numeric. The camera's horizontal field of view in degrees. Common
-  values range from 30° to 60° depending on camera model.
+  values range from \\30^\circ\\ to \\60^\circ\\ depending on camera
+  model.
 
 - forward_distance:
 

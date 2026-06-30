@@ -75,9 +75,12 @@ a ggplot2 object
 ## Examples
 
 ``` r
+# \donttest{
 if (requireNamespace("iNEXT", quietly = TRUE)) {
 ## Import example data
-camdata1 <- read.csv(ct:::table_files()[1]) %>%
+data(penessoulou)
+camdata1 <- penessoulou %>%
+  dplyr::filter(project == "Last") %>%
   dplyr::mutate(site = "pene") %>%
   # remove consecutive entry of the same species at the same location within 60s
   ct_independence(species_column = species,
@@ -112,4 +115,6 @@ ct_plot_inext(int_ext, type = 1, color_var = "Order.q")
 ct_plot_inext(int_ext, type = 1, facet_var = "Order.q")
  }
 #> Warning: invalid color.var setting, the iNEXT object do not consist multiple assemblages, change setting as Order.q
+
+# }
 ```

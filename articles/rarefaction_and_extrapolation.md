@@ -78,8 +78,11 @@ Let’s walk through a complete analysis using camera trap data from the
 library(ct)
 library(dplyr)
 
-# Import and prepare camera trap data
-camdata1 <- read.csv(ct:::table_files()[1]) %>% 
+# Load prepare camera trap data
+data(penessoulou)
+
+camdata1 <- penessoulou %>% 
+  dplyr::filter(project == "Last")%>% 
   dplyr::mutate(site = "pene") %>% 
   # Remove consecutive detections of the same species within 60 seconds
   ct_independence(species_column = species, 
@@ -90,17 +93,17 @@ camdata1 <- read.csv(ct:::table_files()[1]) %>%
                   )
 
 head(camdata1)
-#> # A tibble: 6 × 18
-#>   project camera   species       image_name number Make  Model   FOV dates times
-#>   <chr>   <chr>    <chr>         <chr>       <int> <chr> <chr> <dbl> <chr> <chr>
-#> 1 Last    CAMERA 1 Canis adustus DSCF0017.…      1 Gard… A3S    47.4 3/24… 22:0…
-#> 2 Last    CAMERA 1 Canis adustus DSCF0045.…      1 Gard… A3S    47.4 3/27… 0:30…
-#> 3 Last    CAMERA 1 Canis adustus DSCF0057.…      1 Gard… A3S    47.4 3/27… 0:33…
-#> 4 Last    CAMERA 1 Canis adustus DSCF0061.…      1 Gard… A3S    47.4 3/27… 1:21…
-#> 5 Last    CAMERA 1 Canis adustus DSCF0065.…      1 Gard… A3S    47.4 3/27… 1:27…
-#> 6 Last    CAMERA 1 Canis adustus DSCF0081.…      1 Gard… A3S    47.4 3/27… 22:2…
-#> # ℹ 8 more variables: FocalLength <dbl>, diel <dbl>, datetime <dttm>,
-#> #   deltatime <int>, longitude <int>, latitude <int>, radian <dbl>, site <chr>
+#> # A tibble: 6 × 13
+#>   project image_name   camera   make     model species       number dates  times
+#>   <chr>   <chr>        <chr>    <chr>    <chr> <chr>          <int> <chr>  <chr>
+#> 1 Last    DSCF0017.JPG CAMERA 1 GardePro A3S   Canis adustus      1 3/24/… 22:0…
+#> 2 Last    DSCF0045.JPG CAMERA 1 GardePro A3S   Canis adustus      1 3/27/… 0:30…
+#> 3 Last    DSCF0057.JPG CAMERA 1 GardePro A3S   Canis adustus      1 3/27/… 0:33…
+#> 4 Last    DSCF0061.JPG CAMERA 1 GardePro A3S   Canis adustus      1 3/27/… 1:21…
+#> 5 Last    DSCF0065.JPG CAMERA 1 GardePro A3S   Canis adustus      1 3/27/… 1:27…
+#> 6 Last    DSCF0081.JPG CAMERA 1 GardePro A3S   Canis adustus      1 3/27/… 22:2…
+#> # ℹ 4 more variables: datetime <dttm>, longitude <int>, latitude <int>,
+#> #   site <chr>
 ```
 
 ### Create Daily Sampling Units
@@ -120,7 +123,7 @@ camday <- ct_camera_day(
   size_column = number
 )
 camday
-#> # A tibble: 21,820 × 5
+#> # A tibble: 2,600 × 5
 #>    camera   date       species                 number sampling_unit   
 #>    <chr>    <date>     <chr>                    <int> <chr>           
 #>  1 CAMERA 1 2024-03-24 Canis adustus                1 CAMERA 120240324
@@ -133,7 +136,7 @@ camday
 #>  8 CAMERA 1 2024-03-24 Syncerus caffer              1 CAMERA 120240324
 #>  9 CAMERA 1 2024-03-24 Thryonomys swinderianus      0 CAMERA 120240324
 #> 10 CAMERA 1 2024-03-24 Tragelaphus scriptus         0 CAMERA 120240324
-#> # ℹ 21,810 more rows
+#> # ℹ 2,590 more rows
 ```
 
 This creates a dataset where each row represents one day of sampling at
@@ -165,89 +168,89 @@ which is presented as follows:
     #> $class: iNEXT
     #> 
     #> $DataInfo: basic data information
-    #>   Assemblage    T   U S.obs    SC Q1 Q2 Q3 Q4 Q5 Q6 Q7 Q8 Q9 Q10
-    #> 1     site.1 2182 148    10 0.973  4  1  0  0  0  1  0  0  0   0
+    #>   Assemblage   T   U S.obs    SC Q1 Q2 Q3 Q4 Q5 Q6 Q7 Q8 Q9 Q10
+    #> 1     site.1 260 119    10 0.958  5  1  0  0  0  0  0  0  0   1
     #> 
     #> $iNextEst: diversity estimates with rarefied and extrapolated samples.
     #> $size_based (LCL and UCL are obtained for fixed size.)
     #> 
-    #>      Assemblage    t        Method Order.q          qD     qD.LCL     qD.UCL
-    #> 1   Assemblage1    1   Rarefaction       0  0.06782768 0.05549376  0.0801616
-    #> 10  Assemblage1 1091   Rarefaction       0  7.73388404 5.65183611  9.8159320
-    #> 20  Assemblage1 2182      Observed       0 10.00000000 6.45278453 13.5472155
-    #> 30  Assemblage1 3216 Extrapolation       0 11.68742261 6.90948356 16.4653617
-    #> 40  Assemblage1 4364 Extrapolation       0 13.14714588 7.04674821 19.2475435
-    #> 41  Assemblage1    1   Rarefaction       1  0.06782768 0.05549376  0.0801616
-    #> 50  Assemblage1 1091   Rarefaction       1  4.09322273 3.37870474  4.8077407
-    #> 60  Assemblage1 2182      Observed       1  4.26415736 3.47825185  5.0500629
-    #> 70  Assemblage1 3216 Extrapolation       1  4.34598713 3.52332286  5.1686514
-    #> 80  Assemblage1 4364 Extrapolation       1  4.40797808 3.55577337  5.2601828
-    #> 81  Assemblage1    1   Rarefaction       2  0.06782768 0.05549376  0.0801616
-    #> 90  Assemblage1 1091   Rarefaction       2  3.16396450 2.65383192  3.6740971
-    #> 100 Assemblage1 2182      Observed       2  3.23163175 2.69947555  3.7637880
-    #> 110 Assemblage1 3216 Extrapolation       2  3.25400711 2.71438537  3.7936288
-    #> 120 Assemblage1 4364 Extrapolation       2  3.26656250 2.72271162  3.8104134
-    #>            SC     SC.LCL     SC.UCL
-    #> 1   0.0205398 0.01541636 0.02566324
-    #> 10  0.9648520 0.93976793 0.98993597
-    #> 20  0.9729792 0.95053086 0.99542748
-    #> 30  0.9786812 0.95671169 1.00000000
-    #> 40  0.9836139 0.96413600 1.00000000
-    #> 41  0.0205398 0.01541636 0.02566324
-    #> 50  0.9648520 0.93976793 0.98993597
-    #> 60  0.9729792 0.95053086 0.99542748
-    #> 70  0.9786812 0.95671169 1.00000000
-    #> 80  0.9836139 0.96413600 1.00000000
-    #> 81  0.0205398 0.01541636 0.02566324
-    #> 90  0.9648520 0.93976793 0.98993597
-    #> 100 0.9729792 0.95053086 0.99542748
-    #> 110 0.9786812 0.95671169 1.00000000
-    #> 120 0.9836139 0.96413600 1.00000000
+    #>      Assemblage   t        Method Order.q         qD    qD.LCL     qD.UCL
+    #> 1   Assemblage1   1   Rarefaction       0  0.4576923 0.3855279  0.5298567
+    #> 10  Assemblage1 130   Rarefaction       0  7.2497576 5.2696274  9.2298879
+    #> 20  Assemblage1 260      Observed       0 10.0000000 6.5199444 13.4800556
+    #> 30  Assemblage1 383 Extrapolation       0 12.1527849 7.2589429 17.0466269
+    #> 40  Assemblage1 520 Extrapolation       0 14.1154484 7.7297582 20.5011385
+    #> 41  Assemblage1   1   Rarefaction       1  0.4576923 0.3855279  0.5298567
+    #> 50  Assemblage1 130   Rarefaction       1  3.8872824 3.1828793  4.5916855
+    #> 60  Assemblage1 260      Observed       1  4.0886141 3.2885043  4.8887240
+    #> 70  Assemblage1 383 Extrapolation       1  4.1920397 3.3434437  5.0406357
+    #> 80  Assemblage1 520 Extrapolation       1  4.2740551 3.3880481  5.1600622
+    #> 81  Assemblage1   1   Rarefaction       2  0.4576923 0.3855279  0.5298567
+    #> 90  Assemblage1 130   Rarefaction       2  2.9897202 2.4437318  3.5357085
+    #> 100 Assemblage1 260      Observed       2  3.0552319 2.4813815  3.6290823
+    #> 110 Assemblage1 383 Extrapolation       2  3.0768843 2.4935752  3.6601935
+    #> 120 Assemblage1 520 Extrapolation       2  3.0890764 2.5003862  3.6777666
+    #>            SC    SC.LCL    SC.UCL
+    #> 1   0.1465235 0.1106875 0.1823595
+    #> 10  0.9494027 0.9177360 0.9810694
+    #> 20  0.9580480 0.9264475 0.9896484
+    #> 30  0.9653010 0.9355559 0.9950460
+    #> 40  0.9719134 0.9455758 0.9982510
+    #> 41  0.1465235 0.1106875 0.1823595
+    #> 50  0.9494027 0.9177360 0.9810694
+    #> 60  0.9580480 0.9264475 0.9896484
+    #> 70  0.9653010 0.9355559 0.9950460
+    #> 80  0.9719134 0.9455758 0.9982510
+    #> 81  0.1465235 0.1106875 0.1823595
+    #> 90  0.9494027 0.9177360 0.9810694
+    #> 100 0.9580480 0.9264475 0.9896484
+    #> 110 0.9653010 0.9355559 0.9950460
+    #> 120 0.9719134 0.9455758 0.9982510
     #> 
     #> NOTE: The above output only shows five estimates for each assemblage; call iNEXT.object$iNextEst$size_based to view complete output.
     #> 
     #> $coverage_based (LCL and UCL are obtained for fixed coverage; interval length is wider due to varying size in bootstraps.)
     #> 
-    #>      Assemblage         SC    t        Method Order.q          qD     qD.LCL
-    #> 1   Assemblage1 0.02053992    1   Rarefaction       0  0.06782807 0.05767988
-    #> 10  Assemblage1 0.96485195 1091   Rarefaction       0  7.73388398 1.28040548
-    #> 20  Assemblage1 0.97297917 2182      Observed       0 10.00000000 1.93391465
-    #> 30  Assemblage1 0.97868123 3216 Extrapolation       0 11.68742261 2.59890626
-    #> 40  Assemblage1 0.98361385 4364 Extrapolation       0 13.14714588 3.06307696
-    #> 41  Assemblage1 0.02053992    1   Rarefaction       1  0.06782807 0.05769723
-    #> 50  Assemblage1 0.96485195 1091   Rarefaction       1  4.09322273 3.15250792
-    #> 60  Assemblage1 0.97297917 2182      Observed       1  4.26415736 3.29986732
-    #> 70  Assemblage1 0.97868123 3216 Extrapolation       1  4.34598713 3.39142092
-    #> 80  Assemblage1 0.98361385 4364 Extrapolation       1  4.40797808 3.46044406
-    #> 81  Assemblage1 0.02053992    1   Rarefaction       2  0.06782807 0.05772344
-    #> 90  Assemblage1 0.96485195 1091   Rarefaction       2  3.16396449 2.59647057
-    #> 100 Assemblage1 0.97297917 2182      Observed       2  3.23163175 2.66031200
-    #> 110 Assemblage1 0.97868123 3216 Extrapolation       2  3.25400711 2.69131604
-    #> 120 Assemblage1 0.98361385 4364 Extrapolation       2  3.26656250 2.71129307
-    #>          qD.UCL
-    #> 1    0.07797626
-    #> 10  14.18736249
-    #> 20  18.06608535
-    #> 30  20.77593896
-    #> 40  23.23121479
-    #> 41   0.07795892
-    #> 50   5.03393753
-    #> 60   5.22844741
-    #> 70   5.30055334
-    #> 80   5.35551211
-    #> 81   0.07793269
-    #> 90   3.73145842
-    #> 100  3.80295150
-    #> 110  3.81669818
-    #> 120  3.82183193
+    #>      Assemblage        SC   t        Method Order.q         qD    qD.LCL
+    #> 1   Assemblage1 0.1465261   1   Rarefaction       0  0.4577010 0.3838308
+    #> 10  Assemblage1 0.9494027 130   Rarefaction       0  7.2497578 0.0000000
+    #> 20  Assemblage1 0.9580480 260      Observed       0 10.0000000 1.3962742
+    #> 30  Assemblage1 0.9653010 383 Extrapolation       0 12.1527849 2.4725003
+    #> 40  Assemblage1 0.9719134 520 Extrapolation       0 14.1154484 3.4587261
+    #> 41  Assemblage1 0.1465261   1   Rarefaction       1  0.4577005 0.3858037
+    #> 50  Assemblage1 0.9494027 130   Rarefaction       1  3.8872824 2.8828462
+    #> 60  Assemblage1 0.9580480 260      Observed       1  4.0886141 3.0836106
+    #> 70  Assemblage1 0.9653010 383 Extrapolation       1  4.1920397 3.2050746
+    #> 80  Assemblage1 0.9719134 520 Extrapolation       1  4.2740551 3.2917196
+    #> 81  Assemblage1 0.1465261   1   Rarefaction       2  0.4576999 0.3883336
+    #> 90  Assemblage1 0.9494027 130   Rarefaction       2  2.9897202 2.3978015
+    #> 100 Assemblage1 0.9580480 260      Observed       2  3.0552319 2.4493834
+    #> 110 Assemblage1 0.9653010 383 Extrapolation       2  3.0768843 2.4779360
+    #> 120 Assemblage1 0.9719134 520 Extrapolation       2  3.0890764 2.4857005
+    #>         qD.UCL
+    #> 1    0.5315712
+    #> 10  14.5068947
+    #> 20  18.6037258
+    #> 30  21.8330694
+    #> 40  24.7721707
+    #> 41   0.5295973
+    #> 50   4.8917187
+    #> 60   5.0936177
+    #> 70   5.1790048
+    #> 80   5.2563907
+    #> 81   0.5270662
+    #> 90   3.5816389
+    #> 100  3.6610805
+    #> 110  3.6758327
+    #> 120  3.6924523
     #> 
     #> NOTE: The above output only shows five estimates for each assemblage; call iNEXT.object$iNextEst$coverage_based to view complete output.
     #> 
     #> $AsyEst: asymptotic diversity estimates along with related statistics.
     #>                    Observed Estimator  Est_s.e. 95% Lower 95% Upper
-    #> Species Richness  10.000000 17.996334 7.3307086  3.628409 32.364258
-    #> Shannon diversity  4.264157  4.532674 0.4064015  3.736142  5.329207
-    #> Simpson diversity  3.231632  3.302261 0.2402749  2.831331  3.773191
+    #> Species Richness  10.000000 22.451923 8.5534475  5.687474 39.216372
+    #> Shannon diversity  4.088614  4.463869 0.5389215  3.407602  5.520135
+    #> Simpson diversity  3.055232  3.123680 0.2822613  2.570458  3.676902
 
 ## Understanding the Output
 
@@ -289,44 +292,44 @@ generate the sample completeness curve.
 
 int_ext$iNextEst$size_based %>% 
   dplyr::slice_sample(prop = 0.15) # Sample 15% of rows
-#>     Assemblage    t        Method Order.q          qD     qD.LCL     qD.UCL
-#> 1  Assemblage1 1817   Rarefaction       2  3.21780739 2.69021811  3.7453967
-#> 2  Assemblage1 3904 Extrapolation       0 12.60789672 7.02541054 18.1903829
-#> 3  Assemblage1 2871 Extrapolation       1  4.32191612 3.51027631  5.1335559
-#> 4  Assemblage1  606   Rarefaction       2  3.06135913 2.58304900  3.5396693
-#> 5  Assemblage1  243   Rarefaction       0  4.64720825 3.92567958  5.3687369
-#> 6  Assemblage1 4249 Extrapolation       1  4.40283387 3.55315932  5.2525084
-#> 7  Assemblage1 3330 Extrapolation       1  4.35332054 3.52725509  5.1793860
-#> 8  Assemblage1 2871 Extrapolation       0 11.16823550 6.80114788 15.5353231
-#> 9  Assemblage1 3101 Extrapolation       1  4.33828555 3.51917100  5.1574001
-#> 10 Assemblage1 4249 Extrapolation       0 13.01761652 7.04481677 18.9904163
-#> 11 Assemblage1 1696   Rarefaction       0  9.05942507 6.11433729 12.0045128
-#> 12 Assemblage1  122   Rarefaction       2  2.37424050 2.06285421  2.6856268
-#> 13 Assemblage1 1212   Rarefaction       0  8.01646774 5.74921988 10.2837156
-#> 14 Assemblage1    1   Rarefaction       1  0.06782768 0.05549376  0.0801616
-#> 15 Assemblage1 4364 Extrapolation       1  4.40797808 3.55577337  5.2601828
-#> 16 Assemblage1  122   Rarefaction       0  3.51417715 3.02217604  4.0061783
-#> 17 Assemblage1  606   Rarefaction       1  3.88750364 3.24201163  4.5329956
-#> 18 Assemblage1 1696   Rarefaction       2  3.21194719 2.68628335  3.7376110
-#>           SC     SC.LCL     SC.UCL
-#> 1  0.9707125 0.94855277 0.99287221
-#> 2  0.9817916 0.96120284 1.00000000
-#> 3  0.9769268 0.95451141 0.99934222
-#> 4  0.9501860 0.92079918 0.97957284
-#> 5  0.8925114 0.86064831 0.92437442
-#> 6  0.9831762 0.96341324 1.00000000
-#> 7  0.9792311 0.95745329 1.00000000
-#> 8  0.9769268 0.95451141 0.99934222
-#> 9  0.9781118 0.95596928 1.00000000
-#> 10 0.9831762 0.96341324 1.00000000
-#> 11 0.9699462 0.94763044 0.99226193
-#> 12 0.8142276 0.76634492 0.86211020
-#> 13 0.9662391 0.94197884 0.99049929
-#> 14 0.0205398 0.01541636 0.02566324
-#> 15 0.9836139 0.96413600 1.00000000
-#> 16 0.8142276 0.76634492 0.86211020
-#> 17 0.9501860 0.92079918 0.97957284
-#> 18 0.9699462 0.94763044 0.99226193
+#>     Assemblage   t        Method Order.q         qD    qD.LCL     qD.UCL
+#> 1  Assemblage1 115   Rarefaction       2  2.9730896 2.4339945  3.5121847
+#> 2  Assemblage1 274 Extrapolation       1  4.1021361 3.2956020  4.9086703
+#> 3  Assemblage1 356 Extrapolation       0 11.7145883 7.1280613 16.3011154
+#> 4  Assemblage1   1   Rarefaction       2  0.4576923 0.3855279  0.5298567
+#> 5  Assemblage1  58   Rarefaction       2  2.8386028 2.3526166  3.3245891
+#> 6  Assemblage1 370 Extrapolation       0 11.9440798 7.1978250 16.6903347
+#> 7  Assemblage1 438 Extrapolation       0 12.9908703 7.4825563 18.4991843
+#> 8  Assemblage1  72   Rarefaction       2  2.8898855 2.3841974  3.3955736
+#> 9  Assemblage1  29   Rarefaction       2  2.6012088 2.1978087  3.0046088
+#> 10 Assemblage1 216   Rarefaction       1  4.0396000 3.2630342  4.8161659
+#> 11 Assemblage1 520 Extrapolation       0 14.1154484 7.7297582 20.5011385
+#> 12 Assemblage1   1   Rarefaction       0  0.4576923 0.3855279  0.5298567
+#> 13 Assemblage1 274 Extrapolation       2  3.0586564 2.4833184  3.6339945
+#> 14 Assemblage1 329 Extrapolation       2  3.0693374 2.4893393  3.6493355
+#> 15 Assemblage1 342 Extrapolation       2  3.0713684 2.4904807  3.6522561
+#> 16 Assemblage1  44   Rarefaction       0  4.8799061 4.0911842  5.6686281
+#> 17 Assemblage1 301 Extrapolation       1  4.1268537 3.3086420  4.9450654
+#> 18 Assemblage1 244   Rarefaction       0  9.6887437 6.3825683 12.9949190
+#>           SC    SC.LCL    SC.UCL
+#> 1  0.9480325 0.9152425 0.9808225
+#> 2  0.9589446 0.9274475 0.9904418
+#> 3  0.9638246 0.9335165 0.9941328
+#> 4  0.1465235 0.1106875 0.1823595
+#> 5  0.9297139 0.8892463 0.9701815
+#> 6  0.9645978 0.9345739 0.9946218
+#> 7  0.9681246 0.9396764 0.9965727
+#> 8  0.9382836 0.9002105 0.9763567
+#> 9  0.8826113 0.8364191 0.9288036
+#> 10 0.9551929 0.9257415 0.9846442
+#> 11 0.9719134 0.9455758 0.9982510
+#> 12 0.1465235 0.1106875 0.1823595
+#> 13 0.9589446 0.9274475 0.9904418
+#> 14 0.9622855 0.9314863 0.9930847
+#> 15 0.9630346 0.9324615 0.9936076
+#> 16 0.9145171 0.8715972 0.9574371
+#> 17 0.9606201 0.9294090 0.9918313
+#> 18 0.9570098 0.9271957 0.9868240
 ```
 
 The `$coverage_based` data frame provides results standardized by sample
@@ -345,44 +348,44 @@ construct the coverage-based rarefaction/extrapolation (R/E) curves.
 
 int_ext$iNextEst$coverage_based %>% 
   dplyr::slice_sample(prop = 0.15) # Sample 15% of rows
-#>     Assemblage         SC    t        Method Order.q          qD     qD.LCL
-#> 1  Assemblage1 0.98226537 4019 Extrapolation       2  3.26353436 2.70476727
-#> 2  Assemblage1 0.98179165 3904 Extrapolation       2  3.26240749 2.70287541
-#> 3  Assemblage1 0.81422757  122   Rarefaction       0  3.51417722 2.76345678
-#> 4  Assemblage1 0.95643633  727   Rarefaction       1  3.95904302 3.08373839
-#> 5  Assemblage1 0.96623906 1212   Rarefaction       1  4.12325291 3.17645120
-#> 6  Assemblage1 0.89251137  243   Rarefaction       1  3.38854773 2.72370396
-#> 7  Assemblage1 0.97868123 3216 Extrapolation       2  3.25400711 2.69131604
-#> 8  Assemblage1 0.98272676 4134 Extrapolation       0 12.88462723 2.96024949
-#> 9  Assemblage1 0.98272676 4134 Extrapolation       1  4.39747745 3.44560102
-#> 10 Assemblage1 0.96994619 1696   Rarefaction       0  9.05942515 1.58936781
-#> 11 Assemblage1 0.98179165 3904 Extrapolation       1  4.38609256 3.43212598
-#> 12 Assemblage1 0.97436686 2412 Extrapolation       1  4.28501287 3.31986339
-#> 13 Assemblage1 0.97071249 1817   Rarefaction       0  9.30294984 1.67539080
-#> 14 Assemblage1 0.97298536 2183 Extrapolation       2  3.23166341 2.66034647
-#> 15 Assemblage1 0.96994619 1696   Rarefaction       2  3.21194719 2.63938296
-#> 16 Assemblage1 0.02053992    1   Rarefaction       1  0.06782807 0.05769723
-#> 17 Assemblage1 0.97752710 2986 Extrapolation       2  3.25034905 2.68445848
-#> 18 Assemblage1 0.98272676 4134 Extrapolation       2  3.26459926 2.70676993
-#>         qD.UCL
-#> 1   3.82230146
-#> 2   3.82193956
-#> 3   4.26489765
-#> 4   4.83434765
-#> 5   5.07005463
-#> 6   4.05339150
-#> 7   3.81669818
-#> 8  22.80900498
-#> 9   5.34935387
-#> 10 16.52948249
-#> 11  5.34005913
-#> 12  5.25016235
-#> 13 16.93050889
-#> 14  3.80298035
-#> 15  3.78451142
-#> 16  0.07795892
-#> 17  3.81623962
-#> 18  3.82242859
+#>     Assemblage        SC   t        Method Order.q        qD    qD.LCL
+#> 1  Assemblage1 0.9551929 216   Rarefaction       2  3.041655 2.4361631
+#> 2  Assemblage1 0.8826114  29   Rarefaction       1  3.168595 2.4624766
+#> 3  Assemblage1 0.9523985 173   Rarefaction       2  3.021932 2.4158888
+#> 4  Assemblage1 0.9551929 216   Rarefaction       0  9.125750 0.8550295
+#> 5  Assemblage1 0.9589446 274 Extrapolation       1  4.102136 3.0977334
+#> 6  Assemblage1 0.9719134 520 Extrapolation       0 14.115448 3.4587261
+#> 7  Assemblage1 0.9622855 329 Extrapolation       2  3.069337 2.4666276
+#> 8  Assemblage1 0.9514096 158   Rarefaction       0  7.885387 0.2687914
+#> 9  Assemblage1 0.9542194 201   Rarefaction       2  3.035706 2.4296699
+#> 10 Assemblage1 0.9494027 130   Rarefaction       2  2.989720 2.3978015
+#> 11 Assemblage1 0.9480325 115   Rarefaction       1  3.845925 2.8453109
+#> 12 Assemblage1 0.9638246 356 Extrapolation       2  3.073392 2.4742850
+#> 13 Assemblage1 0.9681246 438 Extrapolation       1  4.228537 3.2450702
+#> 14 Assemblage1 0.9622855 329 Extrapolation       0 11.257748 1.9902402
+#> 15 Assemblage1 0.9494027 130   Rarefaction       0  7.249758 0.0000000
+#> 16 Assemblage1 0.9480325 115   Rarefaction       2  2.973090 2.3834818
+#> 17 Assemblage1 0.9561014 230   Rarefaction       0  9.410157 1.0235024
+#> 18 Assemblage1 0.9598221 288 Extrapolation       1  4.115171 3.1120128
+#>       qD.UCL
+#> 1   3.647147
+#> 2   3.874713
+#> 3   3.627975
+#> 4  17.396470
+#> 5   5.106539
+#> 6  24.772171
+#> 7   3.672047
+#> 8  15.501983
+#> 9   3.641743
+#> 10  3.581639
+#> 11  4.846540
+#> 12  3.672500
+#> 13  5.212004
+#> 14 20.525256
+#> 15 14.506895
+#> 16  3.562697
+#> 17 17.796812
+#> 18  5.118329
 ```
 
 Note that in this example, we do not have a specific assemblage or site.

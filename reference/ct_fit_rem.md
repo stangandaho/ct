@@ -149,9 +149,9 @@ ct_fit_rem(data = observations,
 #> 1 radius            4.18   0.886 0.212    2.44     5.91      4 m      
 #> 2 angle            44.4   11.3   0.254    0.39     1.16      5 degree 
 #> 3 active_speed      3.08   0.765 0.248    0.439    1.27      4 km/hour
-#> 4 activity_level    0.243  0.076 0.313    0.094    0.392    15 none   
-#> 5 overall_speed    17.9    7.18  0.4      0.045    0.371    NA km/day 
-#> 6 trap_rate         0.441  0.119 0.27     0.239    0.635     3 n/day  
-#> 7 density           6.66   3.54  0.532    2.50    17.7      NA n/km2  
+#> 4 activity_level    0.243  0.077 0.318    0.091    0.394    15 none   
+#> 5 overall_speed    17.9    7.25  0.404    0.043    0.372    NA km/day 
+#> 6 trap_rate         0.441  0.116 0.262    0.239    0.635     3 n/day  
+#> 7 density           6.66   3.54  0.531    2.51    17.7      NA n/km2  
 # }
 ```
