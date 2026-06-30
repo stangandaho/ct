@@ -52,8 +52,11 @@ Let's walk through a complete analysis using camera trap data from the `ct` pack
 library(ct)
 library(dplyr)
 
-# Import and prepare camera trap data
-camdata1 <- read.csv(ct:::table_files()[1]) %>% 
+# Load prepare camera trap data
+data(penessoulou)
+
+camdata1 <- penessoulou %>% 
+  dplyr::filter(project == "Last")%>% 
   dplyr::mutate(site = "pene") %>% 
   # Remove consecutive detections of the same species within 60 seconds
   ct_independence(species_column = species, 
