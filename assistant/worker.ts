@@ -24,16 +24,18 @@ export interface Env {
 // Browse current models at https://developers.cloudflare.com/workers-ai/models/
 // (or run `npx wrangler ai models` to see what's live on your account).
 // Stronger/better (more Neurons): "@cf/mistralai/mistral-small-3.1-24b-instruct"
-const MODEL ="@cf/mistral/mistral-7b-instruct-v0.2-lora";
+const MODEL = "@cf/mistralai/mistral-small-3.1-24b-instruct";
 const MAX_TOKENS = 1024;
 const RATE_LIMIT_PER_MIN = 10;
 const MAX_MESSAGES = 20;
 const MAX_CHARS_PER_MESSAGE = 4000;
 
 // Retrieval: how many doc sections to include, and the total size budget.
-const RETRIEVE_TOP_K = 6;
-const MAX_SECTION_CHARS = 3000; // cap any single (e.g. vignette) section
-const CONTEXT_CHAR_BUDGET = 16000; // ~4k tokens of context per request
+// Keep sections large enough that a function's Examples block (near the end of
+// its .Rd text) is not truncated away — that block is what the model copies.
+const RETRIEVE_TOP_K = 4;
+const MAX_SECTION_CHARS = 6000; // keep full reference entries incl. Examples
+const CONTEXT_CHAR_BUDGET = 18000; // ~4.5k tokens of context per request
 
 const SYSTEM_INSTRUCTIONS = `You are the assistant for the "ct" R package, a
 toolkit for camera-trap data analysis: media metadata management (via ExifTool),
@@ -44,7 +46,10 @@ estimation, spatial coverage, survey design), and visualisation.
 Rules:
 - Answer ONLY using the ct documentation provided in <ct_documentation>.
 - When you reference a function, name it exactly (e.g. ct_fit_rem(),
-  ct_independence()) and show a short, runnable R example.
+  ct_independence()).
+- For code examples, adapt the "Examples" section from that function's
+  documentation below. Use the exact argument names shown there. Do NOT invent
+  arguments, and do NOT guess syntax that is not in the documentation.
 - Prefer the package's own example datasets (pendjari, ctdp, duikers, ACBR,
   rest_detection, rest_station, penessoulou).
 - If the documentation below does not cover the question, say so plainly and

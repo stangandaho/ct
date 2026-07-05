@@ -95,7 +95,7 @@
       "  </div>" +
       '  <form id="ct-ai-form">' +
       '    <input id="ct-ai-input" type="text" autocomplete="off" ' +
-      '      placeholder="e.g. How do I estimate density with REM?" />' +
+      '      placeholder="How to ..." />' +
       '    <button type="submit" id="ct-ai-send" aria-label="Send">Send</button>' +
       "  </form>" +
       '  <footer id="ct-ai-foot">Answers are AI-generated. ' +
