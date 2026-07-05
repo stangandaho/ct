@@ -1,0 +1,206 @@
+/*
+ * ct package website assistant widget styles.
+ * pkgdown automatically links pkgdown/extra.css on every page.
+ *
+ * Colours are driven by CSS variables that follow pkgdown's Bootstrap 5
+ * light/dark switch (data-bs-theme="dark").
+ */
+
+#ct-ai {
+  --ct-ai-accent: #D9C9BA;
+  --ct-ai-accent-fg: #ffffff;
+  --ct-ai-bg: #ffffff;
+  --ct-ai-fg: #1f2328;
+  --ct-ai-muted: #6a737d;
+  --ct-ai-border: #e1e4e8;
+  --ct-ai-user-bg: #D9C9BA;
+  --ct-ai-user-fg: #ffffff;
+  --ct-ai-code-bg: #f4f1ea;
+}
+
+[data-bs-theme="dark"] #ct-ai {
+  --ct-ai-bg: #1c1f24;
+  --ct-ai-fg: #e6edf3;
+  --ct-ai-muted: #9aa4ae;
+  --ct-ai-border: #30363d;
+  --ct-ai-code-bg: #2a2f37;
+}
+
+/* Toggle button */
+#ct-ai-toggle {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1050;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--ct-ai-accent-fg);
+  background: var(--ct-ai-accent);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+#ct-ai-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+/* Panel */
+#ct-ai-panel {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 1060;
+  display: flex;
+  flex-direction: column;
+  width: min(400px, calc(100vw - 40px));
+  height: min(560px, calc(100vh - 40px));
+  background: var(--ct-ai-bg);
+  color: var(--ct-ai-fg);
+  border: 1px solid var(--ct-ai-border);
+  border-radius: 14px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.28);
+  overflow: hidden;
+}
+
+#ct-ai-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  font-weight: 600;
+  color: var(--ct-ai-accent-fg);
+  background: var(--ct-ai-accent);
+}
+#ct-ai-close {
+  border: none;
+  background: transparent;
+  color: var(--ct-ai-accent-fg);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+/* Message log */
+#ct-ai-log {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ct-ai-msg {
+  display: flex;
+}
+.ct-ai-msg.ct-ai-u {
+  justify-content: flex-end;
+}
+.ct-ai-bubble {
+  max-width: 85%;
+  padding: 9px 13px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  word-wrap: break-word;
+}
+.ct-ai-a .ct-ai-bubble {
+  background: var(--ct-ai-code-bg);
+  color: var(--ct-ai-fg);
+  border-bottom-left-radius: 3px;
+}
+.ct-ai-u .ct-ai-bubble {
+  background: var(--ct-ai-user-bg);
+  color: var(--ct-ai-user-fg);
+  border-bottom-right-radius: 3px;
+}
+.ct-ai-typing {
+  color: var(--ct-ai-muted);
+}
+
+/* Rendered markdown inside answers */
+.ct-ai-bubble p { margin: 0 0 0.5em; }
+.ct-ai-bubble p:last-child { margin-bottom: 0; }
+.ct-ai-bubble ul { margin: 0.3em 0 0.5em; padding-left: 1.2em; }
+.ct-ai-bubble h3, .ct-ai-bubble h4, .ct-ai-bubble h5, .ct-ai-bubble h6 {
+  margin: 0.5em 0 0.3em;
+  font-size: 0.95rem;
+}
+.ct-ai-bubble code {
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.82em;
+  background: rgba(127, 127, 127, 0.18);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+.ct-ai-bubble pre {
+  background: #0d1117;
+  color: #e6edf3;
+  padding: 10px 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 0.5em 0;
+}
+.ct-ai-bubble pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  font-size: 0.82em;
+}
+.ct-ai-bubble a { color: var(--ct-ai-accent); text-decoration: underline; }
+
+/* Input row */
+#ct-ai-form {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid var(--ct-ai-border);
+}
+#ct-ai-input {
+  flex: 1;
+  border: 1px solid var(--ct-ai-border);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 0.9rem;
+  background: var(--ct-ai-bg);
+  color: var(--ct-ai-fg);
+}
+#ct-ai-input:focus {
+  outline: none;
+  border-color: var(--ct-ai-accent);
+  box-shadow: 0 0 0 2px rgba(181, 101, 29, 0.25);
+}
+#ct-ai-send {
+  border: none;
+  border-radius: 8px;
+  padding: 0 16px;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--ct-ai-accent-fg);
+  background: var(--ct-ai-accent);
+}
+#ct-ai-send:disabled,
+#ct-ai-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+#ct-ai-foot {
+  padding: 8px 12px 12px;
+  font-size: 0.72rem;
+  color: var(--ct-ai-muted);
+  text-align: center;
+}
+#ct-ai-foot code {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.9em;
+}
+
+@media (max-width: 480px) {
+  #ct-ai-panel { right: 10px; bottom: 10px; }
+  #ct-ai-toggle { right: 12px; bottom: 12px; }
+}
