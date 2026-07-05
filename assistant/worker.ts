@@ -21,9 +21,10 @@ export interface Env {
 }
 
 // ---- Tunables -------------------------------------------------------------
-// Browse other free models at https://developers.cloudflare.com/workers-ai/models/
-// Bigger/better (more Neurons): "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
-const MODEL = "@cf/meta/llama-3.1-8b-instruct";
+// Browse current models at https://developers.cloudflare.com/workers-ai/models/
+// (or run `npx wrangler ai models` to see what's live on your account).
+// Stronger/better (more Neurons): "@cf/mistralai/mistral-small-3.1-24b-instruct"
+const MODEL ="@cf/mistral/mistral-7b-instruct-v0.2-lora";
 const MAX_TOKENS = 1024;
 const RATE_LIMIT_PER_MIN = 10;
 const MAX_MESSAGES = 20;
