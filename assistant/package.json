@@ -1,0 +1,18 @@
+{
+  "name": "ct-assistant",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Cloudflare Worker backend for the ct package website assistant",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.70.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260101.0",
+    "typescript": "^5.7.0",
+    "wrangler": "^4.0.0"
+  }
+}

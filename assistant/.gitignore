@@ -1,0 +1,16 @@
+# Dependencies (reinstall with `npm install`)
+node_modules/
+
+# Wrangler local state and secrets — must never be committed
+.wrangler/
+.dev.vars
+.dev.vars.*
+
+# Logs
+*.log
+
+# The generated knowledge base is committed by default so `wrangler deploy`
+# works from a fresh checkout. If you prefer to regenerate it instead
+# (run `Rscript data-raw/build_assistant_kb.R` before each deploy),
+# uncomment the next line:
+# ct_knowledge.txt

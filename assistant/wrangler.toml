@@ -1,0 +1,25 @@
+name = "ct-assistant"
+main = "worker.ts"
+compatibility_date = "2026-01-01"
+
+# Public origin allowed to call this Worker.
+# Override per-environment with `wrangler deploy --var ALLOWED_ORIGIN:...`.
+[vars]
+ALLOWED_ORIGIN = "https://stangandaho.github.io"
+
+# Bundle ct_knowledge.txt as an importable text module.
+# Regenerate the file with: Rscript data-raw/build_assistant_kb.R
+[[rules]]
+type = "Text"
+globs = ["**/*.txt"]
+fallthrough = true
+
+# KV namespace used for per-IP rate limiting.
+# Create it once with:  wrangler kv namespace create RATE_LIMIT
+# then paste the returned id below.
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "c3971f2a1d9944abb7e54b8436a85bae"
+
+# ANTHROPIC_API_KEY is a secret, NOT a var. Set it with:
+#   wrangler secret put ANTHROPIC_API_KEY
