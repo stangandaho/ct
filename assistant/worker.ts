@@ -1,62 +1,120 @@
 /**
  * Cloudflare Worker — ct package website assistant.
  *
- * Holds the Anthropic API key server-side and answers camera-trap questions
- * using the bundled ct documentation. Streams the reply back to the browser
- * widget (pkgdown/extra.js).
+ * Uses Cloudflare Workers AI (free daily allowance, open models) to answer
+ * camera-trap questions. A lightweight keyword retriever selects only the
+ * most relevant sections of the ct documentation for each question, so the
+ * request stays small and cheap (no vector DB, no embeddings, no API key).
  *
  * Deploy: see assistant/README.md
  */
 
-import Anthropic from "@anthropic-ai/sdk";
 // Bundled at build time via the [[rules]] Text rule in wrangler.toml.
 // Regenerate with: Rscript data-raw/build_assistant_kb.R
 import CT_DOCS from "./ct_knowledge.txt";
 
 export interface Env {
-  ANTHROPIC_API_KEY: string;
+  // Workers AI binding (configured as [ai] binding = "AI" in wrangler.toml).
+  AI: { run: (model: string, options: Record<string, unknown>) => Promise<any> };
   RATE_LIMIT: KVNamespace;
-  ALLOWED_ORIGIN: string; // e.g. "https://stangandaho.github.io"
+  ALLOWED_ORIGIN: string;
 }
 
 // ---- Tunables -------------------------------------------------------------
-const MODEL = "claude-opus-4-8"; // swap to claude-sonnet-4-6 / claude-haiku-4-5 to cut cost
-const MAX_TOKENS = 2048;
-const RATE_LIMIT_PER_MIN = 10; // requests per IP per minute
-const MAX_MESSAGES = 20; // conversation turns accepted per request
-const MAX_CHARS_PER_MESSAGE = 4000; // reject pathologically long inputs
+// Browse other free models at https://developers.cloudflare.com/workers-ai/models/
+// Bigger/better (more Neurons): "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+const MODEL = "@cf/meta/llama-3.1-8b-instruct";
+const MAX_TOKENS = 1024;
+const RATE_LIMIT_PER_MIN = 10;
+const MAX_MESSAGES = 20;
+const MAX_CHARS_PER_MESSAGE = 4000;
 
-const SYSTEM_PROMPT = `You are the assistant for the "ct" R package, a toolkit
-for camera-trap data analysis: media metadata management (via ExifTool), data
-preparation (independence filtering, datetime correction, occupancy format),
-analysis (diversity, activity overlap, temporal shift, density estimation,
-spatial coverage, survey design), and visualisation.
+// Retrieval: how many doc sections to include, and the total size budget.
+const RETRIEVE_TOP_K = 6;
+const MAX_SECTION_CHARS = 3000; // cap any single (e.g. vignette) section
+const CONTEXT_CHAR_BUDGET = 16000; // ~4k tokens of context per request
+
+const SYSTEM_INSTRUCTIONS = `You are the assistant for the "ct" R package, a
+toolkit for camera-trap data analysis: media metadata management (via ExifTool),
+data preparation (independence filtering, datetime correction, occupancy
+format), analysis (diversity, activity overlap, temporal shift, density
+estimation, spatial coverage, survey design), and visualisation.
 
 Rules:
-- Answer ONLY using the ct documentation provided below.
+- Answer ONLY using the ct documentation provided in <ct_documentation>.
 - When you reference a function, name it exactly (e.g. ct_fit_rem(),
-  ct_independence(), ct_read_metadata()) and show a short, runnable R example.
+  ct_independence()) and show a short, runnable R example.
 - Prefer the package's own example datasets (pendjari, ctdp, duikers, ACBR,
-  rest_detection, rest_station, penessoulou) in examples.
-- If the docs do not cover something, say so plainly and point the user to
-  https://stangandaho.github.io/ct/ . Never invent functions or arguments.
-- Keep answers focused on using ct for camera-trap workflows. Be concise and
-  practical; lead with the answer, then the example.
-
-<ct_documentation>
-${CT_DOCS}
-</ct_documentation>`;
+  rest_detection, rest_station, penessoulou).
+- If the documentation below does not cover the question, say so plainly and
+  point the user to https://stangandaho.github.io/ct/ . Never invent functions
+  or arguments.
+- Be concise and practical: lead with the answer, then the example.`;
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
+// ---- Retrieval index (built once at module load) --------------------------
+// Split the corpus into sections on the "---" separators the build script
+// writes between reference entries and vignettes.
+const SECTIONS: string[] = CT_DOCS.split(/\n-{3,}\n/)
+  .map((s) => s.trim())
+  .filter((s) => s.length > 40);
+
+function queryTerms(query: string): string[] {
+  const seen = new Set<string>();
+  for (const w of query.toLowerCase().split(/[^a-z0-9_]+/)) {
+    if (w.length >= 3) seen.add(w);
+  }
+  return [...seen];
+}
+
+function scoreSection(section: string, terms: string[]): number {
+  const lower = section.toLowerCase();
+  const firstLine = lower.slice(0, lower.indexOf("\n") + 1 || 120);
+  let score = 0;
+  for (const t of terms) {
+    let idx = 0;
+    let count = 0;
+    while (count < 5) {
+      idx = lower.indexOf(t, idx);
+      if (idx < 0) break;
+      count++;
+      idx += t.length;
+    }
+    score += count;
+    if (firstLine.includes(t)) score += 3; // boost matches in the title line
+  }
+  return score;
+}
+
+// Pick the most relevant doc sections for a question, within the size budget.
+function retrieve(query: string): string {
+  const terms = queryTerms(query);
+  if (terms.length === 0) return "";
+
+  const ranked = SECTIONS.map((s) => ({ s, score: scoreSection(s, terms) }))
+    .filter((x) => x.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, RETRIEVE_TOP_K);
+
+  let budget = CONTEXT_CHAR_BUDGET;
+  const picked: string[] = [];
+  for (const { s } of ranked) {
+    const piece = s.slice(0, MAX_SECTION_CHARS);
+    if (piece.length > budget) break;
+    picked.push(piece);
+    budget -= piece.length;
+  }
+  return picked.join("\n\n---\n\n");
+}
+
 // ---- CORS helpers ---------------------------------------------------------
 // ALLOWED_ORIGIN may be a comma-separated list so you can test locally, e.g.
-//   "https://stangandaho.github.io,http://localhost:4321,http://127.0.0.1:4321"
+//   "https://stangandaho.github.io,http://localhost:8000"
 function allowedOrigins(env: Env): string[] {
   return env.ALLOWED_ORIGIN.split(",").map((s) => s.trim()).filter(Boolean);
 }
 
-// Returns the request's Origin if it is allowed, otherwise null.
 function matchOrigin(req: Request, env: Env): string | null {
   const origin = req.headers.get("origin");
   return origin && allowedOrigins(env).includes(origin) ? origin : null;
@@ -84,7 +142,6 @@ async function isRateLimited(env: Env, ip: string): Promise<boolean> {
   const windowKey = `rl:${ip}:${Math.floor(Date.now() / 60000)}`;
   const current = parseInt((await env.RATE_LIMIT.get(windowKey)) ?? "0", 10);
   if (current >= RATE_LIMIT_PER_MIN) return true;
-  // TTL a little over the window so stale counters self-expire.
   await env.RATE_LIMIT.put(windowKey, String(current + 1), { expirationTtl: 120 });
   return false;
 }
@@ -105,7 +162,6 @@ function validate(payload: unknown): ChatMessage[] | null {
     if (content.length > MAX_CHARS_PER_MESSAGE) return null;
     clean.push({ role, content });
   }
-  // The first and last message must be from the user.
   if (clean[0].role !== "user" || clean[clean.length - 1].role !== "user") return null;
   return clean;
 }
@@ -114,7 +170,6 @@ function validate(payload: unknown): ChatMessage[] | null {
 export default {
   async fetch(req: Request, env: Env): Promise<Response> {
     const origin = matchOrigin(req, env);
-    // Header value for rejected requests (browser blocks them regardless).
     const hdrOrigin = origin ?? allowedOrigins(env)[0] ?? "";
 
     if (req.method === "OPTIONS") {
@@ -144,43 +199,37 @@ export default {
       return json({ error: "Invalid request shape" }, 400, origin);
     }
 
-    const client = new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
+    // Retrieve doc context for the latest user question.
+    const question = messages[messages.length - 1].content;
+    const context = retrieve(question) || "(no matching documentation found)";
+    const system = `${SYSTEM_INSTRUCTIONS}\n\n<ct_documentation>\n${context}\n</ct_documentation>`;
 
-    const anthropicStream = client.messages.stream({
-      model: MODEL,
-      max_tokens: MAX_TOKENS,
-      // Cache the large doc-laden system prompt so repeat questions are cheap.
-      system: [
-        { type: "text", text: SYSTEM_PROMPT, cache_control: { type: "ephemeral" } },
-      ],
-      messages,
-    });
+    try {
+      const result = await env.AI.run(MODEL, {
+        messages: [{ role: "system", content: system }, ...messages],
+        max_tokens: MAX_TOKENS,
+      });
+      const answer =
+        (result && typeof result.response === "string" && result.response.trim()) ||
+        "Sorry, I couldn't generate an answer. Please rephrase your question.";
 
-    const encoder = new TextEncoder();
-    const body = new ReadableStream({
-      async start(controller) {
-        try {
-          for await (const text of anthropicStream.textStream) {
-            controller.enqueue(encoder.encode(text));
-          }
-        } catch (err) {
-          controller.enqueue(
-            encoder.encode("\n\n_Sorry — the assistant hit an error. Please try again._")
-          );
-          console.error("Anthropic stream error:", err);
-        } finally {
-          controller.close();
-        }
-      },
-    });
-
-    return new Response(body, {
-      status: 200,
-      headers: {
-        "content-type": "text/plain; charset=utf-8",
-        "cache-control": "no-store",
-        ...corsHeaders(origin),
-      },
-    });
+      return new Response(answer, {
+        status: 200,
+        headers: {
+          "content-type": "text/plain; charset=utf-8",
+          "cache-control": "no-store",
+          ...corsHeaders(origin),
+        },
+      });
+    } catch (err) {
+      console.error("Workers AI error:", err);
+      // TEMP DEBUG: include the error detail while setting up. Replace with a
+      // generic message before going fully public.
+      const detail = err instanceof Error ? `${err.name}: ${err.message}` : String(err);
+      return new Response("[assistant error] " + detail, {
+        status: 200,
+        headers: { "content-type": "text/plain; charset=utf-8", ...corsHeaders(origin) },
+      });
+    }
   },
 };

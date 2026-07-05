@@ -14,6 +14,12 @@ type = "Text"
 globs = ["**/*.txt"]
 fallthrough = true
 
+# Workers AI — free open-model inference. No API key or secret required.
+# Free daily allowance covers a docs widget; see
+# https://developers.cloudflare.com/workers-ai/platform/pricing/
+[ai]
+binding = "AI"
+
 # KV namespace used for per-IP rate limiting.
 # Create it once with:  wrangler kv namespace create RATE_LIMIT
 # then paste the returned id below.
@@ -21,5 +27,5 @@ fallthrough = true
 binding = "RATE_LIMIT"
 id = "c3971f2a1d9944abb7e54b8436a85bae"
 
-# ANTHROPIC_API_KEY is a secret, NOT a var. Set it with:
-#   wrangler secret put ANTHROPIC_API_KEY
+# No ANTHROPIC_API_KEY needed anymore — Workers AI is used instead.
+# You can remove the old secret with: wrangler secret delete ANTHROPIC_API_KEY
