@@ -14,11 +14,17 @@ type = "Text"
 globs = ["**/*.txt"]
 fallthrough = true
 
-# Workers AI — free open-model inference. No API key or secret required.
-# Free daily allowance covers a docs widget; see
+# Workers AI — free open-model inference (embeddings + chat). No API key.
 # https://developers.cloudflare.com/workers-ai/platform/pricing/
 [ai]
 binding = "AI"
+
+# Vectorize — semantic search index over the ct docs (free tier).
+# Create it once with:
+#   npx wrangler vectorize create ct-docs --dimensions=768 --metric=cosine
+[[vectorize]]
+binding = "VECTORIZE"
+index_name = "ct-docs"
 
 # KV namespace used for per-IP rate limiting.
 # Create it once with:  wrangler kv namespace create RATE_LIMIT
@@ -27,5 +33,6 @@ binding = "AI"
 binding = "RATE_LIMIT"
 id = "c3971f2a1d9944abb7e54b8436a85bae"
 
-# No ANTHROPIC_API_KEY needed anymore — Workers AI is used instead.
-# You can remove the old secret with: wrangler secret delete ANTHROPIC_API_KEY
+# REINDEX_KEY is a secret guarding POST /reindex. Set it with:
+#   npx wrangler secret put REINDEX_KEY
+# (No ANTHROPIC_API_KEY needed — Workers AI is used instead.)

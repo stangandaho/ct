@@ -1,41 +1,59 @@
 /**
- * Cloudflare Worker — ct package website assistant.
+ * Cloudflare Worker — ct package website assistant (RAG).
  *
- * Uses Cloudflare Workers AI (free daily allowance, open models) to answer
- * camera-trap questions. A lightweight keyword retriever selects only the
- * most relevant sections of the ct documentation for each question, so the
- * request stays small and cheap (no vector DB, no embeddings, no API key).
+ * Fully free, entirely on Cloudflare:
+ *   - Workers AI  : embeddings (bge) + chat (Mistral)  — no API key
+ *   - Vectorize   : semantic vector search over the ct docs
  *
- * Deploy: see assistant/README.md
+ * The docs are indexed by POSTing to /reindex (guarded by REINDEX_KEY).
+ * At query time the question is embedded, the most semantically similar doc
+ * chunks are retrieved, and the chat model answers from them.
+ *
+ * Deploy / index: see assistant/README.md
  */
 
 // Bundled at build time via the [[rules]] Text rule in wrangler.toml.
 // Regenerate with: Rscript data-raw/build_assistant_kb.R
 import CT_DOCS from "./ct_knowledge.txt";
 
+// Minimal shapes for the Workers AI + Vectorize bindings we use.
+interface VectorizeMatch {
+  id: string;
+  score: number;
+  metadata?: Record<string, unknown>;
+}
+interface Vectorize {
+  query: (
+    vector: number[],
+    opts: { topK?: number; returnMetadata?: "all" | "indexed" | "none" }
+  ) => Promise<{ matches: VectorizeMatch[] }>;
+  upsert: (
+    vectors: { id: string; values: number[]; metadata?: Record<string, unknown> }[]
+  ) => Promise<unknown>;
+}
+
 export interface Env {
-  // Workers AI binding (configured as [ai] binding = "AI" in wrangler.toml).
   AI: { run: (model: string, options: Record<string, unknown>) => Promise<any> };
+  VECTORIZE: Vectorize;
   RATE_LIMIT: KVNamespace;
   ALLOWED_ORIGIN: string;
+  REINDEX_KEY: string; // secret guarding POST /reindex
 }
 
 // ---- Tunables -------------------------------------------------------------
-// Browse current models at https://developers.cloudflare.com/workers-ai/models/
-// (or run `npx wrangler ai models` to see what's live on your account).
-// Stronger/better (more Neurons): "@cf/mistralai/mistral-small-3.1-24b-instruct"
-const MODEL = "@cf/mistralai/mistral-small-3.1-24b-instruct";
+// Run `npx wrangler ai models` to see what is currently live on your account.
+const CHAT_MODEL = "@cf/mistralai/mistral-small-3.1-24b-instruct";
+const EMBED_MODEL = "@cf/baai/bge-base-en-v1.5"; // 768-dim; matches the index
+const EMBED_DIM = 768;
+
+const TOP_K = 6; // doc chunks retrieved per question
+const MAX_CHUNK_CHARS = 1600; // chunk size for indexing (fits the embedder)
+const EMBED_BATCH = 90; // texts embedded per Workers AI call
+
 const MAX_TOKENS = 1024;
 const RATE_LIMIT_PER_MIN = 10;
 const MAX_MESSAGES = 20;
 const MAX_CHARS_PER_MESSAGE = 4000;
-
-// Retrieval: how many doc sections to include, and the total size budget.
-// Keep sections large enough that a function's Examples block (near the end of
-// its .Rd text) is not truncated away — that block is what the model copies.
-const RETRIEVE_TOP_K = 4;
-const MAX_SECTION_CHARS = 6000; // keep full reference entries incl. Examples
-const CONTEXT_CHAR_BUDGET = 18000; // ~4.5k tokens of context per request
 
 const SYSTEM_INSTRUCTIONS = `You are the assistant for the "ct" R package, a
 toolkit for camera-trap data analysis: media metadata management (via ExifTool),
@@ -44,88 +62,96 @@ format), analysis (diversity, activity overlap, temporal shift, density
 estimation, spatial coverage, survey design), and visualisation.
 
 Rules:
-- Answer ONLY using the ct documentation provided in <ct_documentation>.
-- When you reference a function, name it exactly (e.g. ct_fit_rem(),
-  ct_independence()).
+- Answer using the ct documentation provided in <ct_documentation>.
+- Identify the ct function(s) that address the user's need even if they use
+  different words (e.g. "activity change between periods" => ct_temporal_shift()).
 - For code examples, adapt the "Examples" section from that function's
-  documentation below. Use the exact argument names shown there. Do NOT invent
-  arguments, and do NOT guess syntax that is not in the documentation.
-- Prefer the package's own example datasets (pendjari, ctdp, duikers, ACBR,
+  documentation. Use the exact argument names shown. Do NOT invent arguments.
+- Prefer the package's own datasets (pendjari, ctdp, duikers, ACBR,
   rest_detection, rest_station, penessoulou).
-- If the documentation below does not cover the question, say so plainly and
-  point the user to https://stangandaho.github.io/ct/ . Never invent functions
-  or arguments.
-- Be concise and practical: lead with the answer, then the example.`;
+- Only if nothing relevant appears in the documentation, say you are not sure
+  and point to https://stangandaho.github.io/ct/ . Be concise: answer first,
+  then the example.`;
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
-// ---- Retrieval index (built once at module load) --------------------------
-// Split the corpus into sections on the "---" separators the build script
-// writes between reference entries and vignettes.
-const SECTIONS: string[] = CT_DOCS.split(/\n-{3,}\n/)
-  .map((s) => s.trim())
-  .filter((s) => s.length > 40);
-
-function queryTerms(query: string): string[] {
-  const seen = new Set<string>();
-  for (const w of query.toLowerCase().split(/[^a-z0-9_]+/)) {
-    if (w.length >= 3) seen.add(w);
-  }
-  return [...seen];
-}
-
-function scoreSection(section: string, terms: string[]): number {
-  const lower = section.toLowerCase();
-  const firstLine = lower.slice(0, lower.indexOf("\n") + 1 || 120);
-  let score = 0;
-  for (const t of terms) {
-    let idx = 0;
-    let count = 0;
-    while (count < 5) {
-      idx = lower.indexOf(t, idx);
-      if (idx < 0) break;
-      count++;
-      idx += t.length;
+// ---- Chunking (shared by /reindex) ----------------------------------------
+// Sections are separated by the "---" the build script writes between
+// reference entries and vignettes; long ones are split further by paragraph.
+function chunkDocs(doc: string): { id: string; text: string }[] {
+  const sections = doc.split(/\n-{3,}\n/).map((s) => s.trim()).filter((s) => s.length > 40);
+  const chunks: { id: string; text: string }[] = [];
+  let n = 0;
+  for (const sec of sections) {
+    const title = sec.slice(0, sec.indexOf("\n") >= 0 ? sec.indexOf("\n") : 120);
+    if (sec.length <= MAX_CHUNK_CHARS) {
+      chunks.push({ id: `c${n++}`, text: sec });
+      continue;
     }
-    score += count;
-    if (firstLine.includes(t)) score += 3; // boost matches in the title line
+    const paras = sec.split(/\n\s*\n/);
+    let buf = "";
+    for (const p of paras) {
+      if (buf && (buf + "\n\n" + p).length > MAX_CHUNK_CHARS) {
+        chunks.push({ id: `c${n++}`, text: `${title}\n\n${buf}` });
+        buf = p;
+      } else {
+        buf = buf ? `${buf}\n\n${p}` : p;
+      }
+    }
+    if (buf) chunks.push({ id: `c${n++}`, text: `${title}\n\n${buf}` });
   }
-  return score;
+  return chunks;
 }
 
-// Pick the most relevant doc sections for a question, within the size budget.
-function retrieve(query: string): string {
-  const terms = queryTerms(query);
-  if (terms.length === 0) return "";
-
-  const ranked = SECTIONS.map((s) => ({ s, score: scoreSection(s, terms) }))
-    .filter((x) => x.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, RETRIEVE_TOP_K);
-
-  let budget = CONTEXT_CHAR_BUDGET;
-  const picked: string[] = [];
-  for (const { s } of ranked) {
-    const piece = s.slice(0, MAX_SECTION_CHARS);
-    if (piece.length > budget) break;
-    picked.push(piece);
-    budget -= piece.length;
+async function embedTexts(env: Env, texts: string[]): Promise<number[][]> {
+  const out: number[][] = [];
+  for (let i = 0; i < texts.length; i += EMBED_BATCH) {
+    const batch = texts.slice(i, i + EMBED_BATCH);
+    const res = await env.AI.run(EMBED_MODEL, { text: batch });
+    for (const v of res.data as number[][]) out.push(v);
   }
-  return picked.join("\n\n---\n\n");
+  return out;
+}
+
+// Build/refresh the Vectorize index from the bundled docs.
+async function reindex(env: Env): Promise<number> {
+  const chunks = chunkDocs(CT_DOCS);
+  const vectors = await embedTexts(
+    env,
+    chunks.map((c) => c.text)
+  );
+  let indexed = 0;
+  const UPSERT_BATCH = 500;
+  for (let i = 0; i < chunks.length; i += UPSERT_BATCH) {
+    const slice = chunks.slice(i, i + UPSERT_BATCH).map((c, j) => ({
+      id: c.id,
+      values: vectors[i + j],
+      metadata: { text: c.text },
+    }));
+    await env.VECTORIZE.upsert(slice);
+    indexed += slice.length;
+  }
+  return indexed;
+}
+
+// ---- Semantic retrieval ---------------------------------------------------
+async function retrieve(env: Env, question: string): Promise<string> {
+  const [vector] = await embedTexts(env, [question]);
+  const res = await env.VECTORIZE.query(vector, { topK: TOP_K, returnMetadata: "all" });
+  return res.matches
+    .map((m) => (typeof m.metadata?.text === "string" ? m.metadata.text : ""))
+    .filter(Boolean)
+    .join("\n\n---\n\n");
 }
 
 // ---- CORS helpers ---------------------------------------------------------
-// ALLOWED_ORIGIN may be a comma-separated list so you can test locally, e.g.
-//   "https://stangandaho.github.io,http://localhost:8000"
 function allowedOrigins(env: Env): string[] {
   return env.ALLOWED_ORIGIN.split(",").map((s) => s.trim()).filter(Boolean);
 }
-
 function matchOrigin(req: Request, env: Env): string | null {
   const origin = req.headers.get("origin");
   return origin && allowedOrigins(env).includes(origin) ? origin : null;
 }
-
 function corsHeaders(origin: string): Record<string, string> {
   return {
     "access-control-allow-origin": origin,
@@ -135,7 +161,6 @@ function corsHeaders(origin: string): Record<string, string> {
     vary: "origin",
   };
 }
-
 function json(body: unknown, status: number, origin: string): Response {
   return new Response(JSON.stringify(body), {
     status,
@@ -175,6 +200,22 @@ function validate(payload: unknown): ChatMessage[] | null {
 // ---- Handler --------------------------------------------------------------
 export default {
   async fetch(req: Request, env: Env): Promise<Response> {
+    const url = new URL(req.url);
+
+    // Admin: (re)build the vector index. Server-to-server, no CORS needed.
+    //   curl -X POST https://<worker>/reindex -H "x-reindex-key: <REINDEX_KEY>"
+    if (req.method === "POST" && url.pathname.replace(/\/$/, "") === "/reindex") {
+      if (req.headers.get("x-reindex-key") !== env.REINDEX_KEY) {
+        return new Response("Forbidden", { status: 403 });
+      }
+      try {
+        const indexed = await reindex(env);
+        return Response.json({ ok: true, indexed });
+      } catch (err) {
+        return new Response("Reindex error: " + String(err), { status: 500 });
+      }
+    }
+
     const origin = matchOrigin(req, env);
     const hdrOrigin = origin ?? allowedOrigins(env)[0] ?? "";
 
@@ -199,19 +240,17 @@ export default {
     } catch {
       return json({ error: "Invalid JSON" }, 400, origin);
     }
-
     const messages = validate(payload);
     if (!messages) {
       return json({ error: "Invalid request shape" }, 400, origin);
     }
 
-    // Retrieve doc context for the latest user question.
-    const question = messages[messages.length - 1].content;
-    const context = retrieve(question) || "(no matching documentation found)";
-    const system = `${SYSTEM_INSTRUCTIONS}\n\n<ct_documentation>\n${context}\n</ct_documentation>`;
-
     try {
-      const result = await env.AI.run(MODEL, {
+      const question = messages[messages.length - 1].content;
+      const context = (await retrieve(env, question)) || "(no matching documentation found)";
+      const system = `${SYSTEM_INSTRUCTIONS}\n\n<ct_documentation>\n${context}\n</ct_documentation>`;
+
+      const result = await env.AI.run(CHAT_MODEL, {
         messages: [{ role: "system", content: system }, ...messages],
         max_tokens: MAX_TOKENS,
       });
@@ -228,9 +267,8 @@ export default {
         },
       });
     } catch (err) {
-      console.error("Workers AI error:", err);
-      // TEMP DEBUG: include the error detail while setting up. Replace with a
-      // generic message before going fully public.
+      console.error("Assistant error:", err);
+      // TEMP DEBUG: surface the error while setting up; make generic later.
       const detail = err instanceof Error ? `${err.name}: ${err.message}` : String(err);
       return new Response("[assistant error] " + detail, {
         status: 200,
@@ -239,3 +277,7 @@ export default {
     }
   },
 };
+
+// EMBED_DIM is exported for reference when creating the Vectorize index:
+//   npx wrangler vectorize create ct-docs --dimensions=768 --metric=cosine
+export { EMBED_DIM };
