@@ -74,5 +74,4 @@ BugReports: https://github.com/stangandaho/ct/issues
 Depends: 
     R (>= 3.5)
 Config/Needs/website: rmarkdown
-VignetteBuilder: knitr
 LinkingTo: Rcpp

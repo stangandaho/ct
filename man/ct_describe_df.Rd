@@ -4,21 +4,64 @@
 \alias{ct_describe_df}
 \title{Descriptive statistic on dataset}
 \usage{
-ct_describe_df(data, ..., fn = NULL)
+ct_describe_df(data, ..., fn = NULL, by_group = TRUE)
 }
 \arguments{
 \item{data}{A data frame containing the dataset to be summarized.}
 
-\item{...}{(Optional) Column to include in the summary. If no column
-is specifie, all columns in the data will be included.}
+\item{...}{(Optional) Columns to include in the summary. If no column
+is specified, all columns in the data will be included.}
 
-\item{fn}{A named list of functions to apply to numeric variables. Each function
+\item{fn}{A list of functions to apply to numeric variables. Each function
 must accept \code{x} as a vector of numeric values and return a single value or a
 named vector. Additional arguments for these functions can be specified as a list.
 For example: \code{fn = list('sum' = list(na.rm = TRUE), 'sd')}.}
+
+\item{by_group}{Logical, default \code{TRUE}. When \code{TRUE} and both categorical and
+numeric variables are selected, each numeric variable is summarised within the
+groups defined by the categorical variable(s). When \code{FALSE}, numeric and categorical variables are
+summarised independently and stacked into a single table. If only one variable
+type is present, \code{by_group} has no effect.}
 }
 \value{
-A tibble
+A tibble whose shape depends on \code{by_group}.
+
+With \code{by_group = TRUE} (and at least one categorical and one numeric variable),
+the data are grouped by the selected categorical variable(s) and each numeric
+variable is summarised within every group. The result has one row per numeric
+variable and group combination, with columns:
+\describe{
+\item{\code{Variable}}{Name of the numeric variable being summarised.}
+\item{grouping column(s)}{One column per selected categorical variable, each
+holding the group value.}
+\item{\code{N}}{Number of non-missing values of \code{Variable} in the group.}
+\item{\code{Min}, \code{Max}, \code{Median}, \code{Mean}}{Descriptive statistics of \code{Variable}
+within the group.}
+\item{\verb{CI Left}, \verb{CI Right}}{Lower and upper bounds of the 95\% t-based
+confidence interval for the group mean (see \code{\link[=ct_ci]{ct_ci()}}).}
+}
+
+With \code{by_group = FALSE} (also used as a fallback when only numeric or only
+categorical variables are selected), numeric and categorical summaries are
+stacked into one tibble with one row per numeric variable and one row per
+distinct value of each categorical variable; columns that do not apply to a row
+are \code{NA}:
+\describe{
+\item{\code{Variable}}{Name of the summarised column.}
+\item{\code{Group}}{For a categorical variable, the distinct value described;
+\code{NA} for numeric variables.}
+\item{\code{Prop}}{For a categorical variable, the percentage of its non-missing
+records falling in \code{Group}; \code{NA} for numeric variables.}
+\item{\code{N}}{Non-missing count: values for a numeric variable, or records in
+\code{Group} for a categorical variable.}
+\item{\code{Min}, \code{Max}, \code{Median}, \code{Mean}}{Numeric statistics; \code{NA} for
+categorical variables.}
+\item{\verb{CI Left}, \verb{CI Right}}{95\% t-based confidence interval bounds for the
+mean (see \code{\link[=ct_ci]{ct_ci()}}); \code{NA} for categorical variables.}
+}
+
+In both modes, supplying \code{fn} appends one extra column per named function,
+holding that statistic for each numeric variable (or group).
 }
 \description{
 This function provides a summary of a dataset, including both numeric and
@@ -26,16 +69,22 @@ non-numeric variables. For numeric variables, it calculates basic descriptive
 statistics such as minimum, maximum, median, mean, and count of non-missing
 values. Additionally, users can pass custom functions via the \code{fn} argument to
 compute additional statistics for numeric variables. For non-numeric variables,
-it provides frequency
-counts and proportions for each unique value.
+it provides frequency counts and proportions for each unique value.
 }
 \examples{
-ct_describe_df(data = data.frame(x = c(1:3, NA),
-                                 y = c(3:4, NA, NA),
-                                 z = c("A", "A", "B", "A")),
-               y, x, z,
-               fn = list('sum' = list(na.rm = TRUE), 'sd' = list(na.rm = TRUE))
-              )
+df <- data.frame(x = c(1:3, NA),
+                 y = c(3:4, NA, NA),
+                 z = c("A", "A", "B", "A"))
+
+# Numeric variables summarised within each group of the categorical variable
+ct_describe_df(df, y, x, z)
+
+# Summarise every variable independently
+ct_describe_df(df, y, x, z, by_group = FALSE)
+
+# Add custom statistics for the numeric variables
+ct_describe_df(df, y, x, z,
+               fn = list('sum' = list(na.rm = TRUE), 'sd' = list(na.rm = TRUE)))
 
 }
 \seealso{

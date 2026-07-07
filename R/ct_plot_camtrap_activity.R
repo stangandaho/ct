@@ -10,16 +10,25 @@
 #'   - `color`: Color of activity bars (default `"steelblue"`)
 #'   - `alpha`: Transparency (default 0.7)
 #'   - `linetype`: Line type (default 1)
+#'   - `label`: Legend label for active periods (default `"Active period"`)
 #' @param break_style A list controlling the appearance of gaps/inactive periods. Can include:
 #'   - `linewidth`: Line width (default 0.8)
 #'   - `color`: Color of gap bars (default `"#c90026"`)
 #'   - `alpha`: Transparency (default 0.9)
 #'   - `linetype`: Line type (default 1)
+#'   - `label`: Legend label for break periods (default `"Break period"`)
 #' @param show_gaps Logical. If `TRUE` (default), shows vertical bars for detected gaps in deployment activity.
 #' @param ylabel_format Character. Format for y-axis date-time labels. Default is `"%Y-%m-%d"`.
 #' @param ybreak Character. Spacing for y-axis breaks, e.g., `"1 days"` or `"12 hours"`. Default is based on `time_unit`.
+#' @param legend_title Character. Title of the colour legend that distinguishes
+#'   active periods from breaks (default `"Activity"`).
 #'
-#' @return A `ggplot2` object showing periods of activity (and optionally gaps) for each deployment.
+#' @return A `ggplot2` object showing periods of activity (and optionally gaps)
+#'   for each deployment. Active periods and breaks are mapped to colour, so a
+#'   legend is drawn (blue for active periods, red for breaks by default). Because
+#'   the return value is a standard `ggplot` object, it can be customised further
+#'   with the usual `+` syntax (for example `+ ggplot2::labs()` or
+#'   `+ ggplot2::theme()`).
 #'
 #' @examples
 #' # Load example data and filter for one project phase
@@ -28,7 +37,7 @@
 #' camtrap_data <- penessoulou %>%
 #'   dplyr::filter(project == "Last")
 #'
-#' # Plot with default styles
+#' # Plot with default styles (a legend distinguishes active periods from breaks)
 #' ct_plot_camtrap_activity(
 #'   data = camtrap_data,
 #'   deployment_column = camera,
@@ -37,7 +46,7 @@
 #'   time_unit = "days"
 #' )
 #'
-#' #' # Customize plot appearance
+#' # Customise the colours, the legend labels and the legend title
 #' ct_plot_camtrap_activity(
 #'   data = camtrap_data,
 #'   deployment_column = camera,
@@ -45,10 +54,22 @@
 #'   threshold = 15,
 #'   time_unit = "days",
 #'   ybreak = "3 days",
-#'   activity_style = list(width = 1.1, color = "gray10")
-#' )+
-#'   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1))
-#' #'
+#'   activity_style = list(linewidth = 1.1, color = "gray10", label = "Recording"),
+#'   break_style = list(color = "orange", label = "Gap"),
+#'   legend_title = "Camera status"
+#' )
+#'
+#' # The result is a ggplot, so it can be extended with the usual + syntax
+#' ct_plot_camtrap_activity(
+#'   data = camtrap_data,
+#'   deployment_column = camera,
+#'   datetime_column = datetimes,
+#'   threshold = 7,
+#'   time_unit = "days"
+#' ) +
+#'   ggplot2::labs(title = "Camera activity") +
+#'   ggplot2::theme(legend.position = "bottom")
+#'
 #' @export
 ct_plot_camtrap_activity <- function(data,
                                      deployment_column,
@@ -56,11 +77,12 @@ ct_plot_camtrap_activity <- function(data,
                                      threshold = 5,
                                      time_unit = "days",
                                      format = NULL,
-                                     activity_style = list(linewidth = 0.8, color = "steelblue", alpha = 0.7, linetype = 1),
-                                     break_style = list(linewidth = 0.8, color = "#c90026", alpha = 0.9, linetype = 1),
+                                     activity_style = list(linewidth = 0.8, color = "steelblue", alpha = 0.7, linetype = 1, label = "Active period"),
+                                     break_style = list(linewidth = 0.8, color = "#c90026", alpha = 0.9, linetype = 1, label = "Break period"),
                                      show_gaps = TRUE,
                                      ylabel_format = "%Y-%m-%d",
-                                     ybreak = paste(1, time_unit)
+                                     ybreak = paste(1, time_unit),
+                                     legend_title = "Activity"
                                      ) {
 
   # Prepare data
@@ -133,15 +155,30 @@ ct_plot_camtrap_activity <- function(data,
     gap_data$deployment <- factor(gap_data$deployment, levels = deployment_order)
   }
 
+  # Resolve style values with sensible fallbacks when a list element is missing.
+  style_val <- function(style, key, default) {
+    if (is.null(style[[key]])) default else style[[key]]
+  }
+  active_label <- style_val(activity_style, "label", "Active period")
+  break_label  <- style_val(break_style, "label", "Break period")
+  active_color <- style_val(activity_style, "color", "steelblue")
+  break_color  <- style_val(break_style, "color", "#c90026")
+
+  # Colours are mapped inside aes() (rather than set as fixed arguments) so that
+  # active and break periods appear in a legend. A one-value column per layer
+  # labels each series.
+  active_periods$activity_type <- active_label
+  drew_gaps <- show_gaps && !is.null(gap_data) && nrow(gap_data) > 0
+
   # Create the base plot
   p <- ggplot2::ggplot() +
     ggplot2::geom_linerange(
       data = active_periods,
-      mapping = ggplot2::aes(x = deployment, ymin = period_start, ymax = period_end),
-      linewidth = ifelse(is.null(activity_style$linewidth), 0.8, activity_style$linewidth),
-      alpha = ifelse(is.null(activity_style$alpha), 0.7, activity_style$alpha),
-      color = ifelse(is.null(activity_style$color), "steelblue", activity_style$color),
-      linetype = ifelse(is.null(activity_style$linetype), 1, activity_style$linetype)
+      mapping = ggplot2::aes(x = deployment, ymin = period_start, ymax = period_end,
+                             color = activity_type),
+      linewidth = style_val(activity_style, "linewidth", 0.8),
+      alpha = style_val(activity_style, "alpha", 0.7),
+      linetype = style_val(activity_style, "linetype", 1)
     ) +
     ggplot2::scale_y_datetime(
       name = "Period",
@@ -155,18 +192,31 @@ ct_plot_camtrap_activity <- function(data,
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1))
 
   # Add gap indicators if requested and gaps exist
-  if (show_gaps && !is.null(gap_data) && nrow(gap_data) > 0) {
+  if (drew_gaps) {
+    gap_data$activity_type <- break_label
     p <- p +
       ggplot2::geom_linerange(
         data = gap_data,
-        mapping = ggplot2::aes(x = deployment, ymin = start, ymax = end),
-        linewidth = ifelse(is.null(break_style$linewidth), 0.8, break_style$linewidth),
-        alpha = ifelse(is.null(break_style$alpha), 0.9, break_style$alpha),
-        color = ifelse(is.null(break_style$color), "#c90026", break_style$color),
-        linetype = ifelse(is.null(break_style$linetype), 2, break_style$linetype)
+        mapping = ggplot2::aes(x = deployment, ymin = start, ymax = end,
+                               color = activity_type),
+        linewidth = style_val(break_style, "linewidth", 0.8),
+        alpha = style_val(break_style, "alpha", 0.9),
+        linetype = style_val(break_style, "linetype", 2)
       )
-
   }
+
+  # Legend: map each series label to its colour. Only the series actually drawn
+  # appear, and the keys are drawn opaque and a little thicker for readability.
+  series_colors <- stats::setNames(c(active_color, break_color),
+                                   c(active_label, break_label))
+  p <- p +
+    ggplot2::scale_color_manual(
+      name = legend_title,
+      values = series_colors,
+      breaks = if (drew_gaps) c(active_label, break_label) else active_label
+    ) +
+    ggplot2::guides(color = ggplot2::guide_legend(
+      override.aes = list(linewidth = 2, alpha = 1)))
 
   return(p)
 }

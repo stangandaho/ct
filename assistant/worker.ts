@@ -43,7 +43,7 @@ export interface Env {
 // Tunables
 // Run `npx wrangler ai models` to see what is currently live on your account.
 //const CHAT_MODEL = "@cf/mistralai/mistral-small-3.1-24b-instruct";
-const CHAT_MODEL = "@cf/google/gemma-4-26b-a4b-it";
+const CHAT_MODEL = "@cf/mistralai/mistral-small-3.1-24b-instruct";
 const EMBED_MODEL = "@cf/baai/bge-base-en-v1.5"; // 768-dim; matches the index
 const EMBED_DIM = 768;
 
@@ -165,6 +165,24 @@ async function reindex(env: Env): Promise<number> {
 }
 
 // Semantic retrieval
+// Workers AI text models vary in output shape. Pull the generated text from
+// whichever field this model uses.
+function extractAnswer(result: any): string {
+  if (!result) return "";
+  if (typeof result === "string") return result.trim();
+  if (typeof result.response === "string") return result.response.trim();
+  if (result.response && typeof result.response.response === "string") {
+    return result.response.response.trim();
+  }
+  if (typeof result.output_text === "string") return result.output_text.trim();
+  if (Array.isArray(result.choices) && result.choices[0]) {
+    const c = result.choices[0];
+    if (c.message && typeof c.message.content === "string") return c.message.content.trim();
+    if (typeof c.text === "string") return c.text.trim();
+  }
+  return "";
+}
+
 async function retrieve(env: Env, question: string): Promise<string> {
   const [vector] = await embedTexts(env, [question]);
   const res = await env.VECTORIZE.query(vector, { topK: TOP_K, returnMetadata: "all" });
@@ -287,9 +305,14 @@ export default {
         messages: [{ role: "system", content: system }, ...messages],
         max_tokens: MAX_TOKENS,
       });
-      const answer =
-        (result && typeof result.response === "string" && result.response.trim()) ||
-        "Sorry, I couldn't generate an answer. Please rephrase your question.";
+      let answer = extractAnswer(result);
+      if (!answer) {
+        // TEMP DEBUG: reveal the model's actual output shape so extraction can
+        // be fixed. Remove once the assistant is answering.
+        console.error("Empty answer. Result shape:", JSON.stringify(result));
+        answer = "[assistant debug] no text field in model result: " +
+          JSON.stringify(result).slice(0, 700);
+      }
 
       return new Response(answer, {
         status: 200,

@@ -1,0 +1,339 @@
+---
+title: "Camera Trap Data Processing"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.align = "center",
+  fig.width = 7,
+  fig.height = 4.5,
+  out.width = "100%"
+)
+```
+
+## Why preparation comes first
+
+A camera trap does not hand you a tidy table. It hands you a long stream of
+images, and every image becomes a row: the same animal standing in front of the
+lens for a minute can leave a dozen near identical records. Before any activity
+analysis, diversity index, or density model, that raw stream has to be turned
+into something the method can trust. This article walks through a short preparation workflow with `ct`, from a first look at the records to a clean
+site by species table ready for analysis.
+
+We use the bundled `penessoulou` dataset, from the
+Penessoulou Classified Forest in Benin. It holds one row per recorded image.
+
+```{r setup, message=FALSE, warning=FALSE}
+library(ct)
+library(dplyr)
+
+data(penessoulou)
+
+dim(penessoulou)
+
+penessoulou %>%
+  select(project, camera, species, number, datetimes) %>%
+  head()
+```
+
+Each row carries the survey phase (`project`), the camera that took the picture
+(`camera`), the identified `species`, how many individuals were counted
+(`number`), and the capture time as a `"YYYY-MM-DD HH:MM:SS"` string
+(`datetimes`), along with the camera coordinates. This dataset is direct output of 
+[Declas](https://github.com/stangandaho/declas), a species detection and classification software designed to handle efficiently camera trap data.
+
+## A first look at the data
+
+Before touching anything, it helps to know what you are holding. `ct_describe_df()`
+summarises whichever columns you name, giving frequencies and proportions for
+categorical variables and the usual descriptive statistics for numeric ones.
+
+```{r describe}
+ct_describe_df(penessoulou, species, number)
+```
+
+By default `ct_describe_df()` summarises the numeric column within each level of
+the categorical one. Here `number` is the count of individuals visible on an
+image, so this single call lists every recorded species, how many images hold it
+(`N`), and how many individuals typically appear per image (the `Min`, `Max`,
+`Median` and `Mean` of `number`). You can also pass your own function, for
+example the sum, to add the sum number of individuals per species. If you
+would rather see plain frequency tables and one overall numeric summary, pass
+`by_group = FALSE`.
+
+## Keeping only independent detections
+
+Two photographs of the same species at the same camera taken seconds apart are
+not two pieces of evidence. They are one event seen twice. Counting them
+separately inflates activity and abundance and breaks the independence that most
+methods assume. `ct_independence()` collapses these bursts: it keeps a detection
+only when enough time has passed since the previous record of that species at
+that camera. Here we use a 30 min window (1800 seconds), applied
+separately within each species and each camera.
+
+```{r independence}
+independent <- penessoulou %>%
+  ct_independence(
+    datetime = datetimes,
+    format = "%Y-%m-%d %H:%M:%S",
+    species_column = "species",
+    site_column = "camera",
+    threshold = 1800
+  )
+
+nrow(penessoulou)
+nrow(independent)
+```
+
+The stream of images collapses to a much smaller set of independent events. The
+threshold is a choice, not a constant: thirty minutes is common (e.g. Ahmad et al., 2024), but a study on a fast moving species or a busy trail might use a shorter or longer window. 
+The point is to make that choice deliberately and to write it down.
+
+## Checking how the cameras ran
+
+Independent or not, a detection is only meaningful if the camera was actually
+working. A camera that stops for two weeks tells a very different story from one
+that ran without a break, yet both can look similar in a raw table.
+`ct_plot_camtrap_activity()` draws each camera's active window along time and
+marks any gap longer than a threshold you set, so you can see the sampling
+effort at a glance.
+
+```{r activity, message=FALSE, warning=FALSE, fig.height=6, fig.alt="Timeline showing the active period of each camera during the survey, with one horizontal bar per camera."}
+penessoulou %>%
+  filter(project == "Last") %>%
+  ct_plot_camtrap_activity(
+    deployment_column = camera,
+    datetime_column = datetimes,
+    threshold = 7,
+    time_unit = "days",
+    ybreak = "2 days"
+  )
+```
+
+Each bar is the span between a camera's first and last record for this survey
+phase. Gaps beyond the threshold, had there been any, would appear as red
+segments. A picture like this is a quick data quality check: it exposes cameras
+that failed early, started late, or went silent in the middle of the survey,
+before those problems quietly bias an estimate.
+
+## Reading the gaps as a table
+
+The plot is good for spotting trouble at a glance, but sometimes you need the
+exact figures. `ct_find_break()` returns every interruption in a datetime series
+as a table of `start`, `end` and `duration`, so you can say precisely when a
+camera fell silent and for how long. Run it one camera at a time, since a gap
+only means something within a single device.
+
+```{r find-break, warning=FALSE}
+penessoulou %>%
+  filter(project == "Last", camera == "CAMERA 5") %>%
+  ct_find_break(
+    datetime_column = datetimes,
+    threshold = 2,
+    time_unit = "days"
+  )
+```
+
+Every stretch of more than two days without a picture is listed with its length
+in days. Lower the `threshold` to surface short interruptions, raise it to keep
+only the serious outages. This is the same gap detection that draws the red
+segments in the plot above.
+
+## Building a site by species table
+
+Many downstream tools, from diversity indices to ordination, expect a community
+matrix: one row per site, one column per species, and an abundance in each cell.
+`ct_to_community()` reshapes the independent detections into exactly that. Because
+`number` counts the individuals on each image, summing it per camera and species
+gives the total individuals recorded, which we use as the abundance. Empty
+combinations are filled with zero.
+
+```{r community}
+community <- independent %>%
+  ct_to_community(
+    site_column = camera,
+    species_column = species,
+    size_column = number,
+    values_fill = 0
+  )
+
+dim(community)
+
+community[1:5, 1:5]
+```
+
+Now every camera is a row and every species a column, with a real zero wherever
+a species was never detected.
+
+## Putting sites on a comparable scale
+
+Raw counts are hard to compare across cameras, because a camera on a busy trail
+records more of everything than a camera in a quiet corner. Standardisation
+removes that effect so differences reflect community composition rather than raw
+activity. `ct_standardize()` offers many methods; the Hellinger transformation is
+one of choices before distance based analyses. It works on a numeric matrix, so
+we move the camera names into row names first.
+
+```{r standardize}
+mat <- community %>%
+  tibble::column_to_rownames("camera")
+
+community_hel <- ct_standardize(mat, method = "hellinger")
+
+round(as.matrix(community_hel)[1:5, 1:5], 3)
+```
+
+The values are now on a common footing, ready for a dissimilarity matrix, a
+clustering, or an ordination without one crowded camera dominating the result.
+
+## Detection histories for occupancy
+
+Occupancy models ask a different question: not how many animals, but whether a
+species was seen at all in each sampling window. `ct_to_occupancy()` reshapes the
+detections into that format, splitting the study period into fixed windows and
+recording presence (1) or absence (0) for every site and species. We take the day
+straight from the parsed `datetime` column that `ct_independence()` added, which
+is cleaner than the raw `dates` field, then group the survey into monthly windows.
+
+```{r occupancy}
+occupancy <- independent %>%
+  mutate(day = as.Date(datetime)) %>%
+  ct_to_occupancy(
+    date_column = day,
+    site_column = camera,
+    species_column = species,
+    size_column = number,
+    by_day = 30,
+    presence_absence = TRUE
+  )
+
+occupancy[1:5, 1:5]
+```
+
+Each row is a site and species, each window column holds a 1 or a 0, and this is
+exactly the detection history an occupancy model expects. Set
+`presence_absence = FALSE` to keep the raw counts instead.
+
+## When the clock is wrong
+
+Cameras drift. A unit set with the wrong date, or one whose battery reset the
+clock, stamps every image with a time that never happened, and that quietly
+poisons independence filtering, activity patterns and effort. `ct_correct_datetime()`
+repairs this from a small correction table that says, for each camera, whether it
+was running fast or slow and what the true time was at a reference moment.
+
+```{r correct-datetime}
+# One row per camera to fix: the direction (+ slow, - fast) and a reference
+# timestamp showing the correct time.
+corrector <- data.frame(
+  camera = c("CAMERA 1", "CAMERA 2"),
+  sign = c("+", "-"),
+  datetimes = c("2025-03-14 8:17:00", "2024-11-14 10:02:03")
+)
+
+penessoulou %>%
+  filter(project == "Last") %>%
+  ct_correct_datetime(
+    datetime = datetimes,
+    deployment = camera,
+    corrector = corrector
+  ) %>%
+  select(camera, datetimes, corrected_datetime, time_offset_seconds) %>%
+  slice_head(n = 5)
+```
+
+The function adds a `corrected_datetime` column, along with the offset it applied,
+while leaving the original untouched, so you can inspect the shift before trusting
+it. In a real workflow this comes first, and the corrected column feeds every step
+above.
+
+## Effort and trap rate
+
+Counts mean little without knowing how long each camera watched. Effort is the
+number of camera days behind the detections, and it is the denominator for trap
+rate, occupancy and most density models. `penessoulou` carries no deployment
+table, so here we switch to the bundled Camtrap DP example (`ctdp`), which records
+when each camera was switched on and off.
+
+```{r effort, message=FALSE, warning=FALSE}
+data("ctdp")
+deployments <- ctdp$data$deployments
+
+ct_get_effort(
+  deployment_data = deployments,
+  deployment_column = deploymentID,
+  start_column = start,
+  end_column = end
+) %>%
+  head()
+```
+
+`ct_get_effort()` returns the active duration of each deployment.
+`ct_traprate_data()` goes a step further, joining those efforts to the detections
+so every camera carries both a count (`n`) and its effort, the pair that
+`ct_traprate_estimate()` needs.
+
+```{r traprate, message=FALSE, warning=FALSE}
+observations <- ctdp$data$observations %>%
+  filter(scientificName == "Vulpes vulpes")
+
+ct_traprate_data(
+  observation_data = observations,
+  deployment_data = deployments,
+  use_deployment = TRUE,
+  deployment_column = deploymentID,
+  datetime_column = timestamp,
+  start_column = start,
+  end_column = end
+) %>%
+  head()
+```
+
+## Time of day on a circle
+
+Activity analyses treat the time of day as an angle, because 23:59 and 00:01 are
+two minutes apart, not twenty-four hours. `ct_to_radian()` maps a clock time onto
+that circle, where a full day is `2 * pi`.
+
+```{r radian}
+with_radian <- independent %>%
+  ct_to_radian(times = times, format = "%H:%M:%S")
+
+with_radian %>%
+  select(species, times, time_radian) %>%
+  head()
+```
+
+The `time_radian` column is what activity tools such as `ct_fit_activity()` and
+`ct_overlap_estimates()` consume. The reverse trip is `ct_to_time()`, handy for
+reading an angle back as a clock time:
+
+```{r to-time}
+ct_to_time(c(0, pi / 2, pi, 3 * pi / 2))
+```
+
+## Where this leads
+
+In a handful of steps the raw image stream became something dependable: explored,
+filtered to independent events, checked for sampling gaps, and reshaped into a
+standardised community table. From here the usual `ct` analyses follow naturally,
+for example:
+
+- `ct_fit_activity()` and `ct_overlap_estimates()` for daily activity and
+  temporal overlap between species, fed by the radian times prepared above,
+- `ct_alpha_diversity()` and `ct_dissimilarity()` on the community table for
+  diversity and between site comparison,
+- `ct_traprate_estimate()` for trap rate, and the density estimators
+  (`ct_fit_ds()`, `ct_fit_rest()`, `ct_fit_tte()`, `ct_fit_ste()`) once effort
+  and detections are in place.
+
+Good preparation is not glamorous, but it is where a trustworthy result is
+either won or lost. Spend the time here, and everything built on top of it stands
+on solid ground.
+
+## Reference
+Ahmad, F., Mori, T., Rehan, M., Bosso, L., & Kabir, M. (2024). Applying a Random Encounter Model to Estimate the Asiatic Black Bear (Ursus thibetanus) Density from Camera Traps in the Hindu Raj Mountains, Pakistan. Biology 13, 341.
+
+
