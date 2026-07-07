@@ -18,8 +18,9 @@ ct_install_exiftool(
 - install_location:
 
   Path to the directory into which ExifTool should be installed. If
-  `NULL` (the default), installation will be into the directory returned
-  by `ct:::R_user_dir("ct")`.
+  `NULL` (the default), installation will be into the package's per-user
+  data directory, i.e. the path returned by
+  `tools::R_user_dir("ct", "data")`.
 
 - win_exe:
 

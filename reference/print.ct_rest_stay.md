@@ -18,3 +18,9 @@ print(x, ...)
 - ...:
 
   Ignored.
+
+## Value
+
+`x`, invisibly. Called for its side effect of printing the WAIC ranking
+of the candidate staying-time distributions and the mean staying-time
+summary for the best model to the console.

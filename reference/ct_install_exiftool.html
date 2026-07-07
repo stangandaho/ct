@@ -79,7 +79,8 @@
 <dl><dt id="arg-install-location">install_location<a class="anchor" aria-label="anchor" href="#arg-install-location"></a></dt>
 <dd><p>Path to the directory into which ExifTool should be
 installed. If <code>NULL</code> (the default), installation will be into the
-directory returned by <code>ct:::R_user_dir("ct")</code>.</p></dd>
+package's per-user data directory, i.e. the path returned by
+<code>tools::R_user_dir("ct", "data")</code>.</p></dd>
 
 
 <dt id="arg-win-exe">win_exe<a class="anchor" aria-label="anchor" href="#arg-win-exe"></a></dt>

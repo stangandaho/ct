@@ -72,9 +72,9 @@
       .then(function (hljs) {
         if (!hljs) return;
         bubble.querySelectorAll("pre code").forEach(function (el) {
-          if (el.dataset.highlighted) return;
-          el.dataset.highlighted = "1";
-          hljs.highlightElement(el);
+          // hljs adds the "hljs" class itself; use it as the done-guard.
+          if (el.classList.contains("hljs")) return;
+          try { hljs.highlightElement(el); } catch (e) {}
         });
       })
       .catch(function () {});
@@ -91,7 +91,9 @@
 
   function renderInline(s) {
     s = s.replace(/`([^`]+)`/g, function (_, c) { return "<code>" + c + "</code>"; });
-    s = s.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+    // bold first (**x**), then italic (*x*) so ** isn't eaten by the * rule.
+    s = s.replace(/\*\*([^*<]+)\*\*/g, "<strong>$1</strong>");
+    s = s.replace(/\*([^*\n<]+)\*/g, "<em>$1</em>");
     s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, function (_, t, u) {
       return '<a href="' + u + '" target="_blank" rel="noopener">' + t + "</a>";
     });

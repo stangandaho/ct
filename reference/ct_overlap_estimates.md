@@ -48,6 +48,14 @@ ct_overlap_estimates(
   are larger than 50, otherwise use Dhat1. See Details. The default is
   "all" for compatibility with older versions.
 
+## Value
+
+A named numeric vector of overlap coefficient estimates. When
+`type = "all"` it has three elements, `Dhat1`, `Dhat4` and `Dhat5`;
+otherwise it has a single element named after the requested estimator.
+Each value lies between 0 (no overlap) and 1 (identical activity
+distributions).
+
 ## Details
 
 See [`overlapTrue`](https://rdrr.io/pkg/overlap/man/overlapTrue.html)

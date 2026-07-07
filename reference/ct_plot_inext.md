@@ -114,6 +114,7 @@ ct_plot_inext(int_ext, type = 1, color_var = "Order.q")
 # plot with curves faceted by order
 ct_plot_inext(int_ext, type = 1, facet_var = "Order.q")
  }
+#> Warning: Insufficient data to provide reliable estimators and associated s.e.
 #> Warning: invalid color.var setting, the iNEXT object do not consist multiple assemblages, change setting as Order.q
 
 # }

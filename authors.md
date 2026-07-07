@@ -5,6 +5,9 @@
 - **Stanislas Mahussi Gandaho**. Author, maintainer.
   [](https://orcid.org/0009-0003-4969-1252)
 
+- **Pablo Palencia**. Contributor, reviewer.
+  [](https://orcid.org/0000-0002-2928-4241)
+
 - **R Consortium**. Funder.
 
 ## Citation

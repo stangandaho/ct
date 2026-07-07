@@ -24,3 +24,11 @@ ct_boot_ci(t0, bt, conf = 0.95)
 - conf:
 
   a (single!) confidence interval to estimate.
+
+## Value
+
+A numeric matrix of confidence limits, as returned by
+[`overlap::bootCI()`](https://rdrr.io/pkg/overlap/man/bootCI.html). Each
+row corresponds to one of the estimators supplied in `t0` and the two
+columns give the lower and upper bounds of the confidence interval at
+the requested level (`conf`).

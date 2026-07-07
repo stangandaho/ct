@@ -105,6 +105,13 @@ The default is "all" for compatibility with older versions.</p></dd>
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>A named numeric vector of overlap coefficient estimates. When
+<code>type = "all"</code> it has three elements, <code>Dhat1</code>, <code>Dhat4</code> and <code>Dhat5</code>;
+otherwise it has a single element named after the requested estimator. Each
+value lies between 0 (no overlap) and 1 (identical activity distributions).</p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>See <code><a href="https://rdrr.io/pkg/overlap/man/overlapTrue.html" class="external-link">overlapTrue</a></code> for the meaning of coefficient of overlapping, \(\Delta\).</p>
 <p>These estimators of \(\Delta\) use kernel density estimates fitted to the data to approximate the true density functions <em>f(t)</em> and <em>g(t)</em>. Schmid &amp; Schmidt (2006) propose five estimators of overlap:</p>

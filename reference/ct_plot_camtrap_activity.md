@@ -113,6 +113,11 @@ ct_plot_camtrap_activity(
   threshold = 7,
   time_unit = "days"
 )
+#> Warning: No deployment has a gap exceeding 7 days.
+#> Warning: No deployment has a gap exceeding 7 days.
+#> Warning: No deployment has a gap exceeding 7 days.
+#> Warning: No deployment has a gap exceeding 7 days.
+#> Warning: No deployment has a gap exceeding 7 days.
 
 
 #' # Customize plot appearance
@@ -126,6 +131,14 @@ ct_plot_camtrap_activity(
   activity_style = list(width = 1.1, color = "gray10")
 )+
   ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1))
+#> Warning: No deployment has a gap exceeding 15 days.
+#> Warning: No deployment has a gap exceeding 15 days.
+#> Warning: No deployment has a gap exceeding 15 days.
+#> Warning: No deployment has a gap exceeding 15 days.
+#> Warning: No deployment has a gap exceeding 15 days.
+#> Warning: No deployment has a gap exceeding 15 days.
+#> Warning: No deployment has a gap exceeding 15 days.
+#> Warning: No deployment has a gap exceeding 15 days.
 
 #'
 ```

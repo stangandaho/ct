@@ -59,13 +59,19 @@ To convert this fraction into radians: \$\$\text{Radians} =
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
-  # Convert a standalone vector of time values
-  times <- c("00:00:00", "06:00:00", "12:00:00", "18:00:00")
-  ct_to_radian(times = times, format = "%H:%M:%S")
+# Convert a standalone vector of time values
+times <- c("00:00:00", "06:00:00", "12:00:00", "18:00:00")
+ct_to_radian(times = times, format = "%H:%M:%S")
+#> [1] 0.000000 1.570796 3.141593 4.712389
 
-  # Convert a column of time values in a data frame
-  data <- data.frame(times = c("00:00:00", "06:00:00", "12:00:00", "18:00:00"))
-  ct_to_radian(data = data, times = times, format = "%H:%M:%S")
-} # }
+# Convert a column of time values in a data frame
+data <- data.frame(times = c("00:00:00", "06:00:00", "12:00:00", "18:00:00"))
+ct_to_radian(data = data, times = times, format = "%H:%M:%S")
+#> # A tibble: 4 × 2
+#>   times    time_radian
+#>   <chr>          <dbl>
+#> 1 00:00:00        0   
+#> 2 06:00:00        1.57
+#> 3 12:00:00        3.14
+#> 4 18:00:00        4.71
 ```

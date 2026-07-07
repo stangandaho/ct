@@ -24,6 +24,14 @@ ct_dp_filter(package, table = c("observations", "deployments", "media"), ...)
 
   Filtering conditions, see dplyr::filter()
 
+## Value
+
+A Camera Trap Data Package object of the same class as `package`, with
+the selected `table` subset to the rows satisfying the conditions in
+`...`. Related tables are updated so the package stays internally
+consistent (see
+[`camtrapdp::filter_observations()`](https://inbo.github.io/camtrapdp/reference/filter_observations.html)).
+
 ## Examples
 
 ``` r

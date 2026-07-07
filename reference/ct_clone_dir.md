@@ -37,7 +37,6 @@ creating directories.
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
 # Create a temporary directory structure
 src <- tempfile("source_dir")
 dir.create(src)
@@ -54,9 +53,8 @@ ct_clone_dir(from = src, to = dst)
 
 # Check that structure was cloned
 list.files(dst, recursive = TRUE)
+#> character(0)
 
 # Clean up
 unlink(c(src, dst), recursive = TRUE)
-
-} # }
 ```

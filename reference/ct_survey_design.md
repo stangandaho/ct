@@ -117,7 +117,7 @@ detected, an error is raised.
 ## Examples
 
 ``` r
-if (FALSE) library(ggplot2)
+library(ggplot2)
 # Load example dataset
 data("pendjari")
 
@@ -141,6 +141,22 @@ rand_c_sdes <- ct_survey_design(study_area = pendjari_trans,
                                 total_cluster = 8, total_site = 5,
                                 distance = c(7000, 3000), min_distance = 2000,
                                 padding = 2000, nest_padding = 500, set_seed = 123)
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
 #> Warning: Cluster size doesn't allow to have 5 sites per
 #>                                 cluster. Try to adjust distance and min_distance
 
@@ -158,6 +174,34 @@ reg_c_sdes <- ct_survey_design(study_area = pendjari_trans,
                                method = "regular_cluster", verbose = TRUE,
                                total_site = 3, distance = c(7000, 6000),
                                min_distance = 2000, padding = 2000, set_seed = 123)
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
+#> Warning: Maximum number of points could not exced 2 with
+#>                             minimum distance of 2000.
 #> Warning: Cluster size doesn't allow to have 3 sites per cluster. Try to adjust distance and min_distance
 
 # Regular-cluster sampling with regularly distributed sites within clusters
@@ -186,5 +230,4 @@ mask_regular_sdes <- ct_survey_design(study_area = pendjari_trans,
                                       min_distance = 2000, nest_padding = 1000, set_seed = 123)
 
 
- # \dontrun{}
 ```

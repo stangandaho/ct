@@ -1,10 +1,7 @@
 # Interactive camera trap location adjustment
 
-This function launches a shiny application that allows users to
-visualize and manually adjust the geographic coordinates of camera trap
-locations. Users can drag points on an interactive map to update the
-positions of camera traps, and the updated dataset is saved to the
-global environment.
+This function launches a shiny application that allows to visualize and
+manually adjust the geographic coordinates of camera trap locations.
 
 ## Usage
 
@@ -28,16 +25,15 @@ ct_check_location(
 
 - longitude:
 
-  A string representing the column name for longitude in the dataset.
+  Column name for longitude in the dataset.
 
 - latitude:
 
-  A string representing the column name for latitude in the dataset.
+  Column name for latitude in the dataset.
 
 - location_name:
 
-  A string representing the column name for the location name or unique
-  identifier for each camera trap point.
+  Column name that identifies each camera-trap location.
 
 - coord_system:
 
@@ -53,12 +49,40 @@ ct_check_location(
 - new_data_name:
 
   A string specifying the name of the new dataset with updated
-  coordinates to be created in the global environment.
+  coordinates to be created in the calling environment.
 
 ## Value
 
-A shiny application is launched to display the map and allow manual
-coordinate adjustments. The modified dataset is saved to the global
-environment under the name provided in `new_data_name`.
+A shiny application object (see
+[`shiny::shinyApp()`](https://rdrr.io/pkg/shiny/man/shinyApp.html)). It
+is called for its side effect: when run interactively it displays the
+map and allows manual coordinate adjustments, and the modified dataset
+is assigned in the calling environment under the name provided in
+`new_data_name`.
 
 ## Examples
+
+``` r
+# Example dataset
+camera_traps <- tibble::tibble(
+  trap_id = c("Trap1", "Trap2", "Trap3"),
+  lon = c(36.8, 36.9, 37.0),
+  lat = c(-1.4, -1.5, -1.6)
+)
+
+# The function launches an interactive Shiny app, so it is only run in an
+# interactive session.
+if (interactive()) {
+  # Launch the application
+  ct_check_location(
+    data = camera_traps,
+    longitude = "lon",
+    latitude = "lat",
+    location_name = "trap_id",
+    coord_system = "geographic",
+    new_data_name = "updated_camera_traps"
+  )
+  # After adjustments, the updated dataset will be available in the calling
+  # environment as `updated_camera_traps`.
+}
+```

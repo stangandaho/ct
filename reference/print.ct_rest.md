@@ -18,3 +18,8 @@ print(x, ...)
 - ...:
 
   Ignored.
+
+## Value
+
+`x`, invisibly. Called for its side effect of printing the WAIC model
+ranking and the posterior density summary to the console.
