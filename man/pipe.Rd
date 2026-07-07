@@ -3,15 +3,26 @@
 \name{\%>\%}
 \alias{\%>\%}
 \alias{\%<>\%}
-\title{Pipe operator}
+\title{Pipe operators}
 \usage{
 lhs \%>\% rhs
 
 lhs \%<>\% rhs
 }
-\description{
-Pipe operator
+\arguments{
+\item{lhs}{A value to pipe into the right-hand side expression.}
 
-Pipe operator
+\item{rhs}{A function call using the magrittr semantics; the value of \code{lhs}
+is placed into its first argument (or wherever the \code{.} placeholder appears).}
+}
+\value{
+The result of calling \code{rhs} with \code{lhs} inserted, as documented in
+\code{\link[magrittr:pipe]{magrittr::\%>\%()}}. \verb{\%<>\%} returns that result invisibly after assigning it
+back to \code{lhs}.
+}
+\description{
+Re-exported from the \pkg{magrittr} package. \verb{\%>\%} pipes the left-hand side
+into the first argument (or the \code{.} placeholder) of the right-hand side;
+\verb{\%<>\%} does the same but assigns the result back to the left-hand side.
 }
 \keyword{internal}

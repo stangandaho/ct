@@ -108,6 +108,10 @@ ct_dp_version <- function(package) {
 #'              captureMethod == "activityDetection", filePublic == FALSE
 #' )
 #'}
+#' @return A Camera Trap Data Package object of the same class as `package`,
+#'   with the selected `table` subset to the rows satisfying the conditions in
+#'   `...`. Related tables are updated so the package stays internally
+#'   consistent (see [camtrapdp::filter_observations()]).
 #' @export
 ct_dp_filter <- function(package,
                          table = c("observations", "deployments", "media"),

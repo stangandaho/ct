@@ -63,9 +63,6 @@ ct_plot_camtrap_activity <- function(data,
                                      ybreak = paste(1, time_unit)
                                      ) {
 
-  # Turn off warning when no gap is found
-  options(warn = -1)
-
   # Prepare data
   plot_data <- data %>%
     dplyr::select({{deployment_column}}, {{datetime_column}}) %>%
@@ -100,17 +97,19 @@ ct_plot_camtrap_activity <- function(data,
       .groups = "drop"
     )
 
-  # Find gaps for each deployment
-  gap_data <- lapply(unique(plot_data$deployment), function(x){
-    fb <- ct::ct_find_break(data = plot_data %>% dplyr::filter(deployment == x),
-                  datetime_column = datetime,
-                  threshold = threshold,
-                  time_unit = time_unit)
-    if (!is.null(fb)) {
-      fb %>% dplyr::mutate(deployment = x)
-    }
+  # Find gaps for each deployment.
+  gap_data <- suppressWarnings(
+    lapply(unique(plot_data$deployment), function(x){
+      fb <- ct::ct_find_break(data = plot_data %>% dplyr::filter(deployment == x),
+                    datetime_column = datetime,
+                    threshold = threshold,
+                    time_unit = time_unit)
+      if (!is.null(fb)) {
+        fb %>% dplyr::mutate(deployment = x)
+      }
 
-  }) %>%  dplyr::bind_rows()
+    }) %>%  dplyr::bind_rows()
+  )
 
   if (nrow(gap_data) <= 0) {
     gap_data <- NULL
@@ -169,8 +168,6 @@ ct_plot_camtrap_activity <- function(data,
 
   }
 
-  # Turn on warning
-  options(warn = -1)
   return(p)
 }
 

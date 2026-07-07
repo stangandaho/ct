@@ -262,9 +262,10 @@ rest_code_activity <- function() {
 
 #' Quoted worker setup: define + register the custom nimble distributions
 #'
-#' Returned expression is evaluated in each parallel worker's global environment
-#' so the von Mises (and, for RAD-REST, Dirichlet-multinomial) distributions are
-#' available when the model is compiled there.
+#' Returned expression is evaluated inside the worker function's own environment
+#' (not the global environment) so the von Mises (and, for RAD-REST,
+#' Dirichlet-multinomial) distributions are available when the model is compiled
+#' there.
 #' @keywords internal
 #' @noRd
 rest_worker_setup <- function(dirmnom) {

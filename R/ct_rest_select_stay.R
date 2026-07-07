@@ -212,6 +212,9 @@ rest_all_stay_formulas <- function(stay_formula) {
 #' Print method for ct_rest_stay objects
 #' @param x A `ct_rest_stay` object.
 #' @param ... Ignored.
+#' @return `x`, invisibly. Called for its side effect of printing the WAIC
+#'   ranking of the candidate staying-time distributions and the mean
+#'   staying-time summary for the best model to the console.
 #' @keywords internal
 #' @exportS3Method print ct_rest_stay
 print.ct_rest_stay <- function(x, ...) {

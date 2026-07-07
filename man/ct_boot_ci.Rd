@@ -15,6 +15,12 @@ ct_boot_ci(t0, bt, conf = 0.95)
 a (single!) confidence interval to estimate.
 }
 }
+\value{
+A numeric matrix of confidence limits, as returned by
+\code{\link[overlap:bootCI]{overlap::bootCI()}}. Each row corresponds to one of the estimators supplied
+in \code{t0} and the two columns give the lower and upper bounds of the
+confidence interval at the requested level (\code{conf}).
+}
 \description{
 Confidence interval calculation from bootstrap samples.
 }

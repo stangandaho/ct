@@ -15,7 +15,6 @@
 #' @return Invisibly returns \code{NULL}. The function is called for its side-effect of creating directories.
 #'
 #' @examples
-#' \dontrun{
 #' # Create a temporary directory structure
 #' src <- tempfile("source_dir")
 #' dir.create(src)
@@ -35,8 +34,6 @@
 #'
 #' # Clean up
 #' unlink(c(src, dst), recursive = TRUE)
-#'
-#' }
 #'
 #' @export
 ct_clone_dir <- function(from, to, recursive = TRUE) {

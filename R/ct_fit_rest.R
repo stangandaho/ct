@@ -538,8 +538,11 @@ rest_run_parallel <- function(per_chain, code, data, constants, params,
   # Each worker compiles in its own temp directory to avoid C++ build clashes,
   # then (for the mixture) swaps the activity_proportion sampler for one that
   # draws from the pre-computed activity posterior.
-  run_one <- function(info, code, data, constants, params, iterations, burnin,
-                      thin, is_mixture) {
+  run_one <- function(info, worker_setup, code, data, constants, params,
+                      iterations, burnin, thin, is_mixture) {
+    # Define and register the custom nimble distributions inside this function's
+    # own environment.
+    eval(worker_setup, envir = environment())
     dir <- file.path(tempdir(), paste0("nimble_", Sys.getpid()))
     dir.create(dir, showWarnings = FALSE)
     m  <- nimble::nimbleModel(code, data = data, constants = constants, inits = info$inits)
@@ -559,13 +562,11 @@ rest_run_parallel <- function(per_chain, code, data, constants, params,
   cl <- parallel::makeCluster(min(cores, length(per_chain)))
   on.exit(try(parallel::stopCluster(cl), silent = TRUE), add = TRUE)
   parallel::clusterExport(cl, "run_one", envir = environment())
-  # Define and register the custom nimble distributions inside each worker.
-  parallel::clusterCall(cl, function(setup) eval(setup, envir = globalenv()), worker_setup)
 
-  parallel::parLapply(cl, per_chain, run_one, code = code, data = data,
-                      constants = constants, params = params,
-                      iterations = iterations, burnin = burnin, thin = thin,
-                      is_mixture = is_mixture)
+  parallel::parLapply(cl, per_chain, run_one, worker_setup = worker_setup,
+                      code = code, data = data, constants = constants,
+                      params = params, iterations = iterations, burnin = burnin,
+                      thin = thin, is_mixture = is_mixture)
 }
 
 #' WAIC with a numerically stable log-sum-exp
@@ -649,6 +650,8 @@ rest_all_formulas <- function(vars) {
 #' Print method for ct_rest objects
 #' @param x A `ct_rest` object.
 #' @param ... Ignored.
+#' @return `x`, invisibly. Called for its side effect of printing the WAIC
+#'   model ranking and the posterior density summary to the console.
 #' @keywords internal
 #' @exportS3Method print ct_rest
 print.ct_rest <- function(x, ...) {

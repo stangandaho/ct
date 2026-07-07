@@ -23,15 +23,13 @@
 #' \deqn{\text{Radians} = \text{Fraction of the day} \times 2\pi}
 #'
 #' @examples
-#' \dontrun{
-#'   # Convert a standalone vector of time values
-#'   times <- c("00:00:00", "06:00:00", "12:00:00", "18:00:00")
-#'   ct_to_radian(times = times, format = "%H:%M:%S")
+#' # Convert a standalone vector of time values
+#' times <- c("00:00:00", "06:00:00", "12:00:00", "18:00:00")
+#' ct_to_radian(times = times, format = "%H:%M:%S")
 #'
-#'   # Convert a column of time values in a data frame
-#'   data <- data.frame(times = c("00:00:00", "06:00:00", "12:00:00", "18:00:00"))
-#'   ct_to_radian(data = data, times = times, format = "%H:%M:%S")
-#' }
+#' # Convert a column of time values in a data frame
+#' data <- data.frame(times = c("00:00:00", "06:00:00", "12:00:00", "18:00:00"))
+#' ct_to_radian(data = data, times = times, format = "%H:%M:%S")
 #'
 #' @import dplyr
 #' @export

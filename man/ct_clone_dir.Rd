@@ -25,7 +25,6 @@ This function replicates the folder hierarchy and subdirectories, but does not c
 making it useful for setting up empty directory templates when organizing camera trap data.
 }
 \examples{
-\dontrun{
 # Create a temporary directory structure
 src <- tempfile("source_dir")
 dir.create(src)
@@ -45,7 +44,5 @@ list.files(dst, recursive = TRUE)
 
 # Clean up
 unlink(c(src, dst), recursive = TRUE)
-
-}
 
 }

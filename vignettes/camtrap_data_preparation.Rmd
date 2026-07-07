@@ -14,6 +14,92 @@ knitr::opts_chunk$set(
 )
 ```
 
+Most camera-trap analyses in `ct` share the same first steps: read the raw
+image records, inspect them, and reduce the stream of photographs to a set of
+*independent* detection events before any activity, diversity, or density
+method is applied. This vignette walks through that preparation using the
+bundled `penessoulou` dataset, a year of camera-trap records from the
+Penessoulou Classified Forest in Benin.
+
 ```{r setup}
 library(ct)
+library(dplyr)
 ```
+
+## The raw records
+
+`penessoulou` holds one row per recorded image, with the species seen, the
+camera that took it, and the capture date-time (as a `"YYYY-MM-DD HH:MM:SS"`
+string).
+
+```{r data}
+data(penessoulou)
+
+dim(penessoulou)
+
+penessoulou %>%
+  select(project, camera, species, number, datetimes) %>%
+  head()
+```
+
+A quick tally shows how the raw images are distributed across species. At this
+stage every photograph counts, so a single animal lingering in front of a
+camera can inflate these numbers.
+
+```{r counts}
+penessoulou %>%
+  count(species, sort = TRUE)
+```
+
+## Filtering independent detections
+
+Consecutive photographs of the same species at the same camera within a short
+time window are not statistically independent (Ridout & Linkie, 2009). The
+`ct_independence()` function collapses such bursts, keeping detections only when
+the gap since the previous record of that species at that camera meets a chosen
+`threshold` (in seconds). Here we use a 30-minute (1800 s) window, assessed
+separately per species and per camera.
+
+```{r independence}
+independent <- penessoulou %>%
+  ct_independence(
+    datetime = datetimes,
+    format = "%Y-%m-%d %H:%M:%S",
+    species_column = "species",
+    site_column = "camera",
+    threshold = 1800
+  )
+
+nrow(penessoulou)
+nrow(independent)
+```
+
+Filtering removes the redundant burst photographs, leaving fewer, independent
+events. The same species tally now reflects independent detections rather than
+raw image counts:
+
+```{r counts-after}
+independent %>%
+  count(species, sort = TRUE)
+```
+
+## Where to go next
+
+The independent detections produced here are the common input to the rest of
+the package, for example:
+
+- `ct_fit_activity()` and `ct_overlap_estimates()` for activity patterns and
+  temporal overlap between species,
+- `ct_camera_day()` together with `ct_alpha_diversity()` or `ct_inext()` for
+  diversity and rarefaction,
+- the density estimators (`ct_fit_ds()`, `ct_fit_rest()`, `ct_fit_tte()`,
+  `ct_fit_ste()`).
+
+Each of these is covered in its own article on the
+[package website](https://stangandaho.github.io/ct/).
+
+## References
+
+Ridout, M. S., & Linkie, M. (2009). Estimating overlap of daily activity
+patterns from camera trap data. *Journal of Agricultural, Biological, and
+Environmental Statistics*, 14(3), 322-337.

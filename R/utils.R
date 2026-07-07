@@ -52,18 +52,26 @@ update_list <- function(first_list, second_list) {
 }
 
 
-#' Pipe operator
+#' Pipe operators
+#'
+#' Re-exported from the \pkg{magrittr} package. `%>%` pipes the left-hand side
+#' into the first argument (or the `.` placeholder) of the right-hand side;
+#' `%<>%` does the same but assigns the result back to the left-hand side.
 #'
 #' @name %>%
 #' @rdname pipe
 #' @keywords internal
+#' @param lhs A value to pipe into the right-hand side expression.
+#' @param rhs A function call using the magrittr semantics; the value of `lhs`
+#'   is placed into its first argument (or wherever the `.` placeholder appears).
+#' @return The result of calling `rhs` with `lhs` inserted, as documented in
+#'   [magrittr::%>%()]. `%<>%` returns that result invisibly after assigning it
+#'   back to `lhs`.
 #' @importFrom magrittr %>%
 #' @usage lhs \%>\% rhs
 #' @export
 magrittr::`%>%`
 
-#' Pipe operator
-#'
 #' @name %<>%
 #' @rdname pipe
 #' @keywords internal
@@ -446,26 +454,23 @@ as_colname <- function(arg) {
 }
 
 #' Check package
+#'
+#' Returns `TRUE` when every package in `packages` is installed. In an
+#' interactive session it offers to install any that are missing (via
+#' [rlang::check_installed()]); non-interactively (e.g. under `R CMD check`) it
+#' never prompts or installs and simply reports the missing packages so the
+#' caller can degrade gracefully.
 #' @noRd
-#' @importFrom cli cli_div cli_text
-#' @importFrom utils menu
 checked_packages <- function(packages) {
   # Check availability
   not_available <- !vapply(packages, requireNamespace, quietly = TRUE, FUN.VALUE = logical(1))
 
-  if (any(not_available)) {
-    to_install <- packages[not_available]
-    cli_div(theme = list(span.emph = list(color = "#ef6d00")))
-    cli_text("{ifelse(length(to_install) > 1, 'Packages', 'Package')} {.emph {to_install}} need to be installed.")
-    action <- menu(choices = c("Install", "No"))
-    if (action == 1) {
-      for (pkg in to_install) {
-        install.packages(pkg, dependencies = TRUE)
-      }
-    }
+  if (any(not_available) && interactive()) {
+    # Interactive, user-initiated installation only. rlang handles the prompt.
+    rlang::check_installed(packages[not_available])
   }
 
-  # Check again after installation
+  # Check again after any installation
   still_missing <- !vapply(packages, requireNamespace, quietly = TRUE, FUN.VALUE = logical(1))
   return(!any(still_missing))
 }

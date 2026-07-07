@@ -28,6 +28,12 @@ ct_overlap_estimates(
 samples are larger than 50, otherwise use Dhat1. See Details.
 The default is "all" for compatibility with older versions.}
 }
+\value{
+A named numeric vector of overlap coefficient estimates. When
+\code{type = "all"} it has three elements, \code{Dhat1}, \code{Dhat4} and \code{Dhat5};
+otherwise it has a single element named after the requested estimator. Each
+value lies between 0 (no overlap) and 1 (identical activity distributions).
+}
 \description{
 Estimates of coefficient of overlapping
 }

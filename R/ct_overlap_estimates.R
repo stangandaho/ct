@@ -7,6 +7,11 @@
 #'
 #' @inherit overlap::overlapEst details
 #'
+#' @return A named numeric vector of overlap coefficient estimates. When
+#'   `type = "all"` it has three elements, `Dhat1`, `Dhat4` and `Dhat5`;
+#'   otherwise it has a single element named after the requested estimator. Each
+#'   value lies between 0 (no overlap) and 1 (identical activity distributions).
+#'
 #' @examples
 #'
 #'set.seed(42)

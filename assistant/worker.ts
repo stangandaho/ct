@@ -2,8 +2,8 @@
  * Cloudflare Worker — ct package website assistant (RAG).
  *
  * Fully free, entirely on Cloudflare:
- *   - Workers AI  : embeddings (bge) + chat (Mistral)  — no API key
- *   - Vectorize   : semantic vector search over the ct docs
+ *   - Workers AI : embeddings (bge) + chat (Mistral)  — no API key
+ *   - Vectorize : semantic vector search over the ct docs
  *
  * The docs are indexed by POSTing to /reindex (guarded by REINDEX_KEY).
  * At query time the question is embedded, the most semantically similar doc
@@ -42,7 +42,8 @@ export interface Env {
 
 // Tunables
 // Run `npx wrangler ai models` to see what is currently live on your account.
-const CHAT_MODEL = "@cf/mistralai/mistral-small-3.1-24b-instruct";
+//const CHAT_MODEL = "@cf/mistralai/mistral-small-3.1-24b-instruct";
+const CHAT_MODEL = "@cf/google/gemma-4-26b-a4b-it";
 const EMBED_MODEL = "@cf/baai/bge-base-en-v1.5"; // 768-dim; matches the index
 const EMBED_DIM = 768;
 
@@ -81,7 +82,7 @@ How to answer:
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
-// Chunking (shared by /reindex) ------
+// Chunking (shared by /reindex)
 // Sections are separated by the "---" the build script writes between
 // reference entries and vignettes; long ones are split further by paragraph.
 function chunkDocs(doc: string): { id: string; text: string }[] {
@@ -173,7 +174,7 @@ async function retrieve(env: Env, question: string): Promise<string> {
     .join("\n\n---\n\n");
 }
 
-// CORS helpers ------
+// CORS helpers
 function allowedOrigins(env: Env): string[] {
   return env.ALLOWED_ORIGIN.split(",").map((s) => s.trim()).filter(Boolean);
 }

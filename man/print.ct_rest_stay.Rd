@@ -11,6 +11,11 @@
 
 \item{...}{Ignored.}
 }
+\value{
+\code{x}, invisibly. Called for its side effect of printing the WAIC
+ranking of the candidate staying-time distributions and the mean
+staying-time summary for the best model to the console.
+}
 \description{
 Print method for ct_rest_stay objects
 }

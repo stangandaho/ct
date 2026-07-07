@@ -42,7 +42,7 @@
 #' If a geographic CRS is detected, an error is raised.
 #'
 #' @examples
-#' \dontrun{library(ggplot2)
+#' \donttest{library(ggplot2)
 #' # Load example dataset
 #' data("pendjari")
 #'
@@ -317,7 +317,7 @@ ct_survey_design <- function(study_area,
   ## Verbose
   if (verbose & method != "mask") {
     if ("sf" %in% class(designed)) {
-      pts_on <- sf::st_point_on_surface(designed) %>%
+      pts_on <- suppressWarnings(sf::st_point_on_surface(designed)) %>%
         sf::st_as_sf()
       if (hasArg(total_site) && nrow(pts_on) < total_site) {
         rlang::warn(sprintf("Sampling size (%s) differ from the requested size
@@ -456,7 +456,7 @@ clustering <- function(cluster,
                        verbose){
   designed <- list(); less_than_requested <- list()
   for (feature in 1:nrow(cluster)) {
-    single_grid <- cluster[feature, ]; options(warn = -1)
+    single_grid <- cluster[feature, ]
 
     single_cluster <- random_sampling(study_area = single_grid, total_site = total_site,
                       padding = nest_padding, min_distance = min_distance,
@@ -465,15 +465,15 @@ clustering <- function(cluster,
     #if (all(c(length(single_cluster) != 0, !grepl("error", single_cluster)))) {
       single_cp <- single_cluster %>% dplyr::mutate(cluster = paste0("cluster_", feature))
 
-      ## Handle for warning
-      pts_on <- sf::st_point_on_surface(single_cp) %>% sf::st_as_sf()
+      # st_point_on_surface warns on geographic coordinates
+      pts_on <- suppressWarnings(sf::st_point_on_surface(single_cp)) %>% sf::st_as_sf()
 
       if (total_site > nrow(pts_on)) {less_than_requested[[feature]] <- TRUE}
       designed[[feature]] <- single_cp
     #}
 
   }
-  designed <- designed %>% dplyr::bind_rows(); options(warn = 1)
+  designed <- designed %>% dplyr::bind_rows()
 
   return(list(designed, less_than_requested))
 }

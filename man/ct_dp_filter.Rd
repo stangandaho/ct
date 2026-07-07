@@ -15,6 +15,12 @@ ct_read_dp().}
 
 \item{...}{Filtering conditions, see dplyr::filter()}
 }
+\value{
+A Camera Trap Data Package object of the same class as \code{package},
+with the selected \code{table} subset to the rows satisfying the conditions in
+\code{...}. Related tables are updated so the package stays internally
+consistent (see \code{\link[camtrapdp:filter_observations]{camtrapdp::filter_observations()}}).
+}
 \description{
 Subsets observations in camera trap data package, retaining all rows that
 satisfy the conditions.

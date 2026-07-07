@@ -11,6 +11,10 @@
 
 \item{...}{Ignored.}
 }
+\value{
+\code{x}, invisibly. Called for its side effect of printing the WAIC
+model ranking and the posterior density summary to the console.
+}
 \description{
 Print method for ct_rest objects
 }

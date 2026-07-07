@@ -6,6 +6,11 @@
 #'
 #' @inheritParams overlap::bootCI
 #'
+#' @return A numeric matrix of confidence limits, as returned by
+#'   [overlap::bootCI()]. Each row corresponds to one of the estimators supplied
+#'   in `t0` and the two columns give the lower and upper bounds of the
+#'   confidence interval at the requested level (`conf`).
+#'
 #' @export
 
 ct_boot_ci <- function(t0,

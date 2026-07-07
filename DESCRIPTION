@@ -23,13 +23,28 @@ Imports:
     tidyselect,
     Rcpp (>= 1.0.14)
 Authors@R: c(
-    person(given = "Stanislas Mahussi", family = "Gandaho", email = "stangandaho@gmail.com", role = c("aut", "cre"),
+    person(given = "Stanislas Mahussi", family = "Gandaho", 
+           email = "stangandaho@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0003-4969-1252")
+           ),
+    person(given = "Pablo", family = "Palencia", 
+           email = "palencia.pablo.m@gmail.com", role = c("ctb", "rev"),
+           comment = c(ORCID = "0000-0002-2928-4241")
            ),
     person("R Consortium", role = "fnd")
     )
 Maintainer: Stanislas Mahussi Gandaho <stangandaho@gmail.com>
-Description: Tool to edit, extract, visualize, and analyze camera trap data for wildlife monitoring and ecological research.
+Description: An integrated, tidyverse-friendly workflow for camera trap data in
+    wildlife monitoring and ecological research. Reads and edits media metadata,
+    filters independent detections, analyses activity patterns and species
+    diversity, and estimates species density or
+    abundance with several methods, including the random encounter model,
+    camera-trap distance sampling, time-to-event, space-to-event, and the random
+    encounter and staying-time model (see 
+    Rowcliffe et al. (2008) <doi:10.1111/j.1365-2664.2008.01473.x>,
+    Howe et al. (2017) <doi:10.1111/2041-210X.12790>,
+    Nakashima et al. (2018) <doi:10.1111/1365-2664.13059>, and
+    Moeller et al. (2018) <doi:10.1002/ecs2.2331>).
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

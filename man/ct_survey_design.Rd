@@ -76,7 +76,7 @@ system (CRS) before proceeding.
 If a geographic CRS is detected, an error is raised.
 }
 \examples{
-\dontrun{library(ggplot2)
+\donttest{library(ggplot2)
 # Load example dataset
 data("pendjari")
 
