@@ -5,13 +5,13 @@ articles:
   articles/analyse_before_you_collect: analyse_before_you_collect.html
   articles/camera_trap_distance_sampling_guideline: camera_trap_distance_sampling_guideline.html
   articles/camera_trap_media_metadata_management: camera_trap_media_metadata_management.html
-  camtrap_data_preparation: camtrap_data_preparation.html
+  articles/camtrap_data_processing: camtrap_data_processing.html
   articles/density_estimation_with_distance_sampling: density_estimation_with_distance_sampling.html
   articles/distance_to_animal_measurement: distance_to_animal_measurement.html
   articles/random_encounter_and_staying_time: random_encounter_and_staying_time.html
   articles/rarefaction_and_extrapolation: rarefaction_and_extrapolation.html
   articles/spaceNtime: spaceNtime.html
-last_built: 2026-07-07T14:10Z
+last_built: 2026-07-07T17:38Z
 urls:
   reference: https://stangandaho.github.io/ct/reference
   article: https://stangandaho.github.io/ct/articles

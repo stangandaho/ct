@@ -10,14 +10,12 @@ non-numeric variables. For numeric variables, it calculates basic descriptive
 statistics such as minimum, maximum, median, mean, and count of non-missing
 values. Additionally, users can pass custom functions via the fn argument to
 compute additional statistics for numeric variables. For non-numeric variables,
-it provides frequency
-counts and proportions for each unique value."><meta property="og:description" content="This function provides a summary of a dataset, including both numeric and
+it provides frequency counts and proportions for each unique value."><meta property="og:description" content="This function provides a summary of a dataset, including both numeric and
 non-numeric variables. For numeric variables, it calculates basic descriptive
 statistics such as minimum, maximum, median, mean, and count of non-missing
 values. Additionally, users can pass custom functions via the fn argument to
 compute additional statistics for numeric variables. For non-numeric variables,
-it provides frequency
-counts and proportions for each unique value."><meta property="og:image" content="https://stangandaho.github.io/ct/reference/figures/logo.png"><meta property="og:image:alt" content="ct: camera-trap data management and analysis in R"><meta name="description" content="ct is an R package for camera-trap data management and analysis, from image metadata to species density estimation (random encounter model, distance sampling, time-to-event, space-to-event, REST, instantaneous sampling estimators)."><meta name="keywords" content="camera trap, camera-trap, R package, wildlife monitoring, density estimation, abundance, random encounter model, camera-trap distance sampling, occupancy, activity patterns, ecology, Camtrap DP, spatial coverage, temporal shift"><meta name="google-site-verification" content="IsJnmZmB57RlAonI3vWGJq4FadQgHj87SJhl1Q3oBak"><meta name="msvalidate.01" content="599CF8CEAF0762B699B5C79D5B933522"></head><body>
+it provides frequency counts and proportions for each unique value."><meta property="og:image" content="https://stangandaho.github.io/ct/reference/figures/logo.png"><meta property="og:image:alt" content="ct: camera-trap data management and analysis in R"><meta name="description" content="ct is an R package for camera-trap data management and analysis, from image metadata to species density estimation (random encounter model, distance sampling, time-to-event, space-to-event, REST, instantaneous sampling estimators)."><meta name="keywords" content="camera trap, camera-trap, R package, wildlife monitoring, density estimation, abundance, random encounter model, camera-trap distance sampling, occupancy, activity patterns, ecology, Camtrap DP, spatial coverage, temporal shift"><meta name="google-site-verification" content="IsJnmZmB57RlAonI3vWGJq4FadQgHj87SJhl1Q3oBak"><meta name="msvalidate.01" content="599CF8CEAF0762B699B5C79D5B933522"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -76,13 +74,12 @@ non-numeric variables. For numeric variables, it calculates basic descriptive
 statistics such as minimum, maximum, median, mean, and count of non-missing
 values. Additionally, users can pass custom functions via the <code>fn</code> argument to
 compute additional statistics for numeric variables. For non-numeric variables,
-it provides frequency
-counts and proportions for each unique value.</p>
+it provides frequency counts and proportions for each unique value.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ct_describe_df</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span>, fn <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ct_describe_df</span><span class="op">(</span><span class="va">data</span>, <span class="va">...</span>, fn <span class="op">=</span> <span class="cn">NULL</span>, by_group <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -94,20 +91,80 @@ counts and proportions for each unique value.</p>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>(Optional) Column to include in the summary. If no column
-is specifie, all columns in the data will be included.</p></dd>
+<dd><p>(Optional) Columns to include in the summary. If no column
+is specified, all columns in the data will be included.</p></dd>
 
 
 <dt id="arg-fn">fn<a class="anchor" aria-label="anchor" href="#arg-fn"></a></dt>
-<dd><p>A named list of functions to apply to numeric variables. Each function
+<dd><p>A list of functions to apply to numeric variables. Each function
 must accept <code>x</code> as a vector of numeric values and return a single value or a
 named vector. Additional arguments for these functions can be specified as a list.
 For example: <code>fn = list('sum' = list(na.rm = TRUE), 'sd')</code>.</p></dd>
 
+
+<dt id="arg-by-group">by_group<a class="anchor" aria-label="anchor" href="#arg-by-group"></a></dt>
+<dd><p>Logical, default <code>TRUE</code>. When <code>TRUE</code> and both categorical and
+numeric variables are selected, each numeric variable is summarised within the
+groups defined by the categorical variable(s). When <code>FALSE</code>, numeric and categorical variables are
+summarised independently and stacked into a single table. If only one variable
+type is present, <code>by_group</code> has no effect.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A tibble</p>
+    <p>A tibble whose shape depends on <code>by_group</code>.</p>
+<p>With <code>by_group = TRUE</code> (and at least one categorical and one numeric variable),
+the data are grouped by the selected categorical variable(s) and each numeric
+variable is summarised within every group. The result has one row per numeric
+variable and group combination, with columns:</p><dl><dt><code>Variable</code></dt>
+<dd><p>Name of the numeric variable being summarised.</p></dd>
+
+<dt>grouping column(s)</dt>
+<dd><p>One column per selected categorical variable, each
+holding the group value.</p></dd>
+
+<dt><code>N</code></dt>
+<dd><p>Number of non-missing values of <code>Variable</code> in the group.</p></dd>
+
+<dt><code>Min</code>, <code>Max</code>, <code>Median</code>, <code>Mean</code></dt>
+<dd><p>Descriptive statistics of <code>Variable</code>
+within the group.</p></dd>
+
+<dt><code>CI Left</code>, <code>CI Right</code></dt>
+<dd><p>Lower and upper bounds of the 95% t-based
+confidence interval for the group mean (see <code><a href="ct_ci.html">ct_ci()</a></code>).</p></dd>
+
+
+</dl><p>With <code>by_group = FALSE</code> (also used as a fallback when only numeric or only
+categorical variables are selected), numeric and categorical summaries are
+stacked into one tibble with one row per numeric variable and one row per
+distinct value of each categorical variable; columns that do not apply to a row
+are <code>NA</code>:</p><dl><dt><code>Variable</code></dt>
+<dd><p>Name of the summarised column.</p></dd>
+
+<dt><code>Group</code></dt>
+<dd><p>For a categorical variable, the distinct value described;
+<code>NA</code> for numeric variables.</p></dd>
+
+<dt><code>Prop</code></dt>
+<dd><p>For a categorical variable, the percentage of its non-missing
+records falling in <code>Group</code>; <code>NA</code> for numeric variables.</p></dd>
+
+<dt><code>N</code></dt>
+<dd><p>Non-missing count: values for a numeric variable, or records in
+<code>Group</code> for a categorical variable.</p></dd>
+
+<dt><code>Min</code>, <code>Max</code>, <code>Median</code>, <code>Mean</code></dt>
+<dd><p>Numeric statistics; <code>NA</code> for
+categorical variables.</p></dd>
+
+<dt><code>CI Left</code>, <code>CI Right</code></dt>
+<dd><p>95% t-based confidence interval bounds for the
+mean (see <code><a href="ct_ci.html">ct_ci()</a></code>); <code>NA</code> for categorical variables.</p></dd>
+
+
+</dl><p>In both modes, supplying <code>fn</code> appends one extra column per named function,
+holding that statistic for each numeric variable (or group).</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -116,20 +173,41 @@ For example: <code>fn = list('sum' = list(na.rm = TRUE), 'sd')</code>.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">ct_describe_df</span><span class="op">(</span>data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="cn">NA</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                                 y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span><span class="op">:</span><span class="fl">4</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                                 z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"A"</span><span class="op">)</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>               <span class="va">y</span>, <span class="va">x</span>, <span class="va">z</span>,</span></span>
-<span class="r-in"><span>               fn <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">'sum'</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="st">'sd'</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>              <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 12</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Group  Prop     N Variable     sd   Min   sum   Max `CI Right` Median  Mean</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>     2 y         0.707     3     7     4       9.85    3.5   3.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>     3 x         1         1     6     3       4.48    2     2  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> A        75     3 z        <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> B        25     1 z        <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: `CI Left` &lt;dbl&gt;</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="cn">NA</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                 y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span><span class="op">:</span><span class="fl">4</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                 z <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"A"</span>, <span class="st">"B"</span>, <span class="st">"A"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Numeric variables summarised within each group of the categorical variable</span></span></span>
+<span class="r-in"><span><span class="fu">ct_describe_df</span><span class="op">(</span><span class="va">df</span>, <span class="va">y</span>, <span class="va">x</span>, <span class="va">z</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 9</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Variable z         N   Min   Max Median  Mean `CI Left` `CI Right`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> y        A         2     3     4    3.5   3.5     -<span style="color: #BB0000;">2.85</span>       9.85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> y        B         0    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NaN</span>       <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> x        A         2     1     2    1.5   1.5     -<span style="color: #BB0000;">4.85</span>       7.85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> x        B         1     3     3    3     3       <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>   </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Summarise every variable independently</span></span></span>
+<span class="r-in"><span><span class="fu">ct_describe_df</span><span class="op">(</span><span class="va">df</span>, <span class="va">y</span>, <span class="va">x</span>, <span class="va">z</span>, by_group <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 10</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Group  Prop     N Variable   Min   Max `CI Left` Median  Mean `CI Right`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>     2 y            3     4    -<span style="color: #BB0000;">2.85</span>     3.5   3.5       9.85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>     3 x            1     3    -<span style="color: #BB0000;">0.484</span>    2     2         4.48</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> A        75     3 z           <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> B        25     1 z           <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>   </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Add custom statistics for the numeric variables</span></span></span>
+<span class="r-in"><span><span class="fu">ct_describe_df</span><span class="op">(</span><span class="va">df</span>, <span class="va">y</span>, <span class="va">x</span>, <span class="va">z</span>,</span></span>
+<span class="r-in"><span>               fn <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">'sum'</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="st">'sd'</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 11</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Variable z         N   Min   Max Median  Mean `CI Left` `CI Right`   sum</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> y        A         2     3     4    3.5   3.5     -<span style="color: #BB0000;">2.85</span>       9.85     7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> y        B         0    <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NaN</span>       <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>        0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> x        A         2     1     2    1.5   1.5     -<span style="color: #BB0000;">4.85</span>       7.85     3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> x        B         1     3     3    3     3       <span style="color: #BB0000;">NA</span>         <span style="color: #BB0000;">NA</span>        3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 1 more variable: sd &lt;dbl&gt;</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

@@ -145,18 +145,18 @@ ct_fit_tte(data,
 #> 
 #> ── Time-To-Event (TTE) Estimation ──────────────────────────────────────────────
 #> ℹ Running data checks
-#> [31ms]
+#> [36ms]
 #> 
 #> ℹ Building sampling occasions...
 #> ℹ Building encounter history...
 #> ℹ Running data checks
-#> ✔ Running data checks [42ms]
+#> ✔ Running data checks [45ms]
 #> 
 #> ℹ Building effort for each camera
-#> ✔ Building effort for each camera [27ms]
+#> ✔ Building effort for each camera [31ms]
 #> 
 #> ℹ Calculating TTE and censor
-#> ✔ Calculating TTE and censor [27ms]
+#> ✔ Calculating TTE and censor [33ms]
 #> 
 #> ℹ Fitting model...
 #> ✔ Estimation complete!

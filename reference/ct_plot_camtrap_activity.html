@@ -74,11 +74,14 @@ It also optionally highlights periods of inactivity (break/gap).</p>
 <span>  threshold <span class="op">=</span> <span class="fl">5</span>,</span>
 <span>  time_unit <span class="op">=</span> <span class="st">"days"</span>,</span>
 <span>  format <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  activity_style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">0.8</span>, color <span class="op">=</span> <span class="st">"steelblue"</span>, alpha <span class="op">=</span> <span class="fl">0.7</span>, linetype <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
-<span>  break_style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">0.8</span>, color <span class="op">=</span> <span class="st">"#c90026"</span>, alpha <span class="op">=</span> <span class="fl">0.9</span>, linetype <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
+<span>  activity_style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">0.8</span>, color <span class="op">=</span> <span class="st">"steelblue"</span>, alpha <span class="op">=</span> <span class="fl">0.7</span>, linetype <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>    label <span class="op">=</span> <span class="st">"Active period"</span><span class="op">)</span>,</span>
+<span>  break_style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">0.8</span>, color <span class="op">=</span> <span class="st">"#c90026"</span>, alpha <span class="op">=</span> <span class="fl">0.9</span>, linetype <span class="op">=</span> <span class="fl">1</span>, label</span>
+<span>    <span class="op">=</span> <span class="st">"Break period"</span><span class="op">)</span>,</span>
 <span>  show_gaps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  ylabel_format <span class="op">=</span> <span class="st">"%Y-%m-%d"</span>,</span>
-<span>  ybreak <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">time_unit</span><span class="op">)</span></span>
+<span>  ybreak <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">time_unit</span><span class="op">)</span>,</span>
+<span>  legend_title <span class="op">=</span> <span class="st">"Activity"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -115,6 +118,7 @@ It also optionally highlights periods of inactivity (break/gap).</p>
 <li><p><code>color</code>: Color of activity bars (default <code>"steelblue"</code>)</p></li>
 <li><p><code>alpha</code>: Transparency (default 0.7)</p></li>
 <li><p><code>linetype</code>: Line type (default 1)</p></li>
+<li><p><code>label</code>: Legend label for active periods (default <code>"Active period"</code>)</p></li>
 </ul></dd>
 
 
@@ -123,6 +127,7 @@ It also optionally highlights periods of inactivity (break/gap).</p>
 <li><p><code>color</code>: Color of gap bars (default <code>"#c90026"</code>)</p></li>
 <li><p><code>alpha</code>: Transparency (default 0.9)</p></li>
 <li><p><code>linetype</code>: Line type (default 1)</p></li>
+<li><p><code>label</code>: Legend label for break periods (default <code>"Break period"</code>)</p></li>
 </ul></dd>
 
 
@@ -137,10 +142,20 @@ It also optionally highlights periods of inactivity (break/gap).</p>
 <dt id="arg-ybreak">ybreak<a class="anchor" aria-label="anchor" href="#arg-ybreak"></a></dt>
 <dd><p>Character. Spacing for y-axis breaks, e.g., <code>"1 days"</code> or <code>"12 hours"</code>. Default is based on <code>time_unit</code>.</p></dd>
 
+
+<dt id="arg-legend-title">legend_title<a class="anchor" aria-label="anchor" href="#arg-legend-title"></a></dt>
+<dd><p>Character. Title of the colour legend that distinguishes
+active periods from breaks (default <code>"Activity"</code>).</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <code>ggplot2</code> object showing periods of activity (and optionally gaps) for each deployment.</p>
+    <p>A <code>ggplot2</code> object showing periods of activity (and optionally gaps)
+for each deployment. Active periods and breaks are mapped to colour, so a
+legend is drawn (blue for active periods, red for breaks by default). Because
+the return value is a standard <code>ggplot</code> object, it can be customised further
+with the usual <code>+</code> syntax (for example <code>+ ggplot2::labs()</code> or
+<code>+ ggplot2::theme()</code>).</p>
     </div>
 
     <div class="section level2">
@@ -151,7 +166,7 @@ It also optionally highlights periods of inactivity (break/gap).</p>
 <span class="r-in"><span><span class="va">camtrap_data</span> <span class="op">&lt;-</span> <span class="va">penessoulou</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">project</span> <span class="op">==</span> <span class="st">"Last"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Plot with default styles</span></span></span>
+<span class="r-in"><span><span class="co"># Plot with default styles (a legend distinguishes active periods from breaks)</span></span></span>
 <span class="r-in"><span><span class="fu">ct_plot_camtrap_activity</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">camtrap_data</span>,</span></span>
 <span class="r-in"><span>  deployment_column <span class="op">=</span> <span class="va">camera</span>,</span></span>
@@ -166,7 +181,7 @@ It also optionally highlights periods of inactivity (break/gap).</p>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No deployment has a gap exceeding <span style="font-weight: bold; font-style: italic;">7</span><span style="font-weight: bold;"> days</span>.</span>
 <span class="r-plt img"><img src="ct_plot_camtrap_activity-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co">#' # Customize plot appearance</span></span></span>
+<span class="r-in"><span><span class="co"># Customise the colours, the legend labels and the legend title</span></span></span>
 <span class="r-in"><span><span class="fu">ct_plot_camtrap_activity</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">camtrap_data</span>,</span></span>
 <span class="r-in"><span>  deployment_column <span class="op">=</span> <span class="va">camera</span>,</span></span>
@@ -174,9 +189,10 @@ It also optionally highlights periods of inactivity (break/gap).</p>
 <span class="r-in"><span>  threshold <span class="op">=</span> <span class="fl">15</span>,</span></span>
 <span class="r-in"><span>  time_unit <span class="op">=</span> <span class="st">"days"</span>,</span></span>
 <span class="r-in"><span>  ybreak <span class="op">=</span> <span class="st">"3 days"</span>,</span></span>
-<span class="r-in"><span>  activity_style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>width <span class="op">=</span> <span class="fl">1.1</span>, color <span class="op">=</span> <span class="st">"gray10"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span><span class="op">+</span></span></span>
-<span class="r-in"><span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  activity_style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1.1</span>, color <span class="op">=</span> <span class="st">"gray10"</span>, label <span class="op">=</span> <span class="st">"Recording"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  break_style <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"orange"</span>, label <span class="op">=</span> <span class="st">"Gap"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  legend_title <span class="op">=</span> <span class="st">"Camera status"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No deployment has a gap exceeding <span style="font-weight: bold; font-style: italic;">15</span><span style="font-weight: bold;"> days</span>.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No deployment has a gap exceeding <span style="font-weight: bold; font-style: italic;">15</span><span style="font-weight: bold;"> days</span>.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No deployment has a gap exceeding <span style="font-weight: bold; font-style: italic;">15</span><span style="font-weight: bold;"> days</span>.</span>
@@ -186,7 +202,24 @@ It also optionally highlights periods of inactivity (break/gap).</p>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No deployment has a gap exceeding <span style="font-weight: bold; font-style: italic;">15</span><span style="font-weight: bold;"> days</span>.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No deployment has a gap exceeding <span style="font-weight: bold; font-style: italic;">15</span><span style="font-weight: bold;"> days</span>.</span>
 <span class="r-plt img"><img src="ct_plot_camtrap_activity-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="co">#'</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The result is a ggplot, so it can be extended with the usual + syntax</span></span></span>
+<span class="r-in"><span><span class="fu">ct_plot_camtrap_activity</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">camtrap_data</span>,</span></span>
+<span class="r-in"><span>  deployment_column <span class="op">=</span> <span class="va">camera</span>,</span></span>
+<span class="r-in"><span>  datetime_column <span class="op">=</span> <span class="va">datetimes</span>,</span></span>
+<span class="r-in"><span>  threshold <span class="op">=</span> <span class="fl">7</span>,</span></span>
+<span class="r-in"><span>  time_unit <span class="op">=</span> <span class="st">"days"</span></span></span>
+<span class="r-in"><span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Camera activity"</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No deployment has a gap exceeding <span style="font-weight: bold; font-style: italic;">7</span><span style="font-weight: bold;"> days</span>.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No deployment has a gap exceeding <span style="font-weight: bold; font-style: italic;">7</span><span style="font-weight: bold;"> days</span>.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No deployment has a gap exceeding <span style="font-weight: bold; font-style: italic;">7</span><span style="font-weight: bold;"> days</span>.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No deployment has a gap exceeding <span style="font-weight: bold; font-style: italic;">7</span><span style="font-weight: bold;"> days</span>.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>No deployment has a gap exceeding <span style="font-weight: bold; font-style: italic;">7</span><span style="font-weight: bold;"> days</span>.</span>
+<span class="r-plt img"><img src="ct_plot_camtrap_activity-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

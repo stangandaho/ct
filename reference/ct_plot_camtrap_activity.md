@@ -14,11 +14,14 @@ ct_plot_camtrap_activity(
   threshold = 5,
   time_unit = "days",
   format = NULL,
-  activity_style = list(linewidth = 0.8, color = "steelblue", alpha = 0.7, linetype = 1),
-  break_style = list(linewidth = 0.8, color = "#c90026", alpha = 0.9, linetype = 1),
+  activity_style = list(linewidth = 0.8, color = "steelblue", alpha = 0.7, linetype = 1,
+    label = "Active period"),
+  break_style = list(linewidth = 0.8, color = "#c90026", alpha = 0.9, linetype = 1, label
+    = "Break period"),
   show_gaps = TRUE,
   ylabel_format = "%Y-%m-%d",
-  ybreak = paste(1, time_unit)
+  ybreak = paste(1, time_unit),
+  legend_title = "Activity"
 )
 ```
 
@@ -63,6 +66,8 @@ ct_plot_camtrap_activity(
 
   - `linetype`: Line type (default 1)
 
+  - `label`: Legend label for active periods (default `"Active period"`)
+
 - break_style:
 
   A list controlling the appearance of gaps/inactive periods. Can
@@ -75,6 +80,8 @@ ct_plot_camtrap_activity(
   - `alpha`: Transparency (default 0.9)
 
   - `linetype`: Line type (default 1)
+
+  - `label`: Legend label for break periods (default `"Break period"`)
 
 - show_gaps:
 
@@ -91,10 +98,19 @@ ct_plot_camtrap_activity(
   Character. Spacing for y-axis breaks, e.g., `"1 days"` or
   `"12 hours"`. Default is based on `time_unit`.
 
+- legend_title:
+
+  Character. Title of the colour legend that distinguishes active
+  periods from breaks (default `"Activity"`).
+
 ## Value
 
 A `ggplot2` object showing periods of activity (and optionally gaps) for
-each deployment.
+each deployment. Active periods and breaks are mapped to colour, so a
+legend is drawn (blue for active periods, red for breaks by default).
+Because the return value is a standard `ggplot` object, it can be
+customised further with the usual `+` syntax (for example
+`+ ggplot2::labs()` or `+ ggplot2::theme()`).
 
 ## Examples
 
@@ -105,7 +121,7 @@ data(penessoulou)
 camtrap_data <- penessoulou %>%
   dplyr::filter(project == "Last")
 
-# Plot with default styles
+# Plot with default styles (a legend distinguishes active periods from breaks)
 ct_plot_camtrap_activity(
   data = camtrap_data,
   deployment_column = camera,
@@ -120,7 +136,7 @@ ct_plot_camtrap_activity(
 #> Warning: No deployment has a gap exceeding 7 days.
 
 
-#' # Customize plot appearance
+# Customise the colours, the legend labels and the legend title
 ct_plot_camtrap_activity(
   data = camtrap_data,
   deployment_column = camera,
@@ -128,9 +144,10 @@ ct_plot_camtrap_activity(
   threshold = 15,
   time_unit = "days",
   ybreak = "3 days",
-  activity_style = list(width = 1.1, color = "gray10")
-)+
-  ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1))
+  activity_style = list(linewidth = 1.1, color = "gray10", label = "Recording"),
+  break_style = list(color = "orange", label = "Gap"),
+  legend_title = "Camera status"
+)
 #> Warning: No deployment has a gap exceeding 15 days.
 #> Warning: No deployment has a gap exceeding 15 days.
 #> Warning: No deployment has a gap exceeding 15 days.
@@ -140,5 +157,21 @@ ct_plot_camtrap_activity(
 #> Warning: No deployment has a gap exceeding 15 days.
 #> Warning: No deployment has a gap exceeding 15 days.
 
-#'
+
+# The result is a ggplot, so it can be extended with the usual + syntax
+ct_plot_camtrap_activity(
+  data = camtrap_data,
+  deployment_column = camera,
+  datetime_column = datetimes,
+  threshold = 7,
+  time_unit = "days"
+) +
+  ggplot2::labs(title = "Camera activity") +
+  ggplot2::theme(legend.position = "bottom")
+#> Warning: No deployment has a gap exceeding 7 days.
+#> Warning: No deployment has a gap exceeding 7 days.
+#> Warning: No deployment has a gap exceeding 7 days.
+#> Warning: No deployment has a gap exceeding 7 days.
+#> Warning: No deployment has a gap exceeding 7 days.
+
 ```

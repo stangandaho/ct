@@ -8,8 +8,8 @@
   Traps](https://stangandaho.github.io/ct/articles/camera_trap_distance_sampling_guideline.md):
 - [Manage Media
   Metadata](https://stangandaho.github.io/ct/articles/camera_trap_media_metadata_management.md):
-- [Introduction to data
-  preparation](https://stangandaho.github.io/ct/articles/camtrap_data_preparation.md):
+- [Camera Trap Data
+  Processing](https://stangandaho.github.io/ct/articles/camtrap_data_processing.md):
 - [Wildlife Density Estimation With ct R Package Using Distance
   Sampling](https://stangandaho.github.io/ct/articles/density_estimation_with_distance_sampling.md):
 - [How to estimate distance between camera trap and
