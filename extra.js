@@ -16,6 +16,70 @@
   // A dataset the user attached but has not sent yet: { name, profile }.
   var pendingDataset = null;
 
+  // ---- Inline SVG icons ---------------------------------------------------
+  var SEND_SVG = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>';
+  var EXPAND_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 9V4h5M20 15v5h-5M15 4h5v5M9 20H4v-5"/></svg>';
+  var COMPRESS_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M9 4v5H4M20 9h-5V4M4 15h5v5M15 20v-5h5"/></svg>';
+  var CLOSE_SVG = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  var COPY_SVG = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>';
+
+  // ---- Syntax highlighting (lazy) -----------------------------------------
+  // highlight.js + the R grammar are fetched from a CDN the first time an
+  // answer contains a code block, giving IDE-like colours.
+  var hljsPromise = null;
+  function loadHighlighter() {
+    if (window.hljs) return Promise.resolve(window.hljs);
+    if (hljsPromise) return hljsPromise;
+    var base = "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/";
+    hljsPromise = new Promise(function (resolve, reject) {
+      var core = document.createElement("script");
+      core.src = base + "highlight.min.js";
+      core.onload = function () {
+        var rlang = document.createElement("script");
+        rlang.src = base + "languages/r.min.js";
+        rlang.onload = function () { resolve(window.hljs); };
+        rlang.onerror = function () { resolve(window.hljs); }; // core still works
+        document.head.appendChild(rlang);
+      };
+      core.onerror = function () { reject(new Error("highlighter load failed")); };
+      document.head.appendChild(core);
+    });
+    return hljsPromise;
+  }
+
+  // Wire the copy buttons and apply syntax colouring inside a rendered answer.
+  function enhanceAnswer(bubble) {
+    var blocks = bubble.querySelectorAll(".ct-ai-code");
+    if (!blocks.length) return;
+    blocks.forEach(function (block) {
+      if (block.dataset.enhanced) return;
+      block.dataset.enhanced = "1";
+      var btn = block.querySelector(".ct-ai-copy");
+      var codeEl = block.querySelector("code");
+      if (!btn || !codeEl) return;
+      btn.addEventListener("click", function () {
+        navigator.clipboard.writeText(codeEl.textContent).then(function () {
+          btn.classList.add("ct-ai-copied");
+          btn.innerHTML = "Copied";
+          setTimeout(function () {
+            btn.classList.remove("ct-ai-copied");
+            btn.innerHTML = COPY_SVG + "Copy";
+          }, 1500);
+        });
+      });
+    });
+    loadHighlighter()
+      .then(function (hljs) {
+        if (!hljs) return;
+        bubble.querySelectorAll("pre code").forEach(function (el) {
+          if (el.dataset.highlighted) return;
+          el.dataset.highlighted = "1";
+          hljs.highlightElement(el);
+        });
+      })
+      .catch(function () {});
+  }
+
   // ---- Minimal, XSS-safe Markdown -> HTML ---------------------------------
   function escapeHtml(s) {
     return s
@@ -40,8 +104,15 @@
     var html = "";
     for (var i = 0; i < parts.length; i++) {
       if (i % 2 === 1) {
-        var code = parts[i].replace(/^[a-zA-Z0-9_-]*\n/, "");
-        html += "<pre><code>" + code.replace(/\n$/, "") + "</code></pre>";
+        // fenced code block: capture optional language token; default to R
+        var langMatch = parts[i].match(/^([a-zA-Z0-9_-]+)\n/);
+        var lang = langMatch ? langMatch[1].toLowerCase() : "r";
+        var code = parts[i].replace(/^[a-zA-Z0-9_-]*\n/, "").replace(/\n$/, "");
+        html +=
+          '<div class="ct-ai-code">' +
+          '<button class="ct-ai-copy" type="button" aria-label="Copy code">' + COPY_SVG + "Copy</button>" +
+          '<pre><code class="language-' + lang + '">' + code + "</code></pre>" +
+          "</div>";
         continue;
       }
       var lines = parts[i].split("\n");
@@ -170,15 +241,18 @@
     root.innerHTML =
       '<button id="ct-ai-toggle" aria-label="Ask the ct assistant" title="Ask the ct assistant">' +
       "Ask ct</button>" +
-      '<section id="ct-ai-panel" hidden aria-live="polite">' +
+      '<div id="ct-ai-backdrop" hidden></div>' +
+      '<section id="ct-ai-panel" hidden aria-live="polite" role="dialog" aria-modal="true" aria-label="ct assistant">' +
       '  <header id="ct-ai-header">' +
       "    <span>ct assistant</span>" +
-      '    <button id="ct-ai-close" aria-label="Close">&times;</button>' +
+      '    <div id="ct-ai-actions">' +
+      '      <button id="ct-ai-expand" type="button" aria-label="Expand" title="Expand">' + EXPAND_SVG + "</button>" +
+      '      <button id="ct-ai-close" type="button" aria-label="Close" title="Close">' + CLOSE_SVG + "</button>" +
+      "    </div>" +
       "  </header>" +
       '  <div id="ct-ai-log">' +
       '    <div class="ct-ai-msg ct-ai-a"><div class="ct-ai-bubble">' +
       "Ask me anything about analysing camera trap data with the <code>ct</code> package. " +
-      "You can also attach a CSV, TXT or Excel file for tailored code." +
       "</div></div>" +
       "  </div>" +
       '  <div id="ct-ai-chip" hidden></div>' +
@@ -187,7 +261,7 @@
       '      title="Attach CSV, TXT or Excel">&#128206;</button>' +
       '    <input id="ct-ai-file" type="file" accept=".csv,.tsv,.txt,.xlsx,.xls" hidden />' +
       '    <input id="ct-ai-input" type="text" autocomplete="off" placeholder="How to ..." />' +
-      '    <button type="submit" id="ct-ai-send" aria-label="Send">Send</button>' +
+      '    <button type="submit" id="ct-ai-send" aria-label="Send" title="Send">' + SEND_SVG + "</button>" +
       "  </form>" +
       '  <footer id="ct-ai-foot">Answers are AI-generated. ' +
       "Verify before relying on them.</footer>" +
@@ -202,12 +276,28 @@
     var chip = root.querySelector("#ct-ai-chip");
     var fileInput = root.querySelector("#ct-ai-file");
 
-    function toggle(show) {
-      panel.hidden = show === undefined ? !panel.hidden : !show;
-      if (!panel.hidden) input.focus();
+    var backdrop = root.querySelector("#ct-ai-backdrop");
+    var expandBtn = root.querySelector("#ct-ai-expand");
+    var expanded = false;
+
+    function setOpen(open) {
+      panel.hidden = !open;
+      backdrop.hidden = !open;
+      if (open) input.focus();
     }
-    root.querySelector("#ct-ai-toggle").addEventListener("click", function () { toggle(); });
-    root.querySelector("#ct-ai-close").addEventListener("click", function () { toggle(false); });
+    root.querySelector("#ct-ai-toggle").addEventListener("click", function () { setOpen(panel.hidden); });
+    root.querySelector("#ct-ai-close").addEventListener("click", function () { setOpen(false); });
+    backdrop.addEventListener("click", function () { setOpen(false); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !panel.hidden) setOpen(false);
+    });
+
+    expandBtn.addEventListener("click", function () {
+      expanded = !expanded;
+      panel.classList.toggle("ct-ai-expanded", expanded);
+      expandBtn.innerHTML = expanded ? COMPRESS_SVG : EXPAND_SVG;
+      expandBtn.title = expanded ? "Restore size" : "Expand";
+    });
 
     // ---- Attachment chip ----
     function renderChip() {
@@ -281,7 +371,6 @@
       var display = q || "Analyse the attached file";
       var sendContent = q;
       if (pendingDataset) {
-        display += "  \u{1F4CE} " + pendingDataset.name;
         sendContent =
           pendingDataset.profile +
           "\n\nQuestion: " +
@@ -320,6 +409,7 @@
               full += dec.decode(r.value, { stream: true });
               answerBubble.classList.remove("ct-ai-typing");
               answerBubble.innerHTML = renderMarkdown(full);
+              enhanceAnswer(answerBubble);
               log.scrollTop = log.scrollHeight;
               return pump();
             });
