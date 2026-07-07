@@ -122,6 +122,28 @@
   color: var(--ct-ai-muted);
 }
 
+/* Animated "typing" dots shown while the model is responding */
+.ct-ai-dots {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+  padding: 2px 0;
+}
+.ct-ai-dots span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ct-ai-muted);
+  opacity: 0.4;
+  animation: ct-ai-blink 1.2s infinite ease-in-out both;
+}
+.ct-ai-dots span:nth-child(2) { animation-delay: 0.2s; }
+.ct-ai-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes ct-ai-blink {
+  0%, 80%, 100% { opacity: 0.25; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-3px); }
+}
+
 /* Rendered markdown inside answers */
 .ct-ai-bubble p { margin: 0 0 0.5em; }
 .ct-ai-bubble p:last-child { margin-bottom: 0; }
@@ -153,13 +175,50 @@
 }
 .ct-ai-bubble a { color: var(--ct-ai-accent); text-decoration: underline; }
 
+/* Attachment chip (shows the file the user attached, or an error) */
+#ct-ai-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 12px;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  background: var(--ct-ai-code-bg);
+  border: 1px solid var(--ct-ai-border);
+  border-radius: 8px;
+  color: var(--ct-ai-fg);
+}
+#ct-ai-chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#ct-ai-chip .ct-ai-chip-err { color: #c0392b; }
+#ct-ai-chip-x {
+  margin-left: auto;
+  border: none;
+  background: transparent;
+  color: var(--ct-ai-muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
 /* Input row */
 #ct-ai-form {
   display: flex;
   gap: 8px;
   padding: 12px;
+  align-items: center;
   border-top: 1px solid var(--ct-ai-border);
 }
+#ct-ai-attach {
+  border: 1px solid var(--ct-ai-border);
+  border-radius: 8px;
+  background: var(--ct-ai-bg);
+  color: var(--ct-ai-fg);
+  font-size: 1.05rem;
+  line-height: 1;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+#ct-ai-attach:hover { border-color: var(--ct-ai-accent); }
 #ct-ai-input {
   flex: 1;
   border: 1px solid var(--ct-ai-border);

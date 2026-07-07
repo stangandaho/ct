@@ -40,20 +40,20 @@ export interface Env {
   REINDEX_KEY: string; // secret guarding POST /reindex
 }
 
-// ---- Tunables -------------------------------------------------------------
+// Tunables
 // Run `npx wrangler ai models` to see what is currently live on your account.
 const CHAT_MODEL = "@cf/mistralai/mistral-small-3.1-24b-instruct";
 const EMBED_MODEL = "@cf/baai/bge-base-en-v1.5"; // 768-dim; matches the index
 const EMBED_DIM = 768;
 
-const TOP_K = 6; // doc chunks retrieved per question
+const TOP_K = 8; // doc chunks retrieved per question
 const MAX_CHUNK_CHARS = 1600; // chunk size for indexing (fits the embedder)
 const EMBED_BATCH = 90; // texts embedded per Workers AI call
 
-const MAX_TOKENS = 1024;
+const MAX_TOKENS = 1536;
 const RATE_LIMIT_PER_MIN = 10;
 const MAX_MESSAGES = 20;
-const MAX_CHARS_PER_MESSAGE = 4000;
+const MAX_CHARS_PER_MESSAGE = 12000; // larger, to allow an attached dataset profile
 
 const SYSTEM_INSTRUCTIONS = `You are the assistant for the "ct" R package, a
 toolkit for camera-trap data analysis: media metadata management (via ExifTool),
@@ -61,21 +61,27 @@ data preparation (independence filtering, datetime correction, occupancy
 format), analysis (diversity, activity overlap, temporal shift, density
 estimation, spatial coverage, survey design), and visualisation.
 
-Rules:
-- Answer using the ct documentation provided in <ct_documentation>.
-- Identify the ct function(s) that address the user's need even if they use
-  different words (e.g. "activity change between periods" => ct_temporal_shift()).
-- For code examples, adapt the "Examples" section from that function's
-  documentation. Use the exact argument names shown. Do NOT invent arguments.
+How to answer:
+- A complete list of ct functions with their titles is given below under
+  "Complete list of ct functions". Treat it as authoritative: if a function for
+  the user's task appears there, USE it — never claim the package lacks a
+  capability that is in that list. Map the user's intent to the right function
+  even when their wording differs (e.g. "daily camera trap captures" =>
+  ct_camera_day(); "activity change between periods" => ct_temporal_shift()).
+- The <ct_documentation> section holds the detailed help (arguments and
+  Examples) for the functions most relevant to this question. Base your R code
+  on the "Examples" shown there and use the exact argument names. Do NOT invent
+  arguments or syntax that is not in the documentation.
 - Prefer the package's own datasets (pendjari, ctdp, duikers, ACBR,
-  rest_detection, rest_station, penessoulou).
-- Only if nothing relevant appears in the documentation, say you are not sure
-  and point to https://stangandaho.github.io/ct/ . Be concise: answer first,
-  then the example.`;
+  rest_detection, rest_station, penessoulou) in examples.
+- If the user's message includes a block starting with "[Attached dataset",
+  tailor the code to their exact column names, mapping them to the relevant ct
+  arguments (e.g. datetime_column, species_column, deployment_column).
+- Be concise: give the answer first, then a short runnable example.`;
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
-// ---- Chunking (shared by /reindex) ----------------------------------------
+// Chunking (shared by /reindex) ------
 // Sections are separated by the "---" the build script writes between
 // reference entries and vignettes; long ones are split further by paragraph.
 function chunkDocs(doc: string): { id: string; text: string }[] {
@@ -102,6 +108,29 @@ function chunkDocs(doc: string): { id: string; text: string }[] {
   }
   return chunks;
 }
+
+// A compact, always-in-prompt index of every ct function and its title, so the
+// model can map intent -> the right function name even when vector retrieval
+// misses that function's chunk. Built once at module load.
+function buildCatalog(doc: string): string {
+  const seen = new Set<string>();
+  const entries: string[] = [];
+  for (const sec of doc.split(/\n-{3,}\n/)) {
+    const m = sec.match(/\b(ct_[A-Za-z0-9_.]+)\s*\(/);
+    if (!m) continue;
+    const name = m[1];
+    if (seen.has(name)) continue;
+    seen.add(name);
+    const title =
+      sec
+        .split("\n")
+        .map((s) => s.trim())
+        .find((s) => s && !s.startsWith("#") && !/^[-=]+$/.test(s)) ?? "";
+    entries.push(`- ${name}() — ${title.slice(0, 90)}`);
+  }
+  return entries.sort().join("\n");
+}
+const CATALOG = buildCatalog(CT_DOCS);
 
 async function embedTexts(env: Env, texts: string[]): Promise<number[][]> {
   const out: number[][] = [];
@@ -134,7 +163,7 @@ async function reindex(env: Env): Promise<number> {
   return indexed;
 }
 
-// ---- Semantic retrieval ---------------------------------------------------
+// Semantic retrieval
 async function retrieve(env: Env, question: string): Promise<string> {
   const [vector] = await embedTexts(env, [question]);
   const res = await env.VECTORIZE.query(vector, { topK: TOP_K, returnMetadata: "all" });
@@ -144,7 +173,7 @@ async function retrieve(env: Env, question: string): Promise<string> {
     .join("\n\n---\n\n");
 }
 
-// ---- CORS helpers ---------------------------------------------------------
+// CORS helpers ------
 function allowedOrigins(env: Env): string[] {
   return env.ALLOWED_ORIGIN.split(",").map((s) => s.trim()).filter(Boolean);
 }
@@ -168,7 +197,7 @@ function json(body: unknown, status: number, origin: string): Response {
   });
 }
 
-// ---- Fixed-window rate limit (KV-backed) ----------------------------------
+// Fixed-window rate limit (KV-backed)
 async function isRateLimited(env: Env, ip: string): Promise<boolean> {
   const windowKey = `rl:${ip}:${Math.floor(Date.now() / 60000)}`;
   const current = parseInt((await env.RATE_LIMIT.get(windowKey)) ?? "0", 10);
@@ -177,7 +206,7 @@ async function isRateLimited(env: Env, ip: string): Promise<boolean> {
   return false;
 }
 
-// ---- Input validation -----------------------------------------------------
+// Input validation --
 function validate(payload: unknown): ChatMessage[] | null {
   if (typeof payload !== "object" || payload === null) return null;
   const messages = (payload as { messages?: unknown }).messages;
@@ -197,7 +226,7 @@ function validate(payload: unknown): ChatMessage[] | null {
   return clean;
 }
 
-// ---- Handler --------------------------------------------------------------
+// Handler -
 export default {
   async fetch(req: Request, env: Env): Promise<Response> {
     const url = new URL(req.url);
@@ -248,7 +277,10 @@ export default {
     try {
       const question = messages[messages.length - 1].content;
       const context = (await retrieve(env, question)) || "(no matching documentation found)";
-      const system = `${SYSTEM_INSTRUCTIONS}\n\n<ct_documentation>\n${context}\n</ct_documentation>`;
+      const system =
+        `${SYSTEM_INSTRUCTIONS}\n\n` +
+        `## Complete list of ct functions (exhaustive; use these EXACT names)\n${CATALOG}\n\n` +
+        `<ct_documentation>\n${context}\n</ct_documentation>`;
 
       const result = await env.AI.run(CHAT_MODEL, {
         messages: [{ role: "system", content: system }, ...messages],
