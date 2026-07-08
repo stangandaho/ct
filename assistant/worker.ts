@@ -14,7 +14,11 @@
 
 // Bundled at build time via the [[rules]] Text rule in wrangler.toml.
 // Regenerate with: Rscript data-raw/build_assistant_kb.R
-import CT_DOCS from "./ct_knowledge.txt";
+import CT_DOCS_RAW from "./ct_knowledge.txt";
+
+// Normalize line endings. The corpus can carry CRLF/CR, which breaks the
+// "\n---\n" section split used by both the catalog and the chunker.
+const CT_DOCS = CT_DOCS_RAW.replace(/\r\n?/g, "\n");
 
 // Minimal shapes for the Workers AI + Vectorize bindings we use.
 interface VectorizeMatch {
