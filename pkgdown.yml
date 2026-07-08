@@ -1,5 +1,5 @@
 pandoc: 3.8.3
-pkgdown: 2.2.0
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
   articles/analyse_before_you_collect: analyse_before_you_collect.html
@@ -11,7 +11,7 @@ articles:
   articles/random_encounter_and_staying_time: random_encounter_and_staying_time.html
   articles/rarefaction_and_extrapolation: rarefaction_and_extrapolation.html
   articles/spaceNtime: spaceNtime.html
-last_built: 2026-07-07T17:38Z
+last_built: 2026-07-08T07:28Z
 urls:
   reference: https://stangandaho.github.io/ct/reference
   article: https://stangandaho.github.io/ct/articles
