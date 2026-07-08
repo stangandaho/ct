@@ -49,3 +49,37 @@ test_that("ct_overlap_matrix returns a square species-by-species matrix", {
   expect_true(is.matrix(m))
   expect_equal(dim(m), c(2, 2))
 })
+
+
+test_that("ct_overlap_matrix missed column", {
+  df <- data.frame(
+    species = c("A", "A", "A", "B", "B", "B"),
+    time = c("10:30:00", "11:00:00", "23:00:00", "22:00:00", "02:00:00", "03:00:00")
+  )
+
+  expect_error(ct_overlap_matrix(df, species_column = sp, time_column = time,
+                                 convert_time = TRUE, format = "%H:%M:%S"))
+
+
+  expect_error(ct_overlap_matrix(df, species_column = species, time_column = tm,
+                                 convert_time = TRUE, format = "%H:%M:%S"))
+})
+
+
+
+test_that("ct_overlap_matrix missed column", {
+  set.seed(0123)
+  df <- data.frame(
+    species = sample(c("A", "A", "A", "B", "B", "B"), 60, replace = TRUE),
+    time = sample(
+      c("10:30:00", "11:00:00", "23:00:00", "22:00:00", "02:00:00", "03:00:00"),
+      60, replace = TRUE
+    )
+  )
+
+  ct_overlap_matrix(df, species_column = species, time_column = time,
+                                 convert_time = TRUE, format = "%H:%M:%S",
+                    fill_na = 0)
+
+})
+

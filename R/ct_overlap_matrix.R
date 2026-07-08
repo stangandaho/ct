@@ -66,10 +66,10 @@ ct_overlap_matrix <- function(data,
   tm_col_ <- paste0(dplyr::ensym(time_column))
 
   if (!sp_col_%in% colnames(data) ) {
-    stop(sprintf("%s not found in the data", sp_col_))
+    cli::cli_abort(sprintf("%s not found in the data", sp_col_))
   }
   if (!tm_col_%in% colnames(data) ) {
-    stop(sprintf("%s not found in the data", tm_col_))
+    cli::cli_abort(sprintf("%s not found in the data", tm_col_))
   }
 
   if (convert_time) {
@@ -130,7 +130,7 @@ ct_overlap_matrix <- function(data,
   }
 
   if (!is.null(fill_na)) {
-    if(! class(fill_na) %in% c("numeric", "double")){stop("'fill_na' must be a numeric")}
+    if(! class(fill_na) %in% c("numeric", "double")){ cli::cli_abort("'fill_na' must be a numeric")}
     for (c_ in 1:ncol(coef_matrix)) {
       for (r_ in 1:nrow(coef_matrix)) {
         if (is.na(coef_matrix[c_, r_])) {

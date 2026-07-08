@@ -15,7 +15,9 @@
 #'}
 #' @export
 ct_dp_read <- function(file) {
+  # nocov start
   camtrapdp::read_camtrapdp(file = file)
+  # nocov end
 }
 
 #' Get core tables

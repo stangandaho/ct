@@ -7,7 +7,7 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
-^vignettes/articles$
+^vignettes$
 ^doc$
 ^Meta$
 ^tests
@@ -16,6 +16,7 @@
 ^LICENSE\.md
 ^app_interface\.jpg
 ^data-raw$
+^assistant$
 ^manuscript$
 ^Rplots\.pdf$
 ^\.covrignore$

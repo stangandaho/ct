@@ -51,8 +51,12 @@ const CHAT_MODEL = "@cf/mistralai/mistral-small-3.1-24b-instruct";
 const EMBED_MODEL = "@cf/baai/bge-base-en-v1.5"; // 768-dim; matches the index
 const EMBED_DIM = 768;
 
-const TOP_K = 8; // doc chunks retrieved per question
-const MAX_CHUNK_CHARS = 1600; // chunk size for indexing (fits the embedder)
+const TOP_K = 5; // doc chunks retrieved per question
+// Large enough to keep a function's Usage + Arguments + Examples in ONE chunk,
+// so the model sees the real argument list (not just the name). The embedder
+// truncates long input, but the title/usage sits at the top where it matters,
+// and the full chunk text is still returned to the model.
+const MAX_CHUNK_CHARS = 3800;
 const EMBED_BATCH = 90; // texts embedded per Workers AI call
 
 const MAX_TOKENS = 1536;
@@ -77,8 +81,11 @@ How to answer:
   Examples) for the functions most relevant to this question. Base your R code
   on the "Examples" shown there and use the exact argument names. Do NOT invent
   arguments or syntax that is not in the documentation.
-- Prefer the package's own datasets (pendjari, ctdp, duikers, ACBR,
-  rest_detection, rest_station, penessoulou) in examples.
+- For example code, prefer a SMALL self-contained data.frame that has the
+  columns the function requires, so the example runs on its own and is correct.
+  Only use a bundled example dataset when its documentation appears in the
+  context below (so you know its real columns) — never assume what a dataset
+  contains, and never use a spatial/boundaries dataset as camera-trap records.
 - If the user's message includes a block starting with "[Attached dataset",
   tailor the code to their exact column names, mapping them to the relevant ct
   arguments (e.g. datetime_column, species_column, deployment_column).
@@ -169,24 +176,6 @@ async function reindex(env: Env): Promise<number> {
 }
 
 // Semantic retrieval
-// Workers AI text models vary in output shape. Pull the generated text from
-// whichever field this model uses.
-function extractAnswer(result: any): string {
-  if (!result) return "";
-  if (typeof result === "string") return result.trim();
-  if (typeof result.response === "string") return result.response.trim();
-  if (result.response && typeof result.response.response === "string") {
-    return result.response.response.trim();
-  }
-  if (typeof result.output_text === "string") return result.output_text.trim();
-  if (Array.isArray(result.choices) && result.choices[0]) {
-    const c = result.choices[0];
-    if (c.message && typeof c.message.content === "string") return c.message.content.trim();
-    if (typeof c.text === "string") return c.text.trim();
-  }
-  return "";
-}
-
 async function retrieve(env: Env, question: string): Promise<string> {
   const [vector] = await embedTexts(env, [question]);
   const res = await env.VECTORIZE.query(vector, { topK: TOP_K, returnMetadata: "all" });
@@ -305,20 +294,52 @@ export default {
         `## Complete list of ct functions (exhaustive; use these EXACT names)\n${CATALOG}\n\n` +
         `<ct_documentation>\n${context}\n</ct_documentation>`;
 
-      const result = await env.AI.run(CHAT_MODEL, {
+      // Stream the answer so tokens appear as they are generated (much lower
+      // perceived latency). Workers AI streams Server-Sent Events shaped like
+      // `data: {"response":"token"}` — transform that into plain text.
+      const aiStream = (await env.AI.run(CHAT_MODEL, {
         messages: [{ role: "system", content: system }, ...messages],
         max_tokens: MAX_TOKENS,
-      });
-      let answer = extractAnswer(result);
-      if (!answer) {
-        // TEMP DEBUG: reveal the model's actual output shape so extraction can
-        // be fixed. Remove once the assistant is answering.
-        console.error("Empty answer. Result shape:", JSON.stringify(result));
-        answer = "[assistant debug] no text field in model result: " +
-          JSON.stringify(result).slice(0, 700);
-      }
+        stream: true,
+      })) as ReadableStream;
 
-      return new Response(answer, {
+      const reader = aiStream.getReader();
+      const encoder = new TextEncoder();
+      const decoder = new TextDecoder();
+      const body = new ReadableStream({
+        async start(controller) {
+          let buffer = "";
+          try {
+            for (;;) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              buffer += decoder.decode(value, { stream: true });
+              let nl: number;
+              while ((nl = buffer.indexOf("\n")) >= 0) {
+                const line = buffer.slice(0, nl).trim();
+                buffer = buffer.slice(nl + 1);
+                if (!line.startsWith("data:")) continue;
+                const data = line.slice(5).trim();
+                if (data === "[DONE]") continue;
+                try {
+                  const obj = JSON.parse(data);
+                  if (typeof obj.response === "string") {
+                    controller.enqueue(encoder.encode(obj.response));
+                  }
+                } catch {
+                  /* ignore keep-alives / partial frames */
+                }
+              }
+            }
+          } catch (streamErr) {
+            controller.enqueue(encoder.encode("\n\n[assistant error] " + String(streamErr)));
+          } finally {
+            controller.close();
+          }
+        },
+      });
+
+      return new Response(body, {
         status: 200,
         headers: {
           "content-type": "text/plain; charset=utf-8",
