@@ -405,13 +405,16 @@
           function pump() {
             return reader.read().then(function (r) {
               if (r.done) {
+                // Final render + syntax highlight + copy buttons once complete.
+                answerBubble.innerHTML = renderMarkdown(full);
+                enhanceAnswer(answerBubble);
+                log.scrollTop = log.scrollHeight;
                 history.push({ role: "assistant", content: full });
                 return;
               }
               full += dec.decode(r.value, { stream: true });
               answerBubble.classList.remove("ct-ai-typing");
-              answerBubble.innerHTML = renderMarkdown(full);
-              enhanceAnswer(answerBubble);
+              answerBubble.innerHTML = renderMarkdown(full); // progressive text
               log.scrollTop = log.scrollHeight;
               return pump();
             });
