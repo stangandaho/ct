@@ -100,3 +100,40 @@
 #' @examples
 #' head(penessoulou)
 "penessoulou"
+
+
+#' Camera trap survey of the Lama Classified Forest
+#'
+#' Detection-level camera-trap records and camera deployment intervals from a
+#' multispecies survey of terrestrial mammals in the Lama Classified Forest, a
+#' semi-deciduous forest remnant in the Dahomey Gap, southern Benin. Twenty-three
+#' camera traps operated from June to December 2024 (about 4,256 trap-days),
+#' recording 18 mammal taxa. The survey was designed for camera-trap distance
+#' sampling, so each detection carries a radial `distance` and detection `angle`
+#' alongside station coordinates and anthropogenic-gradient covariates.
+#'
+#' @format A list with two tibbles that share the `camera` column:
+#' \describe{
+#'   \item{`observation`}{One row per recorded image (7,963 rows, 11 columns):
+#'     `camera` (station identifier), `species` (scientific name), `datetime`
+#'     (detection date-time, UTC), `distance` (radial distance to the animal, m),
+#'     `angle` (detection angle, degrees), `size` (group size), `x`/`y` (station
+#'     coordinates, UTM zone 31N, EPSG:32631), `region` (survey stratum),
+#'     `d_villages` and `d_track` (distance to the nearest village and track, m).}
+#'   \item{`deployment`}{One row per camera (23 rows, 11 columns): `camera`,
+#'     `start` and `end` (install and pull-out date-times, UTC), `x`/`y`,
+#'     `fov` (field of view, degrees), `radius` (maximum detection distance, m),
+#'     `height` (camera height, m), `region`, `d_villages`, `d_track`.}
+#' }
+#'
+#' @source Adounk\enc{é}{e}, G.R.M., Lecompte, E., Gandaho, S.M., Toyi, M.S.,
+#'   Azihou, A.F., Hugueny, B., Sinsin, B.A., Gaubert, P., & Djagoun, C.A.M.S.
+#'   (submitted). Camera-trap distance sampling reveals density patterns and
+#'   anthropogenic drivers of terrestrial mammals in a remnant forest refuge in
+#'   West Africa. \emph{Ecology and Evolution}.
+#'
+#' @examples
+#' data(lama)
+#' str(lama, max.level = 2)
+#' sort(table(lama$observation$species), decreasing = TRUE)
+"lama"

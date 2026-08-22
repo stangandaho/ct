@@ -71,16 +71,19 @@ format), analysis (diversity, activity overlap, temporal shift, density
 estimation, spatial coverage, survey design), and visualisation.
 
 How to answer:
-- A complete list of ct functions with their titles is given below under
-  "Complete list of ct functions". Treat it as authoritative: if a function for
-  the user's task appears there, USE it — never claim the package lacks a
-  capability that is in that list. Map the user's intent to the right function
-  even when their wording differs (e.g. "daily camera trap captures" =>
+- Below under "ct function signatures" is the exhaustive, authoritative list of
+  every ct function WITH its exact argument list. Treat it as ground truth:
+  use those signatures verbatim, copy the exact argument names, and NEVER add,
+  rename, or invent arguments. The common "data + *_column" style is NOT
+  universal — some functions take entirely different arguments (e.g.
+  ct_temporal_shift(first_period, second_period, ...)), so always follow the
+  listed signature rather than assuming.
+- If a function for the user's task is in that list, USE it — never claim the
+  package lacks a capability that is listed. Map intent to the right function
+  even when the wording differs (e.g. "daily camera trap captures" =>
   ct_camera_day(); "activity change between periods" => ct_temporal_shift()).
-- The <ct_documentation> section holds the detailed help (arguments and
-  Examples) for the functions most relevant to this question. Base your R code
-  on the "Examples" shown there and use the exact argument names. Do NOT invent
-  arguments or syntax that is not in the documentation.
+- The <ct_documentation> section holds detailed help and Examples for the most
+  relevant functions; base example values and workflow on it.
 - For example code, prefer a SMALL self-contained data.frame that has the
   columns the function requires, so the example runs on its own and is correct.
   Only use a bundled example dataset when its documentation appears in the
@@ -89,6 +92,10 @@ How to answer:
 - If the user's message includes a block starting with "[Attached dataset",
   tailor the code to their exact column names, mapping them to the relevant ct
   arguments (e.g. datetime_column, species_column, deployment_column).
+- NEVER invent people, author names, citations, affiliations, or URLs. State
+  authorship, maintainer, or citation details only if they appear in the
+  context (see the "Package metadata" block); otherwise say you are not sure
+  and point to https://stangandaho.github.io/ct/ or the DESCRIPTION/CRAN page.
 - Be concise: give the answer first, then a short runnable example.`;
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
@@ -121,28 +128,62 @@ function chunkDocs(doc: string): { id: string; text: string }[] {
   return chunks;
 }
 
-// A compact, always-in-prompt index of every ct function and its title, so the
-// model can map intent -> the right function name even when vector retrieval
-// misses that function's chunk. Built once at module load.
+// An always-in-prompt index of every ct function WITH its exact call signature
+// and title, so the model has authoritative argument lists for all functions
+// (not just retrieved ones) and can't fall back on a guessed "*_column" style.
+// Built once at module load. Functions are identified from the Usage block so
+// datasets that merely mention a ct_*() in their examples aren't miscounted.
 function buildCatalog(doc: string): string {
   const seen = new Set<string>();
   const entries: string[] = [];
   for (const sec of doc.split(/\n-{3,}\n/)) {
-    const m = sec.match(/\b(ct_[A-Za-z0-9_.]+)\s*\(/);
+    const uh = sec.indexOf("Usage:");
+    if (uh < 0) continue;
+    const region = sec.slice(uh, uh + 1500);
+    const m = region.slice(0, 120).match(/\b(ct_[A-Za-z0-9_.]+)\s*\(/);
     if (!m) continue;
     const name = m[1];
     if (seen.has(name)) continue;
     seen.add(name);
+
+    // Extract the full, balanced call signature and collapse whitespace.
+    let sig = name + "()";
+    const start = region.indexOf(name + "(");
+    if (start >= 0) {
+      let depth = 0;
+      let i = start + name.length;
+      for (; i < region.length; i++) {
+        const ch = region[i];
+        if (ch === "(") depth++;
+        else if (ch === ")") {
+          depth--;
+          if (depth === 0) { i++; break; }
+        }
+      }
+      sig = region.slice(start, i).replace(/\s+/g, " ").trim();
+    }
     const title =
       sec
         .split("\n")
         .map((s) => s.trim())
         .find((s) => s && !s.startsWith("#") && !/^[-=]+$/.test(s)) ?? "";
-    entries.push(`- ${name}() — ${title.slice(0, 90)}`);
+    entries.push(`- ${sig.slice(0, 220)} — ${title.slice(0, 55)}`);
   }
   return entries.sort().join("\n");
 }
 const CATALOG = buildCatalog(CT_DOCS);
+
+// Small always-in-prompt block of package facts (authors, maintainer, version,
+// license, links) so authorship/citation questions are answered from fact
+// without depending on retrieval ranking it into the top matches.
+function extractPackageFacts(doc: string): string {
+  const i = doc.indexOf("Package metadata:");
+  if (i < 0) return "";
+  let end = doc.indexOf("\n---\n", i);
+  if (end < 0 || end - i > 1200) end = i + 1200;
+  return doc.slice(i, end).trim();
+}
+const PACKAGE_FACTS = extractPackageFacts(CT_DOCS);
 
 async function embedTexts(env: Env, texts: string[]): Promise<number[][]> {
   const out: number[][] = [];
@@ -291,7 +332,8 @@ export default {
       const context = (await retrieve(env, question)) || "(no matching documentation found)";
       const system =
         `${SYSTEM_INSTRUCTIONS}\n\n` +
-        `## Complete list of ct functions (exhaustive; use these EXACT names)\n${CATALOG}\n\n` +
+        (PACKAGE_FACTS ? `## Package facts (authoritative)\n${PACKAGE_FACTS}\n\n` : "") +
+        `## ct function signatures (exhaustive and authoritative — use these EXACT argument names)\n${CATALOG}\n\n` +
         `<ct_documentation>\n${context}\n</ct_documentation>`;
 
       // Stream the answer so tokens appear as they are generated (much lower

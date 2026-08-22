@@ -62,6 +62,7 @@ export(ct_spatial_coverage)
 export(ct_summarise_camtrap_activity)
 export(ct_traprate_estimate) ## no
 export(ct_fit_activity) #no
+export(ct_fit_encounter_response)
 export(ct_fit_speedmodel) #no
 export(ct_fit_detmodel) #no
 export(ct_fit_rem) # no
@@ -76,6 +77,9 @@ export(ct_fit_ise)
 export(ct_fit_ste)
 ## REST / RAD-REST
 export(ct_fit_rest)
+S3method(print,ct_encounter_response)
+S3method(summary,ct_encounter_response)
+S3method(print,summary.ct_encounter_response)
 export(ct_rest_stay)
 export(ct_rest_passes)
 export(ct_rest_effort)

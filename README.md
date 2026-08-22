@@ -21,14 +21,17 @@ visualizations.
 ## Key Features
 
 The `ct` package provides a comprehensive suite of 60+ functions covering the 
-complete camera trap data analysis workflow. **Population density estimation** 
+complete camera trap data analysis workflow. **Data management** capabilities include 
+filtering independent detections, timestamp correction, and interactive spatial validation.
+**Quality control** tools include detecting temporal gaps, 
+monitoring deployment status, and taxonomic validation.  **Population density estimation** 
 is supported through Random Encounter Models, (REM), Camera Trap Distance Sampling (CTDS)
 Time-To-Event (TTE), Space-To-Event (STE), Instantaneous Sampling Estimator (ISE),
-and Random Encounter and Staying Time (REST/RAD-REST). **Data management** capabilities include 
-filtering independent detections, timestamp correction, and interactive spatial validation. 
-**Community ecology**  functions enable activity pattern analysis, biodiversity index assessment, and 
-occupancy modeling input preparation. **Quality control** tools include detecting temporal gaps, 
-monitoring deployment status, and taxonomic validation.  
+and Random Encounter and Staying Time (REST/RAD-REST).  **Behaviour analysis** 
+helps to evaluate how species adjust their diel activity between seasons or disturbance 
+regimes, and association between species activity. **Community ecology**  functions 
+enable activity pattern analysis, biodiversity index assessment, and 
+occupancy modeling input preparation. 
 
 <a href='https://stangandaho.github.io/ct/'><img src="https://raw.githubusercontent.com/stangandaho/ct/main/man/figures/ct_r_package_workflow.svg" align="centre"/></a>
 
@@ -45,6 +48,9 @@ if (!requireNamespace("pak", quietly = TRUE)) {
 
 # Install ct from GitHub
 pak::pkg_install("stangandaho/ct")
+
+# Install ct from CRAN
+pak::pkg_install("ct")
 ```
 
 ## Code of conduct

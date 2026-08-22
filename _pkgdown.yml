@@ -13,11 +13,11 @@ template:
   opengraph:
     image:
       src: man/figures/logo.png
-      alt: "ct: camera-trap data management and analysis in R"
+      alt: "ct: An R package for camera trap data management and multi-method ecological analysis"
   includes:
     in_header: |
-      <meta name="description" content="ct is an R package for camera-trap data management and analysis, from image metadata to species density estimation (random encounter model, distance sampling, time-to-event, space-to-event, REST, instantaneous sampling estimators).">
-      <meta name="keywords" content="camera trap, camera-trap, R package, wildlife monitoring, density estimation, abundance, random encounter model, camera-trap distance sampling, occupancy, activity patterns, ecology, Camtrap DP, spatial coverage, temporal shift">
+      <meta name="description" content="ct is an R package for camera trap data management and analysis, from image metadata to species density estimation (random encounter model, distance sampling, time-to-event, space-to-event, REST, instantaneous sampling estimators).">
+      <meta name="keywords" content="camera trap, R package, wildlife monitoring, density estimation, abundance, random encounter model, camera-trap distance sampling, occupancy, activity patterns, ecology, Camtrap DP, spatial coverage, temporal shift encounter-response">
       <meta name="google-site-verification" content="IsJnmZmB57RlAonI3vWGJq4FadQgHj87SJhl1Q3oBak" />
       <meta name="msvalidate.01" content="599CF8CEAF0762B699B5C79D5B933522" />
 navbar:
@@ -46,14 +46,26 @@ navbar:
       text: Articles
       icon: fa-blog
       menu:
+      - text: All articles
+        href: articles/index.html
+      - text: ---
+      - text: Study design
       - text: Analyse before you collect
         href: articles/analyse_before_you_collect.html
-      - text: Camera Trap Data Processing
-        href: articles/camtrap_data_processing.html
+      - text: ---
+      - text: Data management and processing
       - text: Camera Trap Media Metadata Management
         href: articles/camera_trap_media_metadata_management.html
+      - text: Camera Trap Data Processing
+        href: articles/camtrap_data_processing.html
       - text: Distance to Animal Measurement
         href: articles/distance_to_animal_measurement.html
+      - text: ---
+      - text: Behaviour and activity
+      - text: Directed Encounter Responses Between Species
+        href: articles/encounter_response.html
+      - text: ---
+      - text: Density and abundance estimation
       - text: Camera Trap Distance Sampling Guideline
         href: articles/camera_trap_distance_sampling_guideline.html
       - text: Density Estimation With Distance Sampling
@@ -62,6 +74,8 @@ navbar:
         href: articles/spaceNtime.html
       - text: Density with REST and RAD-REST
         href: articles/random_encounter_and_staying_time.html
+      - text: ---
+      - text: Biodiversity
       - text: Rarefaction and Extrapolation
         href: articles/rarefaction_and_extrapolation.html
     news:
@@ -78,6 +92,32 @@ navbar:
       icon: fa-linkedin
 component:
   home: ~
+articles:
+- title: Study design
+  desc: Plan a survey before data are collected.
+  contents:
+  - articles/analyse_before_you_collect
+- title: Data management and processing
+  desc: From raw media and metadata to analysis-ready, standardised tables.
+  contents:
+  - articles/camera_trap_media_metadata_management
+  - articles/camtrap_data_processing
+  - articles/distance_to_animal_measurement
+- title: Behaviour and activity
+  desc: Directed, short-term association and diel activity between species.
+  contents:
+  - articles/encounter_response
+- title: Density and abundance estimation
+  desc: Estimators for unmarked populations, from distance sampling to REST.
+  contents:
+  - articles/camera_trap_distance_sampling_guideline
+  - articles/density_estimation_with_distance_sampling
+  - articles/spaceNtime
+  - articles/random_encounter_and_staying_time
+- title: Biodiversity
+  desc: Species richness through rarefaction and extrapolation.
+  contents:
+  - articles/rarefaction_and_extrapolation
 reference:
 - title: Data examples
   contents:
@@ -88,6 +128,7 @@ reference:
   - rest_detection
   - rest_station
   - penessoulou
+  - lama
 - title: Process media file
   desc: |
     Functions reading and writing metadata
@@ -153,6 +194,7 @@ reference:
   - ct_ci
   - ct_overlap_matrix
   - ct_temporal_shift
+  - ct_fit_encounter_response
   - ct_alpha_diversity
   - ct_dissimilarity
   - ct_spatial_coverage

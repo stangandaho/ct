@@ -2,7 +2,7 @@
 
 A small [Cloudflare Worker](https://workers.cloudflare.com/) that powers the
 "Ask ct" chat widget on <https://stangandaho.github.io/ct/>. It answers
-camera-trap questions using the ct documentation via **retrieval-augmented
+camera trap questions using the ct documentation via **retrieval-augmented
 generation (RAG)** — and it runs entirely on Cloudflare's **free** tier, with
 **no external API key**.
 

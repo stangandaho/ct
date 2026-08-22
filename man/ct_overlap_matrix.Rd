@@ -11,6 +11,10 @@ ct_overlap_matrix(
   convert_time = FALSE,
   format = "\%H:\%M:\%S",
   fill_na = NULL,
+  n_boot = 0,
+  conf = 0.95,
+  ci_method = c("auto", "norm", "norm0", "basic", "basic0", "perc"),
+  cores = 1,
   ...
 )
 }
@@ -27,14 +31,43 @@ ct_overlap_matrix(
 
 \item{fill_na}{Optional. A numeric value used to fill \code{NA} values in the overlap coefficient matrix. Defaults to \code{NULL} (does not fill \code{NA} values).}
 
+\item{n_boot}{Integer. Number of bootstrap samples used to derive a confidence
+interval for each species pair. When \code{n_boot <= 1} (the default, \code{0}) no
+bootstrap is run and a single coefficient matrix is returned, preserving the
+original behaviour. When \code{n_boot > 1}, a list of matrices is returned (see
+Value).}
+
+\item{conf}{Numeric scalar in \verb{(0, 1)}. Confidence level for the bootstrap
+interval. Defaults to \code{0.95}.}
+
+\item{ci_method}{Character. How to choose the confidence-interval type returned
+by \code{\link[overlap:bootCI]{overlap::bootCI()}} for each pair. \code{"auto"} (default) selects, per pair,
+between the two interval types appropriate for the uncorrected estimate
+reported in the matrix: \code{"norm0"} when the bootstrap estimates are
+approximately normal (Shapiro-Wilk \code{p >= 0.05}) and the skew-robust
+\code{"basic0"} otherwise. Alternatively, force a single type for all pairs with
+one of \code{"norm"}, \code{"norm0"}, \code{"basic"}, \code{"basic0"} or \code{"perc"}.}
+
+\item{cores}{Integer. Number of cores passed to \code{\link[=ct_bootstrap]{ct_bootstrap()}}. Defaults to \code{1}.}
+
 \item{...}{Additional arguments passed to \code{\link[overlap:overlapEst]{overlap::overlapEst()}}` for overlap estimation.}
 }
 \value{
-A square matrix of pairwise overlap coefficients, where rows and columns represent species.
+If \code{n_boot <= 1}, a square numeric matrix of pairwise overlap coefficients,
+where rows and columns represent species (the original return value).
+
+If \code{n_boot > 1}, a named list of matrices:
+\describe{
+\item{\code{estimate}}{the square numeric matrix of overlap coefficients;}
+\item{\code{ci}}{a character matrix whose cells give the confidence interval as
+\code{"[lower ; upper]"};}
+\item{\code{ci_method}}{a character matrix recording which \code{\link[=ct_boot_ci]{ct_boot_ci()}}
+interval type was used for each cell if ci_method is \code{"auto"};}
+}
 }
 \description{
 This function calculates pairwise overlap coefficients for activity patterns of multiple species
-using their time data.
+using their time data, and optionally bootstrap confidence intervals for every pair.
 }
 \details{
 The function calculates pairwise overlap coefficients for all species in the dataset.
@@ -43,6 +76,15 @@ The overlap coefficients are estimated using the \code{overlap} package:
 \item For species pairs with sample sizes of at least 50 observations each, the \code{Dhat4} estimator is used.
 \item For smaller sample sizes, the \code{Dhat1} estimator is used (Schmid & Schmidt, 2006).
 }
+
+When \code{n_boot > 1}, each pair is bootstrapped with the same estimator used for
+its point estimate, and a confidence interval is obtained through \code{\link[=ct_boot_ci]{ct_boot_ci()}}.
+Because the coefficient stored in
+the matrix is the uncorrected estimate, the \code{"auto"} selection restricts
+itself to the interval types, namely \code{"norm0"} and
+\code{"basic0"}; the choice between them is made per pair from a normality check on
+the bootstrap estimates. Pairs for which the bootstrap or interval cannot be
+computed receive \code{NA}.
 }
 \examples{
 # Example dataset
@@ -60,14 +102,20 @@ overlap_matrix <- ct_overlap_matrix(
   format = "\%H:\%M:\%S"
 )
 
-# Fill missing values in the matrix with 0
-overlap_matrix_filled <- ct_overlap_matrix(
+\donttest{
+# With bootstrap confidence intervals (returns a list of matrices)
+overlap_ci <- ct_overlap_matrix(
   data = data,
   species_column = species,
   time_column = time,
   convert_time = TRUE,
-  fill_na = 0
+  n_boot = 99,
+  conf = 0.95
 )
+overlap_ci$estimate
+overlap_ci$ci
+overlap_ci$ci_method
+}
 
 }
 \references{
@@ -76,5 +124,6 @@ overlapping - theory and empirical application, Computational Statistics and
 Data Analysis, 50:1583-1596.
 }
 \seealso{
-\code{\link[overlap:overlapEst]{overlap::overlapEst()}} for overlap coefficient estimation.
+\code{\link[overlap:overlapEst]{overlap::overlapEst()}} for overlap coefficient estimation;
+\code{\link[=ct_bootstrap]{ct_bootstrap()}} and \code{\link[=ct_boot_ci]{ct_boot_ci()}} for the bootstrap machinery.
 }

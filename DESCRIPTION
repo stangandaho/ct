@@ -1,6 +1,6 @@
 Package: ct
 Type: Package
-Title: Integrated Camera-Trap Data Management and Analysis
+Title: Camera trap data management and multi-method ecological analysis
 Version: 0.4.0
 Date: 2026-06-20
 Imports: 
@@ -54,9 +54,11 @@ Suggests:
     assertr,
     iNEXT (>= 3.0.2),
     httr2,
+    glmmTMB,
     kableExtra (>= 1.4.0),
     knitr (>= 1.50),
     leaflet (>= 2.2.2),
+    lme4,
     MASS,
     MCMCvis,
     msm,

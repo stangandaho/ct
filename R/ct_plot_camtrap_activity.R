@@ -352,7 +352,6 @@ ct_summarise_camtrap_activity <- function(data,
         active_periods$period_end - active_periods$period_start,
         units = time_unit_parser(time_unit)
       ))
-
       gap_duration <- total_duration - active_duration
 
       dplyr::tibble(

@@ -83,3 +83,49 @@ test_that("ct_overlap_matrix missed column", {
 
 })
 
+
+test_that("ct_overlap_matrix with n_boot returns estimate, CI and method matrices", {
+  set.seed(1)
+  df <- data.frame(
+    species = rep(c("A", "B"), each = 60),
+    rad = c(runif(60, 1.2, 2 * pi), runif(60, 0.23, 2 * pi))
+  )
+
+  res <- ct_overlap_matrix(df, species_column = species, time_column = rad,
+                           n_boot = 49, conf = 0.95, cores = 1)
+
+  expect_type(res, "list")
+  expect_named(res, c("estimate", "ci", "ci_method"))
+  expect_true(is.matrix(res$estimate) && is.numeric(res$estimate))
+  expect_true(is.matrix(res$ci) && is.character(res$ci))
+  expect_equal(dim(res$ci), c(2, 2))
+
+  # off-diagonal cells are formatted as "[lower ; upper]"
+  expect_match(res$ci["A", "B"], "^\\[[0-9.]+ ; [0-9.]+\\]$")
+  # diagonal is empty; matrix is symmetric
+  expect_identical(res$ci["A", "A"], "")
+  expect_identical(res$ci["A", "B"], res$ci["B", "A"])
+
+  # auto method is one of the uncorrected-estimate interval types
+  expect_true(res$ci_method["A", "B"] %in% c("norm0", "basic0"))
+})
+
+
+test_that("ct_overlap_matrix honours a forced ci_method and stays backward compatible", {
+  set.seed(2)
+  df <- data.frame(
+    species = rep(c("A", "B"), each = 60),
+    rad = c(runif(60, 1.2, 2 * pi), runif(60, 0.23, 2 * pi))
+  )
+
+  # default (n_boot = 0) must still return a bare matrix
+  m <- ct_overlap_matrix(df, species_column = species, time_column = rad)
+  expect_true(is.matrix(m))
+
+  # a forced method returns only the estimate and CI matrices (no method matrix)
+  res <- ct_overlap_matrix(df, species_column = species, time_column = rad,
+                           n_boot = 49, ci_method = "perc")
+  expect_named(res, c("estimate", "ci"))
+  expect_match(res$ci["A", "B"], "^\\[[0-9.]+ ; [0-9.]+\\]$")
+})
+

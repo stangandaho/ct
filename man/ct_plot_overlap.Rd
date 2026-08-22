@@ -12,18 +12,16 @@ ct_plot_overlap(
   n_grid = 128,
   kmax = 3,
   adjust = 1,
-  rug = FALSE,
   overlap_color = "gray40",
   overlap_alpha = 0.8,
   line_type = c(1, 2),
   line_color = c("gray10", "gray0"),
   line_width = c(1, 1),
+  species_names = c("Species A", "Species B"),
+  legend_title = "Species",
   overlap_only = FALSE,
-  rug_lentgh = 0.018,
-  rug_color = "gray30",
   extend = "lightgrey",
-  extend_alpha = 0.8,
-  ...
+  extend_alpha = 0.8
 )
 }
 \arguments{
@@ -41,8 +39,6 @@ ct_plot_overlap(
 
 \item{adjust}{A numeric value to adjust the bandwidth of the kernel density estimation. Default is 1.}
 
-\item{rug}{A logical value indicating whether to include a rug plot of the observations. Default is \code{FALSE}.}
-
 \item{overlap_color}{A string specifying the color of the overlap area. Default is \code{"gray40"}.}
 
 \item{overlap_alpha}{A numeric value (0 to 1) for the transparency of the overlap area. Default is 0.8.}
@@ -53,17 +49,15 @@ ct_plot_overlap(
 
 \item{line_width}{A vector of numeric values specifying the line widths for species A and B density lines. Default is \code{c(1, 1)}.}
 
+\item{species_names}{A character vector of length two giving the legend labels for species A and B.}
+
+\item{legend_title}{A character string giving the density-line legend title.}
+
 \item{overlap_only}{A logical value indicating whether to plot only the overlap region without individual density lines. Default is \code{FALSE}.}
-
-\item{rug_lentgh}{A numeric value specifying the length of the rug ticks. Default is 0.018 (in normalized plot coordinates).}
-
-\item{rug_color}{A string specifying the color of the rug ticks. Default is \code{"gray30"}.}
 
 \item{extend}{A string specifying the color of the extended area beyond the activity period. Default is \code{"lightgrey"}.}
 
 \item{extend_alpha}{A numeric value (0 to 1) for the transparency of the extended area. Default is 0.8.}
-
-\item{...}{Additional arguments passed to the \code{geom_rug} function.}
 }
 \value{
 A ggplot object representing the activity density curves and overlap between the two species.
@@ -85,9 +79,5 @@ It uses kernel density estimation to estimate activity densities and highlights 
   # Customize plot with specific colors and line types
   ct_plot_overlap(A = species_A, B = species_B, overlap_color = "blue",
   line_color = c("red", "green"))
-
-  # Include rug plots and change transparency
-  ct_plot_overlap(A = species_A, B = species_B, rug = TRUE,
-  overlap_alpha = 0.5)
 
 }
