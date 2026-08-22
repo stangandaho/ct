@@ -26,7 +26,7 @@ identifiers, image timestamps, and per-detection animal counts.
 
 This tutorial walks through the theory behind the three SpaceNTime
 estimators — **Space-To-Event (STE)**, **Time-To-Event (TTE)**, and
-**Instantaneous Sampling Estimator (ISE)** — and shows how to apply all
+**Instantaneous Sampling Estimator (ISE)**. It shows how to apply all
 three using the `ct` package in a clean, fully automated workflow.
 
 ------------------------------------------------------------------------
@@ -49,13 +49,14 @@ and \\\theta\\ is the camera’s field-of-view angle.
 ![Single camera representation](images/single_camera_representation.png)
 
 Figure 1: Schematic representation of a camera trap detection zone,
-showing the radial detection distance (r) and detection angle (θ) that
-define the camera’s viewshed area (also called field of view)
+showing the maximum radial detection distance (r) and detection angle
+(θ) that define the camera’s viewshed area (also called field of view)
 
 The value of \\r\\ and \\\theta\\ are generally specified by the camera
-manufacturer. At any given moment, an animal is either inside that
-viewshed or it is not. Over time, animals wander in and out as they move
-through the landscape.
+manufacturer. But for more precision, I recommend to define \\r\\ by
+field landmarks during the deployment phase. At any given moment, an
+animal is either inside that viewshed or it is not. Over time, animals
+wander in and out as they move through the landscape.
 
 The SpaceNTime framework treats each camera’s viewshed as an independent
 sampler of the landscape, and exploits the *geometry* and *timing* of
@@ -65,7 +66,7 @@ differently.
 ### 1. Instantaneous Sampling Estimator (ISE)
 
 The ISE is the most conceptually straightforward of the three. At a set
-of predetermined moments in time — think of them as camera “snapshots” —
+of predetermined moments in time (think of them as camera “snapshots”),
 the observer asks: *is an animal inside this viewshed right now?* Each
 snapshot yields a count \\y\_{ij}\\ for camera \\i\\ at occasion \\j\\.
 
@@ -101,10 +102,20 @@ detected the first animal?”
 
 On each sampling occasion, cameras are conceptually ordered in a random
 sequence. We accumulate viewshed area until the first animal is
-detected. The cumulative area at that first detection, i.e
-*space-to-event* is the key statistic. If animals are rare, we expect to
-accumulate a lot of area before seeing one. If animals are dense, the
-first encounter comes quickly.
+detected. For example:
+
+- If the first camera in the randomly ordered sequence (camera 1 with
+  area \\A\_{1}\\) contains at least one animal, the space to first
+  event \\S\\ is \\A\_{1}\\.  
+- If camera 1 is empty but a subsequent camera in the sequence (e.g.,
+  camera n) contains at least one animal, then \\S\\ is the sum of the
+  areas of all cameras from the first up to camera n (\\A\_{1}\\ +
+  \\A\_{2}\\ + … + \\A\_{n}\\).
+
+The cumulative area at that first detection, i.e *space-to-event* is the
+key statistic. If animals are rare, we expect to accumulate a lot of
+area before seeing one. If animals are dense, the first encounter comes
+quickly.
 
 Formally, the STE values are modelled as an exponential distribution
 with rate parameter \\\lambda\\ (density), which is estimated via
@@ -127,7 +138,7 @@ STE values across all occasions are modelled as Exp(λ), where λ =
 density (animals per m²). High density → small STE values and Low
 density → large STE values. λ is estimated by maximum likelihood.
 Abundance: N̂ = λ̂ × study area. The STE estimator is particularly
-valuable when animal activity within a sampling period is sparse — a
+valuable when animal activity within a sampling period is sparse; a
 single detection per occasion is all it needs.
 
 ### 3. Time-To-Event (TTE)

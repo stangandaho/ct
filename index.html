@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Integrated Camera-Trap Data Management and Analysis • ct</title>
+<title>Camera trap data management and multi-method ecological analysis • ct</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
 <link rel="icon" type="”image/svg+xml”" href="favicon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
@@ -24,13 +24,13 @@
 <link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
-<script src="extra.js"></script><meta property="og:title" content="Integrated Camera-Trap Data Management and Analysis">
+<script src="extra.js"></script><meta property="og:title" content="Camera trap data management and multi-method ecological analysis">
 <meta name="description" content="An integrated, tidyverse-friendly workflow for camera trap data in wildlife monitoring and ecological research. Reads and edits media metadata, filters independent detections, analyses activity patterns and species diversity, and estimates species density or abundance with several methods, including the random encounter model, camera-trap distance sampling, time-to-event, space-to-event, and the random encounter and staying-time model (see Rowcliffe et al. (2008) &lt;doi:10.1111/j.1365-2664.2008.01473.x&gt;, Howe et al. (2017) &lt;doi:10.1111/2041-210X.12790&gt;, Nakashima et al. (2018) &lt;doi:10.1111/1365-2664.13059&gt;, and Moeller et al. (2018) &lt;doi:10.1002/ecs2.2331&gt;).">
 <meta property="og:description" content="An integrated, tidyverse-friendly workflow for camera trap data in wildlife monitoring and ecological research. Reads and edits media metadata, filters independent detections, analyses activity patterns and species diversity, and estimates species density or abundance with several methods, including the random encounter model, camera-trap distance sampling, time-to-event, space-to-event, and the random encounter and staying-time model (see Rowcliffe et al. (2008) &lt;doi:10.1111/j.1365-2664.2008.01473.x&gt;, Howe et al. (2017) &lt;doi:10.1111/2041-210X.12790&gt;, Nakashima et al. (2018) &lt;doi:10.1111/1365-2664.13059&gt;, and Moeller et al. (2018) &lt;doi:10.1002/ecs2.2331&gt;).">
 <meta property="og:image" content="https://stangandaho.github.io/ct/reference/figures/logo.png">
-<meta property="og:image:alt" content="ct: camera-trap data management and analysis in R">
-<meta name="description" content="ct is an R package for camera-trap data management and analysis, from image metadata to species density estimation (random encounter model, distance sampling, time-to-event, space-to-event, REST, instantaneous sampling estimators).">
-<meta name="keywords" content="camera trap, camera-trap, R package, wildlife monitoring, density estimation, abundance, random encounter model, camera-trap distance sampling, occupancy, activity patterns, ecology, Camtrap DP, spatial coverage, temporal shift">
+<meta property="og:image:alt" content="ct: An R package for camera trap data management and multi-method ecological analysis">
+<meta name="description" content="ct is an R package for camera trap data management and analysis, from image metadata to species density estimation (random encounter model, distance sampling, time-to-event, space-to-event, REST, instantaneous sampling estimators).">
+<meta name="keywords" content="camera trap, R package, wildlife monitoring, density estimation, abundance, random encounter model, camera-trap distance sampling, occupancy, activity patterns, ecology, Camtrap DP, spatial coverage, temporal shift encounter-response">
 <meta name="google-site-verification" content="IsJnmZmB57RlAonI3vWGJq4FadQgHj87SJhl1Q3oBak">
 <meta name="msvalidate.01" content="599CF8CEAF0762B699B5C79D5B933522">
 </head>
@@ -56,14 +56,26 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><span class="fa fa-blog"></span> Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/analyse_before_you_collect.html">Analyse before you collect</a></li>
-    <li><a class="dropdown-item" href="articles/camtrap_data_processing.html">Camera Trap Data Processing</a></li>
+<li><a class="dropdown-item" href="articles/index.html">All articles</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Study design</h6></li>
+    <li><a class="dropdown-item" href="articles/analyse_before_you_collect.html">Analyse before you collect</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Data management and processing</h6></li>
     <li><a class="dropdown-item" href="articles/camera_trap_media_metadata_management.html">Camera Trap Media Metadata Management</a></li>
+    <li><a class="dropdown-item" href="articles/camtrap_data_processing.html">Camera Trap Data Processing</a></li>
     <li><a class="dropdown-item" href="articles/distance_to_animal_measurement.html">Distance to Animal Measurement</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Behaviour and activity</h6></li>
+    <li><a class="dropdown-item" href="articles/encounter_response.html">Directed Encounter Responses Between Species</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Density and abundance estimation</h6></li>
     <li><a class="dropdown-item" href="articles/camera_trap_distance_sampling_guideline.html">Camera Trap Distance Sampling Guideline</a></li>
     <li><a class="dropdown-item" href="articles/density_estimation_with_distance_sampling.html">Density Estimation With Distance Sampling</a></li>
     <li><a class="dropdown-item" href="articles/spaceNtime.html">Abundance Estimation with spaceNtime</a></li>
     <li><a class="dropdown-item" href="articles/random_encounter_and_staying_time.html">Density with REST and RAD-REST</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Biodiversity</h6></li>
     <li><a class="dropdown-item" href="articles/rarefaction_and_extrapolation.html">Rarefaction and Extrapolation</a></li>
   </ul>
 </li>
@@ -107,7 +119,7 @@
 <div class="section level2">
 <h2 id="key-features">Key Features<a class="anchor" aria-label="anchor" href="#key-features"></a>
 </h2>
-<p>The <code>ct</code> package provides a comprehensive suite of 60+ functions covering the complete camera trap data analysis workflow. <strong>Population density estimation</strong> is supported through Random Encounter Models, (REM), Camera Trap Distance Sampling (CTDS) Time-To-Event (TTE), Space-To-Event (STE), Instantaneous Sampling Estimator (ISE), and Random Encounter and Staying Time (REST/RAD-REST). <strong>Data management</strong> capabilities include filtering independent detections, timestamp correction, and interactive spatial validation. <strong>Community ecology</strong> functions enable activity pattern analysis, biodiversity index assessment, and occupancy modeling input preparation. <strong>Quality control</strong> tools include detecting temporal gaps, monitoring deployment status, and taxonomic validation.</p>
+<p>The <code>ct</code> package provides a comprehensive suite of 60+ functions covering the complete camera trap data analysis workflow. <strong>Data management</strong> capabilities include filtering independent detections, timestamp correction, and interactive spatial validation. <strong>Quality control</strong> tools include detecting temporal gaps, monitoring deployment status, and taxonomic validation. <strong>Population density estimation</strong> is supported through Random Encounter Models, (REM), Camera Trap Distance Sampling (CTDS) Time-To-Event (TTE), Space-To-Event (STE), Instantaneous Sampling Estimator (ISE), and Random Encounter and Staying Time (REST/RAD-REST). <strong>Behaviour analysis</strong> helps to evaluate how species adjust their diel activity between seasons or disturbance regimes, and association between species activity. <strong>Community ecology</strong> functions enable activity pattern analysis, biodiversity index assessment, and occupancy modeling input preparation.</p>
 <p><a href="https://stangandaho.github.io/ct/"><img src="https://raw.githubusercontent.com/stangandaho/ct/main/man/figures/ct_r_package_workflow.svg" align="centre"></a></p>
 <p><strong>For a full overview of all available functions, please visit the <a href="https://stangandaho.github.io/ct/reference/index.html">ct website</a></strong></p>
 </div>
@@ -122,7 +134,10 @@
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co"># Install ct from GitHub</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span><span class="st">"stangandaho/ct"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span><span class="st">"stangandaho/ct"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Install ct from CRAN</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span><span class="st">"ct"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="code-of-conduct">Code of conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
@@ -143,6 +158,7 @@
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
+<li><a href="https://cloud.r-project.org/package=ct" class="external-link">View on CRAN</a></li>
 <li><a href="https://github.com/stangandaho/ct/" class="external-link">Browse source code</a></li>
 <li><a href="https://github.com/stangandaho/ct/issues" class="external-link">Report a bug</a></li>
 </ul>

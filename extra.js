@@ -80,6 +80,16 @@
       .catch(function () {});
   }
 
+  // Keep following a response only while the reader is already at the bottom.
+  // This lets someone scroll up to inspect earlier messages while tokens arrive.
+  function isNearBottom(el) {
+    return el.scrollHeight - el.scrollTop - el.clientHeight < 56;
+  }
+
+  function scrollToBottom(el) {
+    el.scrollTop = el.scrollHeight;
+  }
+
   // ---- Minimal, XSS-safe Markdown -> HTML ---------------------------------
   function escapeHtml(s) {
     return s
@@ -359,7 +369,7 @@
       wrap.appendChild(bubble);
       log.appendChild(wrap);
       if (role === "user") bubble.textContent = text;
-      log.scrollTop = log.scrollHeight;
+      scrollToBottom(log);
       return bubble;
     }
 
@@ -402,20 +412,42 @@
           var reader = res.body.getReader();
           var dec = new TextDecoder();
           var full = "";
+          var renderTimer = null;
+          var keepFollowing = true;
+
+          // Rendering on every token makes long replies feel janky. Batch it
+          // briefly, while still rendering open code fences so syntax colour
+          // and the copy button appear before the answer is complete.
+          function renderPartial(force) {
+            if (renderTimer && !force) return;
+            if (!force) {
+              renderTimer = setTimeout(function () {
+                renderTimer = null;
+                renderPartial(true);
+              }, 80);
+              return;
+            }
+            if (renderTimer) { clearTimeout(renderTimer); renderTimer = null; }
+            answerBubble.classList.remove("ct-ai-typing");
+            answerBubble.innerHTML = renderMarkdown(full);
+            enhanceAnswer(answerBubble);
+            // Re-check immediately before scrolling: the reader may have
+            // moved the log while a scheduled render was waiting to run.
+            if (keepFollowing && isNearBottom(log)) scrollToBottom(log);
+          }
+
           function pump() {
             return reader.read().then(function (r) {
               if (r.done) {
-                // Final render + syntax highlight + copy buttons once complete.
-                answerBubble.innerHTML = renderMarkdown(full);
-                enhanceAnswer(answerBubble);
-                log.scrollTop = log.scrollHeight;
+                renderPartial(true);
                 history.push({ role: "assistant", content: full });
                 return;
               }
+              // Measure before updating DOM: if the reader has moved away from
+              // the bottom, never snap them back during this response.
+              keepFollowing = isNearBottom(log);
               full += dec.decode(r.value, { stream: true });
-              answerBubble.classList.remove("ct-ai-typing");
-              answerBubble.innerHTML = renderMarkdown(full); // progressive text
-              log.scrollTop = log.scrollHeight;
+              renderPartial(false);
               return pump();
             });
           }

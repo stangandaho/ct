@@ -18,17 +18,19 @@ allowing users to generate highly customizable visualizations.
 ## Key Features
 
 The `ct` package provides a comprehensive suite of 60+ functions
-covering the complete camera trap data analysis workflow. **Population
-density estimation** is supported through Random Encounter Models,
-(REM), Camera Trap Distance Sampling (CTDS) Time-To-Event (TTE),
-Space-To-Event (STE), Instantaneous Sampling Estimator (ISE), and Random
-Encounter and Staying Time (REST/RAD-REST). **Data management**
-capabilities include filtering independent detections, timestamp
-correction, and interactive spatial validation. **Community ecology**
-functions enable activity pattern analysis, biodiversity index
-assessment, and occupancy modeling input preparation. **Quality
+covering the complete camera trap data analysis workflow. **Data
+management** capabilities include filtering independent detections,
+timestamp correction, and interactive spatial validation. **Quality
 control** tools include detecting temporal gaps, monitoring deployment
-status, and taxonomic validation.
+status, and taxonomic validation. **Population density estimation** is
+supported through Random Encounter Models, (REM), Camera Trap Distance
+Sampling (CTDS) Time-To-Event (TTE), Space-To-Event (STE), Instantaneous
+Sampling Estimator (ISE), and Random Encounter and Staying Time
+(REST/RAD-REST). **Behaviour analysis** helps to evaluate how species
+adjust their diel activity between seasons or disturbance regimes, and
+association between species activity. **Community ecology** functions
+enable activity pattern analysis, biodiversity index assessment, and
+occupancy modeling input preparation.
 
 [![](https://raw.githubusercontent.com/stangandaho/ct/main/man/figures/ct_r_package_workflow.svg)](https://stangandaho.github.io/ct/)
 
@@ -48,6 +50,9 @@ if (!requireNamespace("pak", quietly = TRUE)) {
 
 # Install ct from GitHub
 pak::pkg_install("stangandaho/ct")
+
+# Install ct from CRAN
+pak::pkg_install("ct")
 ```
 
 ## Code of conduct
@@ -89,6 +94,8 @@ methods, and standardized data integration workflows.
   : Camera-station table for the REST / RAD-REST example
 - [`penessoulou`](https://stangandaho.github.io/ct/reference/penessoulou.md)
   : Camera-trap detections from the Penessoulou Classified Forest
+- [`lama`](https://stangandaho.github.io/ct/reference/lama.md) : Camera
+  trap survey of the Lama Classified Forest
 
 ## Process media file
 
@@ -240,6 +247,8 @@ Functions to run common camera trap data analysis
 - [`ct_temporal_shift()`](https://stangandaho.github.io/ct/reference/ct_temporal_shift.md)
   : Calculate the temporal shift of one species' activity over two
   periods
+- [`ct_fit_encounter_response()`](https://stangandaho.github.io/ct/reference/ct_fit_encounter_response.md)
+  : Fit a conditional encounter-response model for camera-trap events
 - [`ct_alpha_diversity()`](https://stangandaho.github.io/ct/reference/ct_alpha_diversity.md)
   : Alpha diversity index
 - [`ct_dissimilarity()`](https://stangandaho.github.io/ct/reference/ct_dissimilarity.md)
@@ -283,24 +292,48 @@ Functions to run common camera trap data analysis
 
 # Articles
 
-### All vignettes
+### Study design
+
+Plan a survey before data are collected.
 
 - [Analyse before you
   collect](https://stangandaho.github.io/ct/articles/analyse_before_you_collect.md):
-- [Distance Sampling with Camera
-  Traps](https://stangandaho.github.io/ct/articles/camera_trap_distance_sampling_guideline.md):
+
+### Data management and processing
+
+From raw media and metadata to analysis-ready, standardised tables.
+
 - [Manage Media
   Metadata](https://stangandaho.github.io/ct/articles/camera_trap_media_metadata_management.md):
 - [Camera Trap Data
   Processing](https://stangandaho.github.io/ct/articles/camtrap_data_processing.md):
-- [Wildlife Density Estimation With ct R Package Using Distance
-  Sampling](https://stangandaho.github.io/ct/articles/density_estimation_with_distance_sampling.md):
 - [How to estimate distance between camera trap and
   animals?](https://stangandaho.github.io/ct/articles/distance_to_animal_measurement.md):
+
+### Behaviour and activity
+
+Directed, short-term association and diel activity between species.
+
+- [Directed encounter responses between
+  species](https://stangandaho.github.io/ct/articles/encounter_response.md):
+
+### Density and abundance estimation
+
+Estimators for unmarked populations, from distance sampling to REST.
+
+- [Distance Sampling with Camera
+  Traps](https://stangandaho.github.io/ct/articles/camera_trap_distance_sampling_guideline.md):
+- [Wildlife Density Estimation With ct R Package Using Distance
+  Sampling](https://stangandaho.github.io/ct/articles/density_estimation_with_distance_sampling.md):
+- [Estimating Wildlife Abundance from Camera Traps With SpaceNTime
+  Methods](https://stangandaho.github.io/ct/articles/spaceNtime.md):
 - [Estimating Density With REST and RAD-REST
   Models](https://stangandaho.github.io/ct/articles/random_encounter_and_staying_time.md):
+
+### Biodiversity
+
+Species richness through rarefaction and extrapolation.
+
 - [Rarefaction and Extrapolation of Species Diversity Estimation with
   Camera Trap Data using ct R
   package](https://stangandaho.github.io/ct/articles/rarefaction_and_extrapolation.md):
-- [Estimating Wildlife Abundance from Camera Traps With SpaceNTime
-  Methods](https://stangandaho.github.io/ct/articles/spaceNtime.md):

@@ -16,6 +16,8 @@
   : Camera-station table for the REST / RAD-REST example
 - [`penessoulou`](https://stangandaho.github.io/ct/reference/penessoulou.md)
   : Camera-trap detections from the Penessoulou Classified Forest
+- [`lama`](https://stangandaho.github.io/ct/reference/lama.md) : Camera
+  trap survey of the Lama Classified Forest
 
 ## Process media file
 
@@ -167,6 +169,8 @@ Functions to run common camera trap data analysis
 - [`ct_temporal_shift()`](https://stangandaho.github.io/ct/reference/ct_temporal_shift.md)
   : Calculate the temporal shift of one species' activity over two
   periods
+- [`ct_fit_encounter_response()`](https://stangandaho.github.io/ct/reference/ct_fit_encounter_response.md)
+  : Fit a conditional encounter-response model for camera-trap events
 - [`ct_alpha_diversity()`](https://stangandaho.github.io/ct/reference/ct_alpha_diversity.md)
   : Alpha diversity index
 - [`ct_dissimilarity()`](https://stangandaho.github.io/ct/reference/ct_dissimilarity.md)

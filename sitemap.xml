@@ -9,6 +9,7 @@
 <url><loc>https://stangandaho.github.io/ct/articles/camtrap_data_processing.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/articles/density_estimation_with_distance_sampling.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/articles/distance_to_animal_measurement.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/articles/encounter_response.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/articles/index.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/articles/random_encounter_and_staying_time.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/articles/rarefaction_and_extrapolation.html</loc></url>
@@ -48,6 +49,7 @@
 <url><loc>https://stangandaho.github.io/ct/reference/ct_fit_detmodel.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_fit_distribution.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_fit_ds.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/ct_fit_encounter_response.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_fit_ise.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_fit_rem.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/ct_fit_rest.html</loc></url>
@@ -98,6 +100,7 @@
 <url><loc>https://stangandaho.github.io/ct/reference/find_exiftool_path.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/get_os.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/index.html</loc></url>
+<url><loc>https://stangandaho.github.io/ct/reference/lama.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/lnorm_confint.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/parse_hs.html</loc></url>
 <url><loc>https://stangandaho.github.io/ct/reference/pendjari.html</loc></url>

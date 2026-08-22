@@ -2,6 +2,8 @@
 
 ## ct 0.4.0
 
+CRAN release: 2026-07-16
+
 ### 2026-06-20
 
 - [`ct_temporal_shift()`](https://stangandaho.github.io/ct/reference/ct_temporal_shift.md)
