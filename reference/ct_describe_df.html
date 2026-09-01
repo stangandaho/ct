@@ -33,30 +33,7 @@ it provides frequency counts and proportions for each unique value."><meta prope
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../index.html" aria-label="Home"><span class="fa fa-home"></span> Home</a></li>
 <li class="active nav-item"><a class="nav-link" href="../reference/index.html"><span class="fa fa-code"></span> Functions</a></li>
-<li class="nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true"><span class="fa fa-blog"></span> Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/index.html">All articles</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Study design</h6></li>
-    <li><a class="dropdown-item" href="../articles/analyse_before_you_collect.html">Analyse before you collect</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Data management and processing</h6></li>
-    <li><a class="dropdown-item" href="../articles/camera_trap_media_metadata_management.html">Camera Trap Media Metadata Management</a></li>
-    <li><a class="dropdown-item" href="../articles/camtrap_data_processing.html">Camera Trap Data Processing</a></li>
-    <li><a class="dropdown-item" href="../articles/distance_to_animal_measurement.html">Distance to Animal Measurement</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Behaviour and activity</h6></li>
-    <li><a class="dropdown-item" href="../articles/encounter_response.html">Directed Encounter Responses Between Species</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Density and abundance estimation</h6></li>
-    <li><a class="dropdown-item" href="../articles/camera_trap_distance_sampling_guideline.html">Camera Trap Distance Sampling Guideline</a></li>
-    <li><a class="dropdown-item" href="../articles/density_estimation_with_distance_sampling.html">Density Estimation With Distance Sampling</a></li>
-    <li><a class="dropdown-item" href="../articles/spaceNtime.html">Abundance Estimation with spaceNtime</a></li>
-    <li><a class="dropdown-item" href="../articles/random_encounter_and_staying_time.html">Density with REST and RAD-REST</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Biodiversity</h6></li>
-    <li><a class="dropdown-item" href="../articles/rarefaction_and_extrapolation.html">Rarefaction and Extrapolation</a></li>
-  </ul></li>
+<li class="nav-item"><a class="nav-link" href="../articles/index.html"><span class="fa fa-blog"></span> Articles</a></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html"><span class="fa fa-face-smile"></span> News</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -202,12 +179,12 @@ holding that statistic for each numeric variable (or group).</p>
 <span class="r-in"><span><span class="co"># Summarise every variable independently</span></span></span>
 <span class="r-in"><span><span class="fu">ct_describe_df</span><span class="op">(</span><span class="va">df</span>, <span class="va">y</span>, <span class="va">x</span>, <span class="va">z</span>, by_group <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 10</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Group  Prop     N Variable   Min   Max Median  Mean `CI Left` `CI Right`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>     2 y            3     4    3.5   3.5    -<span style="color: #BB0000;">2.85</span>        9.85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>     3 x            1     3    2     2      -<span style="color: #BB0000;">0.484</span>       4.48</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> A        75     3 z           <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> B        25     1 z           <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>    <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>          <span style="color: #BB0000;">NA</span>   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Group  Prop     N Variable   Max `CI Right`   Min Median `CI Left`  Mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>     2 y            4       9.85     3    3.5    -<span style="color: #BB0000;">2.85</span>    3.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>     3 x            3       4.48     1    2      -<span style="color: #BB0000;">0.484</span>   2  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> A        75     3 z           <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> B        25     1 z           <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>       <span style="color: #BB0000;">NA</span>   <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>      <span style="color: #BB0000;">NA</span>  </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add custom statistics for the numeric variables</span></span></span>
 <span class="r-in"><span><span class="fu">ct_describe_df</span><span class="op">(</span><span class="va">df</span>, <span class="va">y</span>, <span class="va">x</span>, <span class="va">z</span>,</span></span>

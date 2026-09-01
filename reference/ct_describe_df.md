@@ -136,12 +136,12 @@ ct_describe_df(df, y, x, z)
 # Summarise every variable independently
 ct_describe_df(df, y, x, z, by_group = FALSE)
 #> # A tibble: 4 × 10
-#>   Group  Prop     N Variable   Min   Max Median  Mean `CI Left` `CI Right`
-#>   <chr> <dbl> <int> <chr>    <dbl> <dbl>  <dbl> <dbl>     <dbl>      <dbl>
-#> 1 NA       NA     2 y            3     4    3.5   3.5    -2.85        9.85
-#> 2 NA       NA     3 x            1     3    2     2      -0.484       4.48
-#> 3 A        75     3 z           NA    NA   NA    NA      NA          NA   
-#> 4 B        25     1 z           NA    NA   NA    NA      NA          NA   
+#>   Group  Prop     N Variable   Max `CI Right`   Min Median `CI Left`  Mean
+#>   <chr> <dbl> <int> <chr>    <dbl>      <dbl> <dbl>  <dbl>     <dbl> <dbl>
+#> 1 NA       NA     2 y            4       9.85     3    3.5    -2.85    3.5
+#> 2 NA       NA     3 x            3       4.48     1    2      -0.484   2  
+#> 3 A        75     3 z           NA      NA       NA   NA      NA      NA  
+#> 4 B        25     1 z           NA      NA       NA   NA      NA      NA  
 
 # Add custom statistics for the numeric variables
 ct_describe_df(df, y, x, z,

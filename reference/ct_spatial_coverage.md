@@ -177,7 +177,7 @@ spc <- ct_spatial_coverage(
 
 # Plot coverage raster
 library(terra)
-#> terra 1.9.34
+#> terra 1.9.46
 terra::plot(spc$`Coverage raster`)
 
 
