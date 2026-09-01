@@ -1,23 +1,27 @@
 # ct package documentation (version 0.4.0)
 # Camera trap data management and multi-method ecological analysis
-# Generated: 2026-08-22
+# Generated: 2026-09-01
 
 
 ---
 
 Package metadata: authors, developer, creator, maintainer, contributors, funding, citation, license, links
 
-Description: An integrated, tidyverse-friendly workflow for camera trap data in
-wildlife monitoring and ecological research. Reads and edits media metadata,
-filters independent detections, analyses activity patterns and species
-diversity, and estimates species density or
-abundance with several methods, including the random encounter model,
-camera-trap distance sampling, time-to-event, space-to-event, and the random
-encounter and staying-time model (see
+Description: Tools for the complete camera trap data workflow in wildlife
+monitoring and ecological research. Reads and edits media metadata, filters
+independent detections, and standardises records for analysis. Measures diel
+activity and overlap (Ridout and Linkie (2009) <doi:10.1198/jabes.2009.08038>),
+directed short-term association between species with an encounter-response
+model (Hawkes (1971) <doi:10.1093/biomet/58.1.83>), seasonal shifts in
+activity, spatial coverage of detections, and species diversity. Estimates
+density or abundance of unmarked
+populations with several methods, including the random encounter model,
+camera-trap distance sampling, time-to-event, space-to-event, instantaneous
+sampling, and the random encounter and staying-time model (see
 Rowcliffe et al. (2008) <doi:10.1111/j.1365-2664.2008.01473.x>,
 Howe et al. (2017) <doi:10.1111/2041-210X.12790>,
-Nakashima et al. (2018) <doi:10.1111/1365-2664.13059>, and
-Moeller et al. (2018) <doi:10.1002/ecs2.2331>).
+Moeller et al. (2018) <doi:10.1002/ecs2.2331>, and
+Nakashima et al. (2018) <doi:10.1111/1365-2664.13059>).
 
 Authors and contributors:
 Stanislas Mahussi Gandaho <stangandaho@gmail.com> [aut, cre] (<https://orcid.org/0009-0003-4969-1252>)
@@ -9680,3 +9684,1540 @@ The development of the ct package is supported by the R Consortium Infrastructur
 Steering Committee (ISC) under grant 25-ISC-1-04. This funding enables the creation 
 of comprehensive statistical tools for camera trap data analysis, including population 
 density estimation methods, and standardized data integration workflows. 
+
+# ============================================================
+# MANUSCRIPT & SUPPLEMENTARY MATERIAL
+# ============================================================
+
+## Source: ct_manuscript.docx
+
+**Data availability**
+
+Every analysis uses example datasets bundled with the ct package. The
+package source code and these datasets are provided for peer review as
+an anonymised repository at <https://anonymous.4open.science/r/ct-700B/>
+
+**Abstract**
+
+1.  Camera trap surveys have become central to terrestrial wildlife
+    monitoring, yet the route from raw detections to defensible
+    inference is long, and in R it is walked with many single-purpose
+    packages. Researchers therefore spend disproportionate effort
+    reshaping data and writing glue pipelines to move it between tools,
+    and that effort peaks in density estimation for unmarked
+    populations, where current guidance to compare several estimators is
+    what the tooling makes hardest. Fragmentation is only half the
+    problem, since methods for behavioural and interspecific analysis
+    are missing from the ecosystem altogether.
+
+2.  We present *ct*, an R package that carries an entire camera trap
+    study from raw image metadata through cleaning,
+    temporal-independence filtering, effort accounting, modelling and
+    visualisation within a single tidy data structure. The package wraps
+    and harmonises existing engines behind one consistent interface and
+    extends the ecosystem with analyses it has lacked.
+
+3.  *ct* spans the full workflow in more than 70 functions, and adds
+    four capabilities that, to our knowledge, no other camera trap
+    package provides: an encounter response model that detects directed
+    short-term changes in one species' detection rate after another
+    passes; a temporal shift statistic that measures how the diel
+    activity window of a species moves between periods; a spatial
+    coverage surface that summarises where a species was detected; and a
+    common front end to six density and abundance estimators for
+    unmarked populations (camera trap distance sampling, random
+    encounter model, time-to-event, space-to-event, instantaneous
+    sampling, and the random encounter and staying-time model). We
+    demonstrate each capability on camera trap surveys from Benin and
+    Taï National Park, Côte d'Ivoire.
+
+4.  By standardising the workflow end to end and placing six previously
+    incompatible density estimators behind one interface, *ct* lowers
+    the technical cost of multi-method camera trap ecology and brings
+    reproducible analyses within reach of a much wider range of users.
+
+**Keywords:** Camera trap, density estimation, unmarked populations,
+behavioural analysis, temporal shift, encounter response, wildlife
+population, R package.
+
+1.  **Introduction**
+
+Camera traps have become a default instrument in terrestrial wildlife
+ecology, valued for their low cost, continuous operation, and ability to
+detect cryptic, nocturnal and rare species, and they now anchor work
+from local inventories to continental monitoring networks (O'Connell et
+al., 2011; Burton et al., 2015; Steenweg et al., 2017; Wearn &
+Glover-Kapfer, 2019; Delisle et al., 2021). Turning such a survey into
+an ecological result, however, is rarely a single analysis; it is a
+pipeline. A single deployment can accumulate tens of thousands to
+millions of images, and the resulting datasets are heterogeneous in
+structure, time stamping, taxonomy, and spatial referencing. Turning
+these raw detections into defensible ecological inference requires
+several careful steps, from metadata extraction, cleaning,
+temporal-independence filtering, and standardisation to effort
+accounting, modelling, and visualisation. Each step can introduce error
+and reduce reproducibility (Burton et al., 2015; Silva-Rodriguez et al.,
+2025). In the R ecosystem, each of these steps is served well by a
+mature, specialised package, but by different packages, each with its
+own data structures, conventions, and idioms. A typical study is
+therefore stitched together from multiple tools, and every seam between
+them, a reshaped table here, a manually reconciled column there, a block
+of glue code to bridge two formats, is a place where errors enter and
+reproducibility leaks away (Meek et al., 2014; Forrester et al., 2016).
+
+This friction bites hardest in the analyses that turn detections into
+ecology, and it bites on two fronts. The first is density. Density and
+abundance underpin status assessment, trend detection, and management.
+However, they are hard to estimate for the many species that cannot be
+individually identified from photographs (Sollmann et al., 2013; Gilbert
+et al., 2021). Classical spatially explicit capture-recapture depends on
+individually recognisable animals (Efford, 2004; Royle et al., 2014) and
+so cannot reach them. To estimate the density of unmarked populations,
+ecologists and statisticians have instead developed a family of
+model-based estimators: the random encounter model (REM; Rowcliffe et
+al., 2008), camera trap distance sampling (CTDS; Howe et al., 2017), the
+time-to-event, space-to-event, and instantaneous-sampling estimators
+(Moeller et al., 2018), and the random encounter and staying-time model
+(REST/RAD-REST; Nakashima et al., 2018, 2026). These rest on different
+assumptions and no one estimator is universally best, so current
+guidance recommends applying and contrasting several on the same data
+(Gilbert et al., 2021; Palencia et al., 2021). In practice this is
+cumbersome: the estimators are spread across at least four packages
+(*Distance*, *spaceNtime*, *ctrest*, *camtrapDensity*), each expecting
+differently shaped inputs, so the very comparison the field recommends
+is the step the tooling makes hardest.
+
+The second front is behaviour and space, and here the tooling is not
+just fragmented, but absent. Ecologists increasingly put behavioural and
+spatial questions to the same data: whether one species avoids or
+follows another at a shared site, how a species shifts its active hours
+between seasons or under disturbance, and where its detections
+concentrate across the landscape. Existing tools do not address these
+questions. Activity overlap compares two daily curves, but ignores order
+and place (Ridout & Linkie, 2009). It cannot say whether one species
+reacts to another on the same camera. No R package quantifies such
+directed short-term association between species, estimates the
+displacement of a species' activity window between periods, or derives
+its detection footprint.
+
+The R ecosystem for camera trap work is thus excellent, but fragmented.
+*camtrapR* (Niedballa et al., 2016) manages image metadata and tabulates
+records; *overlap* (Meredith & Ridout, 2021) and *activity* (Rowcliffe,
+2023) handle diel activity; *Distance* (Miller et al., 2019) fits
+detection functions including the camera trap variant; *spaceNtime*
+(Moeller & Lukacs, 2022) implements the time-to-event family; *ctrest*
+implements REST; *camtrapdp* (Desmet et al., 2024) reads the Camtrap DP
+exchange standard (Bubnicki et al., 2023); biodiversity is served by
+*vegan* (Oksanen et al., 2024) and *iNEXT* (Hsieh et al., 2016); and
+capture-recapture and occupancy by *secr* (Efford, 2023), *oSCR*
+(Sutherland et al., 2019) and *unmarked* (Fiske & Chandler, 2011). Each
+is mature and well validated within its domain. What is missing is not
+another estimator but integration: a single, coherent package that
+carries a user from raw image metadata, through standardised and
+independence-filtered detections, to a choice of several density
+estimators and the accompanying behavioural, activity, diversity, and
+spatial analyses, using one data structure and one grammar throughout.
+
+The *ct* package was designed to close these gaps by providing a modern,
+tidy-verse-friendly workflow (Wickham et al., 2019). Rather than
+reimplementing established statistical machinery, *ct* builds on and
+harmonises some existing R packages. Crucially, *ct* unifies several
+density and abundance estimation methods for unmarked populations
+(including CTDS, REM, TTE, STE, ISE, REST/RAD-REST) behind a common
+interface, each with its own data-preparation helpers. Around this
+analytical core, the package adds support for media-metadata handling,
+data standardisation, temporal independence filtering, datetime
+correction, effort and trap-rate computation, occupancy format
+preparation, survey design, activity and overlap analysis, alpha and
+beta diversity, and rarefaction and extrapolation. For behaviour and
+space, it adds three analyses with no counterpart in existing camera
+trap tools. An encounter-response model detects directed, short-term
+association between species. A temporal shift statistic measures how a
+diary activity window moves between periods. A spatial coverage surface
+maps a species' detection footprint. In the remainder of this article,
+we describe the package architecture and its functions, demonstrate
+representative analyses on bundled datasets, and state the current
+limitations of the package.
+
+2.  **The *ct* package**
+
+    1.  **Design Philosophy and Architecture**
+
+The *ct* R package is organised around three functional modules that
+mirror the natural progression of a camera trap study: media
+(image/video) management, data processing, and analysis or
+visualisation. First, the tibbles serve as a common data structure
+throughout. The output of each function is directly fed into the next.
+Second, column references rely on tidy evaluation, providing consistent
+unquoted column grammar. Therefore, complete analytical pipelines can be
+expressed as a single readable chain of operations. Figure 1 summarises
+this architecture as an end-to-end pipeline.
+
+![](media/image2.svg){width="6.5in" height="4.333333333333333in"}
+
+*Figure 1. Graphical abstract of the ct\* workflow, organized as three
+sequential modules, media management, data processing, and analysis and
+visualisation, with tibbles as the common data structure carried between
+steps and ggplot2 objects returned for figures.*
+
+We audited all exported *ct* functions (version 0.4.0), recording for
+each whether it was written within *ct* or wraps an existing engine, and
+whether any of the fourteen established camera trap and wildlife
+packages provides an equivalent (Supplementary material S1). No package
+reproduces more than about a fifth of *ct*: The closest, *camtrapR*,
+matches 15 functions, followed by *camtrapDensity* (14) and camtraptor
+(10). Nineteen functions have no equivalent in any of the fourteen,
+including the encounter-response model, `ct_temporal_``shift``(``)`,
+`ct_spatial_``coverage``(``)` and the hierarchical-subject tagging
+family. Even *ct*'s density estimators alone span four packages built on
+incompatible inputs, so reproducing *the* scope of *ct* means assembling
+and reconciling many packages rather than adopting one.
+
+Functions adhere to a uniform *ct\_* prefix and a predictable naming
+convention such that related operations form coherent families
+(e.g. *ct*\_fit functions for model fitting). A complete, categorised
+function reference and vignettes accompany the package. The modules are
+summarised below, with only central or novel functions.
+
+2.  **Media management**
+
+Every study starts with image or video files whose EXIF metadata already
+hold most of what an analysis needs: the capture time, the camera model,
+and increasingly a species label written by a human annotator or a
+classifier using software like Declas
+(<https://github.com/stangandaho/declas>). The media module drives the
+ExifTool engine so that these fields can be read from, and written back
+to, whole directory trees at once, collapsing thousands of files into a
+single tibble and letting edits be scripted. `ct_read_``metadata``(``)`
+is the usual entry point. Beyond bulk reading, the module understands
+hierarchical subjects, the `parent|child` label convention emitted by
+widely used tagging software: the `ct``_*_``hs` functions add, retrieve,
+and strip these embedded tags, keeping taxonomic and categorical
+information attached to the files themselves so that provenance survives
+copying and sharing.
+
+**2.3 Data Processing**
+
+The processing module turns raw records into table-ready for analysis.
+Covers import and consolidation of per-camera exports, taxonomic and
+spatial validation, datetime correction, and reshaping into the
+structures required by downstream analyses. Among its core operations,
+`ct_``independence``(``)` filters non-independent consecutive detections
+of the same species at a given station, and
+`ct_correct_``datetime``(``)` applies deployment-specific clock
+corrections, both of which directly affect the validity of subsequent
+inference. The module also prepares the specialised inputs required by
+other tools, notably detection histories for occupancy modelling
+(`ct_to_``occupancy``(``)`), community matrices for diversity analysis,
+and effort and trap-rate tables. Survey planning is supported by
+`ct_survey_``design``(``)`, which arranges camera stations within a
+study area using random, regular, clustered, or feature-masked schemes.
+The package is also compatible with the Camera Trap Data Package (CTDP)
+(Bubnicki et al., 2023) produced by the major camera trapping platforms,
+including Agouti and Trapper. The CTDP can be read directly into the
+*ct* workflow, as illustrated by the random encounter model example
+below.
+
+**2.4 Analysis and visualisation**
+
+The analysis module is the scientific core of the package and spans
+several themes. For diel activity, it models activity patterns from
+detection times and quantifies the overlap coefficient between the
+activity distributions of two or many species. A novel addition is
+`ct_temporal_``shift``(``)`, which quantifies and classifies how the
+activity window of a single species changes between two periods (e.g.,
+season) or disturbance levels. For biodiversity, the module computes
+standard alpha diversity indices and dissimilarity between sites and
+provides Hill-number rarefaction and extrapolation following the *iNEXT*
+framework (Chao et al., 2014). For spatial summaries,
+`ct_spatial_``coverage``(``)` produces a kernel-density surface of a
+species' detection footprint. The signature capability of the module is
+a unified set of methods for density or abundance estimation, exposed
+through the `ct_fit``_*` family.
+
+All plotting functions, grouped under the `ct_plot``_*` family, return
+*ggplot2* objects, so figures are fully customisable with the standard
+grammar of graphics. The module covers the visual outputs most often
+needed for camera trap reporting, including kernel activity density
+curves, overlap plots, detection calendars, circular (rose) diagrams of
+diel patterns, deployment activity timelines with gap indicators, and
+rarefaction and extrapolation curves, among others.
+
+3.  **Analyses new to the ecosystem**
+
+- **Reaction to encounter**
+
+Marginal summaries such as activity overlap compare the daily rhythms of
+two species, but are silent about order and place: two species can share
+an identical activity peak, but never meet at the same camera.
+`ct_fit_encounter_``response``(``)` asks a directed, local, short-term
+question instead. Along the timeline of a single camera, after a
+*trigger* species is detected, does the detection rate of a *response*
+species on that same camera rise or fall over the following hours,
+relative to its own baseline at the same time of day and season? The
+method bins the genuine uptime of each deployment, tags each bin by the
+elapsed time since the most recent trigger, and models the response
+counts with a log-link regression (offset for exposure; circular
+harmonics for time of day; camera and month terms), reporting rate
+ratios specific to the lag with confidence intervals. It is a deliberate
+discrete-time approximation to a mutually exciting (Hawkes) point
+process (Hawkes, 1971), traded for robustness and interpretability with
+the sparse, irregular detections typical of camera traps. Two engines
+are provided, a quasi-Poisson GLM and a negative-binomial mixed model,
+and zero-event lag bands are reported as `NA` rather than as spurious
+estimates. The full model specification and a work demonstration are
+given in Supplementary Material S2.
+
+- **Temporal shift**
+
+Species often adjust their diel activity between seasons or disturbance
+regimes. `ct_temporal_``shift``(``)` compares two activity
+distributions, measures each activity window at half-maximum density,
+and reports both the change in window duration and the midpoint
+displacement of the window, with a bootstrap confidence interval, then
+classifies the direction of change (for example forward, backward,
+enlarged, or contracted). This moves activity analysis beyond a single
+overlap coefficient to a quantified directional statement about
+behavioural change.
+
+- **Spatial coverage**
+
+Where a species was detected, as opposed to when, is summarized by
+`ct_spatial_``coverage``(``)`, which turns a set of detections into a
+kernel-density surface of the species' detection footprint, with the
+smoothing bandwidth set by Silverman's reference rule (Silverman, 1986)
+and with optional extension to and masking by a study area boundary. No
+other camera trap package provides a comparable one-call spatial
+summary, and because the surface is returned as spatial objects, it
+drops directly into the *sf* and *terra* workflows used for the rest of
+a study's mapping.
+
+4.  **Worked examples**
+
+The demonstrations that follow are chosen from different points along
+the pipeline, and they share one thing throughout: the same tidy
+grammar, the same tibble-in and tibble-out convention, and the same
+unquoted-column references. What appears as a series of separate
+analyses is, in practice, a single composable workflow, each step
+handing its output to the next without reformatting. We profile a
+community with `ACBR` data (Agonve Community Wetland Reserve, Benin; 21
+stations, nine species), measure a seasonal change in activity for the
+mona monkey (*Cercopithecus mona*, the most recorded species, n = 262
+independent records), detect a response to directed encounter between
+two carnivores in the `lama` data (Lama Classified Forest, Benin), map
+detection coverage in `duikers` data (Tai National Park, Cote d'Ivoire),
+and estimate density with two of the six estimators. The code is shown
+throughout; argument-level detail lives in the reference pages and
+vignettes.
+
+1.  **Setup**
+
+<!-- -->
+
+    # Install ct from CRAN (pak resolves system and package dependencies)
+    if (!requireNamespace("pak", quietly = TRUE)) install.packages("pak")
+    pak::pkg_install("ct") # or pak::pkg_install("xxxxxxxxx/ct")
+
+    library(ct)
+    library(dplyr)
+    library(ggplot2)
+
+2.  **Community activity overlap**
+
+The degree to which two species are active at the same times of day is a
+first-order descriptor of potential interaction and niche partitioning
+(Table 1). `ct_overlap_``matrix``(``)` computes all pairwise
+coefficients of overlap ($\Delta$) for a community in one call,
+selecting the Dhat4 estimator for well-sampled pairs and Dhat1
+otherwise. Setting `n_boot` adds a bootstrap confidence interval for
+every pair, with the interval type chosen automatically for each cell,
+so the matrix reports not just where activity timing coincides but how
+firmly the data support it.
+
+    data(ACBR)
+    obs <- ACBR$acbr_data
+    well_sampled <- obs %>%
+      add_count(species, name = "n") %>%
+      filter(n >= 20)
+
+    set.seed(42) # bootstrap is stochastic; seed for reproducibility
+    overlap <- ct_overlap_matrix(
+      data = well_sampled,
+      species_column = species,
+      time_column = times,
+      convert_time = TRUE,
+      format = "%H:%M:%S",
+      n_boot = 999, # bootstrap 95% CI for each pair
+      conf = 0.95
+    )
+    overlap$estimate # coefficients
+    overlap$ci # "[lower ; upper]" for each pair
+
+*Table 1. The pairwise coefficients of activity overlap (*$\Delta$*)
+among the better-sampled ACBR species, each with a bootstrap 95%
+confidence interval (999 resamples). Cells combine the point estimate
+with the interval; the interval type was automatically selected (here*
+`basic0` *for every pair). Diagonal cells are omitted.*
+
+  ------------------------------------------------------------------------
+                      *Cercopithecus     *Tragelaphus      *Genetta* sp.
+                          mona*             spekii*      
+  ----------------- ------------------ ----------------- -----------------
+  *Cercopithecus            \-          0.111 \[0.064;    0.093 \[0.014;
+  mona*                                     0.164\]           0.190\]
+
+  *Tragelaphus        0.111 \[0.064;          \-          0.672 \[0.538;
+  spekii*                0.164\]                              0.786\]
+
+  *Genetta* sp.       0.093 \[0.014;    0.672 \[0.538;          \-
+                         0.190\]            0.786\]      
+  ------------------------------------------------------------------------
+
+> 
+
+3.  **Seasonal shift in diel activity**
+
+Splitting the *C. mona* records by season (rainy, May to October, n =
+162; dry, November to April, n = 100), `ct_temporal_``shift``(``)`
+compares the two activity distributions, measures each window at
+half-maximum density, reports the change in duration and the
+displacement of the midpoint with a bootstrap confidence interval and
+classifies the direction of change (Figure 2, Table 2).
+
+    mona <- obs %>% filter(species == "Cercopithecus mona") %>%
+      mutate(month = lubridate::month(datetime),
+             season = if_else(month >= 5 & month <= 10, "Rainy", "Dry"))
+    shift <- ct_temporal_shift(
+      first_period  = mona %>% filter(season == "Dry")   %>% pull(times),
+      second_period = mona %>% filter(season == "Rainy") %>% pull(times),
+      period_names = c("Dry", "Rainy"), convert_time = TRUE,
+      format = "%H:%M:%S", 
+      time_zone = "UTC", 
+      n_boot = 500, 
+      plot = TRUE
+    )
+
+![Figure 2. Seasonal shift in the diel activity of \*Cercopithecus
+mona\* at ACBR (Benin) between the dry and rainy seasons, from
+\`ct_temporal_shift()\`. Curves are kernel activity densities; points
+and segments mark each season\'s activity window at half-maximum
+density.](media/image3.png){width="5.48252624671916in"
+height="3.9162576552930886in"}
+
+*Figure 2. Seasonal shift in the diel activity of Cercopithecus mona at
+ACBR (Benin) between the dry and rainy seasons from*
+`ct_temporal_``shift``(``)`*. Curves are the activity densities; points
+and segments mark each season's activity window at half the maximum
+density.*
+
+Below, the table 2 of the temporal shift of Mona monkey between dry and
+wet season.
+
+*Table 2. Activity window summary from* `ct``_temporal_``shift``(``)`
+*for Cercopithecus mona: the dry and rainy season windows, the change in
+window duration, the midpoint displacement with its bootstrap 95%
+confidence interval, and the classified direction.*
+
+  ------------------------------------------------------------------------------------
+  **First    **Second    **Shift   **Displacement    **CI      **CI     **Direction**
+  period**   period**     size         (h)**        lower**   upper**  
+                          (h)**                                        
+  ---------- ---------- --------- ---------------- --------- --------- ---------------
+  07:44:53   06:36:52       0          -1.13           0       6.43       Backward
+  --         --                                                        
+  12:39:42   11:31:40                                                  
+
+  ------------------------------------------------------------------------------------
+
+4.  **Directed encounter response between two carnivores**
+
+An overlap coefficient tells us whether two species keep similar hours;
+it cannot tell us whether one reacts to the other at the same place.
+`ct_fit_encounter_``response``(``)` asks for this directed question
+along each camera's timeline. Using the `lama` survey (23 cameras, Lama
+Classified Forest, Benin), we take the pardine genet (*Genetta
+pardina/maculata*), a nocturnal solitary mesocarnivore, as the trigger,
+and the flat-headed cusimanse (*Crossarchus platycephalus*), a diurnal
+group-living mongoose, as the response, and ask whether cusimanse
+detection at a camera rises in the hours after a genet passes it.
+Because deployments span approximately six months, we partition each
+camera uptime into two-hour slots and use day-scale lag windows. The
+table 3 shows the association between those species.
+
+    data(lama)
+    fit <- ct_fit_encounter_response(
+      data = lama$observation, 
+      deployment = lama$deployment,
+      trigger  = "Genetta pardina/maculata",
+      response = "Crossarchus platycephalus",
+      species_column = species, 
+      cam_column = camera, 
+      datetime_column = datetime,
+      start_column = start, 
+      end_column = end,
+      interval = 2 * 3600, 
+      lag_breaks = c(0, 6 * 3600, 12 * 3600, 24 * 3600),
+      engine = "glm"
+    )
+    summary(fit)
+
+*Table 3. Encounter-response estimates from*
+`ct``_fit_encounter_``response``(``)` *for the genet (trigger) to
+cusimanse (response) at the Lama cameras, two-hour slots. Each lag
+window has a rate ratio relative to the \'no recent trigger\' baseline,
+its 95% confidence interval, a p value and the number of response
+detections it rests on.*
+
+  --------------------------------------------------------------------------------
+  **Lag window**             **Rate    **Lower**   **Upper**   **p**      **n
+                            ratio**                                    response**
+  ------------------------ ---------- ----------- ----------- ------- ------------
+  No recent trigger           1.00        --          --        --        202
+  (baseline)                                                          
+
+  0 to 6 h                    1.43       0.77        2.66      0.263       7
+
+  6 to 12 h                   1.69       1.06        2.68      0.026       13
+
+  12 to 24 h                  1.02       0.55        1.89      0.952       7
+  --------------------------------------------------------------------------------
+
+In the 6- to 12-hour window after a genet passes, cusimanse are detected
+about 1.7 times as often as that camera's own time of day and season
+would predict, and the confidence interval clears one (p = 0.026); the
+neighboring windows are near one with intervals that extend to it.
+Refitting across 2, 3 and 4 hour slots (not shown) leaves the direction
+of the effect stable, an elevation within roughly the first half day,
+while the exact window carrying the signal shifts, so the defensible
+reading is the broad one rather than a claim pinned to one lag. As with
+any such analysis, the result is an association conditional on the
+fitted baseline, not evidence of interaction: a shared resource that
+draws both species independently could produce the same pattern. The
+full model specification, the underdispersion diagnostic that motivates
+the quasi-Poisson engine here, and a step by step walk-through are given
+in supplementary material S2 and the package vignette.
+
+5.  **Spatial coverage of detections**
+
+`ct_spatial_``coverage``(``)` summarises (as shown by the Table 4) where
+a species was detected as a kernel density surface using the Silverman
+reference bandwidth, illustrated in the `duiker` data (Howe et al.,
+2018).
+
+    data(duikers)
+    coverage <- ct_spatial_coverage(
+      data = duikers$DaytimeDistances, 
+      site_column = Sample.Label,
+      longitude = utm.e, 
+      latitude = utm.n, 
+      crs = c("EPSG:32629", NULL),
+      resolution = 100, 
+      isopleth = 0.95, 
+      n_boot = 200
+    )
+
+*Table 4. Spatial coverage summary of Maxwell\'s duiker at 21 stations
+in Tai National Park, clipped to 95% isopleth.*
+
+  -----------------------------------------------------------------------------
+      **Spatial      **Sigma**   **Bandwidth   **Detection sites  **Isopleth**
+     coverage**                      SE**            (n)**       
+  ----------------- ----------- -------------- ----------------- --------------
+        16.95         860.29        69.028            21              0.95
+
+  -----------------------------------------------------------------------------
+
+6.  **Density and abundance estimation**
+
+We illustrate two of the six estimators, each on the dataset documented
+for its function: the random encounter model on the `ctdp` Camtrap DP
+example and the random encounter and staying-time model on the simulated
+`rest_*` data. The two calls take different inputs, reflecting their
+different sampling models: a trap-rate table plus detection geometry for
+REM, and staying-time, effort, and activity tables for REST. *ct*
+supplies a preparation helper for each, so both are assembled from the
+same cleaned records. The output of these two models are presented by
+the Table 5 and 6.
+
+    data(ctdp)
+    deployments  <- ctdp$data$deployments
+    observations <- ctdp$data$observations %>%
+      filter(scientificName == "Vulpes vulpes") %>%
+      mutate(time_of_day = ct_to_radian(times = timestamp))
+
+    trap_rate <- ct_traprate_data(
+      observation_data = observations, 
+      deployment_data = deployments,
+      deployment_column = deploymentID, 
+      datetime_column = timestamp,
+      start = start, end = "end"
+    )
+    rem_fit <- ct_fit_rem(data = observations, 
+                          traprate_data = trap_rate,
+                          time_of_day = time_of_day) # auto fits radius, angle, speed, activity
+
+*Table 5. Random encounter model output from* `ct``_fit_``rem``(``)`
+*for* Vulpes vulpes *(ctdp example): density and detection-process
+parameters, each with standard error, coefficient of variation, and 95%
+confidence interval.*
+
+  -------------------------------------------------------------------------------
+  **Parameter**    **Estimate**   **SE**   **CV**   **Lower   **Upper   **Unit**
+                                                     CI**      CI**    
+  --------------- -------------- -------- -------- --------- --------- ----------
+  radius              4.178       0.886    0.212     2.442     5.914       m
+
+  angle               44.431      11.282   0.254      --        --       degree
+
+  active speed        3.079       0.765    0.248      --        --        km/h
+
+  activity level      0.243       0.077    0.316     0.092     0.393      none
+
+  overall speed       17.947      7.217    0.402      --        --       km/day
+
+  trap rate           0.441       0.118    0.267     0.239     0.635     n/day
+
+  density             6.663       3.543    0.532     2.506    17.718     n/km²
+  -------------------------------------------------------------------------------
+
+    data(rest_detection); data(rest_station)
+
+    stay     <- ct_rest_stay(rest_detection, rest_station)
+    stations <- ct_rest_effort(detection_data = rest_detection,
+                 station_data = ct_rest_passes(rest_detection, rest_station, model = "REST"))
+    activity <- ct_rest_activity(rest_detection)
+
+    rest_fit <- ct_fit_rest(
+      stay_data = stay, 
+      station_data = stations, 
+      activity_data = activity,
+      species = "Red duiker", 
+      focal_area = 3.0, 
+      model = "REST",
+      stay_distribution = "lognormal",
+      iterations = 3000, burnin = 1000, chains = 2, cores = 2
+    )
+
+*Table 6. REST posterior summary from* `ct``_fit_``rest``(``)` *for the
+simulated "Red duiker" data: density (individuals km^-2^) and mean
+staying time, with 95% credible intervals.*
+
+  ---------------------------------------------------------------------------------------------------------
+  **Species**   **Variable**    **Mean**   **SD**   **Lower**   **Median**   **Upper**   **Rhat**   **CV**
+  ------------- -------------- ---------- -------- ----------- ------------ ----------- ---------- --------
+  Red duiker    Density          29.84     7.802      18.34       28.697      47.823       1.01     0.262
+
+  Red duiker    Mean stay         5.99     0.332      5.41        5.956        6.702       1.00     0.056
+  ---------------------------------------------------------------------------------------------------------
+
+5.  **Limitations**
+
+*ct* does not implement spatially explicit capture-recapture for density
+estimation; studies of individually identifiable species should use
+dedicated packages such as *secr* or *oSCR*. *ct* prepares inputs for
+occupancy modelling rather than fitting those models, which are well
+served by unmarked. The spatial coverage surface uses Euclidean
+distances and characterises detection footprint rather than
+movement-based home range, and its masking option filters the final
+surface without rerouting distances around barriers. The
+encounter-response model summarises history by the time since the most
+recent trigger rather than a full superposed kernel, so it is best
+suited to settings where triggers are not so frequent that the baseline
+becomes rare (Supplementary material S2). Finally, although every
+plotting function returns a fully customisable *ggplot2* object, the
+package ships a curated set of visualisations and cannot anticipate
+every figure a user might want. We consider these boundaries appropriate
+for a general-purpose workflow package and welcome community
+contributions through the project's issue tracker.
+
+**References**
+
+Bubnicki, J. W., et al. (2023). Camtrap DP: an open standard for the
+FAIR exchange and archiving of camera trap data. *Remote Sensing in
+Ecology and Conservation*. <https://doi.org/10.1002/rse2.374>
+
+Buckland, S. T., Anderson, D. R., Burnham, K. P., Laake, J. L.,
+Borchers, D. L., & Thomas, L. (2001). *Introduction to Distance
+Sampling*. Oxford University Press.
+
+Burton, A. C., Neilson, E., Moreira, D., Ladle, A., Steenweg, R.,
+Fisher, J. T., Bayne, E., & Boutin, S. (2015). Wildlife camera trapping:
+a review and recommendations for linking surveys to ecological
+processes. *Journal of Applied Ecology*, 52(3), 675--685.
+<https://doi.org/10.1111/1365-2664.12432>
+
+Chao, A., Gotelli, N. J., Hsieh, T. C., Sander, E. L., Ma, K. H.,
+Colwell, R. K., & Ellison, A. M. (2014). Rarefaction and extrapolation
+with Hill numbers: a framework for sampling and estimation in species
+diversity studies. *Ecological Monographs*, 84(1), 45--67.
+<https://doi.org/10.1890/13-0133.1>
+
+Delisle, Z. J., Flaherty, E. A., Nobbe, M. R., Wzientek, C. M., &
+Swihart, R. K. (2021). Next-generation camera trapping: systematic
+review of historic trends suggests keys to expanded research
+applications. *Frontiers in Ecology and Evolution*, 9, 617996.
+<https://doi.org/10.3389/fevo.2021.617996>
+
+Desmet, P., Oldoni, D., & Bubnicki, J. W. (2024). *camtrapdp: Read and
+Manipulate Camera Trap Data Packages*.
+[https://cran.r-project.org/package=*camtrapdp*](https://cran.r-project.org/package=camtrapdp)
+
+Efford, M. G. (2004). Density estimation in live-trapping studies.
+*Oikos*, 106(3), 598--610.
+<https://doi.org/10.1111/j.0030-1299.2004.13043.x>
+
+Efford, M. G. (2023). *secr: Spatially Explicit Capture-Recapture
+Models*.
+[https://cran.r-project.org/package=*secr*](https://cran.r-project.org/package=secr)
+
+Fiske, I., & Chandler, R. (2011). unmarked: An R Package for Fitting
+Hierarchical Models of Wildlife Occurrence and Abundance. *Journal of
+Statistical Software*, 43(10), 1--23.
+<https://www.jstatsoft.org/v43/i10/>
+
+Forrester, T., O'Brien, T., Fegraus, E., Jansen, P. A., Palmer, J.,
+Kays, R., Ahumada, J., Stern, B., & McShea, W. (2016). An open standard
+for camera trap data. *Biodiversity Data Journal*, 4, e10197.
+<https://doi.org/10.3897/BDJ.4.e10197>
+
+Gilbert, N. A., Clare, J. D. J., Stenglein, J. L., & Zuckerberg, B.
+(2021). Abundance estimation of unmarked animals based on camera trap
+data. *Conservation Biology*, 35(1), 88--100.
+<https://doi.org/10.1111/cobi.13517>
+
+Hawkes, A. G. (1971). Spectra of some self-exciting and mutually
+exciting point processes. *Biometrika*, 58(1), 83--90.
+<https://doi.org/10.1093/biomet/58.1.83>
+
+Howe, E. J., Buckland, S. T., Despres-Einspenner, M., & Kuhl, H. S.
+(2017). Distance sampling with camera traps. *Methods in Ecology and
+Evolution*, 8(11), 1558--1565. <https://doi.org/10.1111/2041-210X.12790>
+
+Hsieh, T. C., Ma, K. H., & Chao, A. (2016). *iNEXT*: an R package for
+rarefaction and extrapolation of species diversity (Hill numbers).
+*Methods in Ecology and Evolution*, 7(12), 1451--1456.
+<https://doi.org/10.1111/2041-210X.12613>
+
+Meek, P. D., Ballard, G., Claridge, A., Kays, R., Moseby, K., O'Brien,
+T., O'Connell, A., Sanderson, J., Swann, D. E., Tobler, M., & Townsend,
+S. (2014). Recommended guiding principles for reporting on camera
+trapping research. *Biodiversity and Conservation*, 23, 2321--2343.
+<https://doi.org/10.1007/s10531-014-0712-8>
+
+Meredith, M., & Ridout, M. (2021). *overlap: Estimates of Coefficient of
+Overlapping for Animal Activity Patterns*.
+<https://cran.r-project.org/package=overlap>
+
+Miller, D. L., Rexstad, E., Thomas, L., Marshall, L., & Laake, J. L.
+(2019). Distance Sampling in R. *Journal of Statistical Software*,
+89(1), 1--28. <https://doi.org/10.18637/jss.v089.i01>
+
+Moeller, A. K., & Lukacs, P. M. (2022). *spaceNtime: An R Package for
+Estimating Abundance of Unmarked Animals Using Camera-Trap Data*.
+[https://github.com/annam21/*spaceNtime*](https://github.com/annam21/spaceNtime)
+
+Moeller, A. K., Lukacs, P. M., & Horne, J. S. (2018). Three novel
+methods to estimate abundance of unmarked animals using remote cameras.
+*Ecosphere*, 9(8), e02331. <https://doi.org/10.1002/ecs2.2331>
+
+Nakashima, Y., Fukasawa, K., & Samejima, H. (2018). Estimating animal
+density without individual recognition using information derivable
+exclusively from camera traps. *Journal of Applied Ecology*, 55(2),
+735--744. <https://doi.org/10.1111/1365-2664.13059>
+
+Nakashima, Y., Yajima, G., & Matsuoka, R. (2026). Reducing data
+processing effort in camera trap density estimation: extending the REST
+model by explicitly modelling animal detection processes. *Methods in
+Ecology and Evolution*, 850--862.
+<https://doi.org/10.1111/2041-210x.70248>
+
+Niedballa, J., Sollmann, R., Courtiol, A., & Wilting, A. (2016).
+*camtrapR*: an R package for efficient camera trap data management.
+*Methods in Ecology and Evolution*, 7(12), 1457--1462.
+<https://doi.org/10.1111/2041-210X.12600>
+
+O'Connell, A. F., Nichols, J. D., & Karanth, K. U. (Eds.). (2011).
+*Camera Traps in Animal Ecology: Methods and Analyses*. Springer.
+<https://doi.org/10.1007/978-4-431-99495-4>
+
+Oksanen, J., et al. (2024). *vegan: Community Ecology Package*.
+[https://cran.r-project.org/package=*vegan*](https://cran.r-project.org/package=vegan)
+
+Palencia, P., Rowcliffe, J. M., Vicente, J., & Acevedo, P. (2021).
+Assessing the camera trap methodologies used to estimate density of
+unmarked populations. *Journal of Applied Ecology*, 58(8), 1583--1592.
+<https://doi.org/10.1111/1365-2664.13913>
+
+R Core Team. (2024). *R: A Language and Environment for Statistical
+Computing* (4.4.1). <https://www.r-project.org/>
+
+Ridout, M. S., & Linkie, M. (2009). Estimating overlap of daily activity
+patterns from camera trap data. *Journal of Agricultural, Biological,
+and Environmental Statistics*, 14(3), 322--337.
+<https://doi.org/10.1198/jabes.2009.08038>
+
+Rowcliffe, J. M. (2023). *activity: Animal Activity Statistics*.
+<https://cran.r-project.org/package=activity>
+
+Rowcliffe, J. M., Field, J., Turvey, S. T., & Carbone, C. (2008).
+Estimating animal density using camera traps without the need for
+individual recognition. *Journal of Applied Ecology*, 45(4), 1228--1236.
+<https://doi.org/10.1111/j.1365-2664.2008.01473.x>
+
+Rowcliffe, J. M., Kays, R., Carbone, C., & Jansen, P. A. (2013).
+Clarifying assumptions behind the estimation of animal density from
+camera trap rates. *Journal of Wildlife Management*, 77(5), 876--876.
+<https://doi.org/10.1002/jwmg.533>
+
+Royle, J. A., Chandler, R. B., Sollmann, R., & Gardner, B. (2014).
+*Spatial Capture-Recapture*. Academic Press.
+
+Silva-Rodriguez, E. A., Cortes, E. I., Vasquez-Ibarra, V., Galvez, N.,
+Cusack, J., Ohrens, O., Moreira-Arce, D., Farias, A. A., &
+Infante-Varela, J. (2025). A protocol for error prevention and quality
+control in camera trap datasets. *Journal of Applied Ecology*, 62(4),
+773--782. <https://doi.org/10.1111/1365-2664.70010>
+
+Silverman, B. W. (1986). *Density Estimation for Statistics and Data
+Analysis*. Chapman and Hall.
+
+Sollmann, R., Mohamed, A., Samejima, H., & Wilting, A. (2013). Risky
+business or simple solution: relative abundance indices from camera
+trapping. *Biological Conservation*, 159, 405--412.
+<https://doi.org/10.1016/j.biocon.2012.12.025>
+
+Steenweg, R., et al. (2017). Scaling-up camera traps: monitoring the
+planet's biodiversity with networks of remote sensors. *Frontiers in
+Ecology and the Environment*, 15(1), 26--34.
+<https://doi.org/10.1002/fee.1448>
+
+Sutherland, C., Royle, J. A., & Linden, D. W. (2019). *oSCR*: a spatial
+capture-recapture R package for inference about spatial ecological
+processes. *Ecography*, 42(9), 1459--1469.
+<https://doi.org/10.1111/ecog.04551>
+
+Wearn, O. R., & Glover-Kapfer, P. (2019). Snap happy: camera traps are
+an effective sampling tool when compared with alternative methods.
+*Royal Society Open Science*, 6(3), 181748.
+<https://doi.org/10.1098/rsos.181748>
+
+Wickham, H. (2016). *ggplot2: Elegant Graphics for Data Analysis*.
+Springer-Verlag.
+
+Wickham, H., et al. (2019). Welcome to the *tidyverse*. *Journal of Open
+Source Software*, 4(43), 1686. <https://doi.org/10.21105/joss.01686>
+
+---
+
+## Source: Encounter-Response_supp.docx
+
+**Encounter-response modelling: directed, short-term association between
+species from camera-trap detections**
+
+1.  **Overview**
+
+Camera traps record when and where species pass, but the summaries most
+often used to compare two species are marginal. A coefficient of
+activity overlap (Ridout and Linkie 2009), for example, compares only
+the two daily activity curves; it is silent about the order of visits
+and about whether the visits happen at the same place. Two species can
+share an identical activity peak and never once meet at the same camera.
+
+The encounter-response model asks a **directed**, **local**, and
+**short-term** question instead. Along the timeline of a single camera:
+after a **trigger** species (A) is detected, does the detection rate of
+a **response** species (B) at that same camera rise or fall over the
+following hours, relative to that camera\'s own baseline rate at the
+same time of day and season? The quantity estimated is an association
+conditional on the fitted baseline, not evidence of a causal interaction
+(Section 8).
+
+*We first build intuition with a deliberately tiny, made-up example of a
+trigger species (A) and a response species (B), then give the formal
+specification in Section 3.*
+
+2.  **A worked example, step by step**
+
+    1.  **The two input tables**
+
+The method needs two tables that share a camera column: a table of
+**detections** (which species, which camera, when) and a table of
+**deployments** (when each camera was genuinely switched on). Our toy
+example has two cameras, three species-A visits, and nine species-B
+visits.
+
+**Table S1. Observations (one row per photo).**
+
+  ------------------------------------------------------------------------
+  **species**               **cam**           **datetime**
+  ------------------------- ----------------- ----------------------------
+  Species A                 CAM_A             2025-03-01 18:00
+
+  Species B                 CAM_A             2025-03-01 18:20
+
+  Species B                 CAM_A             2025-03-01 18:45
+
+  Species B                 CAM_A             2025-03-01 21:10
+
+  Species B                 CAM_A             2025-03-01 09:00
+
+  Species A                 CAM_A             2025-03-02 18:10
+
+  Species B                 CAM_A             2025-03-02 18:25
+
+  Species B                 CAM_A             2025-03-02 03:00
+
+  Species B                 CAM_A             2025-03-02 12:00
+
+  Species A                 CAM_B             2025-03-01 19:00
+
+  Species B                 CAM_B             2025-03-01 19:30
+
+  Species B                 CAM_B             2025-03-02 08:00
+  ------------------------------------------------------------------------
+
+**Table S2. Deployment (when each camera was on).**
+
+  ------------------------------------------------------------------------
+  **cam**            **start**                  **end**
+  ------------------ -------------------------- --------------------------
+  CAM_A              2025-03-01 06:00           2025-03-03 06:00
+
+  CAM_B              2025-03-01 06:00           2025-03-03 06:00
+  ------------------------------------------------------------------------
+
+2.  **A different question from activity overlap**
+
+The activity overlaps asks whether two species are busy at the same
+times of day. That says nothing about order or place. Our question is
+directed (species A first, then species B), local (same camera), and
+short-term (within hours). It is closer to asking about a reaction
+(Figure S1).
+
+![](media/image1.png){width="6.25in" height="1.9895833333333333in"}
+
+*Figure S1. Overlap compares two daily rhythms. The encounter-response
+looks along one camera\'s timeline and asks what happens right after a
+species appears.*
+
+3.  **Slicing each camera\'s uptime into short bins**
+
+A photo happens only if the camera was on and the animal tripped it, so
+raw photo counts confound detection rate with camera effort. To build a
+fair ledger of opportunity, the genuine uptime of each camera (from the
+deployment table) is divided into equal short bins (the interval; 15
+minutes by default), and the species-B detections in each bin are
+counted (Figure S2). Time while the camera was off contributes no bins.
+
+![](media/image2.png){width="6.25in" height="1.7291666666666667in"}
+
+*Figure S2. Detection times become a tidy ledger: equal bins of
+camera-on time, each holding a count of the response species.*
+
+4.  **Tagging each bin by time since the last trigger**
+
+For each bin we ask: when did species A last pass this camera? The
+elapsed time places the bin in a lag band whose cut-points are set by
+lag_breaks (defaults shown):
+
+- **Fresh**: last pass under 30 minutes ago
+
+- **Recent**: 30 minutes to 2 hours
+
+- **A while ago**: 2 to 6 hours
+
+- **Baseline**: everything else (the reference level)
+
+Baseline covers any bin more than 6 hours after the last trigger, *and*
+any bin before the first trigger at that camera. It represents the
+camera on an ordinary stretch, with no trigger fresh in memory, and is
+the yardstick every other band is measured against. Table S3 tags the
+nine species-B detections of the toy example.
+
+**Table S3. Each response detection, tagged by the gap to the previous
+trigger at the same camera.**
+
+  -------------------------------------------------------------------------
+  **response seen**   **cam**   **last trigger     **gap**     **band**
+                                here**                         
+  ------------------- --------- ------------------ ----------- ------------
+  2025-03-01 18:20    CAM_A     18:00              20 min      Fresh
+
+  2025-03-01 18:45    CAM_A     18:00              45 min      Recent
+
+  2025-03-01 21:10    CAM_A     18:00              3 h 10 min  A while ago
+
+  2025-03-01 09:00    CAM_A     (none yet)         n/a         Baseline
+
+  2025-03-02 18:25    CAM_A     18:10              15 min      Fresh
+
+  2025-03-02 03:00    CAM_A     Mar-01 18:00       9 h         Baseline
+
+  2025-03-02 12:00    CAM_A     Mar-01 18:00       18 h        Baseline
+
+  2025-03-01 19:30    CAM_B     19:00              30 min      Recent
+
+  2025-03-02 08:00    CAM_B     Mar-01 19:00       13 h        Baseline
+  -------------------------------------------------------------------------
+
+Note the two kinds of Baseline: the 09:00 detection (no trigger yet that
+morning) and the 9 h, 18 h, and 13 h detections (more than 6 hours since
+the last trigger).
+
+1.  **Comparing like with like**
+
+We now ask whether the Fresh bins carry more or fewer response
+detections than the Baseline bins. A raw comparison would be unfair,
+because of a confounding trap. Suppose the response species is simply
+more active at dusk, trigger or not, and the trigger species also tends
+to pass at dusk. Then the Fresh bins would be mostly dusk bins and would
+hold more response detections just because it is dusk, wrongly crediting
+the trigger.
+
+Holding equal means comparing only bins that match on the other
+influences. A 6 pm Fresh bin is compared with 6 pm Baseline bins, a 3 am
+Fresh bin with 3 am Baseline bins, never dusk against midnight. The
+model does this simultaneously for time of day, month, camera, and bin
+length (Section 3).
+
+2.  **The rate ratio**
+
+The result for each band is a rate ratio: one detection rate divided by
+another. A rate is detections per unit of watching time (for example,
+response detections per 100 hours). Then:
+
+$$rate\ ratio = \frac{rate\ in\ this\ band}{rate\ in\ Baseline}$$
+
+Baseline is compared with itself, so it is always 1, the reference.
+Every other band reads as a multiple of the baseline rate. Table S4
+works the toy example through by hand.
+
+**Table S4. From counts to rate ratios (schematic).**
+
+  --------------------------------------------------------------------------------
+  **band**           **response   **watching   **rate /  **rate    **reads as**
+                     count**      time**       100 h**   ratio**   
+  ------------------ ------------ ------------ --------- --------- ---------------
+  Baseline           4            80 h         5.0       1.0       the yardstick
+
+  Fresh (0 to 30     2            10 h         20.0      4.0       4x more often
+  min)                                                             
+
+  Recent (0.5 to 2   2            40 h         5.0       1.0       same as usual
+  h)                                                               
+
+  A while ago (2 to  1            40 h         2.5       0.5       half as often
+  6 h)                                                             
+  --------------------------------------------------------------------------------
+
+$Rate = \frac{count}{watching\ time} \times 100$*.*
+$Rate\ ratio = \frac{that\ band's\ rate}{Baseline's\ rate}$*. The
+watching times shown are schematic round numbers; in the fitted model
+the corresponding quantity is the exposure offset (Section 3), and the
+rate ratio is estimated while also adjusting for time of day, month, and
+camera, so a fitted ratio need not equal this hand calculation.*
+
+![](media/image3.png){width="6.25in" height="1.2708333333333333in"}
+
+*Figure S3. Every ratio reads against 1: above 1 the response is
+detected more than expected, below 1 less. Each fitted estimate carries
+an uncertainty interval; if it crosses 1, the evidence is inconclusive.*
+
+3.  **Formal model specification**
+
+    1.  **Notation and the analysis grid**
+
+Let cameras be indexed by $c$, each with one or more deployment
+intervals of known start and end (genuine uptime). Each deployment is
+partitioned into consecutive bins of width $\Delta$ (default 15
+minutes). For bin $i$, recorded at camera $c(i)$ with start time
+$s_{i}$, define:
+
+- exposure $e_{i}$: the active seconds in the bin, entering the model as
+  an offset (usually equal to $\Delta$, except a final partial bin);
+
+- $Y_{i}$: the number of independent response detections whose time
+  falls in the bin (Section 4);
+
+- lag: with $\tau_{i}$ the most recent trigger detection at camera
+  $c(i)$ at or before $s_{i}$, the elapsed time is $s_{i} - \tau_{i}$,
+  or $\infty$ if no earlier trigger exists;
+
+- lag band $L(i)$: the categorical band into which that elapsed time
+  falls, given by lag_breaks, with the terminal no-recent-trigger level
+  as the reference;
+
+- the hour of day of $s_{i}$, written $h_{i}$; the diel angle
+  $\theta_{i}$ derived from it (Eq. S3 below), which enters the model as
+  two circular harmonics; and the calendar month $m(i)$.
+
+  1.  **The count model**
+
+The bin counts are modelled with a log link and an exposure offset, so
+effects act on the per-unit-time detection rate (Eq. S1):
+
+$$\log{E\left\lbrack Y_{i} \right\rbrack} = \log e_{i} + \alpha_{c(i)} + \beta_{L(i)} + \eta_{i} + \zeta_{m(i)}$$
+
+where the diel term $\eta_{i}$ collects two circular harmonics of the
+time of day (Eq. S2),
+
+$$\eta_{i} = \gamma_{1}\sin\theta_{i} + \delta_{1}\cos\theta_{i} + \gamma_{2}\sin{2\theta_{i}} + \delta_{2}\cos{2\theta_{i}}$$
+
+and the diel angle $\theta_{i}$ maps the hour of day $h_{i}$ onto the
+24-hour cycle (Eq. S3):
+
+$$\theta_{i} = \frac{2\pi h_{i}}{24}$$
+
+Here $\alpha_{c}$ is a camera term (a deployment term is added when a
+camera has more than one deployment), $\beta_{L}$ are the lag-band
+coefficients ($\beta_{L} = 0$ at the reference level), $\eta_{i}$ is the
+diel term whose two harmonics capture the shared daily activity curve,
+$\gamma_{1},\ \delta_{1},\ \gamma_{2},\ \delta_{2}$ are the amplitudes
+of the daily and half-daily harmonics in Eq. S2, and $\zeta_{m}$ is a
+month effect for broad seasonal variation. Two estimation engines are
+provided:
+
+- **engine = \"glm\"**: the camera and deployment terms are fixed
+  effects and the model is fitted by quasi-Poisson quasi-likelihood. A
+  single dispersion parameter is estimated and rescales the standard
+  errors, accommodating under- or over-dispersion (dispersion below 1 is
+  common when most bins hold zero or one detection).
+
+- **engine = \"glmm\"**: the camera and deployment terms are Gaussian
+  random intercepts, fitted as a negative-binomial mixed model (glmmTMB)
+  or, as a fallback, a Poisson mixed model with an observation-level
+  random effect (lme4). Partial pooling across cameras is more efficient
+  with many sparse stations and avoids the incidental-parameter problem
+  of numerous fixed-effect strata; the negative-binomial family absorbs
+  over-dispersion.
+
+  1.  **The estimand: lag-specific rate ratios**
+
+For lag band $k$ the reported quantity is the rate ratio
+${RR}_{k} = e^{\beta_{k}}$: the multiplicative change in the response
+detection rate in band $k$ relative to the no-recent-trigger baseline,
+holding camera, time of day, month, and exposure fixed. $RR = 1$
+indicates no change, $RR$ above 1 more detections than the baseline
+predicts, and $RR$ below 1 fewer.
+
+2.  **Relationship to point-process models**
+
+The underlying target, whether events of species A raise or lower the
+short-term intensity of species B, is that of a mutually exciting
+(Hawkes) point process (Hawkes 1971). The binned regression above is a
+deliberate discrete-time approximation to it: it discretises time,
+summarises history by a step function of time since the most recent
+trigger rather than a continuous superposed kernel, and estimates
+band-specific multipliers instead of a parametric excitation function.
+This trades some temporal resolution and efficiency for robustness and
+interpretability with the sparse, irregular detections typical of
+camera-trap surveys. Because the most-recent-trigger summary ignores the
+cumulative effect of several recent triggers, it is best suited to
+settings where triggers are not so frequent that the baseline becomes
+rare.
+
+4.  **Independence filtering**
+
+Raw images over-count a single passage, since an animal lingering in
+front of the sensor yields many frames. Before binning, detections of
+each species at each camera are thinned so that retained records are
+separated by at least a minimum gap (argument independence; default 120
+seconds). This collapses photo bursts into events while, unlike the
+30-minute convention used for activity-pattern estimation, staying short
+enough to preserve a genuine response in the first lag window. Setting
+independence = 0 retains every record.
+
+5.  **Inference and uncertainty**
+
+Model-based intervals. Rate-ratio confidence intervals are obtained by
+exponentiating Wald intervals on the coefficients, using the $t$
+distribution with the residual degrees of freedom for the quasi-Poisson
+GLM and the normal approximation for the mixed model.
+
+Serial dependence. Consecutive bins at a camera are autocorrelated and
+response detections cluster in time, which the single dispersion
+parameter of the GLM does not fully absorb, so model-based GLM intervals
+can be optimistic. The default inference for engine = \"glm\" is
+therefore a **camera-block bootstrap** (argument n_boot, default 199):
+whole cameras are resampled with replacement, the model is refitted, and
+percentile intervals are formed across refits. This respects
+within-camera dependence. For engine = \"glmm\", the camera random
+effect already propagates between-camera variance, so the bootstrap is
+disabled by default.
+
+Zero-event windows. A lag band containing no response detections carries
+no information about its rate ratio, and a fixed-effects GLM can even
+return a spurious finite, sometimes wrong-signed, coefficient there
+through separation. Such bands are reported as NA rather than as an
+estimate, so an empty band is never over-read.
+
+6.  **Sensitivity to the bin width**
+
+Because the model is a discrete-time approximation, conclusions should
+not hinge on the bin width $\Delta$. The argument interval_sensitivity
+refits the rate ratios across a set of alternative widths so this can be
+checked directly. A signal whose direction is stable across reasonable
+widths is trustworthy; one that reverses or vanishes should be read as
+an artefact of the discretisation rather than a biological effect.
+
+7.  **Implementation in the ct package**
+
+The function ct_fit_encounter_response() fits the model. Both input
+tables use the same (unquoted) camera column, and deployment intervals
+must reflect genuine camera uptime; intervals reconstructed from the
+first and last detections should not be used as exposure. A minimal
+call:
+
+\# trigger = the species that appears first; response = the one we track
+
+fit \<- ct_fit_encounter_response(
+
+data = observations, deployment = deployment,
+
+trigger = \"Species A\", response = \"Species B\",
+
+species_column = species, cam_column = cam, datetime_column = datetime,
+
+start_column = start, end_column = end,
+
+interval = 15 \* 60,
+
+lag_breaks = c(0, 30 \* 60, 2 \* 3600, 6 \* 3600),
+
+engine = \"glm\"
+
+)
+
+summary(fit)
+
+The returned object holds the lag-specific rate ratios with confidence
+intervals and per-band event counts, the fitted model, the analysis-bin
+data, and, when requested, the bin-width sensitivity table.
+
+8.  **Assumptions and limitations**
+
+- **Association, not causation.** An episodic shared driver (a fruiting
+  tree, a waterhole, a moonlit night, a spell of weather) can draw both
+  species independently within the same hours and manufacture an
+  apparent response with no interaction. The model removes stable, diel,
+  and seasonal structure, but not such transient shared drivers.
+
+- **Detection is not presence.** Detections are a thinned, imperfect
+  sample of true site use; a change in detection rate need not reflect a
+  change in true use or abundance. Detectability is assumed not to shift
+  systematically with time since the trigger.
+
+- **Residual autocorrelation.** Temporal dependence beyond the diel and
+  seasonal terms is not modelled explicitly; the camera-block bootstrap
+  is the safeguard for the GLM engine.
+
+- **History summary.** Only the most recent trigger defines the lag, so
+  the cumulative intensity of several recent triggers is ignored.
+
+- **Design choices.** Results depend on the chosen lag_breaks and
+  interval; the sensitivity analysis of Section 6 should accompany any
+  reported estimate. Genuine deployment (uptime) records are required.
+
+**References**
+
+Bates, D., Machler, M., Bolker, B., and Walker, S. (2015). Fitting
+linear mixed-effects models using lme4. Journal of Statistical Software,
+67(1), 1-48.
+
+Brooks, M. E., Kristensen, K., van Benthem, K. J., Magnusson, A., Berg,
+C. W., Nielsen, A., Skaug, H. J., Machler, M., and Bolker, B. M. (2017).
+glmmTMB balances speed and flexibility among packages for zero-inflated
+generalized linear mixed models. The R Journal, 9(2), 378-400.
+
+Hawkes, A. G. (1971). Spectra of some self-exciting and mutually
+exciting point processes. Biometrika, 58(1), 83-90.
+
+Ridout, M. S., and Linkie, M. (2009). Estimating overlap of daily
+activity patterns from camera trap data. Journal of Agricultural,
+Biological, and Environmental Statistics, 14(3), 322-337.
+
+---
+
+## Source: ct_function_provenance_supplement.xlsx
+
+Sheet: Function map
+            Exported functions           Module
+              ct_survey_design  Data processing
+                     ct_get_hs Media management
+                  ct_create_hs Media management
+                  ct_remove_hs Media management
+                  ct_clone_dir Media management
+              ct_read_metadata Media management
+           ct_install_exiftool Media management
+              ct_exiftool_call Media management
+                       ct_read  Data processing
+                   ct_stack_df  Data processing
+             ct_check_location  Data processing
+               ct_independence  Data processing
+                  ct_to_radian  Data processing
+                  ct_solartime  Data processing
+                    ct_to_time  Data processing
+               ct_to_community  Data processing
+                ct_standardize  Data processing
+                 ct_check_name  Data processing
+               ct_to_occupancy  Data processing
+                 ct_find_break  Data processing
+           ct_correct_datetime  Data processing
+                 ct_get_effort  Data processing
+              ct_traprate_data  Data processing
+                    ct_dp_read  Data processing
+                   ct_dp_table  Data processing
+                 ct_dp_example  Data processing
+                 ct_dp_version  Data processing
+                  ct_dp_filter  Data processing
+               ct_convert_unit  Data processing
+                 ct_camera_day  Data processing
+    ct_camtrap_animal_distance  Data processing
+                ct_describe_df         Analysis
+               ct_plot_density         Analysis
+              ct_plot_calendar         Analysis
+               ct_plot_overlap         Analysis
+          ct_plot_overlap_coef         Analysis
+          ct_plot_rose_diagram         Analysis
+      ct_plot_camtrap_activity         Analysis
+                 ct_plot_inext         Analysis
+          ct_overlap_estimates         Analysis
+                  ct_bootstrap         Analysis
+                   ct_resample         Analysis
+             ct_boot_estimates         Analysis
+                    ct_boot_ci         Analysis
+                         ct_ci         Analysis
+             ct_overlap_matrix         Analysis
+             ct_temporal_shift         Analysis
+            ct_alpha_diversity         Analysis
+              ct_dissimilarity         Analysis
+           ct_spatial_coverage         Analysis
+ ct_summarise_camtrap_activity         Analysis
+           ct_fit_distribution         Analysis
+                                                                         Description
+       Lay out camera stations in a study area (random, regular, clustered, masked).
+                                 Read hierarchical subject tags from media metadata.
+                 Write hierarchical subject tags (parent|child) into media metadata.
+                               Remove hierarchical subject tags from media metadata.
+                          Replicate a directory tree for non-destructive processing.
+                Read image or video metadata (EXIF/IPTC) via ExifTool into a tibble.
+                Download and install the ExifTool engine to the user data directory.
+                                                  Run an arbitrary ExifTool command.
+        Read a delimited text file into a tibble with automatic delimiter detection.
+                    Row-bind a list of heterogeneous data frames as dplyr::bind_rows
+                        Interactively check and correct camera coordinates on a map.
+                    Filter temporally independent detections using a time threshold.
+                                Convert clock times to radians on the 24 hour cycle.
+                                            Convert clock times to solar (sun) time.
+                                        Convert radians back to a clock time string.
+                         Reshape detections into a site by species community matrix.
+                       Standardize a community matrix using vegan decostand methods.
+                       Validate and resolve species names against the ITIS database.
+                                      Build detection histories in occupancy format.
+                                Detect gaps or interruptions in deployment activity.
+                          Apply deployment specific clock corrections to timestamps.
+                                        Compute sampling effort such as camera days.
+                         Prepare detection and effort data for trap rate estimation.
+                                       Read a Camera Trap Data Package (Camtrap DP).
+ Extract a table from a Camtrap DP (observations, deployments, media, events, taxa).
+                                                 Load an example Camtrap DP dataset.
+                                Return the Camtrap DP standard version of a dataset.
+                              Filter Camtrap DP tables using dplyr style conditions.
+                                                  Convert between measurement units.
+                                           Summarize sampling into camera day units.
+                     Estimate animal to camera distance from field of view geometry.
+                    Produce a quick numeric and categorical summary of a data frame.
+                                            Plot a kernel density of activity times.
+                               Plot a calendar heatmap of daily camera trap activity
+                                      Plot the activity overlap between two species.
+                                     Plot a matrix of pairwise overlap coefficients.
+                                   Plot a circular (rose) diagram of activity times.
+                             Plot deployment activity timelines with gap indicators.
+                                          Plot rarefaction and extrapolation curves.
+                   Estimate the coefficient of activity overlap between two species.
+                                    Bootstrap resampling of the overlap coefficient.
+                                     Generate bootstrap resamples of activity times.
+                                 Compute overlap estimates from bootstrap resamples.
+                                 Compute bootstrap confidence intervals for overlap.
+                                 Compute confidence intervals (normal or lognormal).
+                          Compute all pairwise overlap coefficients for a community.
+       Quantify and classify the shift in a species activity window between periods.
+                        Compute alpha diversity indices such as Shannon and Simpson.
+                                          Compute between site (beta) dissimilarity.
+                 Estimate a kernel density surface of a species detection footprint.
+                      Summarize deployment activity (active durations, gaps, rates).
+                                      Fit a count distribution by maximum likelihood
+ Implementation Source package camtrapR camtrapDensity ctrest camtraptor
+        Created             ct       No             No     No         No
+        Created             ct       No             No     No         No
+        Created             ct       No             No     No         No
+        Created             ct       No             No     No         No
+        Created             ct       No             No     No         No
+        Created             ct      Yes             No     No         No
+        Created             ct       No             No     No         No
+        Created             ct       No             No     No         No
+        Created             ct       No             No     No         No
+        Created             ct       No             No     No         No
+        Created             ct       No             No     No         No
+        Created             ct      Yes             No     No        Yes
+        Created             ct       No             No     No         No
+        Created             ct       No             No     No         No
+        Created             ct       No             No     No         No
+        Created             ct       No             No     No         No
+        Adopted          vegan       No             No     No         No
+        Created             ct      Yes             No     No        Yes
+        Created             ct      Yes             No     No        Yes
+        Created             ct       No             No     No         No
+        Created             ct      Yes            Yes     No         No
+        Created             ct      Yes            Yes     No        Yes
+        Adopted camtrapDensity       No            Yes     No        Yes
+        Adopted      camtrapdp      Yes            Yes     No        Yes
+        Adopted      camtrapdp       No             No     No         No
+        Adopted      camtrapdp       No             No     No         No
+        Adopted      camtrapdp       No             No     No         No
+        Adopted      camtrapdp       No            Yes     No        Yes
+        Created             ct       No            Yes     No         No
+        Created             ct      Yes             No     No        Yes
+        Created             ct       No             No     No        Yes
+        Created             ct       No             No     No         No
+        Adopted        overlap      Yes             No     No         No
+        Created             ct       No             No     No         No
+        Adopted        overlap      Yes             No     No         No
+        Created             ct       No             No     No         No
+        Created             ct      Yes             No     No         No
+        Created             ct      Yes            Yes     No         No
+        Adopted          iNEXT       No             No     No         No
+        Adopted        overlap      Yes             No     No         No
+        Adopted        overlap       No             No     No         No
+        Adopted        overlap       No             No     No         No
+        Adopted        overlap       No             No     No         No
+        Adopted        overlap       No             No     No         No
+        Created             ct       No            Yes     No         No
+        Created             ct      Yes             No     No         No
+        Created             ct       No             No     No         No
+        Created             ct       No             No     No         No
+        Adopted          vegan       No             No     No         No
+        Created             ct       No             No     No         No
+        Created             ct      Yes             No     No         No
+        Created             ct       No             No     No         No
+ camtrapdp Distance overlap activity spaceNtime iNEXT vegan secr oSCR
+        No       No      No       No         No    No    No  Yes   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No      Yes         No    No    No   No   No
+        No       No     Yes      Yes         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No   Yes   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+       Yes       No      No       No         No    No    No   No   No
+       Yes       No      No       No         No    No    No   No   No
+       Yes       No      No       No         No    No    No   No   No
+       Yes       No      No       No         No    No    No   No   No
+       Yes       No      No       No         No    No    No   No   No
+        No      Yes      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No     Yes      Yes         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No     Yes       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No   Yes    No   No   No
+        No       No     Yes       No         No    No    No   No   No
+        No       No     Yes       No         No    No    No   No   No
+        No       No     Yes       No         No    No    No   No   No
+        No       No     Yes       No         No    No    No   No   No
+        No       No     Yes       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No     Yes       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No   Yes   No   No
+        No       No      No       No         No    No   Yes   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+        No       No      No       No         No    No    No   No   No
+ unmarked
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+       No
+ [ reached 'max' / getOption("max.print") -- omitted 21 rows ]
+
+Sheet: Note
+            Item
+         Purpose
+ Implementation:
+  Source package
+ Package columns
+  Meaning of Yes
+                                                                                                                                                                 Detail
+                                     Provenance of every exported ct function and whether equivalent functionality exists in other camera-trap and wildlife R packages.
+ How the function is implemented in ct.\r\n- Created: Method implemented within ct.\r\n- Adopted: Method ported from, or wrapping, the package named in Source package.
+                                                                                  The single parent package whose method ct adopts, or ct for original implementations.
+                                                                                  Yes means the listed package provides equivalent functionality; No means it does not.
+                                                                                                      Functional equivalence (same task), not identical function names.

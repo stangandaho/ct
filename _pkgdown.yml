@@ -45,39 +45,7 @@ navbar:
     articles:
       text: Articles
       icon: fa-blog
-      menu:
-      - text: All articles
-        href: articles/index.html
-      - text: ---
-      - text: Study design
-      - text: Analyse before you collect
-        href: articles/analyse_before_you_collect.html
-      - text: ---
-      - text: Data management and processing
-      - text: Camera Trap Media Metadata Management
-        href: articles/camera_trap_media_metadata_management.html
-      - text: Camera Trap Data Processing
-        href: articles/camtrap_data_processing.html
-      - text: Distance to Animal Measurement
-        href: articles/distance_to_animal_measurement.html
-      - text: ---
-      - text: Behaviour and activity
-      - text: Directed Encounter Responses Between Species
-        href: articles/encounter_response.html
-      - text: ---
-      - text: Density and abundance estimation
-      - text: Camera Trap Distance Sampling Guideline
-        href: articles/camera_trap_distance_sampling_guideline.html
-      - text: Density Estimation With Distance Sampling
-        href: articles/density_estimation_with_distance_sampling.html
-      - text: Abundance Estimation with spaceNtime
-        href: articles/spaceNtime.html
-      - text: Density with REST and RAD-REST
-        href: articles/random_encounter_and_staying_time.html
-      - text: ---
-      - text: Biodiversity
-      - text: Rarefaction and Extrapolation
-        href: articles/rarefaction_and_extrapolation.html
+      href: articles/index.html
     news:
       text: News
       icon: fa-face-smile
