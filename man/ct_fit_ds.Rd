@@ -20,6 +20,7 @@ ct_fit_ds(
   availability,
   n_bootstrap = 100,
   n_cores = 1,
+  fast_bootstrap = TRUE,
   seed = NULL,
   ...
 )
@@ -118,7 +119,18 @@ of density/abundance. Default is 100. Larger values provide more precise
 confidence intervals but increase computation time.}
 
 \item{n_cores}{Integer. Number of CPU cores to use for parallel bootstrap computation.
-Default is 1.}
+Default is 1. Used only when the bootstrap is run by \code{\link[Distance:bootdht]{Distance::bootdht()}}.}
+
+\item{fast_bootstrap}{Logical. If \code{TRUE} (default), and the selected detection
+function is intercept-only (half-normal, hazard-rate or uniform key, with
+optional cosine or simple polynomial adjustments) fitted to binned distances
+in a single stratum, each replicate is refitted from its distance-bin counts
+instead of the full data set. This gives the same likelihood, detection
+probability and density as \code{\link[Distance:bootdht]{Distance::bootdht()}} (resampling camera
+stations) and is several hundred times faster. Each refit starts from the
+full-data estimates and from the key function fitted alone, and keeps the
+higher likelihood. Other models, or \code{fast_bootstrap = FALSE}, use
+\code{\link[Distance:bootdht]{Distance::bootdht()}}.}
 
 \item{seed}{Optional integer. If supplied, the random-number generator is seeded
 with this value immediately before bootstrapping, making the resampling

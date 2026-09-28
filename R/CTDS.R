@@ -39,7 +39,17 @@
 #'   of density/abundance. Default is 100. Larger values provide more precise
 #'   confidence intervals but increase computation time.
 #' @param n_cores Integer. Number of CPU cores to use for parallel bootstrap computation.
-#' Default is 1.
+#' Default is 1. Used only when the bootstrap is run by [Distance::bootdht()].
+#' @param fast_bootstrap Logical. If `TRUE` (default), and the selected detection
+#'   function is intercept-only (half-normal, hazard-rate or uniform key, with
+#'   optional cosine or simple polynomial adjustments) fitted to binned distances
+#'   in a single stratum, each replicate is refitted from its distance-bin counts
+#'   instead of the full data set. This gives the same likelihood, detection
+#'   probability and density as [Distance::bootdht()] (resampling camera
+#'   stations) and is several hundred times faster. Each refit starts from the
+#'   full-data estimates and from the key function fitted alone, and keeps the
+#'   higher likelihood. Other models, or `fast_bootstrap = FALSE`, use
+#'   [Distance::bootdht()].
 #' @param seed Optional integer. If supplied, the random-number generator is seeded
 #'   with this value immediately before bootstrapping, making the resampling
 #'   reproducible. If `NULL` (default), the current RNG state is used and results
@@ -133,6 +143,7 @@ ct_fit_ds <- function(data,
                       availability,
                       n_bootstrap = 100,
                       n_cores = 1,
+                      fast_bootstrap = TRUE,
                       seed = NULL,
                       ...
 ) {
@@ -275,48 +286,67 @@ ct_fit_ds <- function(data,
 
   ## Estimate detection radius
   p_a <- summary(ds_model)$ds$average.p
-  w <- diff(ds_model$ddf$meta.data$int.range)
+  # mrds defines the average p relative to the right truncation distance
+  # (integral over [left, w] divided by w^2 / 2), so the radius uses w itself,
+  # not the width of the truncated range.
+  w <- ds_model$ddf$meta.data$width
   rho <- sqrt(p_a * w^2)
 
   # Density estimate
+  # One row per sample: bootdht() joins this table on Sample.Label, so a row per
+  # observation would multiply the data and inflate time and memory.
   sample_fraction <- data %>%
-    dplyr::select(dplyr::all_of(c("Sample.Label", "fraction")))
+    dplyr::distinct(dplyr::across(dplyr::all_of(c("Sample.Label", "fraction"))))
+  if (anyDuplicated(sample_fraction$Sample.Label)) {
+    cli::cli_abort("`fraction` must be constant within each `Sample.Label`.")
+  }
 
   # Bootstrap for variance estimation.
   # Seed only when the user asks: a hard-coded seed pins every run to one
   # resample (which may, by chance, be slow to fit) and defeats RNG independence.
   if (!is.null(seed)) set.seed(seed)
 
-  # Pick the most informative progress bar available. bootdht forces "none"
-  # when cores > 1, so in that case there is no live progress to show; warn the
-  # user up front so a slow parallel run is not mistaken for a freeze. With a
-  # single core, "progress" gives an ETA when the package is installed.
-  if (n_cores > 1) {
-    progress_bar <- "none"
-    cli::cli_inform(c(
-      "Bootstrapping ({n_bootstrap} replicate{?s} on {n_cores} cores) ...",
-      "i" = "Live progress is unavailable when {.code n_cores > 1}."
-    ))
-  } else {
-    progress_bar <- if (requireNamespace("progress", quietly = TRUE)) "progress" else "base"
-    cli::cli_inform("Bootstrapping ({n_bootstrap} replicate{?s}) ...")
+  use_fast <- isTRUE(fast_bootstrap) && ds_fast_eligible(ds_model, data)
+  if (isTRUE(fast_bootstrap) && !use_fast) {
+    cli::cli_inform("The fast bootstrap supports intercept-only detection functions fitted to binned distances in one stratum; using {.fn Distance::bootdht}.")
   }
 
-  boot_result <- suppressMessages({
-    Distance::bootdht(model = ds_model,
-                      flatfile = data,
-                      resample_transects = TRUE,
-                      resample_strata = TRUE,
-                      nboot = n_bootstrap,
-                      cores = n_cores,
-                      summary_fun = ifelse(estimate == "density",
-                                           Distance::bootdht_Dhat_summarize,
-                                           Distance::bootdht_Nhat_summarize),
-                      sample_fraction = sample_fraction,
-                      convert_units = convert_units,
-                      multipliers = availability,
-                      progress_bar = progress_bar)
-  })
+  if (use_fast) {
+    cli::cli_inform("Bootstrapping ({n_bootstrap} replicate{?s}, refitting from distance-bin counts) ...")
+    boot_result <- ds_fast_bootstrap(ds_model, data, n_bootstrap = n_bootstrap,
+                                     multipliers = availability, estimate = estimate)
+  } else {
+    # Pick the most informative progress bar available. bootdht forces "none"
+    # when cores > 1, so in that case there is no live progress to show; warn the
+    # user up front so a slow parallel run is not mistaken for a freeze. With a
+    # single core, "progress" gives an ETA when the package is installed.
+    if (n_cores > 1) {
+      progress_bar <- "none"
+      cli::cli_inform(c(
+        "Bootstrapping ({n_bootstrap} replicate{?s} on {n_cores} cores) ...",
+        "i" = "Live progress is unavailable when {.code n_cores > 1}."
+      ))
+    } else {
+      progress_bar <- if (requireNamespace("progress", quietly = TRUE)) "progress" else "base"
+      cli::cli_inform("Bootstrapping ({n_bootstrap} replicate{?s}) ...")
+    }
+
+    boot_result <- suppressMessages({
+      Distance::bootdht(model = ds_model,
+                        flatfile = data,
+                        resample_transects = TRUE,
+                        resample_strata = TRUE,
+                        nboot = n_bootstrap,
+                        cores = n_cores,
+                        summary_fun = ifelse(estimate == "density",
+                                             Distance::bootdht_Dhat_summarize,
+                                             Distance::bootdht_Nhat_summarize),
+                        sample_fraction = sample_fraction,
+                        convert_units = convert_units,
+                        multipliers = availability,
+                        progress_bar = progress_bar)
+    })
+  }
 
   estimated <- summary(boot_result)
   bootstrap_summary <- dplyr::tibble(n_bootstrap = estimated$nboot,

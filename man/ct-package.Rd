@@ -4,11 +4,11 @@
 \name{ct-package}
 \alias{ct}
 \alias{ct-package}
-\title{ct: Integrated Camera-Trap Data Management and Analysis}
+\title{ct: Camera trap data management and multi-method ecological analysis}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-An integrated, tidyverse-friendly workflow for camera trap data in wildlife monitoring and ecological research. Reads and edits media metadata, filters independent detections, analyses activity patterns and species diversity, and estimates species density or abundance with several methods, including the random encounter model, camera-trap distance sampling, time-to-event, space-to-event, and the random encounter and staying-time model (see Rowcliffe et al. (2008) \doi{10.1111/j.1365-2664.2008.01473.x}, Howe et al. (2017) \doi{10.1111/2041-210X.12790}, Nakashima et al. (2018) \doi{10.1111/1365-2664.13059}, and Moeller et al. (2018) \doi{10.1002/ecs2.2331}).
+Tools for the complete camera trap data workflow in wildlife monitoring and ecological research. Reads and edits media metadata, filters independent detections, and standardises records for analysis. Measures diel activity and overlap (Ridout and Linkie (2009) \doi{10.1198/jabes.2009.08038}), directed short-term association between species with an encounter-response model (Hawkes (1971) \doi{10.1093/biomet/58.1.83}), seasonal shifts in activity, spatial coverage of detections, and species diversity. Estimates density or abundance of unmarked populations with several methods, including the random encounter model, camera trap distance sampling, time-to-event, space-to-event, instantaneous sampling, and the random encounter and staying-time model (see Rowcliffe et al. (2008) \doi{10.1111/j.1365-2664.2008.01473.x}, Howe et al. (2017) \doi{10.1111/2041-210X.12790}, Moeller et al. (2018) \doi{10.1002/ecs2.2331}, and Nakashima et al. (2018) \doi{10.1111/1365-2664.13059}).
 }
 \seealso{
 Useful links:

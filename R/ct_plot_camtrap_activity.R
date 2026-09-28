@@ -81,7 +81,7 @@ ct_plot_camtrap_activity <- function(data,
                                      break_style = list(linewidth = 0.8, color = "#c90026", alpha = 0.9, linetype = 1, label = "Break period"),
                                      show_gaps = TRUE,
                                      ylabel_format = "%Y-%m-%d",
-                                     ybreak = paste(1, time_unit),
+                                     ybreak = paste(nrow(data)%/%10, time_unit),
                                      legend_title = "Activity"
                                      ) {
 

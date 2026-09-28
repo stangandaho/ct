@@ -4,7 +4,14 @@
 \alias{ct_correct_datetime}
 \title{Correct camera trap datetime records}
 \usage{
-ct_correct_datetime(data, datetime, deployment, corrector, format = NULL)
+ct_correct_datetime(
+  data,
+  datetime,
+  deployment,
+  corrector,
+  format = NULL,
+  time_zone = "UTC"
+)
 }
 \arguments{
 \item{data}{A data.frame or tibble containing camera trap records with
@@ -21,7 +28,11 @@ site name, or deployment identifier).}
 \itemize{
 \item deployment column matching the deployment parameter
 \item \code{sign} - character indicating correction direction ("+" or "-")
-\item \code{datetimes} - reference datetime showing the correct time
+\item \code{datetimes} - correct date-time of the first (earliest) record of
+the deployment
+\item \code{end_datetimes} - optional; correct date-time of the last (latest)
+record of the deployment. When present and not missing, the correction
+drifts linearly between the first and the last record.
 }}
 
 \item{format}{Optional datetime format specification. Can be:
@@ -30,6 +41,12 @@ site name, or deployment identifier).}
 \item Single format string - used for both \code{data} and \code{corrector} datetimes
 \item Vector of 2 format strings - first for data, second for corrector
 }}
+
+\item{time_zone}{Time zone used to parse the datetimes in \code{data} and \code{corrector}.
+Defaults to \code{"UTC"}, which has no daylight saving time and so keeps camera
+wall-clock times unchanged. Any time zone name accepted by \code{\link[=as.POSIXct]{as.POSIXct()}}
+can be used, for example \code{Sys.timezone()} for the computer's time zone
+when the deployment does not span a daylight-saving change.}
 }
 \value{
 A data.frame with the original data plus additional columns:
@@ -37,6 +54,7 @@ A data.frame with the original data plus additional columns:
 \item \code{corrected_datetime} - corrected datetime as POSIXct
 \item \code{correction_applied} - sign of correction applied
 \item \code{time_offset_seconds} - magnitude of correction in seconds
+(varies between records when drift is corrected)
 \item \code{corrector_reference} - reference datetime used for correction
 }
 }
@@ -44,6 +62,19 @@ A data.frame with the original data plus additional columns:
 This function corrects datetime stamps in camera trap data using a reference
 correction table. It applies time adjustments based on known timing errors
 for each camera deployment.
+}
+\details{
+Two kinds of clock error are handled. A constant offset (a camera set to the
+wrong date or time) is corrected from the true datetime of the first record
+of each deployment. Clock drift (a camera that gains or loses time during the
+deployment) is corrected when the true datetime of the last record is also
+supplied: the correction then changes linearly with time, from the offset at
+the first record to the offset at the last record.
+
+Camera clocks do not change for daylight saving time. Datetimes are therefore
+parsed in the time zone given by \code{time_zone}, which defaults to \code{"UTC"} (no daylight
+saving), so that recorded wall-clock times are kept as they are and no record
+is shifted or lost at a daylight saving change.
 }
 \examples{
 # Load camera trap data
@@ -72,5 +103,20 @@ ct_correct_datetime(
                 corrected_datetime,
                 time_offset_seconds) \%>\%
   dplyr::slice_head(n = 10)
+
+# Clock drift: CAMERA 1 also lost 90 s over the deployment, so the true time
+# of its last record is 90 s later than the constant offset gives
+crtor_drift <- crtor
+crtor_drift$end_datetimes <- c("2025-04-16 01:16:15", NA)
+
+ct_correct_datetime(
+  data = camtrap_data,
+  datetime = datetimes,
+  deployment = camera,
+  corrector = crtor_drift
+) \%>\%
+  dplyr::filter(camera == "CAMERA 1") \%>\%
+  dplyr::select(datetimes, corrected_datetime, time_offset_seconds) \%>\%
+  dplyr::slice_tail(n = 5)
 
 }

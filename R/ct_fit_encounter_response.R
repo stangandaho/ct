@@ -321,19 +321,32 @@ ct_fit_encounter_response <- function(data,
     cameras <- levels(interval_data$camera_id)
     boot <- matrix(NA_real_, nrow = n_boot, ncol = length(lag_labels),
                    dimnames = list(NULL, lag_labels))
+    # A camera drawn k times contributes k copies of its block, each with its
+    # own camera and deployment effects. With camera fixed effects this gives
+    # the same coefficients as fitting the camera once with prior weight k, so
+    # each replicate is one weighted fit on the design matrix built once.
+    # Rows with the same covariate pattern (camera, deployment, month, time
+    # slot, lag window) are merged by summing counts and exposures, which leaves
+    # the Poisson estimating equations, and hence the coefficients, unchanged.
+    X <- stats::model.matrix(fit)
+    off <- if (is.null(fit$offset)) rep(0, nrow(X)) else fit$offset
+    cam_row <- match(as.character(interval_data$camera_id), cameras)
+    key <- drop(X %*% (1 / sqrt(seq_len(ncol(X)) + pi))) + cam_row * (ncol(X) + 1)
+    grp <- match(key, unique(key))
+    first <- !duplicated(grp)
+    y <- rowsum(fit$y, grp, reorder = FALSE)[, 1]
+    off <- log(rowsum(exp(off), grp, reorder = FALSE)[, 1])
+    X <- X[first, , drop = FALSE]
+    cam_row <- cam_row[first]
+    lag_cols <- grep("^lag_group", colnames(X))
+    lag_names <- sub("^lag_group", "", colnames(X)[lag_cols])
     for (b in seq_len(n_boot)) {
       sampled <- sample(cameras, length(cameras), replace = TRUE)
-      boot_data <- do.call(rbind, lapply(seq_along(sampled), function(j) {
-        x <- interval_data[interval_data$camera_id == sampled[j], , drop = FALSE]
-        # Relabel both camera and deployment per draw so a camera sampled twice
-        # contributes two independent blocks instead of being pooled.
-        x$camera_id <- paste0("bootstrap_", j)
-        x$deployment_id <- paste0("bootstrap_", j, "_", as.character(x$deployment_id))
-        x
-      }))
-      boot_fit <- tryCatch(.ct_encounter_fit(boot_data, engine), error = function(e) NULL)
-      if (!is.null(boot_fit)) {
-        boot[b, ] <- .ct_encounter_estimates(boot_fit, lag_labels)$rate_ratio[-1]
+      w <- tabulate(match(sampled, cameras), nbins = length(cameras))[cam_row]
+      beta <- tryCatch(.ct_encounter_irls(X, y, w, off, start = stats::coef(fit)),
+                       error = function(e) NULL)
+      if (!is.null(beta)) {
+        boot[b, lag_names] <- exp(beta[lag_cols])
       }
     }
     estimates$bootstrap_lower <- c(1, apply(boot, 2, stats::quantile, probs = 0.025,
@@ -384,6 +397,41 @@ ct_fit_encounter_response <- function(data,
   )
   class(out) <- "ct_encounter_response"
   out
+}
+
+# Weighted Poisson log-link fit by iteratively reweighted least squares, used
+# for the camera-block bootstrap. Same estimating equations as glm.fit() (the
+# quasi-Poisson dispersion does not affect coefficients), solved through the
+# small p x p cross-product matrix, which is much faster than the QR of the
+# n x p design when n is large. Columns that the resample cannot identify
+# (cameras not drawn) are returned as NA. Convergence follows glm.fit().
+.ct_encounter_irls <- function(X, y, w, offset, start = NULL,
+                               epsilon = 1e-8, maxit = 50) {
+  beta <- if (is.null(start)) rep(0, ncol(X)) else start
+  beta[is.na(beta)] <- 0
+  eta <- drop(X %*% beta) + offset
+  mu <- exp(eta)
+  dev_fun <- function(mu) 2 * sum(w * (ifelse(y > 0, y * log(y / mu), 0) - (y - mu)))
+  dev_old <- dev_fun(mu)
+  aliased <- rep(FALSE, ncol(X))
+  for (it in seq_len(maxit)) {
+    z <- (eta - offset) + (y - mu) / mu
+    W <- w * mu
+    XtWX <- crossprod(X, W * X)
+    XtWz <- crossprod(X, W * z)
+    q <- qr(XtWX, tol = 1e-10)
+    b_new <- qr.coef(q, XtWz)[, 1]
+    aliased <- is.na(b_new)
+    b_new[aliased] <- 0
+    eta <- drop(X %*% b_new) + offset
+    mu <- exp(eta)
+    dev <- dev_fun(mu)
+    beta <- b_new
+    if (abs(dev - dev_old) / (abs(dev) + 0.1) < epsilon) break
+    dev_old <- dev
+  }
+  beta[aliased] <- NA
+  beta
 }
 
 .ct_independent_encounters <- function(events, threshold) {
@@ -475,7 +523,7 @@ ct_fit_encounter_response <- function(data,
     form <- stats::as.formula(paste("count ~", paste(fixed, collapse = " + ")))
     return(stats::glm(
       form, family = stats::quasipoisson(link = "log"),
-      offset = log(exposure_seconds), data = x
+      offset = log(x$exposure_seconds), data = x
     ))
   }
 
@@ -541,8 +589,8 @@ ct_fit_encounter_response <- function(data,
   unit_label <- function(x) {
     if (x %% 3600 == 0) paste0(x / 3600, " h") else paste0(x / 60, " min")
   }
-  paste0(head(vapply(lag_breaks, unit_label, character(1)), -1), "--",
-         tail(vapply(lag_breaks, unit_label, character(1)), -1))
+  paste0(utils::head(vapply(lag_breaks, unit_label, character(1)), -1), "--",
+         utils::tail(vapply(lag_breaks, unit_label, character(1)), -1))
 }
 
 .ct_encounter_lag_group <- function(lag, lag_breaks) {

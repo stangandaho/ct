@@ -17,7 +17,7 @@ ct_plot_camtrap_activity(
     = "Break period"),
   show_gaps = TRUE,
   ylabel_format = "\%Y-\%m-\%d",
-  ybreak = paste(1, time_unit),
+  ybreak = paste(nrow(data)\%/\%10, time_unit),
   legend_title = "Activity"
 )
 }

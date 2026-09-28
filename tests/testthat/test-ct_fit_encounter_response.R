@@ -145,3 +145,25 @@ test_that("ct_fit_encounter_response rejects overlapping camera deployments", {
     start_column = start, end_column = end, independence = 0
   ), "overlap")
 })
+
+test_that("weighted IRLS bootstrap fit matches glm.fit on duplicated camera blocks", {
+  set.seed(42)
+  n_cam <- 6; n_per <- 200
+  d <- data.frame(camera = factor(rep(seq_len(n_cam), each = n_per)),
+                  x = rnorm(n_cam * n_per), expo = runif(n_cam * n_per, 0.5, 1.5))
+  d$y <- rpois(nrow(d), d$expo * exp(0.3 * d$x + as.numeric(d$camera) / 10))
+  X <- model.matrix(~ x + camera, d)
+  mult <- c(2, 0, 1, 3, 0, 0)            # camera draws of one resample
+  w <- mult[as.integer(d$camera)]
+  irls <- .ct_encounter_irls(X, d$y, w, log(d$expo))
+  dup <- do.call(rbind, unlist(lapply(seq_len(n_cam), function(k) {
+    lapply(seq_len(mult[k]), function(j) {
+      b <- d[d$camera == k, ]
+      b$block <- paste(k, j)
+      b
+    })
+  }), recursive = FALSE))
+  ref <- glm(y ~ x + block, family = poisson(), offset = log(expo), data = dup)
+  expect_equal(unname(irls["x"]), unname(coef(ref)["x"]), tolerance = 1e-7)
+  expect_true(all(is.na(irls[c("camera2", "camera5", "camera6")])))
+})
