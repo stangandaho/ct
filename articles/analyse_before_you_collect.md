@@ -86,8 +86,7 @@ place visible markers at known distances and angles in front of the
 camera.
 
 ![Placement of visible markers at known distances and angles in front of
-a camera. Source:
-\<https://youtu.be/UUlum77d5Cg\>](images/distance_deduction.png)
+a camera. Source: ](images/distance_deduction.png)
 
 Placement of visible markers at known distances and angles in front of a
 camera. Source: <https://youtu.be/UUlum77d5Cg>

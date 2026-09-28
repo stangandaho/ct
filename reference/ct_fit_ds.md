@@ -24,6 +24,7 @@ ct_fit_ds(
   availability,
   n_bootstrap = 100,
   n_cores = 1,
+  fast_bootstrap = TRUE,
   seed = NULL,
   ...
 )
@@ -166,7 +167,23 @@ ct_fit_ds(
 - n_cores:
 
   Integer. Number of CPU cores to use for parallel bootstrap
-  computation. Default is 1.
+  computation. Default is 1. Used only when the bootstrap is run by
+  [`Distance::bootdht()`](https://rdrr.io/pkg/Distance/man/bootdht.html).
+
+- fast_bootstrap:
+
+  Logical. If `TRUE` (default), and the selected detection function is
+  intercept-only (half-normal, hazard-rate or uniform key, with optional
+  cosine or simple polynomial adjustments) fitted to binned distances in
+  a single stratum, each replicate is refitted from its distance-bin
+  counts instead of the full data set. This gives the same likelihood,
+  detection probability and density as
+  [`Distance::bootdht()`](https://rdrr.io/pkg/Distance/man/bootdht.html)
+  (resampling camera stations) and is several hundred times faster. Each
+  refit starts from the full-data estimates and from the key function
+  fitted alone, and keeps the higher likelihood. Other models, or
+  `fast_bootstrap = FALSE`, use
+  [`Distance::bootdht()`](https://rdrr.io/pkg/Distance/man/bootdht.html).
 
 - seed:
 

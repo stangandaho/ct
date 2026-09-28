@@ -75,6 +75,7 @@ single model fitting and automated model selection procedures.</p>
 <span>  <span class="va">availability</span>,</span>
 <span>  n_bootstrap <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  n_cores <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  fast_bootstrap <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -200,7 +201,20 @@ confidence intervals but increase computation time.</p></dd>
 
 <dt id="arg-n-cores">n_cores<a class="anchor" aria-label="anchor" href="#arg-n-cores"></a></dt>
 <dd><p>Integer. Number of CPU cores to use for parallel bootstrap computation.
-Default is 1.</p></dd>
+Default is 1. Used only when the bootstrap is run by <code><a href="https://rdrr.io/pkg/Distance/man/bootdht.html" class="external-link">Distance::bootdht()</a></code>.</p></dd>
+
+
+<dt id="arg-fast-bootstrap">fast_bootstrap<a class="anchor" aria-label="anchor" href="#arg-fast-bootstrap"></a></dt>
+<dd><p>Logical. If <code>TRUE</code> (default), and the selected detection
+function is intercept-only (half-normal, hazard-rate or uniform key, with
+optional cosine or simple polynomial adjustments) fitted to binned distances
+in a single stratum, each replicate is refitted from its distance-bin counts
+instead of the full data set. This gives the same likelihood, detection
+probability and density as <code><a href="https://rdrr.io/pkg/Distance/man/bootdht.html" class="external-link">Distance::bootdht()</a></code> (resampling camera
+stations) and is several hundred times faster. Each refit starts from the
+full-data estimates and from the key function fitted alone, and keeps the
+higher likelihood. Other models, or <code>fast_bootstrap = FALSE</code>, use
+<code><a href="https://rdrr.io/pkg/Distance/man/bootdht.html" class="external-link">Distance::bootdht()</a></code>.</p></dd>
 
 
 <dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>

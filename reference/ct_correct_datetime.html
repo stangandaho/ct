@@ -59,7 +59,14 @@ for each camera deployment.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ct_correct_datetime</span><span class="op">(</span><span class="va">data</span>, <span class="va">datetime</span>, <span class="va">deployment</span>, <span class="va">corrector</span>, format <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ct_correct_datetime</span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">datetime</span>,</span>
+<span>  <span class="va">deployment</span>,</span>
+<span>  <span class="va">corrector</span>,</span>
+<span>  format <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  time_zone <span class="op">=</span> <span class="st">"UTC"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -85,7 +92,11 @@ site name, or deployment identifier).</p></dd>
 <dt id="arg-corrector">corrector<a class="anchor" aria-label="anchor" href="#arg-corrector"></a></dt>
 <dd><p>A data.frame containing correction information with columns:</p><ul><li><p>deployment column matching the deployment parameter</p></li>
 <li><p><code>sign</code> - character indicating correction direction ("+" or "-")</p></li>
-<li><p><code>datetimes</code> - reference datetime showing the correct time</p></li>
+<li><p><code>datetimes</code> - correct date-time of the first (earliest) record of
+the deployment</p></li>
+<li><p><code>end_datetimes</code> - optional; correct date-time of the last (latest)
+record of the deployment. When present and not missing, the correction
+drifts linearly between the first and the last record.</p></li>
 </ul></dd>
 
 
@@ -95,14 +106,36 @@ site name, or deployment identifier).</p></dd>
 <li><p>Vector of 2 format strings - first for data, second for corrector</p></li>
 </ul></dd>
 
+
+<dt id="arg-time-zone">time_zone<a class="anchor" aria-label="anchor" href="#arg-time-zone"></a></dt>
+<dd><p>Time zone used to parse the datetimes in <code>data</code> and <code>corrector</code>.
+Defaults to <code>"UTC"</code>, which has no daylight saving time and so keeps camera
+wall-clock times unchanged. Any time zone name accepted by <code><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct()</a></code>
+can be used, for example <code><a href="https://rdrr.io/r/base/timezones.html" class="external-link">Sys.timezone()</a></code> for the computer's time zone
+when the deployment does not span a daylight-saving change.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A data.frame with the original data plus additional columns:</p><ul><li><p><code>corrected_datetime</code> - corrected datetime as POSIXct</p></li>
 <li><p><code>correction_applied</code> - sign of correction applied</p></li>
-<li><p><code>time_offset_seconds</code> - magnitude of correction in seconds</p></li>
+<li><p><code>time_offset_seconds</code> - magnitude of correction in seconds
+(varies between records when drift is corrected)</p></li>
 <li><p><code>corrector_reference</code> - reference datetime used for correction</p></li>
 </ul></div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>Two kinds of clock error are handled. A constant offset (a camera set to the
+wrong date or time) is corrected from the true datetime of the first record
+of each deployment. Clock drift (a camera that gains or loses time during the
+deployment) is corrected when the true datetime of the last record is also
+supplied: the correction then changes linearly with time, from the offset at
+the first record to the offset at the last record.</p>
+<p>Camera clocks do not change for daylight saving time. Datetimes are therefore
+parsed in the time zone given by <code>time_zone</code>, which defaults to <code>"UTC"</code> (no daylight
+saving), so that recorded wall-clock times are kept as they are and no record
+is shifted or lost at a daylight saving change.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -145,6 +178,29 @@ site name, or deployment identifier).</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> 2024-03-24 20:20:02 2025-03-14 <span style="color: #949494;">20:33:55</span>            30<span style="text-decoration: underline;">672</span>833</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> 2024-03-24 20:20:03 2025-03-14 <span style="color: #949494;">20:33:56</span>            30<span style="text-decoration: underline;">672</span>833</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> 2024-03-24 20:20:24 2025-03-14 <span style="color: #949494;">20:34:17</span>            30<span style="text-decoration: underline;">672</span>833</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Clock drift: CAMERA 1 also lost 90 s over the deployment, so the true time</span></span></span>
+<span class="r-in"><span><span class="co"># of its last record is 90 s later than the constant offset gives</span></span></span>
+<span class="r-in"><span><span class="va">crtor_drift</span> <span class="op">&lt;-</span> <span class="va">crtor</span></span></span>
+<span class="r-in"><span><span class="va">crtor_drift</span><span class="op">$</span><span class="va">end_datetimes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"2025-04-16 01:16:15"</span>, <span class="cn">NA</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">ct_correct_datetime</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">camtrap_data</span>,</span></span>
+<span class="r-in"><span>  datetime <span class="op">=</span> <span class="va">datetimes</span>,</span></span>
+<span class="r-in"><span>  deployment <span class="op">=</span> <span class="va">camera</span>,</span></span>
+<span class="r-in"><span>  corrector <span class="op">=</span> <span class="va">crtor_drift</span></span></span>
+<span class="r-in"><span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">camera</span> <span class="op">==</span> <span class="st">"CAMERA 1"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">datetimes</span>, <span class="va">corrected_datetime</span>, <span class="va">time_offset_seconds</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_tail</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 5 × 3</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   datetimes          corrected_datetime  time_offset_seconds</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;dttm&gt;</span>                            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> 2024-04-26 1:00:21 2025-04-16 <span style="color: #949494;">01:15:43</span>           30<span style="text-decoration: underline;">672</span>923.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> 2024-04-26 1:00:21 2025-04-16 <span style="color: #949494;">01:15:43</span>           30<span style="text-decoration: underline;">672</span>923.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> 2024-04-26 1:00:51 2025-04-16 <span style="color: #949494;">01:16:13</span>           30<span style="text-decoration: underline;">672</span>923.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> 2024-04-26 1:00:52 2025-04-16 <span style="color: #949494;">01:16:15</span>           30<span style="text-decoration: underline;">672</span>923 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">5</span> 2024-04-26 1:00:52 2025-04-16 <span style="color: #949494;">01:16:15</span>           30<span style="text-decoration: underline;">672</span>923 </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

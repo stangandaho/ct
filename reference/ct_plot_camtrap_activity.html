@@ -69,7 +69,7 @@ It also optionally highlights periods of inactivity (break/gap).</p>
 <span>    <span class="op">=</span> <span class="st">"Break period"</span><span class="op">)</span>,</span>
 <span>  show_gaps <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  ylabel_format <span class="op">=</span> <span class="st">"%Y-%m-%d"</span>,</span>
-<span>  ybreak <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">time_unit</span><span class="op">)</span>,</span>
+<span>  ybreak <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%/%</a></span><span class="fl">10</span>, <span class="va">time_unit</span><span class="op">)</span>,</span>
 <span>  legend_title <span class="op">=</span> <span class="st">"Activity"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
