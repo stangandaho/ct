@@ -330,7 +330,7 @@ citation("ct")
 #> To cite package 'ct' in publications use:
 #> 
 #>   Gandaho S (2026). _ct: Camera trap data management and multi-method
-#>   ecological analysis_. R package version 0.4.0,
+#>   ecological analysis_. R package version 0.5.0,
 #>   <https://stangandaho.github.io/ct/>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -339,7 +339,7 @@ citation("ct")
 #>     title = {ct: Camera trap data management and multi-method ecological analysis},
 #>     author = {Stanislas Mahussi Gandaho},
 #>     year = {2026},
-#>     note = {R package version 0.4.0},
+#>     note = {R package version 0.5.0},
 #>     url = {https://stangandaho.github.io/ct/},
 #>   }
 ```
