@@ -10,6 +10,8 @@
 #' @param n_grid An integer specifying the number of grid points for density estimation. Default is 128.
 #' @param kmax An integer indicating the maximum number of modes allowed in the activity pattern. Default is 3.
 #' @param adjust A numeric value to adjust the bandwidth of the kernel density estimation. Default is 1.
+#' @param rug A logical value indicating whether to add a rug of the observations
+#'   along the x-axis. Default is `FALSE`.
 #' @param overlap_color A string specifying the color of the overlap area. Default is `"gray40"`.
 #' @param overlap_alpha A numeric value (0 to 1) for the transparency of the overlap area. Default is 0.8.
 #' @param line_type A vector of integers specifying the line types for species A and B density lines. Default is `c(1, 2)`.
@@ -20,6 +22,13 @@
 #' @param overlap_only A logical value indicating whether to plot only the overlap region without individual density lines. Default is `FALSE`.
 #' @param extend A string specifying the color of the extended area beyond the activity period. Default is `"lightgrey"`.
 #' @param extend_alpha A numeric value (0 to 1) for the transparency of the extended area. Default is 0.8.
+#' @param rug_length A numeric value giving the length of the rug ticks, in
+#'   normalized plot coordinates. Default is 0.018.
+#' @param rug_color Colour of the rug ticks. Default `NULL` draws each species'
+#'   ticks in its `line_color`. A single colour is used for both species, and two
+#'   colours are matched to species A and B.
+#' @param ... Additional arguments passed to [ggplot2::geom_rug()]. The former
+#'   argument name `rug_lentgh` is still accepted for `rug_length`.
 #'
 #' @return A ggplot object representing the activity density curves and overlap between the two species.
 #' If `overlap_only = TRUE`, only the overlap region is displayed.
@@ -38,6 +47,10 @@
 #'   ct_plot_overlap(A = species_A, B = species_B, overlap_color = "blue",
 #'   line_color = c("red", "green"))
 #'
+#'   # Add rug ticks coloured by species
+#'   ct_plot_overlap(A = species_A, B = species_B, rug = TRUE,
+#'   line_color = c("darkorange", "steelblue"))
+#'
 #' @import ggplot2
 #' @import overlap
 #' @export
@@ -48,6 +61,7 @@ ct_plot_overlap <- function(A,
                             n_grid = 128,
                             kmax = 3,
                             adjust = 1,
+                            rug = FALSE,
                             overlap_color = "gray40",
                             overlap_alpha = 0.8,
                             line_type = c(1, 2),
@@ -57,7 +71,10 @@ ct_plot_overlap <- function(A,
                             legend_title = "Species",
                             overlap_only = FALSE,
                             extend = "lightgrey",
-                            extend_alpha = 0.8
+                            extend_alpha = 0.8,
+                            rug_length = 0.018,
+                            rug_color = NULL,
+                            ...
                         ) {
 
   suppressWarnings({
@@ -70,6 +87,13 @@ ct_plot_overlap <- function(A,
     }
     xcenter <- match.arg(xcenter)
     isMidnt <- xcenter == "midnight"
+
+    # Accept the former misspelt argument name rug_lentgh
+    rug_args <- list(...)
+    if (!is.null(rug_args$rug_lentgh)) {
+      rug_length <- rug_args$rug_lentgh
+      rug_args$rug_lentgh <- NULL
+    }
 
     # Bandwidth calculation
     bwA <- overlap::getBandWidth(A, kmax = kmax) / adjust
@@ -173,6 +197,23 @@ ct_plot_overlap <- function(A,
           )
       }
 
+    }
+
+    # Add rug plot if requested, one colour per species
+    if (rug) {
+      if (is.null(rug_color)) rug_color <- line_color
+      rug_color <- rep_len(rug_color, 2)
+      rugA <- if (isMidnt) ifelse(A < pi, A, A - 2 * pi) else A
+      rugB <- if (isMidnt) ifelse(B < pi, B, B - 2 * pi) else B
+      rug_layer <- function(t, col) {
+        do.call(ggplot2::geom_rug, c(list(
+          data = data.frame(t = t * xsc),
+          mapping = ggplot2::aes(x = t),
+          length = ggplot2::unit(rug_length, "npc"),
+          color = col, sides = "b", na.rm = TRUE, inherit.aes = FALSE
+        ), rug_args))
+      }
+      p <- p + rug_layer(rugA, rug_color[1]) + rug_layer(rugB, rug_color[2])
     }
 
     # Add axis customization

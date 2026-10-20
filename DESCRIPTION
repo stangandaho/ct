@@ -2,7 +2,7 @@ Package: ct
 Type: Package
 Title: Camera trap data management and multi-method ecological analysis
 Version: 0.5.0
-Date: 2026-09-28
+Date: 2026-10-20
 Imports: 
     activity (>= 1.3.4),
     dplyr (>= 1.1.4),

@@ -31,3 +31,22 @@ test_that("ct_plot_overlap accepts styling options", {
                        overlap_alpha = 0.5, line_color = c("red", "green"))
   expect_s3_class(p, "ggplot")
 })
+
+test_that("ct_plot_overlap draws rug ticks coloured by species", {
+  set.seed(42)
+  species_A <- runif(80, 0, 2 * pi)
+  species_B <- runif(80, 0, 2 * pi)
+
+  p <- ct_plot_overlap(A = species_A, B = species_B, rug = TRUE,
+                       line_color = c("red", "blue"))
+  rugs <- Filter(function(l) inherits(l$geom, "GeomRug"), p$layers)
+  expect_length(rugs, 2)
+  expect_identical(c(rugs[[1]]$aes_params$colour, rugs[[2]]$aes_params$colour),
+                   c("red", "blue"))
+
+  p <- ct_plot_overlap(A = species_A, B = species_B, rug = TRUE,
+                       rug_color = "black", rug_lentgh = 0.05)
+  rugs <- Filter(function(l) inherits(l$geom, "GeomRug"), p$layers)
+  expect_identical(rugs[[2]]$aes_params$colour, "black")
+  expect_equal(as.numeric(rugs[[1]]$geom_params$length), 0.05)
+})

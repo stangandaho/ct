@@ -1,3 +1,37 @@
+# ct 0.5.0
+
+## New functions
+- `ct_fit_encounter_response()`: tests whether a response species is detected
+  more or less often at a camera in the hours after a trigger species passes.
+  Comes with `print()` and `summary()` methods.
+- `ct_plot_calendar()`: calendar heatmap of daily detections.
+- `ct_fit_distribution()`: fits a Poisson, negative binomial or binomial
+  distribution to counts and reports AIC and BIC.
+
+## New datasets
+- `lama`: detections and deployments from 23 cameras in the Lama Classified
+  Forest, Benin, with distances and angles.
+- `penessoulou`: image records from the Penessoulou Classified Forest, Benin.
+  Replaces the two CSV files previously in `inst/`.
+
+## Improvements
+- `ct_fit_ds()`: much faster bootstrap for binned distance data
+  (`fast_bootstrap = TRUE`, the default).
+- `ct_correct_datetime()`: new `time_zone` argument, and optional end times to
+  correct clock drift linearly.
+- `ct_overlap_matrix()`: bootstrap confidence intervals (`n_boot`, `conf`,
+  `ci_method`, `cores`).
+- `ct_describe_df()`: new `by_group` argument.
+- `ct_plot_overlap()`: new `species_names` and `legend_title` arguments;
+  rug ticks are now coloured by species (`rug_color` to override).
+- `ct_plot_camtrap_activity()`: new `legend_title` argument.
+- `ct_check_location()`: columns can be given unquoted.
+
+## Installation
+- sf and terra move to Suggests. `ct_spatial_coverage()`, `ct_survey_design()`,
+  `ct_solartime()` and `ct_check_location()` ask for them when called.
+- Minimum Rcpp version lowered from 1.0.14 to 1.0.8.
+
 # ct 0.4.0
 
 ## 2026-06-20

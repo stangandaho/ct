@@ -12,6 +12,7 @@ ct_plot_overlap(
   n_grid = 128,
   kmax = 3,
   adjust = 1,
+  rug = FALSE,
   overlap_color = "gray40",
   overlap_alpha = 0.8,
   line_type = c(1, 2),
@@ -21,7 +22,10 @@ ct_plot_overlap(
   legend_title = "Species",
   overlap_only = FALSE,
   extend = "lightgrey",
-  extend_alpha = 0.8
+  extend_alpha = 0.8,
+  rug_length = 0.018,
+  rug_color = NULL,
+  ...
 )
 }
 \arguments{
@@ -38,6 +42,9 @@ ct_plot_overlap(
 \item{kmax}{An integer indicating the maximum number of modes allowed in the activity pattern. Default is 3.}
 
 \item{adjust}{A numeric value to adjust the bandwidth of the kernel density estimation. Default is 1.}
+
+\item{rug}{A logical value indicating whether to add a rug of the observations
+along the x-axis. Default is \code{FALSE}.}
 
 \item{overlap_color}{A string specifying the color of the overlap area. Default is \code{"gray40"}.}
 
@@ -58,6 +65,16 @@ ct_plot_overlap(
 \item{extend}{A string specifying the color of the extended area beyond the activity period. Default is \code{"lightgrey"}.}
 
 \item{extend_alpha}{A numeric value (0 to 1) for the transparency of the extended area. Default is 0.8.}
+
+\item{rug_length}{A numeric value giving the length of the rug ticks, in
+normalized plot coordinates. Default is 0.018.}
+
+\item{rug_color}{Colour of the rug ticks. Default \code{NULL} draws each species'
+ticks in its \code{line_color}. A single colour is used for both species, and two
+colours are matched to species A and B.}
+
+\item{...}{Additional arguments passed to \code{\link[ggplot2:geom_rug]{ggplot2::geom_rug()}}. The former
+argument name \code{rug_lentgh} is still accepted for \code{rug_length}.}
 }
 \value{
 A ggplot object representing the activity density curves and overlap between the two species.
@@ -79,5 +96,9 @@ It uses kernel density estimation to estimate activity densities and highlights 
   # Customize plot with specific colors and line types
   ct_plot_overlap(A = species_A, B = species_B, overlap_color = "blue",
   line_color = c("red", "green"))
+
+  # Add rug ticks coloured by species
+  ct_plot_overlap(A = species_A, B = species_B, rug = TRUE,
+  line_color = c("darkorange", "steelblue"))
 
 }
