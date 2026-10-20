@@ -1,3 +1,6 @@
+skip_if_not_installed("sf")
+skip_if_not_installed("terra")
+
 test_that("test survey design", {
 
   data("pendjari")

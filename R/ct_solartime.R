@@ -44,7 +44,7 @@
 #' Rowcliffe, M. (2023). activity: Animal Activity Statistics.
 #' R package version 1.3.4. https://CRAN.R-project.org/package=activity
 #'
-#' @examples
+#' @examplesIf requireNamespace("sf", quietly = TRUE)
 #' library(dplyr)
 #' data(penessoulou)
 #'
@@ -69,6 +69,8 @@ ct_solartime <- function (data = NULL,
                           format,
                           time_zone,
                           ...){
+
+  rlang::check_installed("sf", reason = "to use `ct_solartime()`.")
 
 
   try_format <-  c("%Y-%m-%d %H:%M:%OS", "%Y/%m/%d %H:%M:%OS",

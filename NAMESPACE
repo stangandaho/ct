@@ -133,11 +133,7 @@ importFrom(overlap, bootCI, bootCIlogit, bootEst, bootstrap, densityFit, density
            getBandWidth, overlapEst, overlapPlot, overlapTrue, resample, sunTime)
 
 
-# sf
-importFrom(sf, st_as_sf, st_transform, st_coordinates, st_crs, st_geometry_type)
 
-# terra
-importFrom(terra, rast, vect, values, as.polygons, extend, rasterize, global, mean)
 
 # cli
 importFrom(cli,cli_alert_danger,cli_alert_success,cli_alert_warning,cli_format,

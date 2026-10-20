@@ -1,7 +1,7 @@
 Package: ct
 Type: Package
 Title: Camera trap data management and multi-method ecological analysis
-Version: 0.4.0
+Version: 0.5.0
 Date: 2026-09-28
 Imports: 
     activity (>= 1.3.4),
@@ -17,12 +17,10 @@ Imports:
     overlap (>= 0.3.9),
     rlang (>= 1.1.5),
     sbd (>= 0.1.0),
-    sf (>= 1.0-19),
-    terra (>= 1.8-29),
     tibble,
     tidyr (>= 1.3.1),
     tidyselect,
-    Rcpp (>= 1.0.14)
+    Rcpp (>= 1.0.8)
 Authors@R: c(
     person(given = "Stanislas Mahussi", family = "Gandaho", 
            email = "stangandaho@gmail.com", role = c("aut", "cre"),
@@ -71,7 +69,9 @@ Suggests:
     coda,
     progress,
     rmarkdown,
+    sf,
     shiny (>= 1.10.0),
+    terra,
     testthat (>= 3.0.0),
     vegan (>= 2.6-6.1),
     xml2

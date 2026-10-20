@@ -1,3 +1,5 @@
+skip_if_not_installed("sf")
+
 test_that("ct_solartime adds a solar-time column", {
   skip_if_not_installed("sf")
 

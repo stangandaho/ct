@@ -1,3 +1,6 @@
+skip_if_not_installed("sf")
+skip_if_not_installed("terra")
+
 test_that("ct_spatial_coverage returns a raster, bandwidth and stats", {
   skip_if_not_installed("terra")
   skip_if_not_installed("sf")

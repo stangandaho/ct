@@ -95,7 +95,7 @@
 #'     \eqn{\hat{\sigma}} +/- SE, detection-site count, and isopleth level.}
 #' }
 #'
-#' @examples
+#' @examplesIf requireNamespace("sf", quietly = TRUE) && requireNamespace("terra", quietly = TRUE)
 #' library(dplyr)
 #' data(penessoulou)
 #' cam_data <- penessoulou %>%
@@ -132,6 +132,8 @@ ct_spatial_coverage <- function(data,
                                 resolution,
                                 isopleth = 0.95,
                                 n_boot = 200) {
+
+  rlang::check_installed(c("sf", "terra"), reason = "to use `ct_spatial_coverage()`.")
 
   # Tidy-eval column names
   site_column <- tryCatch(rlang::enquo(site_column), error = function(e) NULL)

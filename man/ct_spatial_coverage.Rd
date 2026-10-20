@@ -120,6 +120,7 @@ retains the smallest set of cells whose cumulative density equals
 }
 }
 \examples{
+\dontshow{if (requireNamespace("sf", quietly = TRUE) && requireNamespace("terra", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(dplyr)
 data(penessoulou)
 cam_data <- penessoulou \%>\%
@@ -144,7 +145,7 @@ spc$Bandwidth
 
 ## Coverage area summary
 spc$`Coverage stats`
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 Silverman, B. W. (1986). \emph{Density Estimation for Statistics and Data

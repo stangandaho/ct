@@ -76,6 +76,7 @@ system (CRS) before proceeding.
 If a geographic CRS is detected, an error is raised.
 }
 \examples{
+\dontshow{if (requireNamespace("sf", quietly = TRUE) && requireNamespace("terra", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 \donttest{library(ggplot2)
 # Load example dataset
 data("pendjari")
@@ -140,4 +141,5 @@ mask_regular_sdes <- ct_survey_design(study_area = pendjari_trans,
 
 
 }
+\dontshow{\}) # examplesIf}
 }

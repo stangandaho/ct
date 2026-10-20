@@ -41,7 +41,7 @@
 #' system (CRS) before proceeding.
 #' If a geographic CRS is detected, an error is raised.
 #'
-#' @examples
+#' @examplesIf requireNamespace("sf", quietly = TRUE) && requireNamespace("terra", quietly = TRUE)
 #' \donttest{library(ggplot2)
 #' # Load example dataset
 #' data("pendjari")
@@ -119,6 +119,8 @@ ct_survey_design <- function(study_area,
                              set_seed = NULL,
                              verbose = TRUE
                              ) {
+
+  rlang::check_installed(c("sf", "terra"), reason = "to use `ct_survey_design()`.")
 
 
   # Valid study area

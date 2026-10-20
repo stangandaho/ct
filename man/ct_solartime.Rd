@@ -67,6 +67,7 @@ is \code{NULL}, the function will process the \code{date}, \code{longitude}, and
 parameters directly.
 }
 \examples{
+\dontshow{if (requireNamespace("sf", quietly = TRUE)) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 library(dplyr)
 data(penessoulou)
 
@@ -81,7 +82,7 @@ cam_data <- penessoulou \%>\%
  # Transform Time to Solar Time
  ct_solartime(data = ., date = datetime, longitude = longitude, latitude = latitude,
                crs = "EPSG:32631", time_zone = 1)
-
+\dontshow{\}) # examplesIf}
 }
 \references{
 Rowcliffe, M. (2023). activity: Animal Activity Statistics.

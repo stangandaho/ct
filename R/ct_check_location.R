@@ -53,7 +53,7 @@ ct_check_location <- function(data,
                               crs,
                               new_data_name) {
 
-  rlang::check_installed(c("shiny", "leaflet"), reason = "launch the app")
+  rlang::check_installed(c("shiny", "leaflet", "sf"), reason = "launch the app")
 
   target_env <- parent.frame()
 

@@ -267,10 +267,9 @@ match_arg <- function(arg, choices, argname = deparse(substitute(arg))) {
 #' @keywords internal
 #' @noRd
 #' @importFrom cli cli_abort
-#' @importFrom sf st_crs
 
 crs_type <- function(sf_object) {
-  wkt <- st_crs(sf_object)$wkt
+  wkt <- sf::st_crs(sf_object)$wkt
   if (is.na(wkt)) {
     obj_name <- deparse(substitute(sf_object))
     cli_abort(sprintf("Coordinate Reference System (CRS) of `%s` cannot be NA. Assign a CRS.",
@@ -291,14 +290,13 @@ crs_type <- function(sf_object) {
 #' Make sure study area provided is sf object and represents a polygon
 #' @keywords internal
 #' @importFrom cli cli_abort
-#' @importFrom sf st_geometry_type
 #' @noRd
 valid_study_area <- function(sf_object) {
   if (!any(c("sf", "sfc_POLYGON" ,"sfc") %in% class(sf_object))) {
     cli_abort("Area of study must be simple feature (sf) object", call = NULL)
   }
 
-  if (!any(c("MULTIPOLYGON", "POLYGON") %in% st_geometry_type(sf_object))) {
+  if (!any(c("MULTIPOLYGON", "POLYGON") %in% sf::st_geometry_type(sf_object))) {
     cli_abort("Area of study must be a polygon", call = NULL)
   }
 }
