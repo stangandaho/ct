@@ -13,7 +13,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/stangandaho/ct/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/stangandaho/ct/blob/v0.5.0/DESCRIPTION)
 
 Gandaho S (2026). *ct: Camera trap data management and multi-method
 ecological analysis*. R package version 0.5.0,
