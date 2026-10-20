@@ -64,6 +64,7 @@ It uses kernel density estimation to estimate activity densities and highlights 
 <span>  n_grid <span class="op">=</span> <span class="fl">128</span>,</span>
 <span>  kmax <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  adjust <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  rug <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  overlap_color <span class="op">=</span> <span class="st">"gray40"</span>,</span>
 <span>  overlap_alpha <span class="op">=</span> <span class="fl">0.8</span>,</span>
 <span>  line_type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
@@ -73,7 +74,10 @@ It uses kernel density estimation to estimate activity densities and highlights 
 <span>  legend_title <span class="op">=</span> <span class="st">"Species"</span>,</span>
 <span>  overlap_only <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  extend <span class="op">=</span> <span class="st">"lightgrey"</span>,</span>
-<span>  extend_alpha <span class="op">=</span> <span class="fl">0.8</span></span>
+<span>  extend_alpha <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  rug_length <span class="op">=</span> <span class="fl">0.018</span>,</span>
+<span>  rug_color <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -107,6 +111,11 @@ It uses kernel density estimation to estimate activity densities and highlights 
 
 <dt id="arg-adjust">adjust<a class="anchor" aria-label="anchor" href="#arg-adjust"></a></dt>
 <dd><p>A numeric value to adjust the bandwidth of the kernel density estimation. Default is 1.</p></dd>
+
+
+<dt id="arg-rug">rug<a class="anchor" aria-label="anchor" href="#arg-rug"></a></dt>
+<dd><p>A logical value indicating whether to add a rug of the observations
+along the x-axis. Default is <code>FALSE</code>.</p></dd>
 
 
 <dt id="arg-overlap-color">overlap_color<a class="anchor" aria-label="anchor" href="#arg-overlap-color"></a></dt>
@@ -148,6 +157,22 @@ It uses kernel density estimation to estimate activity densities and highlights 
 <dt id="arg-extend-alpha">extend_alpha<a class="anchor" aria-label="anchor" href="#arg-extend-alpha"></a></dt>
 <dd><p>A numeric value (0 to 1) for the transparency of the extended area. Default is 0.8.</p></dd>
 
+
+<dt id="arg-rug-length">rug_length<a class="anchor" aria-label="anchor" href="#arg-rug-length"></a></dt>
+<dd><p>A numeric value giving the length of the rug ticks, in
+normalized plot coordinates. Default is 0.018.</p></dd>
+
+
+<dt id="arg-rug-color">rug_color<a class="anchor" aria-label="anchor" href="#arg-rug-color"></a></dt>
+<dd><p>Colour of the rug ticks. Default <code>NULL</code> draws each species'
+ticks in its <code>line_color</code>. A single colour is used for both species, and two
+colours are matched to species A and B.</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>Additional arguments passed to <code><a href="https://ggplot2.tidyverse.org/reference/geom_rug.html" class="external-link">ggplot2::geom_rug()</a></code>. The former
+argument name <code>rug_lentgh</code> is still accepted for <code>rug_length</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -170,6 +195,11 @@ If <code>overlap_only = TRUE</code>, only the overlap region is displayed.</p>
 <span class="r-in"><span>  <span class="fu">ct_plot_overlap</span><span class="op">(</span>A <span class="op">=</span> <span class="va">species_A</span>, B <span class="op">=</span> <span class="va">species_B</span>, overlap_color <span class="op">=</span> <span class="st">"blue"</span>,</span></span>
 <span class="r-in"><span>  line_color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"green"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ct_plot_overlap-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># Add rug ticks coloured by species</span></span></span>
+<span class="r-in"><span>  <span class="fu">ct_plot_overlap</span><span class="op">(</span>A <span class="op">=</span> <span class="va">species_A</span>, B <span class="op">=</span> <span class="va">species_B</span>, rug <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  line_color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"darkorange"</span>, <span class="st">"steelblue"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="ct_plot_overlap-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

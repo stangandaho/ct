@@ -114,21 +114,21 @@ ct_fit_ste(data,
 #> 
 #> ── Space-To-Event (STE) Estimation ─────────────────────────────────────────────
 #> ℹ Running data checks
-#> [25ms]
+#> [19ms]
 #> 
 #> ℹ Building sampling occasions...
 #> ℹ Building encounter history...
 #> ℹ Running data checks
-#> ✔ Running data checks [26ms]
+#> ✔ Running data checks [19ms]
 #> 
 #> ℹ Building effort for each camera
-#> ✔ Building effort for each camera [30ms]
+#> ✔ Building effort for each camera [16ms]
 #> 
 #> ℹ Calculating censors
-#> ✔ Calculating censors [14ms]
+#> ✔ Calculating censors [10ms]
 #> 
 #> ℹ Calculating STE at each occasion
-#> ✔ Calculating STE at each occasion [75ms]
+#> ✔ Calculating STE at each occasion [62ms]
 #> 
 #> ℹ Fitting model...
 #> ✔ Estimation complete!

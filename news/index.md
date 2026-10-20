@@ -1,5 +1,60 @@
 # Changelog
 
+## ct 0.5.0
+
+### New functions
+
+- [`ct_fit_encounter_response()`](https://stangandaho.github.io/ct/reference/ct_fit_encounter_response.md):
+  tests whether a response species is detected more or less often at a
+  camera in the hours after a trigger species passes. Comes with
+  [`print()`](https://rdrr.io/r/base/print.html) and
+  [`summary()`](https://rspatial.github.io/terra/reference/summary.html)
+  methods.
+- [`ct_plot_calendar()`](https://stangandaho.github.io/ct/reference/ct_plot_calendar.md):
+  calendar heatmap of daily detections.
+- [`ct_fit_distribution()`](https://stangandaho.github.io/ct/reference/ct_fit_distribution.md):
+  fits a Poisson, negative binomial or binomial distribution to counts
+  and reports AIC and BIC.
+
+### New datasets
+
+- `lama`: detections and deployments from 23 cameras in the Lama
+  Classified Forest, Benin, with distances and angles.
+- `penessoulou`: image records from the Penessoulou Classified Forest,
+  Benin. Replaces the two CSV files previously in `inst/`.
+
+### Improvements
+
+- [`ct_fit_ds()`](https://stangandaho.github.io/ct/reference/ct_fit_ds.md):
+  much faster bootstrap for binned distance data
+  (`fast_bootstrap = TRUE`, the default).
+- [`ct_correct_datetime()`](https://stangandaho.github.io/ct/reference/ct_correct_datetime.md):
+  new `time_zone` argument, and optional end times to correct clock
+  drift linearly.
+- [`ct_overlap_matrix()`](https://stangandaho.github.io/ct/reference/ct_overlap_matrix.md):
+  bootstrap confidence intervals (`n_boot`, `conf`, `ci_method`,
+  `cores`).
+- [`ct_describe_df()`](https://stangandaho.github.io/ct/reference/ct_describe_df.md):
+  new `by_group` argument.
+- [`ct_plot_overlap()`](https://stangandaho.github.io/ct/reference/ct_plot_overlap.md):
+  new `species_names` and `legend_title` arguments; rug ticks are now
+  coloured by species (`rug_color` to override).
+- [`ct_plot_camtrap_activity()`](https://stangandaho.github.io/ct/reference/ct_plot_camtrap_activity.md):
+  new `legend_title` argument.
+- [`ct_check_location()`](https://stangandaho.github.io/ct/reference/ct_check_location.md):
+  columns can be given unquoted.
+
+### Installation
+
+- sf and terra move to Suggests.
+  [`ct_spatial_coverage()`](https://stangandaho.github.io/ct/reference/ct_spatial_coverage.md),
+  [`ct_survey_design()`](https://stangandaho.github.io/ct/reference/ct_survey_design.md),
+  [`ct_solartime()`](https://stangandaho.github.io/ct/reference/ct_solartime.md)
+  and
+  [`ct_check_location()`](https://stangandaho.github.io/ct/reference/ct_check_location.md)
+  ask for them when called.
+- Minimum Rcpp version lowered from 1.0.14 to 1.0.8.
+
 ## ct 0.4.0
 
 CRAN release: 2026-07-16

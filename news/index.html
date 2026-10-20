@@ -47,6 +47,47 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.5.0" id="ct-050">ct 0.5.0<a class="anchor" aria-label="anchor" href="#ct-050"></a></h2>
+<div class="section level3">
+<h3 id="new-functions-0-5-0">New functions<a class="anchor" aria-label="anchor" href="#new-functions-0-5-0"></a></h3>
+<ul><li>
+<code><a href="../reference/ct_fit_encounter_response.html">ct_fit_encounter_response()</a></code>: tests whether a response species is detected more or less often at a camera in the hours after a trigger species passes. Comes with <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> and <code><a href="https://rspatial.github.io/terra/reference/summary.html" class="external-link">summary()</a></code> methods.</li>
+<li>
+<code><a href="../reference/ct_plot_calendar.html">ct_plot_calendar()</a></code>: calendar heatmap of daily detections.</li>
+<li>
+<code><a href="../reference/ct_fit_distribution.html">ct_fit_distribution()</a></code>: fits a Poisson, negative binomial or binomial distribution to counts and reports AIC and BIC.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-datasets-0-5-0">New datasets<a class="anchor" aria-label="anchor" href="#new-datasets-0-5-0"></a></h3>
+<ul><li>
+<code>lama</code>: detections and deployments from 23 cameras in the Lama Classified Forest, Benin, with distances and angles.</li>
+<li>
+<code>penessoulou</code>: image records from the Penessoulou Classified Forest, Benin. Replaces the two CSV files previously in <code>inst/</code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="improvements-0-5-0">Improvements<a class="anchor" aria-label="anchor" href="#improvements-0-5-0"></a></h3>
+<ul><li>
+<code><a href="../reference/ct_fit_ds.html">ct_fit_ds()</a></code>: much faster bootstrap for binned distance data (<code>fast_bootstrap = TRUE</code>, the default).</li>
+<li>
+<code><a href="../reference/ct_correct_datetime.html">ct_correct_datetime()</a></code>: new <code>time_zone</code> argument, and optional end times to correct clock drift linearly.</li>
+<li>
+<code><a href="../reference/ct_overlap_matrix.html">ct_overlap_matrix()</a></code>: bootstrap confidence intervals (<code>n_boot</code>, <code>conf</code>, <code>ci_method</code>, <code>cores</code>).</li>
+<li>
+<code><a href="../reference/ct_describe_df.html">ct_describe_df()</a></code>: new <code>by_group</code> argument.</li>
+<li>
+<code><a href="../reference/ct_plot_overlap.html">ct_plot_overlap()</a></code>: new <code>species_names</code> and <code>legend_title</code> arguments; rug ticks are now coloured by species (<code>rug_color</code> to override).</li>
+<li>
+<code><a href="../reference/ct_plot_camtrap_activity.html">ct_plot_camtrap_activity()</a></code>: new <code>legend_title</code> argument.</li>
+<li>
+<code><a href="../reference/ct_check_location.html">ct_check_location()</a></code>: columns can be given unquoted.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="installation-0-5-0">Installation<a class="anchor" aria-label="anchor" href="#installation-0-5-0"></a></h3>
+<ul><li>sf and terra move to Suggests. <code><a href="../reference/ct_spatial_coverage.html">ct_spatial_coverage()</a></code>, <code><a href="../reference/ct_survey_design.html">ct_survey_design()</a></code>, <code><a href="../reference/ct_solartime.html">ct_solartime()</a></code> and <code><a href="../reference/ct_check_location.html">ct_check_location()</a></code> ask for them when called.</li>
+<li>Minimum Rcpp version lowered from 1.0.14 to 1.0.8.</li>
+</ul></div>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.0" id="ct-040">ct 0.4.0<a class="anchor" aria-label="anchor" href="#ct-040"></a></h2><p class="text-muted">CRAN release: 2026-07-16</p>
 <div class="section level3">
 <h3 id="id_2026-0-4-0">2026-06-20<a class="anchor" aria-label="anchor" href="#id_2026-0-4-0"></a></h3>

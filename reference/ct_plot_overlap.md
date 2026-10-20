@@ -16,6 +16,7 @@ ct_plot_overlap(
   n_grid = 128,
   kmax = 3,
   adjust = 1,
+  rug = FALSE,
   overlap_color = "gray40",
   overlap_alpha = 0.8,
   line_type = c(1, 2),
@@ -25,7 +26,10 @@ ct_plot_overlap(
   legend_title = "Species",
   overlap_only = FALSE,
   extend = "lightgrey",
-  extend_alpha = 0.8
+  extend_alpha = 0.8,
+  rug_length = 0.018,
+  rug_color = NULL,
+  ...
 )
 ```
 
@@ -65,6 +69,11 @@ ct_plot_overlap(
 
   A numeric value to adjust the bandwidth of the kernel density
   estimation. Default is 1.
+
+- rug:
+
+  A logical value indicating whether to add a rug of the observations
+  along the x-axis. Default is `FALSE`.
 
 - overlap_color:
 
@@ -115,6 +124,24 @@ ct_plot_overlap(
   A numeric value (0 to 1) for the transparency of the extended area.
   Default is 0.8.
 
+- rug_length:
+
+  A numeric value giving the length of the rug ticks, in normalized plot
+  coordinates. Default is 0.018.
+
+- rug_color:
+
+  Colour of the rug ticks. Default `NULL` draws each species' ticks in
+  its `line_color`. A single colour is used for both species, and two
+  colours are matched to species A and B.
+
+- ...:
+
+  Additional arguments passed to
+  [`ggplot2::geom_rug()`](https://ggplot2.tidyverse.org/reference/geom_rug.html).
+  The former argument name `rug_lentgh` is still accepted for
+  `rug_length`.
+
 ## Value
 
 A ggplot object representing the activity density curves and overlap
@@ -136,5 +163,10 @@ region is displayed.
   # Customize plot with specific colors and line types
   ct_plot_overlap(A = species_A, B = species_B, overlap_color = "blue",
   line_color = c("red", "green"))
+
+
+  # Add rug ticks coloured by species
+  ct_plot_overlap(A = species_A, B = species_B, rug = TRUE,
+  line_color = c("darkorange", "steelblue"))
 
 ```
