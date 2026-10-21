@@ -13,14 +13,14 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/stangandaho/ct/blob/v0.5.0/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/stangandaho/ct/blob/main/DESCRIPTION)
 
-Gandaho S (2026). *ct: Camera trap data management and multi-method
-ecological analysis*. R package version 0.5.0,
+Gandaho S (2026). *ct: Camera Trap Data Management and Multi-Method
+Ecological Analysis*. R package version 0.5.0,
 <https://stangandaho.github.io/ct/>.
 
     @Manual{,
-      title = {ct: Camera trap data management and multi-method ecological analysis},
+      title = {ct: Camera Trap Data Management and Multi-Method Ecological Analysis},
       author = {Stanislas Mahussi Gandaho},
       year = {2026},
       note = {R package version 0.5.0},

@@ -43,7 +43,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Fit animal detection</h1>
-      <small class="dont-index">Source: <a href="https://github.com/stangandaho/ct/blob/v0.5.0/R/REM.R" class="external-link"><code>R/REM.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/stangandaho/ct/blob/main/R/REM.R" class="external-link"><code>R/REM.R</code></a></small>
       <div class="d-none name"><code>ct_fit_detmodel.Rd</code></div>
     </div>
 
@@ -104,6 +104,7 @@ else <code>NULL</code>)</p></li>
 <span class="r-in"><span><span class="va">observations</span> <span class="op">&lt;-</span> <span class="va">ctdp</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">observations</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">scientificName</span> <span class="op">==</span> <span class="st">"Vulpes vulpes"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="fu">ct_fit_detmodel</span><span class="op">(</span><span class="va">radius</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">observations</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error in -lt$value : invalid argument to unary operator</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -127,6 +128,7 @@ else <code>NULL</code>)</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Average p           0.6783846 0.3138098 0.4625839</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> N in covered region 7.3704500 3.8882665 0.5275481</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> EDR                 5.9523416 1.3767287 0.2312920</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># For angle</span></span></span>
 <span class="r-in"><span><span class="fu">ct_fit_detmodel</span><span class="op">(</span><span class="va">angle</span> <span class="op">~</span> <span class="fl">1</span>, data <span class="op">=</span> <span class="va">observations</span><span class="op">)</span></span></span>

@@ -45,7 +45,7 @@ It uses kernel density estimation to estimate activity densities and highlights 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Plot overlap between two species' activity patterns</h1>
-      <small class="dont-index">Source: <a href="https://github.com/stangandaho/ct/blob/v0.5.0/R/ct_plot_overlap.R" class="external-link"><code>R/ct_plot_overlap.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/stangandaho/ct/blob/main/R/ct_plot_overlap.R" class="external-link"><code>R/ct_plot_overlap.R</code></a></small>
       <div class="d-none name"><code>ct_plot_overlap.Rd</code></div>
     </div>
 
@@ -191,6 +191,7 @@ If <code>overlap_only = TRUE</code>, only the overlap region is displayed.</p>
 <span class="r-in"><span>  <span class="fu">ct_plot_overlap</span><span class="op">(</span>A <span class="op">=</span> <span class="va">species_A</span>, B <span class="op">=</span> <span class="va">species_B</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ct_plot_overlap-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span>  <span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span>  <span class="co"># Customize plot with specific colors and line types</span></span></span>
 <span class="r-in"><span>  <span class="fu">ct_plot_overlap</span><span class="op">(</span>A <span class="op">=</span> <span class="va">species_A</span>, B <span class="op">=</span> <span class="va">species_B</span>, overlap_color <span class="op">=</span> <span class="st">"blue"</span>,</span></span>
 <span class="r-in"><span>  line_color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"red"</span>, <span class="st">"green"</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -200,6 +201,7 @@ If <code>overlap_only = TRUE</code>, only the overlap region is displayed.</p>
 <span class="r-in"><span>  <span class="fu">ct_plot_overlap</span><span class="op">(</span>A <span class="op">=</span> <span class="va">species_A</span>, B <span class="op">=</span> <span class="va">species_B</span>, rug <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  line_color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"darkorange"</span>, <span class="st">"steelblue"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ct_plot_overlap-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span>  <span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

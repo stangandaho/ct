@@ -62,6 +62,7 @@ data("ctdp")
 observations <- ctdp$data$observations %>%
   dplyr::filter(scientificName == "Vulpes vulpes")
 
+# \donttest{
 ct_fit_detmodel(radius ~ 1, data = observations)
 #> Error in -lt$value : invalid argument to unary operator
 #> 
@@ -85,6 +86,7 @@ ct_fit_detmodel(radius ~ 1, data = observations)
 #> Average p           0.6783846 0.3138098 0.4625839
 #> N in covered region 7.3704500 3.8882665 0.5275481
 #> EDR                 5.9523416 1.3767287 0.2312920
+# }
 
 # For angle
 ct_fit_detmodel(angle ~ 1, data = observations)

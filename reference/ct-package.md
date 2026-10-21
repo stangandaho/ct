@@ -1,4 +1,4 @@
-# ct: Camera trap data management and multi-method ecological analysis
+# ct: Camera Trap Data Management and Multi-Method Ecological Analysis
 
 Tools for the complete camera trap data workflow in wildlife monitoring
 and ecological research. Reads and edits media metadata, filters

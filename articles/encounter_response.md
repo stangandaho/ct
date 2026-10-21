@@ -329,14 +329,14 @@ Lama Classified Forest:
 citation("ct")
 #> To cite package 'ct' in publications use:
 #> 
-#>   Gandaho S (2026). _ct: Camera trap data management and multi-method
-#>   ecological analysis_. R package version 0.5.0,
+#>   Gandaho S (2026). _ct: Camera Trap Data Management and Multi-Method
+#>   Ecological Analysis_. R package version 0.5.0,
 #>   <https://stangandaho.github.io/ct/>.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Manual{,
-#>     title = {ct: Camera trap data management and multi-method ecological analysis},
+#>     title = {ct: Camera Trap Data Management and Multi-Method Ecological Analysis},
 #>     author = {Stanislas Mahussi Gandaho},
 #>     year = {2026},
 #>     note = {R package version 0.5.0},

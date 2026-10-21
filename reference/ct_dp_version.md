@@ -34,7 +34,9 @@ The version number is derived as follows:
 ## Examples
 
 ``` r
+# \donttest{
 dp <- ct_dp_example()
 ct_dp_version(dp)
 #> [1] "1.0.2"
+# }
 ```

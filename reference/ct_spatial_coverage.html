@@ -51,7 +51,7 @@ spatial spread of detection sites via Silverman's reference bandwidth rule
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Estimate species spatial coverage from camera trap detections</h1>
-      <small class="dont-index">Source: <a href="https://github.com/stangandaho/ct/blob/v0.5.0/R/ct_spatial_coverage.R" class="external-link"><code>R/ct_spatial_coverage.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/stangandaho/ct/blob/main/R/ct_spatial_coverage.R" class="external-link"><code>R/ct_spatial_coverage.R</code></a></small>
       <div class="d-none name"><code>ct_spatial_coverage.Rd</code></div>
     </div>
 
@@ -220,6 +220,7 @@ distribution in home-range studies. <em>Ecology</em>, <strong>70</strong>(1), 16
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">project</span> <span class="op">==</span> <span class="st">"First"</span><span class="op">)</span> <span class="op"><a href="pipe.html">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">species</span> <span class="op">==</span> <span class="st">"Erythrocebus patas"</span>, <span class="va">number</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="va">spc</span> <span class="op">&lt;-</span> <span class="fu">ct_spatial_coverage</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">cam_data</span>,</span></span>
 <span class="r-in"><span>  site_column <span class="op">=</span> <span class="va">camera</span>,</span></span>
@@ -246,6 +247,7 @@ distribution in home-range studies. <em>Ecology</em>, <strong>70</strong>(1), 16
 <span class="r-out co"><span class="r-pr">#&gt;</span>   `Spatial coverage` Sigma `Bandwidth SE` `Detection sites (n)` `Isopleth level`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>               33.9 <span style="text-decoration: underline;">1</span>226.           164.                    13             0.95</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -47,7 +47,7 @@ This version number indicates what version of the Camtrap DP standard was used."
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Get Camtrap DP version Extracts the version number used by a Camera Trap Data Package object. This version number indicates what version of the <a href="https://camtrap-dp.tdwg.org" class="external-link">Camtrap DP standard</a> was used.</h1>
-      <small class="dont-index">Source: <a href="https://github.com/stangandaho/ct/blob/v0.5.0/R/camtrapdp.R" class="external-link"><code>R/camtrapdp.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/stangandaho/ct/blob/main/R/camtrapdp.R" class="external-link"><code>R/camtrapdp.R</code></a></small>
       <div class="d-none name"><code>ct_dp_version.Rd</code></div>
     </div>
 
@@ -85,9 +85,11 @@ contain the URL to the used Camtrap DP standard.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">dp</span> <span class="op">&lt;-</span> <span class="fu"><a href="ct_dp_example.html">ct_dp_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="va">dp</span> <span class="op">&lt;-</span> <span class="fu"><a href="ct_dp_example.html">ct_dp_example</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">ct_dp_version</span><span class="op">(</span><span class="va">dp</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1.0.2"</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
