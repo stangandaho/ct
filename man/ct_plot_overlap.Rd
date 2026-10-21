@@ -93,6 +93,7 @@ It uses kernel density estimation to estimate activity densities and highlights 
   # Plot overlap with default settings
   ct_plot_overlap(A = species_A, B = species_B)
 
+  \donttest{
   # Customize plot with specific colors and line types
   ct_plot_overlap(A = species_A, B = species_B, overlap_color = "blue",
   line_color = c("red", "green"))
@@ -100,5 +101,6 @@ It uses kernel density estimation to estimate activity densities and highlights 
   # Add rug ticks coloured by species
   ct_plot_overlap(A = species_A, B = species_B, rug = TRUE,
   line_color = c("darkorange", "steelblue"))
+  }
 
 }

@@ -4,7 +4,7 @@
 \name{ct-package}
 \alias{ct}
 \alias{ct-package}
-\title{ct: Camera trap data management and multi-method ecological analysis}
+\title{ct: Camera Trap Data Management and Multi-Method Ecological Analysis}
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 

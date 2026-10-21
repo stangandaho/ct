@@ -102,6 +102,7 @@
 #'   dplyr::filter(project == "First") %>%
 #'   dplyr::filter(species == "Erythrocebus patas", number > 0)
 #'
+#' \donttest{
 #' spc <- ct_spatial_coverage(
 #'   data = cam_data,
 #'   site_column = camera,
@@ -120,6 +121,7 @@
 #'
 #' ## Coverage area summary
 #' spc$`Coverage stats`
+#' }
 #'
 #' @export
 ct_spatial_coverage <- function(data,

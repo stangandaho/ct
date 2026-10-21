@@ -175,7 +175,9 @@ ct_fit_speedmodel <- function(formula = speed ~ 1,
 #' observations <- ctdp$data$observations %>%
 #'   dplyr::filter(scientificName == "Vulpes vulpes")
 #'
+#' \donttest{
 #' ct_fit_detmodel(radius ~ 1, data = observations)
+#' }
 #'
 #' # For angle
 #' ct_fit_detmodel(angle ~ 1, data = observations)

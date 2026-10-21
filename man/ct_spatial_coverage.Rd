@@ -127,6 +127,7 @@ cam_data <- penessoulou \%>\%
   dplyr::filter(project == "First") \%>\%
   dplyr::filter(species == "Erythrocebus patas", number > 0)
 
+\donttest{
 spc <- ct_spatial_coverage(
   data = cam_data,
   site_column = camera,
@@ -145,6 +146,7 @@ spc$Bandwidth
 
 ## Coverage area summary
 spc$`Coverage stats`
+}
 \dontshow{\}) # examplesIf}
 }
 \references{

@@ -30,7 +30,9 @@ contain the URL to the used Camtrap DP standard.
 }
 }
 \examples{
+\donttest{
 dp <- ct_dp_example()
 ct_dp_version(dp)
+}
 
 }

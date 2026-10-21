@@ -78,8 +78,10 @@ ct_dp_example <- function() {
 #' @inherit camtrapdp::version details
 #' @inherit camtrapdp::read_camtrapdp return
 #' @examples
+#' \donttest{
 #' dp <- ct_dp_example()
 #' ct_dp_version(dp)
+#' }
 #'
 #' @export
 ct_dp_version <- function(package) {

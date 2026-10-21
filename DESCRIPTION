@@ -1,6 +1,6 @@
 Package: ct
 Type: Package
-Title: Camera trap data management and multi-method ecological analysis
+Title: Camera Trap Data Management and Multi-Method Ecological Analysis
 Version: 0.5.0
 Date: 2026-10-20
 Imports: 
@@ -81,5 +81,4 @@ BugReports: https://github.com/stangandaho/ct/issues
 Depends: 
     R (>= 3.5)
 Config/Needs/website: rmarkdown
-VignetteBuilder: knitr
 LinkingTo: Rcpp
