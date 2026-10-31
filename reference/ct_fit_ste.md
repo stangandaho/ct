@@ -125,10 +125,10 @@ ct_fit_ste(data,
 #> ✔ Building effort for each camera [30ms]
 #> 
 #> ℹ Calculating censors
-#> ✔ Calculating censors [19ms]
+#> ✔ Calculating censors [18ms]
 #> 
 #> ℹ Calculating STE at each occasion
-#> ✔ Calculating STE at each occasion [118ms]
+#> ✔ Calculating STE at each occasion [117ms]
 #> 
 #> ℹ Fitting model...
 #> ✔ Estimation complete!
