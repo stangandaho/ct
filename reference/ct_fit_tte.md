@@ -150,13 +150,13 @@ ct_fit_tte(data,
 #> ℹ Building sampling occasions...
 #> ℹ Building encounter history...
 #> ℹ Running data checks
-#> ✔ Running data checks [26ms]
+#> ✔ Running data checks [36ms]
 #> 
 #> ℹ Building effort for each camera
-#> ✔ Building effort for each camera [23ms]
+#> ✔ Building effort for each camera [40ms]
 #> 
 #> ℹ Calculating TTE and censor
-#> ✔ Calculating TTE and censor [23ms]
+#> ✔ Calculating TTE and censor [31ms]
 #> 
 #> ℹ Fitting model...
 #> ✔ Estimation complete!

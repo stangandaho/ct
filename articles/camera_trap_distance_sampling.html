@@ -26,7 +26,7 @@
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <script src="../extra.js"></script><meta property="og:title" content="Camera Trap Distance Sampling">
 <meta name="description" content="ct is an R package for camera trap data management and analysis, from image metadata to species density estimation (random encounter model, distance sampling, time-to-event, space-to-event, REST, instantaneous sampling estimators).">
-<meta name="keywords" content="camera trap, R package, wildlife monitoring, density estimation, abundance, random encounter model, camera-trap distance sampling, occupancy, activity patterns, ecology, Camtrap DP, spatial coverage, temporal shift encounter-response">
+<meta name="keywords" content="camera trap, R package, wildlife monitoring, density estimation, abundance, random encounter model, camera-trap distance sampling, occupancy, activity patterns, ecology, Camtrap DP, spatial coverage, temporal shift encounter-response, camtrapR, ct">
 <meta name="google-site-verification" content="IsJnmZmB57RlAonI3vWGJq4FadQgHj87SJhl1Q3oBak">
 <meta name="msvalidate.01" content="599CF8CEAF0762B699B5C79D5B933522">
 </head>
@@ -130,17 +130,17 @@ decide to ignore animals, because they are rarely seen and their
 distances are hard to judge. Howe et al. recommended <span class="math inline">\(w = 15\)</span> m.</li>
 </ul>
 <div class="figure" style="text-align: center">
-<img src="camera_trap_distance_sampling_files/figure-html/fig-sector-1.png" class="r-plt" alt="Figure 1: The camera (left) watches a wedge of angle $\theta$. Rings mark distance from the camera. At one snapshot moment, the analyst records the distance band of each animal in view: here, two animals, one near and one far. Animals outside the wedge or beyond $w$ are not counted." width="768"><p class="caption">
-Figure 1: The camera (left) watches a wedge of angle <span class="math inline">\(\theta\)</span>. Rings mark distance from the
-camera. At one snapshot moment, the analyst records the distance band of
-each animal in view: here, two animals, one near and one far. Animals
-outside the wedge or beyond <span class="math inline">\(w\)</span> are
-not counted.
+<img src="images/camera_4_ctds.png" class="r-plt" alt="Figure 1: The camera watches a wedge of angle $\theta$. Rings mark distance from the camera. At one snapshot moment, we record the distance band of each animal in view: here, two animals, one near and one far. Animals outside the wedge or beyond $w$ are not counted." width="742"><p class="caption">
+Figure 1: The camera watches a wedge of angle <span class="math inline">\(\theta\)</span>. Rings mark distance from the
+camera. At one snapshot moment, we record the distance band of each
+animal in view: here, two animals, one near and one far. Animals outside
+the wedge or beyond <span class="math inline">\(w\)</span> are not
+counted.
 </p>
 </div>
-<div class="section level4">
-<h4 id="snapshot-moments">Snapshot moments<a class="anchor" aria-label="anchor" href="#snapshot-moments"></a>
-</h4>
+<div class="section level3">
+<h3 id="snapshot-moments">Snapshot moments<a class="anchor" aria-label="anchor" href="#snapshot-moments"></a>
+</h3>
 <p>A camera trap is triggered by movement and then records video or a
 burst of photos. Distances are not recorded at the moment of triggering.
 Instead, before the survey, you fix a regular grid of <strong>snapshot
@@ -173,9 +173,9 @@ the <strong>temporal effort</strong> at the point. The same animal
 walking past for 10 seconds contributes about 5 observations at <span class="math inline">\(t = 2\)</span> s. That is expected and correct;
 section 11 explains the consequence for statistics.</p>
 </div>
-<div class="section level4">
-<h4 id="sampling-effort">Sampling effort<a class="anchor" aria-label="anchor" href="#sampling-effort"></a>
-</h4>
+<div class="section level3">
+<h3 id="sampling-effort">Sampling effort<a class="anchor" aria-label="anchor" href="#sampling-effort"></a>
+</h3>
 <p>Combining the angle and the number of snapshots gives the
 <strong>“spatio-temporal”</strong> effort at camera point <span class="math inline">\(k\)</span>:</p>
 <p><span class="math display">\[
@@ -279,9 +279,9 @@ the reason distance sampling works.</p>
 <div class="section level2">
 <h2 id="from-counts-to-density">4. From counts to density<a class="anchor" aria-label="anchor" href="#from-counts-to-density"></a>
 </h2>
-<div class="section level4">
-<h4 id="the-average-detection-probability-p">The average detection probability <span class="math inline">\(P\)</span><a class="anchor" aria-label="anchor" href="#the-average-detection-probability-p"></a>
-</h4>
+<div class="section level3">
+<h3 id="the-average-detection-probability-p">The average detection probability <span class="math inline">\(P\)</span><a class="anchor" aria-label="anchor" href="#the-average-detection-probability-p"></a>
+</h3>
 <p>Consider the whole disc of radius <span class="math inline">\(w\)</span>. Some animals are near (almost all
 seen), most are far (many missed). The <strong>average probability of
 detection</strong> over the disc, weighting each distance by how much
@@ -295,9 +295,9 @@ integral equals <span class="math inline">\(w^2/2\)</span> and <span class="math
 disc, roughly 37% of animals present at a snapshot moment were
 recorded.</p>
 </div>
-<div class="section level4">
-<h4 id="the-density-estimator">The density estimator<a class="anchor" aria-label="anchor" href="#the-density-estimator"></a>
-</h4>
+<div class="section level3">
+<h3 id="the-density-estimator">The density estimator<a class="anchor" aria-label="anchor" href="#the-density-estimator"></a>
+</h3>
 <p>At one snapshot, a full disc of radius <span class="math inline">\(w\)</span> has area <span class="math inline">\(\pi w^2\)</span>. The camera watches the fraction
 <span class="math inline">\(\theta/2\pi\)</span> of it, and sees on
 average the fraction <span class="math inline">\(P\)</span> of the
@@ -366,16 +366,17 @@ operating and animals were available</td>
 D\)</span> comes out in animals per square metre. Multiply by 1 000 000
 for animals per km². Software does this conversion for you.</p>
 <div class="alert alert-warning">
-<p><strong>One more ingredient.</strong> This formula assumes every
-animal is moving and available to be filmed during the time <span class="math inline">\(T_k\)</span>. Animals that are resting, asleep in
-a burrow or up a tree cannot be filmed at any distance. Section 13 adds
-the <strong>availability</strong> correction that handles them.
-Forgetting it is the most common cause of underestimated density.</p>
+<p>This formula assumes every animal is moving and available to be
+filmed during the time <span class="math inline">\(T_k\)</span>. Animals
+that are resting, asleep in a burrow or up a tree cannot be filmed at
+any distance. Section 13 adds the <strong>availability</strong>
+correction that handles them. Forgetting it is the most common cause of
+underestimated density.</p>
 </div>
 </div>
-<div class="section level4">
-<h4 id="effective-detection-radius">Effective detection radius<a class="anchor" aria-label="anchor" href="#effective-detection-radius"></a>
-</h4>
+<div class="section level3">
+<h3 id="effective-detection-radius">Effective detection radius<a class="anchor" aria-label="anchor" href="#effective-detection-radius"></a>
+</h3>
 <p>A useful way to picture <span class="math inline">\(P\)</span> is the
 <strong>effective detection radius</strong>, <span class="math inline">\(\rho\)</span> (rho). It is the radius of an
 imaginary disc in which you see <em>every</em> animal and none beyond,
@@ -430,9 +431,9 @@ detection has dropped to 0.61; at <span class="math inline">\(r =
 2\sigma\)</span>, to 0.14. The half-normal falls gently from the start:
 there is no flat “shoulder” near the camera.</p>
 </div>
-<div class="section level4">
-<h4 id="c--hazard-rate">c. Hazard-rate<a class="anchor" aria-label="anchor" href="#c--hazard-rate"></a>
-</h4>
+<div class="section level3">
+<h3 id="c--hazard-rate">c. Hazard-rate<a class="anchor" aria-label="anchor" href="#c--hazard-rate"></a>
+</h3>
 <p><span class="math display">\[
 g(r) = 1 - \exp\!\left[-\left(\frac{r}{\sigma}\right)^{-b}\right]
 \]</span></p>
@@ -452,9 +453,8 @@ with a long tail. The half-normal (<span class="math inline">\(\sigma =
 </p>
 </div>
 <div class="alert alert-success">
-<p><strong>Why parameters are fitted on a log scale.</strong> In
-software output you will see estimates such as “scale coefficient 1.74”.
-That is <span class="math inline">\(\log\sigma\)</span>, so <span class="math inline">\(\sigma = e^{1.74} = 5.7\)</span> m. The shape
+<p>In software output you will see estimates such as “scale coefficient
+1.74”. That is <span class="math inline">\(\log\sigma\)</span>, so <span class="math inline">\(\sigma = e^{1.74} = 5.7\)</span> m. The shape
 <span class="math inline">\(b\)</span> is also estimated as <span class="math inline">\(\log b\)</span>. Working on the log scale keeps
 <span class="math inline">\(\sigma\)</span> and <span class="math inline">\(b\)</span> positive during fitting.</p>
 </div>
@@ -486,9 +486,9 @@ coefficient</strong>: how much of that wave is added. It is estimated
 from the data. A coefficient near 0 means the wave is not needed.</li>
 <li>The bottom line divides by the value at <span class="math inline">\(r = 0\)</span>, so that <span class="math inline">\(g(0) = 1\)</span> always holds.</li>
 </ul>
-<div class="section level4">
-<h4 id="the-three-adjustment-series">The three adjustment series<a class="anchor" aria-label="anchor" href="#the-three-adjustment-series"></a>
-</h4>
+<div class="section level3">
+<h3 id="the-three-adjustment-series">The three adjustment series<a class="anchor" aria-label="anchor" href="#the-three-adjustment-series"></a>
+</h3>
 <table class="table">
 <colgroup>
 <col width="20%">
@@ -533,9 +533,9 @@ r/w\)</span>
 </tbody>
 </table>
 </div>
-<div class="section level4">
-<h4 id="what-order-means">What “order” means<a class="anchor" aria-label="anchor" href="#what-order-means"></a>
-</h4>
+<div class="section level3">
+<h3 id="what-order-means">What “order” means<a class="anchor" aria-label="anchor" href="#what-order-means"></a>
+</h3>
 <p>For the cosine series, the order is the number of half-waves across
 the range 0 to <span class="math inline">\(w\)</span>. Order 1 is one
 gentle half-wave (it starts high and ends low): a broad decline. Order 2
@@ -557,9 +557,9 @@ them is order 2. The polynomial and Hermite series use even orders only,
 because even functions are flat at zero distance, which keeps the shape
 near the camera well behaved.</p>
 </div>
-<div class="section level4">
-<h4 id="nadj-and-order-in-software">nadj and order in software<a class="anchor" aria-label="anchor" href="#nadj-and-order-in-software"></a>
-</h4>
+<div class="section level3">
+<h3 id="nadj-and-order-in-software">nadj and order in software<a class="anchor" aria-label="anchor" href="#nadj-and-order-in-software"></a>
+</h3>
 <ul>
 <li>
 <code>nadj</code> is the <strong>number</strong> of adjustment
@@ -575,9 +575,9 @@ With camera trap data, prefer to set <code>nadj</code> yourself and
 compare models as in section 12.</li>
 </ul>
 </div>
-<div class="section level4">
-<h4 id="monotonicity">Monotonicity<a class="anchor" aria-label="anchor" href="#monotonicity"></a>
-</h4>
+<div class="section level3">
+<h3 id="monotonicity">Monotonicity<a class="anchor" aria-label="anchor" href="#monotonicity"></a>
+</h3>
 <p>Adjustment terms can make the curve go <em>up</em> with distance, or
 exceed 1, which makes no biological sense: an animal cannot be easier to
 see further away. Distance therefore constrains the fit by default (when
@@ -633,9 +633,9 @@ about 0.1 to 0.15. Howe et al. truncated at 15 m because fitted curves
 became heavy-tailed when farther distances were included; this removed
 8% of daytime observations.</p>
 </div>
-<div class="section level4">
-<h4 id="left-truncation">Left truncation<a class="anchor" aria-label="anchor" href="#left-truncation"></a>
-</h4>
+<div class="section level3">
+<h3 id="left-truncation">Left truncation<a class="anchor" aria-label="anchor" href="#left-truncation"></a>
+</h3>
 <p>Camera traps have a blind zone right in front of them. A camera
 mounted at knee height may miss small animals passing underneath the
 field of view, or film only their back. The assumption <span class="math inline">\(g(0) = 1\)</span> then fails. The fix is to also
@@ -645,16 +645,15 @@ few observations between 1 and 2 m but not between 2 and 3 m, so they
 left-truncated at 2 m. The analysis then covers the ring from 2 to 15
 m.</p>
 <div class="alert alert-warning">
-<p><strong>Look before you truncate.</strong> Always plot a histogram of
-distances with narrow bins first. A dip near the camera suggests left
-truncation. A spike at one distance suggests measurement heaping
-(distances rounded to a landmark). A long thin tail suggests right
-truncation.</p>
+<p>Always plot a histogram of distances with narrow bins first. A dip
+near the camera suggests left truncation. A spike at one distance
+suggests measurement heaping (distances rounded to a landmark). A long
+thin tail suggests right truncation.</p>
 </div>
 </div>
-<div class="section level4">
-<h4 id="binned-distances-and-cutpoints">Binned distances and cutpoints<a class="anchor" aria-label="anchor" href="#binned-distances-and-cutpoints"></a>
-</h4>
+<div class="section level3">
+<h3 id="binned-distances-and-cutpoints">Binned distances and cutpoints<a class="anchor" aria-label="anchor" href="#binned-distances-and-cutpoints"></a>
+</h3>
 <p>From video, you rarely measure exact distances. Instead, before the
 survey you film a person holding markers at known distances (for example
 every 1 m from the camera to 15 m, in the centre and along both edges of
@@ -706,9 +705,9 @@ Section 12 fixes this.</li>
 <div class="section level2">
 <h2 id="choosing-a-model">10. Choosing a model<a class="anchor" aria-label="anchor" href="#choosing-a-model"></a>
 </h2>
-<div class="section level4">
-<h4 id="aic">AIC<a class="anchor" aria-label="anchor" href="#aic"></a>
-</h4>
+<div class="section level3">
+<h3 id="aic">AIC<a class="anchor" aria-label="anchor" href="#aic"></a>
+</h3>
 <p>The Akaike information criterion balances fit against complexity:</p>
 <p><span class="math display">\[
 \text{AIC} = -2\log L + 2k
@@ -719,7 +718,6 @@ improve <span class="math inline">\(\log L\)</span> by more than 1 unit
 to be worth it. With camera trap data, <span class="math inline">\(\log
 L\)</span> is inflated by the repeated snapshots, so this penalty is far
 too weak and AIC tends to pick models with many adjustment terms.</p>
-</div>
 <div class="section level4">
 <h4 id="overdispersion-and-qaic">Overdispersion and QAIC<a class="anchor" aria-label="anchor" href="#overdispersion-and-qaic"></a>
 </h4>
@@ -737,9 +735,10 @@ it is about 19). The quasi-AIC divides the log-likelihood by <span class="math i
 \text{QAIC} = -\frac{2\log L}{\hat c} + 2k
 \]</span></p>
 </div>
-<div class="section level4">
-<h4 id="the-two-step-procedure-of-howe-et-al--2019">The two-step procedure of Howe et al. (2019)<a class="anchor" aria-label="anchor" href="#the-two-step-procedure-of-howe-et-al--2019"></a>
-</h4>
+</div>
+<div class="section level3">
+<h3 id="the-two-step-procedure-of-howe-et-al--2019">The two-step procedure of Howe et al. (2019)<a class="anchor" aria-label="anchor" href="#the-two-step-procedure-of-howe-et-al--2019"></a>
+</h3>
 <ol style="list-style-type: decimal">
 <li>
 <strong>Within each key function</strong>, compare models with
@@ -775,29 +774,29 @@ during which animals are active and at ground level.</p>
 <p><span class="math display">\[
 \hat D = \frac{n}{\pi w^2 \, \hat P \, e \, \hat A}
 \]</span></p>
-<div class="section level4">
-<h4 id="three-ways-to-handle-availability">Three ways to handle availability<a class="anchor" aria-label="anchor" href="#three-ways-to-handle-availability"></a>
-</h4>
+<div class="section level3">
+<h3 id="three-ways-to-handle-availability">Three ways to handle availability<a class="anchor" aria-label="anchor" href="#three-ways-to-handle-availability"></a>
+</h3>
 <p>Howe et al. (2017) compared three approaches for Maxwell’s
 duikers:</p>
 <ol style="list-style-type: decimal">
 <li>
-<strong>Daytime.</strong> Count effort only from 06:30 to 18:00, and
+<u><em>Daytime</em></u>: Count effort only from 06:30 to 18:00, and
 assume all duikers are active throughout. Density: 10.6 per km².
 Probably too low.</li>
 <li>
-<strong>Peak activity.</strong> Count effort and observations only
+<u><em>Peak activity</em></u>: Count effort and observations only
 during the two daily activity peaks, assuming everyone is active then.
 Density: 14.5 per km².</li>
 <li>
-<strong>Active daytime.</strong> Use the daytime data, and divide by
+<u><em>Active daytim</em>e</u>: Use the daytime data, and divide by
 an independent estimate of the proportion of daytime spent active (0.64,
 from captive animals). Density: 16.5 per km².</li>
 </ol>
 </div>
-<div class="section level4">
-<h4 id="estimating-availability-from-the-cameras-themselves">Estimating availability from the cameras themselves<a class="anchor" aria-label="anchor" href="#estimating-availability-from-the-cameras-themselves"></a>
-</h4>
+<div class="section level3">
+<h3 id="estimating-availability-from-the-cameras-themselves">Estimating availability from the cameras themselves<a class="anchor" aria-label="anchor" href="#estimating-availability-from-the-cameras-themselves"></a>
+</h3>
 <p>The times of day at which animals are filmed describe their daily
 activity rhythm. Rowcliffe et al. (2014) showed how to turn this into
 the proportion of time active. The idea: fit a smooth curve to the times
@@ -841,18 +840,18 @@ is approximately:</p>
 variance came from how much the encounter rate differed between cameras,
 and only 0.2% from the detection function. Some cameras film duikers all
 the time; others almost never.</p>
-<div class="section level4">
-<h4 id="design-based-variance">Design-based variance<a class="anchor" aria-label="anchor" href="#design-based-variance"></a>
-</h4>
+<div class="section level3">
+<h3 id="design-based-variance">Design-based variance<a class="anchor" aria-label="anchor" href="#design-based-variance"></a>
+</h3>
 <p>The encounter rate variance can be computed from the spread of
 encounter rates among cameras (estimator “P2” of Fewster et al. 2009).
 This is fast, and it is what Distance reports by default. Because it
 treats the data as independent snapshots in the detection-function part,
 it tends to be slightly optimistic.</p>
 </div>
-<div class="section level4">
-<h4 id="bootstrap-over-cameras">Bootstrap over cameras<a class="anchor" aria-label="anchor" href="#bootstrap-over-cameras"></a>
-</h4>
+<div class="section level3">
+<h3 id="bootstrap-over-cameras">Bootstrap over cameras<a class="anchor" aria-label="anchor" href="#bootstrap-over-cameras"></a>
+</h3>
 <p>The recommended approach for camera data is the nonparametric
 bootstrap:</p>
 <ol style="list-style-type: decimal">
@@ -891,9 +890,9 @@ negligible; with an uncertain availability it is not.</p>
 <div class="section level2">
 <h2 id="designing-the-survey">13. Designing the survey<a class="anchor" aria-label="anchor" href="#designing-the-survey"></a>
 </h2>
-<div class="section level4">
-<h4 id="where-to-put-cameras">Where to put cameras<a class="anchor" aria-label="anchor" href="#where-to-put-cameras"></a>
-</h4>
+<div class="section level3">
+<h3 id="where-to-put-cameras">Where to put cameras<a class="anchor" aria-label="anchor" href="#where-to-put-cameras"></a>
+</h3>
 <ul>
 <li>Place points by a random or systematic design with a random starting
 point, for example a grid with random origin. Do not target trails,
@@ -908,9 +907,9 @@ longer deployments. Howe et al. recommended more than their 21 points
 after obtaining CVs above 0.35.</li>
 </ul>
 </div>
-<div class="section level4">
-<h4 id="how-to-set-the-cameras">How to set the cameras<a class="anchor" aria-label="anchor" href="#how-to-set-the-cameras"></a>
-</h4>
+<div class="section level3">
+<h3 id="how-to-set-the-cameras">How to set the cameras<a class="anchor" aria-label="anchor" href="#how-to-set-the-cameras"></a>
+</h3>
 <ul>
 <li>Mount at a height suited to the species (0.7 to 1.0 m for duikers).
 Lower cameras miss fewer animals underneath but see less far.</li>
@@ -925,9 +924,9 @@ only adds work.</li>
 <li>Note the camera’s angle of view <span class="math inline">\(\theta\)</span> from its specification.</li>
 </ul>
 </div>
-<div class="section level4">
-<h4 id="how-long-to-deploy">How long to deploy<a class="anchor" aria-label="anchor" href="#how-long-to-deploy"></a>
-</h4>
+<div class="section level3">
+<h3 id="how-long-to-deploy">How long to deploy<a class="anchor" aria-label="anchor" href="#how-long-to-deploy"></a>
+</h3>
 <p>Long enough to accumulate detections at most points, and short enough
 that the population can be treated as closed. Keep only complete days
 when the camera worked and was not disturbed by people visiting it.</p>
@@ -1005,9 +1004,9 @@ start times.</p>
 <p>We now reproduce the published analysis of Howe et al. (2017) for
 Maxwell’s duikers in Taï National Park, Côte d’Ivoire, using the data
 bundled with ct. There are 21 cameras, 42° angle of view, <span class="math inline">\(t = 2\)</span> s.</p>
-<div class="section level4">
-<h4 id="load-and-inspect">Load and inspect<a class="anchor" aria-label="anchor" href="#load-and-inspect"></a>
-</h4>
+<div class="section level3">
+<h3 id="load-and-inspect">Load and inspect<a class="anchor" aria-label="anchor" href="#load-and-inspect"></a>
+</h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://stangandaho.github.io/ct/">ct</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
@@ -1031,9 +1030,9 @@ bundled with ct. There are 21 cameras, 42° angle of view, <span class="math inl
 <span>        panel.grid.major.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>        axis.line <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_line</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"grey40"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level4">
-<h4 id="compare-the-candidate-models-of-the-paper">Compare the candidate models of the paper<a class="anchor" aria-label="anchor" href="#compare-the-candidate-models-of-the-paper"></a>
-</h4>
+<div class="section level3">
+<h3 id="compare-the-candidate-models-of-the-paper">Compare the candidate models of the paper<a class="anchor" aria-label="anchor" href="#compare-the-candidate-models-of-the-paper"></a>
+</h3>
 <p>The paper considered half-normal with 0 to 2 Hermite terms,
 hazard-rate with 0 to 2 cosine terms, and uniform with 1 or 2 cosine
 terms, selected by AIC. Refitting them gives:</p>
@@ -1109,9 +1108,9 @@ in the paper. The best remaining model is the hazard-rate key without
 adjustments (in bold). Note how AIC rewards adding terms: this is the
 non-independence effect of section 11.</p>
 </div>
-<div class="section level4">
-<h4 id="fit-the-chosen-model-and-estimate-density">Fit the chosen model and estimate density<a class="anchor" aria-label="anchor" href="#fit-the-chosen-model-and-estimate-density"></a>
-</h4>
+<div class="section level3">
+<h3 id="fit-the-chosen-model-and-estimate-density">Fit the chosen model and estimate density<a class="anchor" aria-label="anchor" href="#fit-the-chosen-model-and-estimate-density"></a>
+</h3>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">8</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">10</span>, <span class="fl">12</span>, <span class="fl">15</span><span class="op">)</span></span>
 <span><span class="va">trunc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>left <span class="op">=</span> <span class="fl">2</span>, right <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
@@ -1124,7 +1123,7 @@ non-independence effect of section 11.</p>
 <span>  availability <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>creation <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span>rate <span class="op">=</span> <span class="fl">1</span>, SE <span class="op">=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  truncation <span class="op">=</span> <span class="va">trunc</span>,</span>
 <span>  cutpoints <span class="op">=</span> <span class="va">cp</span>,</span>
-<span>  n_bootstrap <span class="op">=</span> <span class="fl">999</span>,</span>
+<span>  n_bootstrap <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  seed <span class="op">=</span> <span class="fl">2017</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">fit_day</span><span class="op">$</span><span class="va">rho</span> <span class="co"># effective detection radius, m</span></span>
@@ -1133,9 +1132,9 @@ non-independence effect of section 11.</p>
 <code>rate = 0.64</code>. For “Peak activity”, use <code>peak</code>
 with <code>rate = 1</code>.</p>
 </div>
-<div class="section level4">
-<h4 id="compare-with-the-published-results">Compare with the published results<a class="anchor" aria-label="anchor" href="#compare-with-the-published-results"></a>
-</h4>
+<div class="section level3">
+<h3 id="compare-with-the-published-results">Compare with the published results<a class="anchor" aria-label="anchor" href="#compare-with-the-published-results"></a>
+</h3>
 <table style="width:100%;" class="table">
 <colgroup>
 <col width="14%">
@@ -1193,9 +1192,9 @@ within the variation expected between two sets of random resamples. The
 effective detection radii are 9.2 m (daytime) and 9.5 m (peak), against
 9.1 and 9.4 m in the paper.</p>
 </div>
-<div class="section level4">
-<h4 id="estimate-availability-from-the-camera-data-instead">Estimate availability from the camera data instead<a class="anchor" aria-label="anchor" href="#estimate-availability-from-the-camera-data-instead"></a>
-</h4>
+<div class="section level3">
+<h3 id="estimate-availability-from-the-camera-data-instead">Estimate availability from the camera data instead<a class="anchor" aria-label="anchor" href="#estimate-availability-from-the-camera-data-instead"></a>
+</h3>
 <p>Rather than borrowing 0.64 from captive animals, estimate it from the
 806 video start times, expressed over the 11.5-hour effort window:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -1207,9 +1206,9 @@ effective detection radii are 9.2 m (daytime) and 9.5 m (peak), against
 <span><span class="op">)</span></span>
 <span><span class="va">avail</span> <span class="co"># rate about 0.70, with its SE</span></span></code></pre></div>
 </div>
-<div class="section level4">
-<h4 id="let-ct-choose-the-detection-function">Let ct choose the detection function<a class="anchor" aria-label="anchor" href="#let-ct-choose-the-detection-function"></a>
-</h4>
+<div class="section level3">
+<h3 id="let-ct-choose-the-detection-function">Let ct choose the detection function<a class="anchor" aria-label="anchor" href="#let-ct-choose-the-detection-function"></a>
+</h3>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ct_fit_ds.html">ct_fit_ds</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">day</span>,</span>
@@ -1224,7 +1223,7 @@ effective detection radii are 9.2 m (daytime) and 9.5 m (peak), against
 <span>  availability <span class="op">=</span> <span class="va">avail</span>,</span>
 <span>  truncation <span class="op">=</span> <span class="va">trunc</span>,</span>
 <span>  cutpoints <span class="op">=</span> <span class="va">cp</span>,</span>
-<span>  n_bootstrap <span class="op">=</span> <span class="fl">999</span></span>
+<span>  n_bootstrap <span class="op">=</span> <span class="fl">1000</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">QAIC</span> <span class="co"># step 1: QAIC within each key</span></span>
 <span><span class="va">fit</span><span class="op">$</span><span class="va">Chi2</span> <span class="co"># step 2: chi-square / df between keys</span></span>

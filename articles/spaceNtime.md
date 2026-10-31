@@ -1,4 +1,4 @@
-# Estimating Wildlife Abundance from Camera Traps With SpaceNTime Methods
+# SpaceNTime
 
 ------------------------------------------------------------------------
 

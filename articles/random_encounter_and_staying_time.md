@@ -1,4 +1,4 @@
-# Estimating Density With REST and RAD-REST Models
+# REST and RAD-REST Models
 
 Density, the number of animals per unit area, is one of the most
 requested quantities in wildlife ecology: it underpins red-list

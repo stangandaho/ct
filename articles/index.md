@@ -27,13 +27,12 @@ Directed, short-term association and diel activity between species.
 
 ### Density and abundance estimation
 
-Estimators for unmarked populations, from distance sampling to REST.
+Methods of density and abundance estimation for unmarked populations.
 
 - [Camera Trap Distance
   Sampling](https://stangandaho.github.io/ct/articles/camera_trap_distance_sampling.md):
-- [Estimating Wildlife Abundance from Camera Traps With SpaceNTime
-  Methods](https://stangandaho.github.io/ct/articles/spaceNtime.md):
-- [Estimating Density With REST and RAD-REST
+- [SpaceNTime](https://stangandaho.github.io/ct/articles/spaceNtime.md):
+- [REST and RAD-REST
   Models](https://stangandaho.github.io/ct/articles/random_encounter_and_staying_time.md):
 
 ### Biodiversity

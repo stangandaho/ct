@@ -41,19 +41,18 @@ slice of pie. Two numbers describe that slice.
   and their distances are hard to judge. Howe et al. recommended \\w =
   15\\ m.
 
-![Figure 1: The camera (left) watches a wedge of angle \$\theta\$. Rings
-mark distance from the camera. At one snapshot moment, the analyst
-records the distance band of each animal in view: here, two animals, one
-near and one far. Animals outside the wedge or beyond \$w\$ are not
-counted.](camera_trap_distance_sampling_files/figure-html/fig-sector-1.png)
+![Figure 1: The camera watches a wedge of angle \$\theta\$. Rings mark
+distance from the camera. At one snapshot moment, we record the distance
+band of each animal in view: here, two animals, one near and one far.
+Animals outside the wedge or beyond \$w\$ are not
+counted.](images/camera_4_ctds.png)
 
-Figure 1: The camera (left) watches a wedge of angle \\\theta\\. Rings
-mark distance from the camera. At one snapshot moment, the analyst
-records the distance band of each animal in view: here, two animals, one
-near and one far. Animals outside the wedge or beyond \\w\\ are not
-counted.
+Figure 1: The camera watches a wedge of angle \\\theta\\. Rings mark
+distance from the camera. At one snapshot moment, we record the distance
+band of each animal in view: here, two animals, one near and one far.
+Animals outside the wedge or beyond \\w\\ are not counted.
 
-#### Snapshot moments
+### Snapshot moments
 
 A camera trap is triggered by movement and then records video or a burst
 of photos. Distances are not recorded at the moment of triggering.
@@ -86,7 +85,7 @@ The same animal walking past for 10 seconds contributes about 5
 observations at \\t = 2\\ s. That is expected and correct; section 11
 explains the consequence for statistics.
 
-#### Sampling effort
+### Sampling effort
 
 Combining the angle and the number of snapshots gives the
 **“spatio-temporal”** effort at camera point \\k\\:
@@ -197,7 +196,7 @@ the reason distance sampling works.
 
 ## 4. From counts to density
 
-#### The average detection probability \\P\\
+### The average detection probability \\P\\
 
 Consider the whole disc of radius \\w\\. Some animals are near (almost
 all seen), most are far (many missed). The **average probability of
@@ -211,7 +210,7 @@ If detection falls off, \\P\\ is smaller than 1. For the duikers, \\P\\
 was about 0.37: across the 15 m disc, roughly 37% of animals present at
 a snapshot moment were recorded.
 
-#### The density estimator
+### The density estimator
 
 At one snapshot, a full disc of radius \\w\\ has area \\\pi w^2\\. The
 camera watches the fraction \\\theta/2\pi\\ of it, and sees on average
@@ -240,13 +239,13 @@ Distances are in metres, so \\\hat D\\ comes out in animals per square
 metre. Multiply by 1 000 000 for animals per km². Software does this
 conversion for you.
 
-**One more ingredient.** This formula assumes every animal is moving and
-available to be filmed during the time \\T_k\\. Animals that are
-resting, asleep in a burrow or up a tree cannot be filmed at any
-distance. Section 13 adds the **availability** correction that handles
-them. Forgetting it is the most common cause of underestimated density.
+This formula assumes every animal is moving and available to be filmed
+during the time \\T_k\\. Animals that are resting, asleep in a burrow or
+up a tree cannot be filmed at any distance. Section 13 adds the
+**availability** correction that handles them. Forgetting it is the most
+common cause of underestimated density.
 
-#### Effective detection radius
+### Effective detection radius
 
 A useful way to picture \\P\\ is the **effective detection radius**,
 \\\rho\\ (rho). It is the radius of an imaginary disc in which you see
@@ -297,7 +296,7 @@ detection has dropped to 0.61; at \\r = 2\sigma\\, to 0.14. The
 half-normal falls gently from the start: there is no flat “shoulder”
 near the camera.
 
-#### c. Hazard-rate
+### c. Hazard-rate
 
 \\ g(r) = 1 - \exp\\\left\[-\left(\frac{r}{\sigma}\right)^{-b}\right\]
 \\
@@ -319,11 +318,10 @@ Figure 6: The three key functions over 0 to 15 m. The hazard-rate with
 gradually with a long tail. The half-normal (\\\sigma = 6\\ m) has no
 shoulder.
 
-**Why parameters are fitted on a log scale.** In software output you
-will see estimates such as “scale coefficient 1.74”. That is
-\\\log\sigma\\, so \\\sigma = e^{1.74} = 5.7\\ m. The shape \\b\\ is
-also estimated as \\\log b\\. Working on the log scale keeps \\\sigma\\
-and \\b\\ positive during fitting.
+In software output you will see estimates such as “scale coefficient
+1.74”. That is \\\log\sigma\\, so \\\sigma = e^{1.74} = 5.7\\ m. The
+shape \\b\\ is also estimated as \\\log b\\. Working on the log scale
+keeps \\\sigma\\ and \\b\\ positive during fitting.
 
 ## 6. Adjustment terms, order and nadj
 
@@ -347,7 +345,7 @@ Take it piece by piece.
 - The bottom line divides by the value at \\r = 0\\, so that \\g(0) =
   1\\ always holds.
 
-#### The three adjustment series
+### The three adjustment series
 
 | Series | Name in R | Function of order \\j\\, with \\x = r/w\\ | Default orders with uniform key | Default orders with half-normal or hazard-rate key |
 |:---|:---|:---|:---|:---|
@@ -355,7 +353,7 @@ Take it piece by piece.
 | Hermite polynomial | `"herm"` | \\H_j(x)\\, e.g. \\H_4 = x^4 - 6x^2 + 3\\ | 2, 4, 6, … | 4, 6, 8, … |
 | Simple polynomial | `"poly"` | \\x^j\\ | 2, 4, 6, … | 4, 6, 8, … |
 
-#### What “order” means
+### What “order” means
 
 For the cosine series, the order is the number of half-waves across the
 range 0 to \\w\\. Order 1 is one gentle half-wave (it starts high and
@@ -381,7 +379,7 @@ is order 2. The polynomial and Hermite series use even orders only,
 because even functions are flat at zero distance, which keeps the shape
 near the camera well behaved.
 
-#### nadj and order in software
+### nadj and order in software
 
 - `nadj` is the **number** of adjustment terms. `nadj = 2` with a
   hazard-rate key and cosine series means orders 2 and 3.
@@ -393,7 +391,7 @@ near the camera well behaved.
   trap data, prefer to set `nadj` yourself and compare models as in
   section 12.
 
-#### Monotonicity
+### Monotonicity
 
 Adjustment terms can make the curve go *up* with distance, or exceed 1,
 which makes no biological sense: an animal cannot be easier to see
@@ -444,7 +442,7 @@ about 0.1 to 0.15. Howe et al. truncated at 15 m because fitted curves
 became heavy-tailed when farther distances were included; this removed
 8% of daytime observations.
 
-#### Left truncation
+### Left truncation
 
 Camera traps have a blind zone right in front of them. A camera mounted
 at knee height may miss small animals passing underneath the field of
@@ -455,12 +453,12 @@ et al. found few observations between 1 and 2 m but not between 2 and 3
 m, so they left-truncated at 2 m. The analysis then covers the ring from
 2 to 15 m.
 
-**Look before you truncate.** Always plot a histogram of distances with
-narrow bins first. A dip near the camera suggests left truncation. A
-spike at one distance suggests measurement heaping (distances rounded to
-a landmark). A long thin tail suggests right truncation.
+Always plot a histogram of distances with narrow bins first. A dip near
+the camera suggests left truncation. A spike at one distance suggests
+measurement heaping (distances rounded to a landmark). A long thin tail
+suggests right truncation.
 
-#### Binned distances and cutpoints
+### Binned distances and cutpoints
 
 From video, you rarely measure exact distances. Instead, before the
 survey you film a person holding markers at known distances (for example
@@ -512,7 +510,7 @@ does two other things:
 
 ## 10. Choosing a model
 
-#### AIC
+### AIC
 
 The Akaike information criterion balances fit against complexity:
 
@@ -538,7 +536,7 @@ the log-likelihood by \\\hat c\\:
 
 \\ \text{QAIC} = -\frac{2\log L}{\hat c} + 2k \\
 
-#### The two-step procedure of Howe et al. (2019)
+### The two-step procedure of Howe et al. (2019)
 
 1.  **Within each key function**, compare models with different numbers
     of adjustment terms by QAIC, using \\\hat c\\ from the most complex
@@ -568,21 +566,21 @@ the effort time during which animals are active and at ground level.
 
 \\ \hat D = \frac{n}{\pi w^2 \\ \hat P \\ e \\ \hat A} \\
 
-#### Three ways to handle availability
+### Three ways to handle availability
 
 Howe et al. (2017) compared three approaches for Maxwell’s duikers:
 
-1.  **Daytime.** Count effort only from 06:30 to 18:00, and assume all
+1.  Daytime: Count effort only from 06:30 to 18:00, and assume all
     duikers are active throughout. Density: 10.6 per km². Probably too
     low.
-2.  **Peak activity.** Count effort and observations only during the two
+2.  Peak activity: Count effort and observations only during the two
     daily activity peaks, assuming everyone is active then. Density:
     14.5 per km².
-3.  **Active daytime.** Use the daytime data, and divide by an
+3.  **Active daytim*e*: Use the daytime data, and divide by an
     independent estimate of the proportion of daytime spent active
     (0.64, from captive animals). Density: 16.5 per km².
 
-#### Estimating availability from the cameras themselves
+### Estimating availability from the cameras themselves
 
 The times of day at which animals are filmed describe their daily
 activity rhythm. Rowcliffe et al. (2014) showed how to turn this into
@@ -627,7 +625,7 @@ variance came from how much the encounter rate differed between cameras,
 and only 0.2% from the detection function. Some cameras film duikers all
 the time; others almost never.
 
-#### Design-based variance
+### Design-based variance
 
 The encounter rate variance can be computed from the spread of encounter
 rates among cameras (estimator “P2” of Fewster et al. 2009). This is
@@ -635,7 +633,7 @@ fast, and it is what Distance reports by default. Because it treats the
 data as independent snapshots in the detection-function part, it tends
 to be slightly optimistic.
 
-#### Bootstrap over cameras
+### Bootstrap over cameras
 
 The recommended approach for camera data is the nonparametric bootstrap:
 
@@ -672,7 +670,7 @@ difference is negligible; with an uncertain availability it is not.
 
 ## 13. Designing the survey
 
-#### Where to put cameras
+### Where to put cameras
 
 - Place points by a random or systematic design with a random starting
   point, for example a grid with random origin. Do not target trails,
@@ -686,7 +684,7 @@ difference is negligible; with an uncertain availability it is not.
   deployments. Howe et al. recommended more than their 21 points after
   obtaining CVs above 0.35.
 
-#### How to set the cameras
+### How to set the cameras
 
 - Mount at a height suited to the species (0.7 to 1.0 m for duikers).
   Lower cameras miss fewer animals underneath but see less far.
@@ -698,7 +696,7 @@ difference is negligible; with an uncertain availability it is not.
   rare animals; beyond a point, smaller \\t\\ only adds work.
 - Note the camera’s angle of view \\\theta\\ from its specification.
 
-#### How long to deploy
+### How long to deploy
 
 Long enough to accumulate detections at most points, and short enough
 that the population can be treated as closed. Keep only complete days
@@ -735,7 +733,7 @@ We now reproduce the published analysis of Howe et al. (2017) for
 Maxwell’s duikers in Taï National Park, Côte d’Ivoire, using the data
 bundled with ct. There are 21 cameras, 42° angle of view, \\t = 2\\ s.
 
-#### Load and inspect
+### Load and inspect
 
 ``` r
 
@@ -765,7 +763,7 @@ ggplot(day, aes(distance)) +
         axis.line = element_line(colour = "grey40"))
 ```
 
-#### Compare the candidate models of the paper
+### Compare the candidate models of the paper
 
 The paper considered half-normal with 0 to 2 Hermite terms, hazard-rate
 with 0 to 2 cosine terms, and uniform with 1 or 2 cosine terms, selected
@@ -787,7 +785,7 @@ the paper. The best remaining model is the hazard-rate key without
 adjustments (in bold). Note how AIC rewards adding terms: this is the
 non-independence effect of section 11.
 
-#### Fit the chosen model and estimate density
+### Fit the chosen model and estimate density
 
 ``` r
 
@@ -802,7 +800,7 @@ fit_day <- ct_fit_ds(
   availability = list(creation = data.frame(rate = 1, SE = 0)),
   truncation = trunc,
   cutpoints = cp,
-  n_bootstrap = 999,
+  n_bootstrap = 1000,
   seed = 2017
 )
 fit_day$rho # effective detection radius, m
@@ -812,7 +810,7 @@ fit_day$density # bootstrap median, mean, se, lcl, ucl, cv
 For “Active daytime”, keep the daytime data and set `rate = 0.64`. For
 “Peak activity”, use `peak` with `rate = 1`.
 
-#### Compare with the published results
+### Compare with the published results
 
 | Availability | n | Paper \\\hat D\\ | ct \\\hat D\\ | Paper bootstrap 95% CI | ct bootstrap 95% CI | ct bootstrap CV |
 |:---|---:|---:|---:|---:|---:|---:|
@@ -826,7 +824,7 @@ within the variation expected between two sets of random resamples. The
 effective detection radii are 9.2 m (daytime) and 9.5 m (peak), against
 9.1 and 9.4 m in the paper.
 
-#### Estimate availability from the camera data instead
+### Estimate availability from the camera data instead
 
 Rather than borrowing 0.64 from captive animals, estimate it from the
 806 video start times, expressed over the 11.5-hour effort window:
@@ -842,7 +840,7 @@ avail <- ct_availability(
 avail # rate about 0.70, with its SE
 ```
 
-#### Let ct choose the detection function
+### Let ct choose the detection function
 
 ``` r
 
@@ -859,7 +857,7 @@ fit <- ct_fit_ds(
   availability = avail,
   truncation = trunc,
   cutpoints = cp,
-  n_bootstrap = 999
+  n_bootstrap = 1000
 )
 fit$QAIC # step 1: QAIC within each key
 fit$Chi2 # step 2: chi-square / df between keys
