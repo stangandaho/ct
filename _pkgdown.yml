@@ -78,8 +78,7 @@ articles:
 - title: Density and abundance estimation
   desc: Estimators for unmarked populations, from distance sampling to REST.
   contents:
-  - articles/camera_trap_distance_sampling_guideline
-  - articles/density_estimation_with_distance_sampling
+  - articles/camera_trap_distance_sampling
   - articles/spaceNtime
   - articles/random_encounter_and_staying_time
 - title: Biodiversity

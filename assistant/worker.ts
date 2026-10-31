@@ -100,6 +100,27 @@ How to answer:
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
+// Split a paragraph too long for one chunk (e.g. a large table) on line breaks,
+// slicing any single line that is itself too long. Vectorize rejects metadata
+// over 10240 bytes, so no piece may be left oversized.
+function splitLongParagraph(p: string): string[] {
+  if (p.length <= MAX_CHUNK_CHARS) return [p];
+  const pieces: string[] = [];
+  let buf = "";
+  for (const line of p.split("\n")) {
+    for (const part of line.match(new RegExp(`.{1,${MAX_CHUNK_CHARS}}`, "gu")) ?? [""]) {
+      if (buf && (buf + "\n" + part).length > MAX_CHUNK_CHARS) {
+        pieces.push(buf);
+        buf = part;
+      } else {
+        buf = buf ? `${buf}\n${part}` : part;
+      }
+    }
+  }
+  if (buf) pieces.push(buf);
+  return pieces;
+}
+
 // Chunking (shared by /reindex)
 // Sections are separated by the "---" the build script writes between
 // reference entries and vignettes; long ones are split further by paragraph.
@@ -113,7 +134,7 @@ function chunkDocs(doc: string): { id: string; text: string }[] {
       chunks.push({ id: `c${n++}`, text: sec });
       continue;
     }
-    const paras = sec.split(/\n\s*\n/);
+    const paras = sec.split(/\n\s*\n/).flatMap(splitLongParagraph);
     let buf = "";
     for (const p of paras) {
       if (buf && (buf + "\n\n" + p).length > MAX_CHUNK_CHARS) {
