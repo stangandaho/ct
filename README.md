@@ -3,6 +3,7 @@
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/stangandaho/ct/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/stangandaho/ct/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/stangandaho/ct/graph/badge.svg?token=EPD6MHT0SG)](https://app.codecov.io/gh/stangandaho/ct)
+[![CRAN downloads](https://cranlogs.r-pkg.org/badges/grand-total/ct)](https://cran.r-project.org/package=ct)
 <!-- badges: end -->
 
 ## Overview
