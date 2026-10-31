@@ -222,7 +222,7 @@ ct_select_model(model_list)
 #> Detection function:
 #>  Hazard-rate key function 
 #> 
-#> Estimated abundance in covered region: 8204.912 
+#> Estimated abundance in covered region: 8204.911 
 #> 
 #> $`Best QAIC models`[[3]]
 #> 

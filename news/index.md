@@ -2,6 +2,8 @@
 
 ## ct 0.5.0
 
+CRAN release: 2026-10-21
+
 ### New functions
 
 - [`ct_fit_encounter_response()`](https://stangandaho.github.io/ct/reference/ct_fit_encounter_response.md):

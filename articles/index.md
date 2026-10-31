@@ -29,10 +29,8 @@ Directed, short-term association and diel activity between species.
 
 Estimators for unmarked populations, from distance sampling to REST.
 
-- [Distance Sampling with Camera
-  Traps](https://stangandaho.github.io/ct/articles/camera_trap_distance_sampling_guideline.md):
-- [Wildlife Density Estimation With ct R Package Using Distance
-  Sampling](https://stangandaho.github.io/ct/articles/density_estimation_with_distance_sampling.md):
+- [Camera Trap Distance
+  Sampling](https://stangandaho.github.io/ct/articles/camera_trap_distance_sampling.md):
 - [Estimating Wildlife Abundance from Camera Traps With SpaceNTime
   Methods](https://stangandaho.github.io/ct/articles/spaceNtime.md):
 - [Estimating Density With REST and RAD-REST
