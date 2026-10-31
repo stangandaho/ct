@@ -1,5 +1,5 @@
 ---
-title: "Estimating Density With REST and RAD-REST Models"
+title: "REST and RAD-REST Models"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 css: styles.css
